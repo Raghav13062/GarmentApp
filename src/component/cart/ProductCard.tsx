@@ -34,7 +34,7 @@ export default function ProductCard({onPress1, item, onPress ,title,buttShow,dis
           {/* RATING CHIP */}
           <View style={styles.ratingChip}>
             <Text style={styles.ratingText}>⭐ {item.rating || 4}</Text>
-            <Text style={styles.ratingCount}>({item.reviews || 23})</Text>
+            <Text style={[styles.ratingCount,]}>({item.reviews || 23})</Text>
           </View>
               <Text numberOfLines={1} style={styles.title}>
           {item.title || "Mock Collar Striped Pullover"}
@@ -43,12 +43,11 @@ export default function ProductCard({onPress1, item, onPress ,title,buttShow,dis
         <View style={styles.priceRow}>
           <Text style={styles.price}>₹{item.price}</Text>
           <Text style={styles.oldPrice}>₹{original}</Text>
-          <Text style={styles.off}>{discount}% OFF</Text>
+          <Text style={[styles.off,{flex:1}]}>{discount}% OFF</Text>
         </View>
 
         {/* BRAND */}
-        <Text style={styles.brand}>{item.brand || "glitchez"}</Text>
-        </View>
+         </View>
 
         {/* TITLE */}
     {
