@@ -1,28 +1,20 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, {FunctionComponent} from 'react';
+import {LogBox, Text, TextInput} from 'react-native';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import 'react-native-gesture-handler';
+import AppNavigator from './src/navigators/AppNavigator';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+LogBox.ignoreAllLogs();
+;(Text as any).defaultProps = {
+  ...(Text as any).defaultProps,
+  allowFontScaling: false,
+};
 
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+;(TextInput as any).defaultProps = {
+  ...(TextInput as any).defaultProps,
+  allowFontScaling: false,
+  underlineColorAndroid: "transparent",
+};
+const App: FunctionComponent<any> = () => <AppNavigator />;
 
 export default App;
