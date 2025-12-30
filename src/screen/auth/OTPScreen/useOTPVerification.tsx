@@ -1,87 +1,113 @@
- import { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
+import { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { navigateToScreen } from '../../../constant';
-import ScreenNameEnum from '../../../routes/screenName.enum';
-import { successToast } from '../../../utils/customToast';
+import { successToast, errorToast } from '../../../utils/customToast';
+import { LoginApi } from '../../../Api/auth/authservice';
+import { useDispatch } from 'react-redux';
+import {
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
 
-interface RouteParams {
-  phoneNumber: string;
-}
+const CELL_COUNT = 5;
 
 export default function useOtpVerification() {
-  const navigation = useNavigation();
-  const route :any = useRoute();
-  const { phoneNumber } = route?.params  ||"";
+  const navigation = useNavigation<any>();
+  const route: any = useRoute();
+  const dispatch = useDispatch();
+
+  const phone = route?.params?.phone ?? '';
 
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(30);
 
+  const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value: code,
+    setValue: setCode,
+  });
+
+  /* -------------------- RESEND TIMER -------------------- */
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (resendTimer > 0) {
-      interval = setInterval(() => {
-        setResendTimer((prev) => prev - 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
+    if (resendTimer <= 0) return;
+
+    const timer = setInterval(() => {
+      setResendTimer(prev => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, [resendTimer]);
 
+  /* -------------------- VERIFY OTP -------------------- */
   const handleVerifyOtp = async () => {
-    // if (code.length !== 6) {
-    //   Alert.alert('Error', 'Please enter 6-digit OTP');
-    //   return;
-    // }
-
-    // setLoading(true);
-    try {
-successToast("OTP verified successfully");
-      // await new Promise(resolve => setTimeout(resolve, 2000));
-navigateToScreen(ScreenNameEnum.BottomTabs,);
-
-       
-       // navigation.navigate('Dashboard');
-    } catch (error) {
-      Alert.alert('Error', 'Invalid OTP. Please try again.');
-    } finally {
-      setLoading(false);
+    if (code.length !== CELL_COUNT) {
+      errorToast(`Please enter a valid ${CELL_COUNT}-digit OTP`);
+      return;
     }
-  };
-
-  const handleResendOtp = async () => {
-    if (resendTimer > 0) return;
 
     setLoading(true);
     try {
-      // Resend OTP API call
-      // await resendOtpApi(phoneNumber);
-      
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setResendTimer(30);
-      Alert.alert('Success', 'OTP sent successfully!');
-    } catch (error) {
-      Alert.alert('Error', 'Failed to resend OTP. Please try again.');
+      const payload = {
+        phone,
+        otp: code,
+      };
+console.log("payload ---",payload)
+      const response = await LoginApi(
+        payload,
+        setLoading,
+        dispatch,
+        navigation
+      );
+
+      if (response?.status) {
+        successToast('OTP verified successfully 🎉');
+      } else {
+        errorToast(response?.message || 'Invalid OTP');
+      }
+    } catch (error: any) {
+      errorToast(
+        error?.response?.data?.message || 'Something went wrong. Try again.'
+      );
     } finally {
       setLoading(false);
     }
   };
 
+  /* -------------------- RESEND OTP -------------------- */
+  const handleResendOtp = async () => {
+    if (resendTimer > 0) return;
+
+    try {
+      setLoading(true);
+      // await resendOtpApi({ phone });
+      successToast('OTP sent successfully');
+      setResendTimer(30);
+      setCode('');
+    } catch (error: any) {
+      errorToast(
+        error?.response?.data?.message || 'Unable to resend OTP'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* -------------------- CHANGE PHONE -------------------- */
   const handleChangePhone = () => {
     navigation.goBack();
   };
 
   return {
-    phoneNumber,
+    phone,
     code,
+    setCode,
     loading,
     resendTimer,
-    setCode,
+    ref,
+    props,
+    getCellOnLayoutHandler,
     handleVerifyOtp,
     handleResendOtp,
     handleChangePhone,
-    navigation,
   };
 }

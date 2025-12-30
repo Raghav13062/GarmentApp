@@ -10,8 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import React from 'react';
-import Loading from '../../../utils/Loader';
-import imageIndex from '../../../assets/imageIndex';
+ import imageIndex from '../../../assets/imageIndex';
 import CustomButton from '../../../component/CustomButton';
 import { styles } from './style';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
@@ -22,16 +21,21 @@ import {
 } from 'react-native-confirmation-code-field';
 import useOtpVerification from './useOTPVerification';
 import { color } from '../../../constant';
-
+import Loading from '../../../utils/Loader';
+ 
 export default function OtpVerification() {
   const {
-    phoneNumber,
+    phone,
     code,
+    getCellOnLayoutHandler,
+ ref,
      resendTimer,
     setCode,
     handleVerifyOtp,
     handleResendOtp,
     handleChangePhone,
+    loading ,
+    props
    } = useOtpVerification();
 
   return (
@@ -42,7 +46,7 @@ export default function OtpVerification() {
          >
       <SafeAreaView style={styles.main}>
         <StatusBarComponent translucent={true} backgroundColor="transparent" />
-            {/* <Loading visible={true}/> */}
+            <Loading visible={loading}/> 
         <View style={styles.backgroundOverlay} />
        
           <ScrollView 
@@ -74,13 +78,12 @@ export default function OtpVerification() {
                       We have sent a verification code to
                     </Text>
                     <View style={styles.phoneNumberContainer}>
-                      <Text style={styles.phoneNumberText}>{phoneNumber}</Text>
+                      <Text style={styles.phoneNumberText}></Text>
                       <TouchableOpacity onPress={handleChangePhone} style={styles.changeButton}>
                         <Text style={styles.changeButtonText}>
-                          
                           <Text style={{
                             color:color.black 
-                          }}>959303820383 {" "}</Text>
+                          }}>{phone} {" "}</Text>
                            Change</Text>
                       </TouchableOpacity>
                     </View>
@@ -89,31 +92,37 @@ export default function OtpVerification() {
 
                   <View style={styles.otpSection}>
                     
-                    <CodeField
-                     blurOnSubmit={true}  // Keyboard dismiss on done
-  returnKeyType="done"  // Shows done button on keyboard
-                      value={code}
-                      onChangeText={setCode}
-                      cellCount={5}
-                      
-                       rootStyle={styles.codeFieldRoot}
-                      keyboardType="number-pad"
-                      textContentType="oneTimeCode"
-                      renderCell={({index, symbol, isFocused}) => (
-                        <View
-                          key={index}
-                          style={[
-                            styles.cell,
-                            isFocused && styles.focusCell,
-                            symbol && styles.filledCell
-                          ]}
-                        >
-                          <Text style={styles.cellText}>
-                            {symbol || (isFocused ? <Cursor /> : null)}
-                          </Text>
-                        </View>
-                      )}
-                    />
+           <CodeField
+  ref={ref}
+  {...props}
+  value={code}
+  onChangeText={(text) => {
+    // Only numbers, max 5 digits
+    const numericText = text.replace(/[^0-9]/g, '').slice(0, 5);
+    setCode(numericText);
+  }}
+  cellCount={5}
+  rootStyle={styles.codeFieldRoot}
+  keyboardType="number-pad"
+  textContentType="oneTimeCode"
+  autoFocus
+  renderCell={({ index, symbol, isFocused }) => (
+    <View
+      key={index}
+      onLayout={getCellOnLayoutHandler(index)}
+      style={[
+        styles.cell,
+        isFocused && styles.focusCell,
+        symbol && styles.filledCell,
+      ]}
+    >
+      <Text style={styles.cellText}>
+        {symbol || (isFocused ? <Cursor /> : null)}
+      </Text>
+    </View>
+  )}
+/>
+
                     
                     <View style={styles.resendContainer}>
                       {resendTimer > 0 ? (

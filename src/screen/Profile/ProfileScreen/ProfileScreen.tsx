@@ -87,7 +87,7 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
         </View>
       </LinearGradient>
 
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* -------------------- USER INFO CARD -------------------- */}
         <View style={styles.card}>
           <View style={styles.cardHeader}>

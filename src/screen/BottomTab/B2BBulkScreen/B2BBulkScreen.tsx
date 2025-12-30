@@ -139,10 +139,12 @@ const B2BBulkScreen = () => {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Header */}
       <LinearGradient colors={primaryGradient} style={styles.header}>
-        <View style={styles.headerContent}>
+        <View style={[styles.headerContent,{
+          marginBottom:14
+        }]}>
           <MaterialIcons name="business" size={32} color="white" />
-          <Text style={styles.headerTitle}>B2B Bulk Purchasing</Text>
-          <Text style={styles.headerSubtitle}>Exclusive Franchise Offers</Text>
+          <Text allowFontScaling={false} style={styles.headerTitle}>B2B Bulk Purchasing</Text>
+          <Text  allowFontScaling={false} style={styles.headerSubtitle}>Exclusive Franchise Offers</Text>
         </View>
       </LinearGradient>
 
@@ -151,21 +153,25 @@ const B2BBulkScreen = () => {
         <View style={styles.featureRow}>
           <View style={styles.featureItem}>
             <FontAwesome5 name="boxes" size={24} color="#F58021" />
-            <Text style={styles.featureText}>Bulk Buying</Text>
+            <Text                allowFontScaling={false}
+ style={styles.featureText}>Bulk Buying</Text>
           </View>
           <View style={styles.featureItem}>
             <Ionicons name="business" size={24} color="#862E92" />
-            <Text style={styles.featureText}>Franchise Offers</Text>
+            <Text               allowFontScaling={false}
+ style={styles.featureText}>Franchise Offers</Text>
           </View>
           <View style={styles.featureItem}>
             <Entypo name="price-tag" size={24} color="#4CAF50" />
-            <Text style={styles.featureText}>Smart Pricing</Text>
+            <Text                allowFontScaling={false}
+ style={styles.featureText}>Smart Pricing</Text>
           </View>
         </View>
         
         <LinearGradient colors={['#e3f2fd', '#bbdefb']} style={styles.taglineCard}>
           <MaterialIcons name="auto-awesome" size={22} color="#1976d2" />
-          <Text style={styles.taglineText}>
+          <Text               allowFontScaling={false}
+ style={styles.taglineText}>
             Buy more, pay less with automated B2B billing
           </Text>
         </LinearGradient>
@@ -184,23 +190,23 @@ const B2BBulkScreen = () => {
               ]}
               onPress={() => setSelectedProduct(product.name)}
             >
-              <LinearGradient
-                colors={selectedProduct === product.name ? primaryGradient : ['#f5f5f5', '#e0e0e0']}
-                style={styles.productGradient}
-              >
-                <Text style={[
+               
+                <Text               allowFontScaling={false}
+ style={[
                   styles.productName,
                   selectedProduct === product.name && styles.productNameSelected
                 ]}>
                   {product.name}
                 </Text>
-                <Text style={styles.productPrice}>
+                <Text                allowFontScaling={false}
+ style={styles.productPrice}>
                   ₹{product.basePrice} / ₹{product.bulkPrice}
                 </Text>
-                <Text style={styles.productMinQty}>
-                  Min {product.minBulkQty}+ for bulk
+                <Text               allowFontScaling={false}
+  style={styles.productMinQty}>
+                  Min  {product.minBulkQty}+ for bulk
                 </Text>
-              </LinearGradient>
+         
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -208,7 +214,8 @@ const B2BBulkScreen = () => {
 
       {/* Quantity Selector */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Select Quantity</Text>
+        <Text               allowFontScaling={false}
+  style={styles.sectionTitle}>Select Quantity</Text>
         <View style={styles.quantityContainer}>
           <TouchableOpacity 
             style={styles.quantityButton} 
@@ -223,8 +230,11 @@ const B2BBulkScreen = () => {
               value={selectedQuantity.toString()}
               onChangeText={handleQuantityChange}
               keyboardType="numeric"
+              allowFontScaling={false}
+              editable={false}
             />
-            <Text style={styles.quantityLabel}>Units</Text>
+            <Text                allowFontScaling={false}
+ style={styles.quantityLabel}>Units</Text>
           </View>
           
           <TouchableOpacity 
@@ -357,7 +367,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f7',
   },
   header: {
-    paddingTop: Platform.OS === 'ios' ? 50 : 30,
+    paddingTop: Platform.OS === 'ios' ? 40 : 30,
     paddingBottom: 30,
     paddingHorizontal: 20,
     borderBottomLeftRadius: 30,
@@ -368,15 +378,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   headerTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: 'white',
+    fontSize: 20,
+     color: 'white',
     marginTop: 10,
+    marginBottom:10
   },
   headerSubtitle: {
     fontSize: 16,
     color: 'rgba(255,255,255,0.9)',
-    marginTop: 5,
+         marginBottom:10
+
   },
   featuresContainer: {
     paddingHorizontal: 20,
@@ -409,15 +420,17 @@ const styles = StyleSheet.create({
   featureText: {
     fontSize: 12,
     fontWeight: '600',
-    marginTop: 8,
+    marginTop: 10,
     color: '#333',
+    textAlign:"center"
   },
   taglineCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
-    borderRadius: 15,
+     borderRadius: 15,
     marginTop: 10,
+    height:55 ,
+    marginHorizontal:8
   },
   taglineText: {
     fontSize: 16,
@@ -454,10 +467,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   productCard: {
-    width: 120,
-    marginRight: 15,
-    borderRadius: 15,
-    overflow: 'hidden',
+   marginRight: 15,
+  borderRadius: 15,
+  overflow: 'hidden',
+  borderWidth: 1,
+  borderColor: '#E5E7EB',   // light gray border
+  backgroundColor: '#fff',
+
+  // iOS shadow
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.12,
+  shadowRadius: 6,
+  paddingVertical:11,
+padding:11,
+marginLeft:11,
+marginTop:1,
+  // Android shadow
+  elevation: 5,
   },
   productCardSelected: {
     transform: [{ scale: 1.05 }],
@@ -522,8 +549,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+     paddingHorizontal: 20,
+    height:50,
+    borderRadius:10
   },
   bulkBadgeText: {
     color: 'white',
@@ -625,9 +653,8 @@ const styles = StyleSheet.create({
   },
   summaryCard: {
     margin: 20,
-    padding: 25,
-    borderRadius: 20,
-    marginTop: 10,
+     borderRadius: 20,
+     marginTop: 10,
     marginBottom: 40,
     ...Platform.select({
       ios: {
@@ -645,6 +672,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 12,
+    marginHorizontal:15,
+    marginTop:10
   },
   summaryLabel: {
     fontSize: 16,
@@ -688,7 +717,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 18,
+     height:55,
+     marginHorizontal:15 ,
+     marginBottom:15 ,
+     borderRadius:10
   },
   orderButtonText: {
     color: 'white',

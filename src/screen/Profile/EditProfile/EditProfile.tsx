@@ -20,6 +20,7 @@ import imageIndex from "../../../assets/imageIndex";
 import { color } from "../../../constant";
 import CustomHeader from "../../../component/CustomHeader";
 import StatusBarComponent from "../../../component/StatusBarCompoent";
+import CustomButton from "../../../component/CustomButton";
 
 const EditProfile = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -169,6 +170,7 @@ const EditProfile = ({ navigation }) => {
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       >
         <ScrollView 
+
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
@@ -202,7 +204,7 @@ const EditProfile = ({ navigation }) => {
               </TouchableOpacity>
             </View>
             
-            <Text style={styles.photoHint}>
+            <Text allowFontScaling={false}    style={styles.photoHint}>
               Tap to change profile photo
             </Text>
         
@@ -217,9 +219,10 @@ const EditProfile = ({ navigation }) => {
             
             {/* Bio Field */}
             <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Bio</Text>
+              <Text allowFontScaling={false}   style={styles.inputLabel}>Bio</Text>
               <View style={styles.textAreaWrapper}>
                 <TextInput
+                allowFontScaling={false}  
                   ref={ref => inputRefs.current.bio = ref}
                   style={[styles.input, styles.textArea]}
                   value={formData.bio}
@@ -283,37 +286,18 @@ const EditProfile = ({ navigation }) => {
           </View>
 
           {/* Action Buttons */}
-          <View style={styles.actionButtons}>
-            <TouchableOpacity 
-              style={styles.cancelButton}
-              onPress={() => navigation.goBack()}
-              disabled={loading}
-            >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={styles.saveButton}
-              onPress={handleSubmit}
-              disabled={loading}
-            >
-              <LinearGradient
-                colors={['#F58021', '#862E92']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.saveButtonGradient}
-              >
-                {loading ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <>
-                    <Icon name="check" size={20} color="#fff" style={styles.saveIcon} />
-                    <Text style={styles.saveButtonText}>Save Changes</Text>
-                  </>
-                )}
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
+           <View style={{
+            marginHorizontal:15 ,
+            marginBottom:10 ,
+            marginTop:15
+           }}>
+              <CustomButton 
+                      title="Save Changes" 
+                      onPress={handleSubmit}
+                      // onPress={handleLogin}
+                      />
+           </View>
+    
 
           {/* Help Section */}
           
@@ -329,7 +313,7 @@ export default EditProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F9FA",
+    backgroundColor: "white",
   },
   scrollView: {
     flex: 1,

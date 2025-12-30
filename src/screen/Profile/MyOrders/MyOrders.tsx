@@ -576,6 +576,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 15,
     paddingHorizontal: 10,
+    marginBottom:30
   },
   statItem: {
     flex: 1,

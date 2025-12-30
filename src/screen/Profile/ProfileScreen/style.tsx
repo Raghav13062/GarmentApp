@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
-  },
+   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -39,6 +39,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 15,
+    marginBottom:20
   },
   profileImgWrapper: {
     position: "relative",

@@ -41,10 +41,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
       {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
       {type == "date" ?
         <TouchableOpacity onPress={onpress} style={{ width: '93%',}}>
-          <Text style={[styles.input, { width: '100%' }]}>{date}</Text>
+          <Text  allowFontScaling={false}  style={[styles.input, { width: '100%' }]}>{date}</Text>
         </TouchableOpacity>
         :
         <TextInput
+         allowFontScaling={false}
           style={styles.input}
           placeholderTextColor="#A59F9F"
           secureTextEntry={hidePassword}

@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { color } from '../../../constant';
+import { color, fonts } from '../../../constant';
 
 const { width, height } = Dimensions.get('window');
 
@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
   },
   
   headerContainer: {
-    marginBottom: 32,
+    marginBottom: 20,
   },
   
   welcomeText: {
@@ -103,31 +103,37 @@ export const styles = StyleSheet.create({
   },
   
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: color.grey,
     lineHeight: 22,
-  },
+    
+    },
   
   inputSection: {
     marginBottom: 32,
-  },
+
+   },
   
   inputLabelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
+    flex:1
   },
   
   inputLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: color.grey,
+    fontSize: 14,
+     color: color.primary,
+    flex:1 
+    ,
+    fontFamily:fonts.black
   },
   
   inputHint: {
     fontSize: 14,
     color: color.grey,
+    
   },
   
   inputContainer: {

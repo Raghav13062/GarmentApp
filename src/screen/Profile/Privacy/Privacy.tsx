@@ -12,7 +12,7 @@ import imageIndex from '../../../assets/imageIndex'
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import CustomHeader from '../../../component/CustomHeader';
 import { useNavigation } from '@react-navigation/native';
-import { Policies_Api } from '../../../Api/apiRequest';
+import { Policies_Api } from '../../../Api/auth/authservice';
 import { hp } from '../../../utils/Constant';
 const Privacy = () => {
     const [isLoading, setLoading] = useState(false)

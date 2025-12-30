@@ -676,13 +676,15 @@ const styles = StyleSheet.create({
   },
   statsCard: {
     flexDirection: 'row',
-    borderRadius: 20,
-    padding: 20,
-    elevation: 8,
+    borderRadius: 10,
+     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
+    height:60,
+    alignItems:"center" ,
+    justifyContent:"center"
   },
   statItem: {
     flex: 1,

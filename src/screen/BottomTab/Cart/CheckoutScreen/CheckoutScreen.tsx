@@ -326,17 +326,27 @@ const CheckoutScreen = () => {
           onPress={() => updatePaymentMethod('credit_card')}
         >
           <Icon name="credit-card" size={24} color={paymentMethod === 'credit_card' ? BRAND_COLORS.primaryDark : BRAND_COLORS.gray} />
-          <Text style={[styles.paymentText, paymentMethod === 'credit_card' && styles.paymentTextSelected]}>
+          <Text style={[styles.paymentText, paymentMethod === 'credit_card' && styles.paymentTextSelected,
+            {
+              textAlign:"center"
+            }
+          ]}>
             Credit/Debit Card
           </Text>
         </TouchableOpacity>
         
         <TouchableOpacity
-          style={[styles.paymentOption, paymentMethod === 'upi' && styles.paymentOptionSelected]}
+          style={[styles.paymentOption, paymentMethod === 'upi' && styles.paymentOptionSelected,{
+                          textAlign:"center"
+
+          }]}
           onPress={() => updatePaymentMethod('upi')}
         >
           <Icon name="account-balance-wallet" size={24} color={paymentMethod === 'upi' ? BRAND_COLORS.primaryDark : BRAND_COLORS.gray} />
-          <Text style={[styles.paymentText, paymentMethod === 'upi' && styles.paymentTextSelected]}>
+          <Text style={[styles.paymentText, paymentMethod === 'upi' && styles.paymentTextSelected,{
+                          textAlign:"center"
+
+          }]}>
             UPI
           </Text>
         </TouchableOpacity>
@@ -346,25 +356,17 @@ const CheckoutScreen = () => {
           onPress={() => updatePaymentMethod('cod')}
         >
           <Icon name="money" size={24} color={paymentMethod === 'cod' ? BRAND_COLORS.primaryDark : BRAND_COLORS.gray} />
-          <Text style={[styles.paymentText, paymentMethod === 'cod' && styles.paymentTextSelected]}>
+          <Text style={[styles.paymentText, paymentMethod === 'cod' && styles.paymentTextSelected,{
+                          textAlign:"center"
+
+          }]}>
             Cash on Delivery
           </Text>
         </TouchableOpacity>
       </View>
       
       {/* Card Details (show only if credit card selected) */}
-      {paymentMethod === 'credit_card' && (
-        <View style={styles.cardDetailsContainer}>
-          <Text style={styles.cardDetailsTitle}>Card Details</Text>
-          <View style={styles.cardDetails}>
-            <Text style={styles.cardText}>Card: {cardDetails.cardNumber}</Text>
-            <Text style={styles.cardText}>Expiry: {cardDetails.expiryDate}</Text>
-            <TouchableOpacity style={styles.changeCardButton}>
-              <Text style={styles.changeCardText}>Change Card</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+   
     </Animated.View>
   );
 
@@ -467,7 +469,7 @@ const CheckoutScreen = () => {
             </View>
           </Animated.View>
           
-          {renderAddressSection()}
+          {/* {renderAddressSection()} */}
           {renderShippingSection()}
           {renderPaymentSection()}
           {renderOrderSummary()}

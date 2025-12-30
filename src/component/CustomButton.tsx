@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { color, fonts } from '../constant';
- 
+
 type AlignType = 'left' | 'center' | 'right';
 
 interface CustomButtonProps {
@@ -23,8 +23,8 @@ interface CustomButtonProps {
   textStyle?: StyleProp<TextStyle>;
   height?: number;
   onPress?: (event: GestureResponderEvent) => void;
-  disabled:any ,
-  gradient:any
+  disabled?: boolean;
+  gradientStyle?: StyleProp<ViewStyle>;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -34,31 +34,42 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   alignItm = 'center',
   style,
   textStyle,
-  height = 48,
+  height = 40,
   onPress,
-  disabled ,
-  gradient
+  disabled = false,
+  gradientStyle,
 }) => {
-
-  const alignment: Record<AlignType, 'flex-start' | 'center' | 'flex-end'> = {
-    left: 'flex-start',
-    center: 'center',
-    right: 'flex-end',
-  };
-
   return (
-    <TouchableOpacity onPress={onPress} 
-    disabled={disabled}
-    style={[styles.button, { height }, style]}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={onPress}
+      disabled={disabled}
+      style={[styles.button, style, disabled && styles.disabledBtn]}
+    >
       <LinearGradient
-        colors={color.buttLinearGradient}
+        colors={
+          disabled
+            ? [color.gray, color.gray]
+            : color.buttLinearGradient
+        }
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        style={[styles.gradient, { height, borderRadius: height / 6 },gradient]}
+        style={[
+          styles.gradient,
+          { height, borderRadius: 8 },
+          gradientStyle,
+        ]}
       >
-        <View style={[styles.content, { justifyContent: alignment[alignItm] }]}>
+        <View style={styles.content}>
           {leftIcon && <View style={styles.icon}>{leftIcon}</View>}
-          <Text style={[styles.text, { color: txtcolor }, textStyle]}>
+
+          <Text
+             style={[
+              styles.text,
+              { color: txtcolor },
+              textStyle,
+            ]}
+          >
             {title}
           </Text>
         </View>
@@ -69,24 +80,36 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    width: '100%',
-  },
+   },
+
   gradient: {
-    width: '100%',
-    paddingHorizontal: 20,
-  },
+ 
+    justifyContent: 'center',
+   },
+
   content: {
-    flexDirection: 'row',
-    alignItems: 'center',
     height: '100%',
-    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
   },
+
   icon: {
-    marginRight: 10,
+    position: 'absolute',
+    left: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+
   text: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: fonts.semiBold,
+    textAlign: 'center',
+    maxWidth: '80%', // 🔥 text cut issue solved
+  },
+
+  disabledBtn: {
+    opacity: 0.6,
   },
 });
 

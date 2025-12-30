@@ -561,15 +561,14 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   shopNowButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    width: '80%',
+     overflow: 'hidden',
+    width: '90%',
   },
   shopNowGradient: {
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-    borderRadius: 25,
+     alignItems: 'center',
+    borderRadius: 10,
+    height:55 ,
+    justifyContent:"center"
   },
   shopNowText: {
     color: BRAND_COLORS.textLight,

@@ -411,10 +411,10 @@ const OtherCategoryData = () => {
           end={{ x: 1, y: 0 }}
         />
         <View style={styles.cartInfo}>
-          <Text style={styles.cartText}>
-            <Text style={styles.cartCount}>{cartCount}</Text> item{cartCount !== 1 ? 's' : ''} in cart
+          <Text  allowFontScaling={false} style={styles.cartText}>
+            <Text  allowFontScaling={false}  style={styles.cartCount}>{cartCount}</Text> item{cartCount !== 1 ? 's' : ''} in cart
           </Text>
-          <Text style={styles.cartTotal}>Total: ₹{cartTotal}</Text>
+          <Text allowFontScaling={false}  style={styles.cartTotal}>Total: ₹{cartTotal}</Text>
         </View>
         <TouchableOpacity 
           style={styles.viewCartButton}
@@ -427,7 +427,7 @@ const OtherCategoryData = () => {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           />
-          <Text style={styles.viewCartButtonText}>VIEW CART</Text>
+          <Text allowFontScaling={false}  style={styles.viewCartButtonText}>VIEW CART</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.clearCartButton}
@@ -451,14 +451,13 @@ const OtherCategoryData = () => {
     <Animated.View style={styles.fixedHeader}>
       <LinearGradient
         colors={BRAND_COLORS.primaryGradient}
-        style={StyleSheet.absoluteFill}
-        start={{ x: 0, y: 0 }}
+         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
       />
       <View style={styles.fixedHeaderContent}>
-        <Text style={styles.fixedHeaderTitle}>Featured Products</Text>
+        <Text  allowFontScaling={false} style={styles.fixedHeaderTitle}>Featured Products</Text>
         <View style={styles.productCountBadge}>
-          <Text style={styles.fixedHeaderCount}>{products.length}</Text>
+          <Text   allowFontScaling={false} style={styles.fixedHeaderCount}>{products.length}</Text>
         </View>
       </View>
     </Animated.View>
@@ -492,9 +491,9 @@ const OtherCategoryData = () => {
               end={{ x: 1, y: 0 }}
             >
               <View style={styles.sectionHeaderContent}>
-                <Text style={styles.sectionTitle}>Featured Products</Text>
-                <View style={styles.productCountContainer}>
-                  <Text style={styles.productCount}>{products.length} products</Text>
+                <Text allowFontScaling={false} style={styles.sectionTitle}>Featured Products</Text>
+                <View  >
+                  <Text  allowFontScaling={false} style={styles.productCount}>{products.length} products</Text>
                 </View>
               </View>
             </LinearGradient>
@@ -624,8 +623,10 @@ const styles = StyleSheet.create({
   },
   sectionHeaderGradient: {
     borderRadius: 16,
-    padding: 16,
-  },
+    height:55 ,
+    alignItems:"center" ,
+    justifyContent:"center"
+   },
   sectionHeaderContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -639,13 +640,14 @@ const styles = StyleSheet.create({
   productCountContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingVertical: 5,
     borderRadius: 12,
   },
   productCount: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: BRAND_COLORS.textLight,
+    marginLeft:15
   },
   productList: {
     paddingHorizontal: CARD_MARGIN,

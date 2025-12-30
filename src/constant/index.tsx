@@ -45,8 +45,7 @@ export const fonts = {
   thinItalic: 'Montserrat-ThinItalic',
 };
 
-export const GoogleKey = "AIzaSyDYAVjajEQU7MG7qb6jhPf5nelAWhijtyo"
-
+ 
 export const navigationRef: any = React.createRef();
  
 

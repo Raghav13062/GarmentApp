@@ -27,7 +27,7 @@ const BRAND_COLORS = {
   primaryDark: '#862E92',
   primaryLight: '#F58021',
   accent: '#FFD700',
-  background: '#F5F5F5',
+  background: 'white',
   textDark: '#2D3436',
   textLight: '#FFFFFF',
   cardBg: '#FFFFFF',
@@ -305,23 +305,7 @@ const initialProducts = [
     });
   };
 
-  // Handle back button press
-  const handleBackPress = () => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: 50,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      navigation.goBack();
-    });
-  };
+ 
  
   // Render product card with animation
   const renderProductCard = ({ item, index }) => {
@@ -405,16 +389,29 @@ const initialProducts = [
   start={{ x: 0, y: 0 }}
   end={{ x: 1, y: 0 }}
   style={{
-    marginHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderRadius: 14,
-    marginTop: 14,
-    marginBottom: 16,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    elevation: 4,
+marginHorizontal: 20,
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+
+  borderRadius: 10,
+  marginTop: 14,
+  marginBottom: 16,
+
+   height: 55,
+
+ 
+  // Android shadow
+  elevation: 4,
+
+  // iOS shadow
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.15,
+  shadowRadius: 4,
   }}
 >
   {/* Left Content */}
@@ -447,8 +444,9 @@ const initialProducts = [
     style={{
       backgroundColor: "#fff",
       borderRadius: 20,
-      paddingHorizontal: 12,
+      paddingHorizontal: 15,
       paddingVertical: 6,
+      right:5
     }}
   >
     <Text

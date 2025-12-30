@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { RegistrationStackParamList } from '../../../navigators/RegistrationRoutes';
 import { validateConfirmPassword, validateEmail, validateFirstName, validateLastName, validateMobileNumber, validatePassword } from '../../../utils/validation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SinupCustomer } from '../../../Api/apiRequest';
+import { SinupCustomer } from '../../../Api/auth/authservice';
 
 type UserType = 'User' | 'Driver';
 

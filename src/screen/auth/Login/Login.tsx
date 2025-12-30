@@ -18,6 +18,7 @@ import useLogin from './useLogin';
 import { styles } from './style';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ErrorText from '../../../component/ErrorText';
 
 export default function Login() {
   const {
@@ -61,17 +62,16 @@ export default function Login() {
                   {loading && <Loading />}
 
                   <View style={styles.headerContainer}>
-                    <Text style={styles.welcomeText}>Welcome Back!</Text>
-                    <Text style={styles.subtitle}>
+                    <Text  allowFontScaling={false}  style={styles.welcomeText}>Welcome Back!</Text>
+                    <Text  allowFontScaling={false}  style={styles.subtitle}>
                       Enter your mobile number to continue
                     </Text>
                   </View>
-
+  <View style={styles.inputLabelContainer}>
+                      <Text  allowFontScaling={false}  style={styles.inputLabel}>Mobile Number</Text>
+                     </View>
                   <View style={styles.inputSection}>
-                    <View style={styles.inputLabelContainer}>
-                      <Text style={styles.inputLabel}>Mobile Number</Text>
-                      <Text style={styles.inputHint}>Enter 10-digit number</Text>
-                    </View>
+                  
                     
                     <CustomInput
                       placeholder="Enter Mobile Number"
@@ -82,11 +82,9 @@ export default function Login() {
                       maxLength={10}
                       containerStyle={styles.inputContainer}
                      />
-                    {phoneError ? (
-                      <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>{phoneError}</Text>
-                      </View>
-                    ) : null}
+                     <ErrorText error={phoneError} />
+
+                 
                   </View>
 
                   <View style={styles.buttonSection}>
@@ -97,11 +95,11 @@ export default function Login() {
                       />
                     
                     <View style={styles.termsContainer}>
-                      <Text style={styles.termsText}>
+                      <Text   allowFontScaling={false} style={styles.termsText}>
                         By continuing, you agree to our{' '}
                         <Text style={styles.termsLink}>Terms of Service</Text>
                         {' '}and{' '}
-                        <Text style={styles.termsLink}>Privacy Policy</Text>
+                        <Text   allowFontScaling={false} style={styles.termsLink}>Privacy Policy</Text>
                       </Text>
                     </View>
                   </View>

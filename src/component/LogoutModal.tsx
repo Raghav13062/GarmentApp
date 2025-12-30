@@ -13,6 +13,7 @@ import {
 import Icon from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
 import { color } from "../constant";
+import CustomButton from "./CustomButton";
 
 const { width, height } = Dimensions.get("window");
 
@@ -112,39 +113,17 @@ const LogoutModal  = ({
             )}
 
             {/* Action Buttons */}
-            <View style={styles.buttonContainer}>
-              {/* Cancel Button */}
-              <TouchableOpacity 
-                style={[styles.button, styles.cancelButton]} 
-                onPress={onClose}
-                activeOpacity={0.7}
-              >
-                 <Text style={[styles.buttonText, styles.cancelText]}>{cancelText}</Text>
-              </TouchableOpacity>
-
+               {/* Cancel Button */}
+             
+  <CustomButton 
+                      title={confirmText}
+                      onPress={onConfirm}
+                      // onPress={handleLogin}
+                      />
+                    
               {/* Confirm Button */}
-              <TouchableOpacity 
-                style={styles.gradientButton} 
-                onPress={onConfirm}
-                activeOpacity={0.8}
-              >
-                <LinearGradient
-                  colors={typeStyles.gradient}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={styles.gradient}
-                >
-                  <Icon 
-                    name={type === "danger" ? "log-out" : 
-                          type === "success" ? "check" : "alert-circle"} 
-                    size={20} 
-                    color="#fff" 
-                    style={styles.buttonIcon}
-                  />
-                  <Text style={styles.confirmText}>{confirmText}</Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
+            
+        
           </View>
           </View>
       </View>
