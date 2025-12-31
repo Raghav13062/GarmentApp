@@ -1,114 +1,137 @@
 import { base_url } from "..";
+import { navigateToScreen } from "../../constant";
 import { loginSuccess } from "../../redux/feature/authSlice";
 import ScreenNameEnum from "../../routes/screenName.enum";
 import { errorToast, successToast } from "../../utils/customToast";
 import { endpointApi, Params } from "../endpoints";
 
-const SetOtpApi  = (
-    data: any,
-    setLoading: (loading: boolean) => void,
-    dispatch: any) => {
-    try {
-        setLoading(true)
-        const myHeaders = new Headers();
-        myHeaders.append("Accept", "application/json");
-        const formdata = new FormData();
-        formdata.append(Params.mobileNo, data?.phone);
-         const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: formdata,
-        };
-        console.log(formdata)
-         const respons = fetch(`${base_url}${endpointApi.sendotpApi}`, requestOptions)
-            .then((response) => response.text())
-            .then((res) => {
-                const response = JSON.parse(res)
-                if (response.status == '1') {
-                    setLoading(false)
-                    successToast(
-                        response?.message
-                    );
- 
-                    return response
-                } else {
-                    setLoading(false)
-                    errorToast(
-                        response.message,
-                    );
-                    return response
-                }
-            })
-            .catch((error) =>
-                console.error(error));
-        return respons
-    } catch (error) {
-        setLoading(false)
-        errorToast(
-            'Network error',
-        );
+const SetOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
+  try {
+    setLoading(true);
+
+    const response = await fetch(`${base_url}${endpointApi.sendotpApi}`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mobileNo: data?.phone,
+      }),
+    });
+    const res = await response.json();
+    console.log("response", res);
+    setLoading(false);
+    if (res.success === true) {
+      successToast(res.message);
+      navigateToScreen(ScreenNameEnum.OtpScreen, { phone: data?.phone });
+    } else {
+      errorToast(res.message);
     }
+
+    return res;
+  } catch (error) {
+    setLoading(false);
+    errorToast("Network error");
+    console.error(error);
+  }
 };
 
 
+const ResendOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
+  try {
+    setLoading(true);
 
+    const response = await fetch(`${base_url}${endpointApi.sendotpApi}`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mobileNo: data?.phone,
+      }),
+    });
+    const res = await response.json();
+    console.log("response", res);
+    setLoading(false);
+    if (res.success === true) {
+      successToast(res.message);
+     } else {
+      errorToast(res.message);
+    }
 
+    return res;
+  } catch (error) {
+    setLoading(false);
+    errorToast("Network error");
+    console.error(error);
+  }
+};
 
-const LoginApi  = (
-    data: any,
-    setLoading: (loading: boolean) => void,
-    dispatch: any ,
-    navigation:any
+const LoginApi = (
+  data: any,
+  setLoading: (loading: boolean) => void,
+  dispatch: any,
+  navigation: any
 ) => {
-    try {
-        setLoading(true)
-        const myHeaders = new Headers();
-        myHeaders.append("Accept", "application/json");
-        const formdata = new FormData();
-        formdata.append(Params.mobileNo, data?.phone);
-        formdata.append(Params.otp, data?.code);
-         const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: formdata,
-        };
-        console.log(formdata)
-         const respons = fetch(`${base_url}${endpointApi.loginotp}`, requestOptions)
-            .then((response) => response.text())
-            .then((res) => {
-                const response = JSON.parse(res)
-                if (response.status == '1') {
-                    setLoading(false)
-                    successToast(
-                        response?.message
-                    );
-                  dispatch(loginSuccess({ userData: response?.data, token: response?.data?.token, }));
-                    data.navigation.reset({
-          index: 0,
-          routes: [{ name: ScreenNameEnum.BottomTabs }],
-        });
-                  return response
-                } else {
-                    setLoading(false)
-                    errorToast(
-                        response.message,
-                    );
-                    return response
-                }
+  try {
+    setLoading(true);
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        [Params.mobileNo]: data?.phone,
+        // [Params.otp]: data?.code,
+         [Params.otp]:"293251"
+      }),
+    //    body: JSON.stringify({
+    //     mobileNo: data?.phone,
+    //   }),
+    };
+
+    return fetch(`${base_url}${endpointApi.loginotp}`, requestOptions)
+      .then((response) => response.json())
+      .then((response) => {
+        setLoading(false);
+        if (response.success ==true) {
+          successToast(response?.message);
+          dispatch(
+            loginSuccess({
+              userData: response,
+              token: response?.token,
             })
-            .catch((error) =>
-                console.error(error));
-        return respons
-    } catch (error) {
-        setLoading(false)
-        errorToast(
-            'Network error',
-        );
-    }
+          );
+          navigation.reset({
+            index: 0,
+            routes: [{ name: ScreenNameEnum.BottomTabs }],
+          });
+        } else {
+            console.log("response error", response);
+          errorToast(response?.message);
+        }
+
+        return response;
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+        errorToast("Network error");
+      });
+  } catch (error) {
+    setLoading(false);
+                console.log("response error", error);
+
+    errorToast("Network error");
+  }
 };
 
 
 
 
 
-export  {SetOtpApi ,LoginApi}
+export  {SetOtpApi ,LoginApi,ResendOtpApi}

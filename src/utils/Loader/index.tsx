@@ -9,13 +9,13 @@ import {
   Dimensions,
   Image
 } from 'react-native';
- import { fonts } from '../../constant';
+ import { color, fonts } from '../../constant';
 import imageIndex from '../../assets/imageIndex';
  
 const { width, height } = Dimensions.get('window');
 
 // Your theme color
-const THEME_COLOR = '#4CBCA6';
+const THEME_COLOR = color.primary;
 
 const Loading = ({ visible= true, message = "Loading..." }) => {
   // Animation values
@@ -158,8 +158,7 @@ const Loading = ({ visible= true, message = "Loading..." }) => {
             }
           ]}
         >
-          {/* Spinner container */}
-          <View style={styles.spinnerContainer}>
+           <View style={styles.spinnerContainer}>
             <Animated.View 
               style={[
                 styles.spinner,
@@ -174,11 +173,11 @@ const Loading = ({ visible= true, message = "Loading..." }) => {
             <View style={styles.centerIcon}>
               <View style={styles.logoPlaceholder}>
                  <Image source={imageIndex.logo}  
-                 resizeMode="center"
-                 style={{
-
-                  height:33,
-                  width:33, 
+                  style={{
+resizeMode:'cover',
+borderRadius:20,
+                  height:50,
+                  width:50, 
                   
                  }}/>
               </View>

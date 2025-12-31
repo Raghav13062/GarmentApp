@@ -1,14 +1,9 @@
   const endpointApi = {
-  loginotp: "auth/login",
-  sendotpApi: "auth/send-login-otp",
+  loginotp: "auth/verify-otp",
+  sendotpApi: "auth/send-otp",
   UpdateProfile:"user/profile",
   getProfile:"user/profile"
 };
-
-
-
-
-
 
   const Params = {
   mobileNo: "mobileNo",
