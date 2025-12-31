@@ -173,21 +173,21 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
         </View>
 
         {/* -------------------- LOGOUT BUTTON -------------------- */}
-        <LinearGradient
+        {/* <LinearGradient
                   colors={color.buttLinearGradient}
 
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.logoutBtn}
         >
-          {/* <TouchableOpacity style={styles.logoutTouchable} 
+          <TouchableOpacity style={styles.logoutTouchable} 
           onPress={() => setshowLogoutModal(false)}
           
           >
             <Icon name="log-out" size={20} color="#fff" />
             <Text style={styles.logoutText}>Logout</Text>
-          </TouchableOpacity> */}
-        </LinearGradient>
+          </TouchableOpacity>
+        </LinearGradient> */}
 
         {/* -------------------- VERSION INFO -------------------- */}
         <View style={styles.versionContainer}>

@@ -1,188 +1,221 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
-import imageIndex from '../../assets/imageIndex';
-import CustomButton from '../../component/CustomButton';
- import ScreenNameEnum from '../../routes/screenName.enum';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Dimensions,
+  TouchableOpacity,
+  StatusBar,
+  Image,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomButton from '../../component/CustomButton';
+import ScreenNameEnum from '../../routes/screenName.enum';
 import { color, fonts } from '../../constant';
 
 const { width, height } = Dimensions.get('window');
 
 interface Slide {
-    id: string;
-    title: string;
-    description: string;
-    image: string;
+  id: string;
+  title: string;
+  highlight?: string;
+  description: string;
+  image: string;
 }
+
+const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
 
 const slides: Slide[] = [
   {
     id: '1',
-    title: 'Welcome to ',
-    description: 'Connectify lets you share moments, follow friends, and stay connected with people who matter most.',
-    image: imageIndex.onboarding,
+    title: 'Welcome to',
+    highlight: ' GarmentApp',
+    description:
+      'Discover the latest fashion trends with premium quality garments at the best prices.',
+    image:
+      'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTAzL3N0YXJ0dXBpbWFnZXNfcGhvdG9fb2ZfYXNpYW5fd29tYW5fd2l0aF9zaG9wcGluZ19iYWdfc21pbGVfYW5kX19hMGE3YTBkZS03YTNjLTQzMTYtOGU2Ny1jMzc4NTVmZmJlN2Etcm0xNjgzLTAxYV8xLnBuZw.png',
   },
   {
     id: '2',
-    title: 'Share Your World',
-    description: 'Post photos, videos, and updates in real-time and engage with your community instantly.',
-    image: imageIndex.onboarding,
+    title: 'Shop Trendy',
+    highlight: ' Clothing',
+    description:
+      'Explore men, women, and kids wear. Easy browsing, quick add to cart, and smooth checkout.',
+    image:
+      'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTAzL3N0YXJ0dXBpbWFnZXNfcGhvdG9fb2ZfYXNpYW5fd29tYW5fd2l0aF9zaG9wcGluZ19iYWdfc21pbGVfYW5kX19hMGE3YTBkZS03YTNjLTQzMTYtOGU2Ny1jMzc4NTVmZmJlN2Etcm0xNjgzLTAxYV8xLnBuZw.png',
   },
   {
     id: '3',
-    title: 'Stay in the Loop',
-    description: 'Get notifications, discover new trends, and never miss what’s happening in your network.',
-    image: imageIndex.onboarding,
-  }
-]
+    title: 'Fast & Reliable',
+    highlight: ' Delivery',
+    description:
+      'Get your favorite outfits delivered quickly with order tracking and dedicated support.',
+    image:"https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAyLzI5Ny10ZWQ0NDgxLXRlZGR5LWpvYjE3MDJfMS5wbmc.png"
+   },
+];
 
 
-const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const flatListRef = useRef<FlatList>(null);
+  const onScroll = (e: any) => {
+    const index = Math.round(e.nativeEvent.contentOffset.x / width);
+    setCurrentIndex(index);
+  };
 
-    const updateCurrentIndex = (event: any) => {
-        const contentOffsetX = event.nativeEvent.contentOffset.x;
-        const index = Math.round(contentOffsetX / width);
-        setCurrentIndex(index);
-    };
+  const onNextPress = () => {
+    if (currentIndex < slides.length - 1) {
+      flatListRef.current?.scrollToIndex({
+        index: currentIndex + 1,
+        animated: true,
+      });
+    } else {
+      navigation.replace(ScreenNameEnum.LoginScreen);
+    }
+  };
 
-    const handleNextPress = () => {
-        if (currentIndex < slides.length - 1) {
-            const nextIndex = currentIndex + 1;
-            flatListRef.current?.scrollToIndex({ index: nextIndex });
-            setCurrentIndex(nextIndex);
-        } else {
-            navigation.replace(navigation.navigate(ScreenNameEnum.LoginScreen));  // Last slide pe Home ya Login pe navigate karna
-        }
-    };
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={color.white} />
 
-    const renderSlide = ({ item, index }: { item: Slide, index: number }) => (
-        <View style={styles.slide}>
-            {/* <ImageBackground source={item.image} style={styles.image} resizeMode='contain'  >
-                <TouchableOpacity onPress={() => navigation.replace(ScreenNameEnum.ChooseRoleScreen)} style={styles.skipButton}>
-                    <Text style={styles.skipText}>Skip</Text>
-                </TouchableOpacity>
-            </ImageBackground> */}
-            <Text style={styles.title}>{item.title}{index == 0 && <Text style={{color:color.primary}}> HarjeetOverseas</Text> }</Text>
+      {currentIndex < slides.length - 1 && (
+        <TouchableOpacity
+          style={styles.skipButton}
+          onPress={() => navigation.replace(ScreenNameEnum.LoginScreen)}
+        >
+          <Text style={styles.skipText}>Skip</Text>
+        </TouchableOpacity>
+      )}
+
+      <FlatList
+        ref={flatListRef}
+        data={slides}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.slide}>
+            <Image
+              source={{ uri: item.image }}
+              style={styles.image}
+              resizeMode="contain"
+            />
+
+            <Text style={styles.title}>
+              {item.title}
+              <Text style={styles.highlight}>{item.highlight}</Text>
+            </Text>
+
             <Text style={styles.description}>{item.description}</Text>
+          </View>
+        )}
+      />
+
+      <View style={styles.footer}>
+        <View style={styles.dotsContainer}>
+          {slides.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.dot,
+                currentIndex === index && styles.activeDot,
+              ]}
+            />
+          ))}
         </View>
-    );
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-            
-            <ImageBackground source={imageIndex.onboarding} style={styles.image} resizeMode='contain'  >
-
-            </ImageBackground>
-            </View>
-            <View style={{}}>
-            <FlatList
-                data={slides}
-                horizontal
-                pagingEnabled
-                ref={flatListRef}
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={item => item.id}
-                renderItem={renderSlide}
-                onScroll={updateCurrentIndex}
-                scrollEventThrottle={16}
-            />
-            <View style={{
-                
-                alignSelf: 'center',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                marginBottom:20
-            }}>
-                {slides.map((_, index) => (
-                    <View
-                        key={index}
-                        style={[
-                            styles.dot,
-                            currentIndex === index ? styles.activeDot : styles.inactiveDot,
-                        ]}
-                    />
-                ))}
-            </View>
-            {/* Next Button */}
-            <CustomButton
-                title={'Next'}
-                onPress={handleNextPress}
-                style={{ width: '90%', alignSelf: 'center', marginBottom: 35 }}
-            />
-            </View>
-        </SafeAreaView>
-    );
+        <CustomButton
+          title={
+            currentIndex === slides.length - 1
+              ? 'Start Shopping'
+              : 'Next'
+          }
+          onPress={onNextPress}
+          style={styles.button}
+          textStyle={styles.buttonText}
+        />
+      </View>
+    </SafeAreaView>
+  );
 };
 
 export default OnboardingScreen;
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
-    slide: {
-        width,
-        // backgroundColor:'red',
-        justifyContent:'flex-end',
-        paddingBottom:20
-
-    },
-    image: {
-        width: "100%",
-        height:'100%'
-
-    },
-    title: {
-        fontSize: 26,
-        // fontWeight: 'bold',
-        color: 'black',
-        textAlign: 'center',
-         lineHeight:50
-    },
-    description: {
-        fontSize: 14,
-        color: 'black',
-        textAlign: 'center',
-        paddingHorizontal: 16,
-        lineHeight: 25,
-     },
-    pagination: {
-        flexDirection: 'row',
-        alignSelf: 'center',
-        marginBottom: 80,
-        backgroundColor: "red"
-    },
-    dot: {
-        height: 10,
-        width: 10,
-        borderRadius: 10,
-        marginHorizontal: 3,
-    },
-    activeDot: {
-        backgroundColor: color.primary,
-        width: 18,
-        height: 8,
-    },
-    inactiveDot: {
-        backgroundColor: 'gray',
-        height: 8,
-        width: 8,
-    },
-    skipButton: {
-        position: 'absolute',
-        top: 15,
-        right: 20,
-        zIndex: 1,
-    },
-    skipText: {
-        color: 'black',
-        fontWeight: '600',
-        fontSize: 16,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#F9FAFB',
+  },
+  skipButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 10,
+  },
+  skipText: {
+    fontSize: 16,
+    fontFamily: fonts.medium,
+    color: '#6B7280',
+  },
+  slide: {
+    width,
+    alignItems: 'center',
+    paddingTop: height * 0.1,
+    paddingHorizontal: 30,
+  },
+  image: {
+    width: width * 0.75,
+    height: height * 0.35,
+    borderRadius: 16,
+    marginBottom: 30,
+  },
+  title: {
+    fontSize: 26,
+    fontFamily: fonts.bold,
+    color: '#111827',
+    textAlign: 'center',
+  },
+  highlight: {
+    color: color.primary,
+  },
+  description: {
+    fontSize: 15,
+    fontFamily: fonts.regular,
+    color: '#6B7280',
+    textAlign: 'center',
+    marginTop: 14,
+    lineHeight: 22,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 40,
+    width: '100%',
+    alignItems: 'center',
+  },
+  dotsContainer: {
+    flexDirection: 'row',
+    marginBottom: 24,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#D1D5DB',
+    marginHorizontal: 4,
+  },
+  activeDot: {
+    width: 22,
+    backgroundColor: color.primary,
+  },
+  button: {
+    width: width * 0.85,
+    height: 54,
+    borderRadius: 28,
+   },
+  buttonText: {
+    fontSize: 17,
+    fontFamily: fonts.semiBold,
+  },
 });

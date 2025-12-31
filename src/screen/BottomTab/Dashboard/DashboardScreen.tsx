@@ -110,8 +110,7 @@ fontSize:15
     numColumns={2}
     columnWrapperStyle={{ 
       justifyContent: "space-between",
-      paddingHorizontal: 12 
-    }}
+       }}
     renderItem={({ item }) => (
       <ProductCard 
         item={item} 
@@ -128,7 +127,8 @@ navigateToScreen(ScreenNameEnum.ProductDetails ,{
     showsVerticalScrollIndicator={false}
     contentContainerStyle={{ 
       paddingTop: 16,
-      paddingBottom: 20 
+      paddingBottom: 20 ,
+      marginHorizontal:-3
     }}
   />
       <View style={{

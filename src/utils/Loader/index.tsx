@@ -176,8 +176,8 @@ const Loading = ({ visible= true, message = "Loading..." }) => {
                   style={{
 resizeMode:'cover',
 borderRadius:20,
-                  height:50,
-                  width:50, 
+                  height:55,
+                  width:55, 
                   
                  }}/>
               </View>

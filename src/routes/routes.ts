@@ -1,5 +1,4 @@
-import ChooseLocation from "../helper/ChooseLocation";
-import BottomTabs from "../navigators/TabNavigator";
+ import BottomTabs from "../navigators/TabNavigator";
  import Login from "../screen/auth/Login/Login";
 import OnboardingScreen from "../screen/auth/Onboarding";
 import OtpScreen from "../screen/auth/OTPScreen/OtpScreen";
