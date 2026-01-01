@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { base_url } from "..";
 import { navigateToScreen } from "../../constant";
 import { loginSuccess } from "../../redux/feature/authSlice";
@@ -134,4 +135,51 @@ const LoginApi = (
 
 
 
-export  {SetOtpApi ,LoginApi,ResendOtpApi}
+
+ export const UpdateProfileApi = async (
+  data: any,
+  setLoading: (loading: boolean) => void
+) => {
+  try {
+    setLoading(true);
+
+    const token = await AsyncStorage.getItem('token'); // 🔐 get token
+
+    const response = await fetch(`${base_url}${endpointApi.UpdateProfile}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, // ✅ token passed
+      },
+      body: JSON.stringify({
+        [Params.email]: data.email,
+        [Params.fullName]: data.fullName,
+        [Params.address]: data.address,
+        [Params.gender]: data.gender,
+        [Params.dateOfBirth]: data.dateOfBirth,
+      }),
+    });
+
+    const res = await response.json();
+    console.log('Update Profile Response 👉', res);
+
+    if (res?.success) {
+      successToast(res.message || 'Profile updated');
+    } else {
+      errorToast(res.message || 'Something went wrong');
+    }
+
+    return res;
+  } catch (error) {
+    console.error('UpdateProfileApi Error 👉', error);
+    errorToast('Network error');
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+export  {SetOtpApi , UpdateProfileApi,LoginApi,ResendOtpApi}

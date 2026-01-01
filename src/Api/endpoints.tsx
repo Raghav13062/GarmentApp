@@ -9,7 +9,7 @@
   mobileNo: "mobileNo",
   otp:"otp" ,
   email:"email" ,
-  fullName:"fullName" ,
+  fullName:"fullName" , 
   address:"address" ,
   gender:"gender" ,
   dateOfBirth:"dateOfBirth"

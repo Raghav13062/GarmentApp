@@ -34,7 +34,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   alignItm = 'center',
   style,
   textStyle,
-  height = 52,
+  height = 45,
   onPress,
   disabled = false,
   gradientStyle,
