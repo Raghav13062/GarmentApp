@@ -101,7 +101,7 @@ export default function OtpVerification() {
     const numericText = text.replace(/[^0-9]/g, '').slice(0, 5);
     setCode(numericText);
   }}
-  cellCount={5}
+  cellCount={6}
   rootStyle={styles.codeFieldRoot}
   keyboardType="number-pad"
   textContentType="oneTimeCode"

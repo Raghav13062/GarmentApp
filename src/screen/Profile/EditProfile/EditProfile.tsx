@@ -21,6 +21,7 @@ import StatusBarComponent from "../../../component/StatusBarCompoent";
 import CustomButton from "../../../component/CustomButton";
 import { styles } from "./style";
 import useEditProfile from "./useEditProfile";
+import Loading from "../../../utils/Loader";
 
 const EditProfile = () => {
   const {
@@ -74,7 +75,7 @@ const EditProfile = () => {
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <CustomHeader label="Edit Profile" leftPress menuIcon={imageIndex.back} />
-
+<Loading visible={loading} />
           {/* Profile Image */}
           <View style={styles.profileSection}>
             <View style={styles.profileImageContainer}>

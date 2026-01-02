@@ -77,21 +77,9 @@ export default function useEditProfile() {
     if (errors[field]) setErrors((prev: any) => ({ ...prev, [field]: '' }));
   };
 
-  const validateForm = () => {
-    let newErrors: any = {};
-
-    if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
-    if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Valid email required';
-    if (!formData.dateOfBirth) newErrors.dateOfBirth = 'DOB required';
-    if (!formData.address.trim()) newErrors.address = 'Address required';
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
+ 
   const handleSubmit = async () => {
-  if (!validateForm()) return;
-
+ 
   const payload = {
     fullName: formData.fullName,
     email: formData.email,

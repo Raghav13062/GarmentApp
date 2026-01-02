@@ -17,6 +17,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarComponent from "../../../component/StatusBarCompoent";
 import ScreenNameEnum from "../../../routes/screenName.enum";
 import LogoutModal from "../../../component/LogoutModal";
+import { logout } from "../../../redux/feature/authSlice";
+import { useDispatch } from "react-redux";
 
 const UserProfileScreen = () => {
   const [profileImg, setProfileImg] = useState(null);
@@ -34,6 +36,11 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
       })
       .catch(() => {});
   };
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+  dispatch(logout());
+  navigateToScreen(ScreenNameEnum.OnboardingScreen);
+};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -198,8 +205,11 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
    
 <LogoutModal
   visible={showLogoutModal}
-  onClose={() => setshowLogoutModal(false)}
-  onConfirm={() => setshowLogoutModal(false)}
+onConfirm={async () => {
+  await handleLogout();
+  setshowLogoutModal(false);
+}}
+
  />
       </ScrollView>
      

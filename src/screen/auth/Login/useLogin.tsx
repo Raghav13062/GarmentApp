@@ -9,7 +9,7 @@ import ScreenNameEnum from '../../../routes/screenName.enum';
 import { errorToast, successToast } from '../../../utils/customToast';
 import {   SetOtpApi } from '../../../Api/auth/authservice';
 export default function useLogin() {
-  const [phone, setPhone] = useState("9343513692");
+  const [phone, setPhone] = useState("8343513692");
    const [phoneError, setPhoneError] = useState('');
    const [loading, setLoading] = useState(false);
     const navigation = useNavigation<NativeStackNavigationProp<RegistrationStackParamList>>();

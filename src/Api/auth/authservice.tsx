@@ -25,7 +25,10 @@ const SetOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
     setLoading(false);
     if (res.success === true) {
       successToast(res.message);
-      navigateToScreen(ScreenNameEnum.OtpScreen, { phone: data?.phone });
+      navigateToScreen(ScreenNameEnum.OtpScreen, { phone: data?.phone ,
+
+        otp: res?.otp
+      });
     } else {
       errorToast(res.message);
     }
@@ -70,64 +73,70 @@ const ResendOtpApi = async (data: any, setLoading: (loading: boolean) => void) =
   }
 };
 
-const LoginApi = (
+const LoginApi = async (
   data: any,
   setLoading: (loading: boolean) => void,
   dispatch: any,
   navigation: any
 ) => {
+  console.log('LoginApi data 👉', data?.otp2);
+
   try {
     setLoading(true);
 
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        [Params.mobileNo]: data?.phone,
-        // [Params.otp]: data?.code,
-         [Params.otp]:"293251"
-      }),
-    //    body: JSON.stringify({
-    //     mobileNo: data?.phone,
-    //   }),
-    };
+    const response = await fetch(
+      `${base_url}${endpointApi.loginotp}`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          [Params.mobileNo]: data?.phone,
+          [Params.otp]: data?.otp2,
+        }),
+      }
+    );
 
-    return fetch(`${base_url}${endpointApi.loginotp}`, requestOptions)
-      .then((response) => response.json())
-      .then((response) => {
-        setLoading(false);
-        if (response.success ==true) {
-          successToast(response?.message);
-          dispatch(
-            loginSuccess({
-              userData: response,
-              token: response?.token,
-            })
-          );
-          navigation.reset({
-            index: 0,
-            routes: [{ name: ScreenNameEnum.BottomTabs }],
-          });
-        } else {
-            console.log("response error", response);
-          errorToast(response?.message);
-        }
+    const res = await response.json();
+    console.log('Login Response 👉', res);
 
-        return response;
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error(error);
-        errorToast("Network error");
+    if (res?.success === true) {
+      successToast(res?.message || 'Login successful');
+
+      // 🔐 Save token properly
+      if (res?.token) {
+        await AsyncStorage.setItem('token', res.token);
+        console.log('Saved Token 👉', res.token);
+      } else {
+        console.log('❌ Token not found in response');
+      }
+
+      // 🧠 Redux store
+      dispatch(
+        loginSuccess({
+          userData: res?.data ?? res,
+          token: res?.token,
+        })
+      );
+
+      // 🔁 Reset navigation
+      navigation.reset({
+        index: 0,
+        routes: [{ name: ScreenNameEnum.BottomTabs }],
       });
-  } catch (error) {
-    setLoading(false);
-                console.log("response error", error);
+    } else {
+      console.log('Login error response 👉', res);
+      errorToast(res?.message || 'Login failed');
+    }
 
-    errorToast("Network error");
+    return res;
+  } catch (error) {
+    console.error('LoginApi Error 👉', error);
+    errorToast('Network error');
+  } finally {
+    setLoading(false);
   }
 };
 
@@ -135,42 +144,48 @@ const LoginApi = (
 
 
 
-
- export const UpdateProfileApi = async (
+ const UpdateProfileApi = async (
   data: any,
   setLoading: (loading: boolean) => void
 ) => {
   try {
     setLoading(true);
 
-    const token = await AsyncStorage.getItem('token'); // 🔐 get token
-
-    const response = await fetch(`${base_url}${endpointApi.UpdateProfile}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // ✅ token passed
-      },
-      body: JSON.stringify({
-        [Params.email]: data.email,
-        [Params.fullName]: data.fullName,
-        [Params.address]: data.address,
-        [Params.gender]: data.gender,
-        [Params.dateOfBirth]: data.dateOfBirth,
-      }),
-    });
-
-    const res = await response.json();
-    console.log('Update Profile Response 👉', res);
-
-    if (res?.success) {
-      successToast(res.message || 'Profile updated');
-    } else {
-      errorToast(res.message || 'Something went wrong');
+     const token = await AsyncStorage.getItem('token');
+ 
+    if (!token) {
+      errorToast('Token not found. Please login again.');
+      return;
     }
 
-    return res;
+    const response = await fetch(
+      `${base_url}${endpointApi.UpdateProfile}`,
+      {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // ✅ correct
+        },
+      body: JSON.stringify({
+  [Params.email]: data?.email,
+  [Params.fullName]: data?.fullName,
+  [Params.address]: data?.address,
+  [Params.gender]: data?.gender?.toLowerCase(), // ✅ FIX
+  [Params.dateOfBirth]: data?.dateOfBirth,
+}),
+
+      }
+    );
+
+    const res = await response.json();
+    if (response.ok && res?.success) {
+      successToast(res.message || 'Profile updated successfully');
+      return res;
+    } else {
+      errorToast(res?.message || 'Something went wrong');
+      return res;
+    }
   } catch (error) {
     console.error('UpdateProfileApi Error 👉', error);
     errorToast('Network error');

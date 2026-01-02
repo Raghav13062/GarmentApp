@@ -8,14 +8,16 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-const CELL_COUNT = 5;
+const CELL_COUNT = 6;
 
 export default function useOtpVerification() {
   const navigation = useNavigation<any>();
   const route: any = useRoute();
   const dispatch = useDispatch();
   const phone = route?.params?.phone ?? '';
-  const [code, setCode] = useState('');
+    const otp2 = route?.params?.otp ?? '';
+
+  const [code, setCode] = useState(otp2);
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(30);
   const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
@@ -75,9 +77,9 @@ const handleResendOtp = async () => {
     try {
       const payload = {
         phone,
-        otp: code,
+        otp2,
       };
-       const response = await LoginApi(
+        const response = await LoginApi(
         payload,
         setLoading,
         dispatch,

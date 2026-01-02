@@ -14,6 +14,8 @@ import Icon from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
 import { color } from "../constant";
 import CustomButton from "./CustomButton";
+import { logout } from "../redux/feature/authSlice";
+import { useDispatch } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
 
@@ -73,7 +75,7 @@ const LogoutModal  = ({
         };
     }
   };
-
+const dispatch = useDispatch();
   const typeStyles = getTypeStyles();
 
   return (
