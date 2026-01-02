@@ -38,6 +38,11 @@ const EditProfile = () => {
     setShowDatePicker,
     onChangeDate,
   } = useEditProfile();
+const genderOptions = [
+  { label: 'Male', value: 'male' },
+  { label: 'Female', value: 'female' },
+  { label: 'Other', value: 'other' },
+];
 
   const renderInputField = (
     field: string,
@@ -106,25 +111,30 @@ const EditProfile = () => {
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Gender</Text>
               <View style={styles.genderContainer}>
-                {["Male", "Female", "Other"].map(item => (
-                  <TouchableOpacity
-                    key={item}
-                    style={[
-                      styles.genderOption,
-                      formData.gender === item && styles.genderOptionSelected,
-                    ]}
-                    onPress={() => handleChange("gender", item)}
-                  >
-                    <Text
-                      style={[
-                        styles.genderText,
-                        formData.gender === item && styles.genderTextSelected,
-                      ]}
-                    >
-                      {item}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+                
+
+{genderOptions.map(item => (
+  <TouchableOpacity
+    key={item.value}
+    style={[
+      styles.genderOption,
+      formData.gender?.toLowerCase() === item.value &&
+        styles.genderOptionSelected,
+    ]}
+    onPress={() => handleChange('gender', item.value)}
+  >
+    <Text
+      style={[
+        styles.genderText,
+        formData.gender?.toLowerCase() === item.value &&
+          styles.genderTextSelected,
+      ]}
+    >
+      {item.label}
+    </Text>
+  </TouchableOpacity>
+))}
+
               </View>
             </View>
 

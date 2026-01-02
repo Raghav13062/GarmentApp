@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   userName: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: "700",
     color: "#fff",
     marginBottom: 4,

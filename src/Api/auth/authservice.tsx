@@ -21,15 +21,16 @@ const SetOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
       }),
     });
     const res = await response.json();
-    console.log("response", res);
-    setLoading(false);
-    if (res.success === true) {
+     setLoading(false);
+    if (res.success == true) {
       successToast(res.message);
       navigateToScreen(ScreenNameEnum.OtpScreen, { phone: data?.phone ,
 
         otp: res?.otp
       });
     } else {
+           setLoading(false);
+
       errorToast(res.message);
     }
 
@@ -194,7 +195,47 @@ const LoginApi = async (
   }
 };
 
+const GetProfile = async (
+  setLoading: (loading: boolean) => void ,
+  dispatch:any
+) => {
+  try {
+    setLoading(true);
+    // 🔐 Get token from storage
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`${base_url}${endpointApi.getProfile}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
+    const res = await response.json();
+    if (res?.success === true) {
+         dispatch(
+        loginSuccess({
+          userData: res?.data ?? res,
+          token: token,
+        })
+      );
+      // 🔹 Usually GET profile par toast optional hota hai
+      // successToast(res?.message);
+    } else {
+      errorToast(res?.message || "Failed to fetch profile");
+    }
+
+    return res;
+
+  } catch (error) {
+    console.error("GetProfile error:", error);
+    errorToast("Network error");
+  } finally {
+    // ✅ Always stop loader
+    setLoading(false);
+  }
+};
 
 
 
-export  {SetOtpApi , UpdateProfileApi,LoginApi,ResendOtpApi}
+
+export  {SetOtpApi ,GetProfile, UpdateProfileApi,LoginApi,ResendOtpApi}

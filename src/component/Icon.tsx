@@ -13,7 +13,7 @@ const Icon: React.FC<IconProps> = ({ source, size = 24, colorIcon = color.second
   return (
     <Image
       source={source}
-      style={[styles.icon, { width: size, height: size, tintColor: colorIcon }]}
+      style={[styles.icon, { width: size, height: size,   }]}
       resizeMode="contain"
     />
   );
@@ -21,8 +21,7 @@ const Icon: React.FC<IconProps> = ({ source, size = 24, colorIcon = color.second
 
 const styles = StyleSheet.create({
   icon: {
-    tintColor: '#000',
-  },
+   },
 });
 
 export default Icon;

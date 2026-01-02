@@ -97,6 +97,7 @@ const dispatch = useDispatch();
           {/* Handle Bar */}
           <View style={styles.handleBarContainer}>
             <View style={styles.handleBar} />
+            
           </View>
 
           <View style={styles.content}>
@@ -113,17 +114,14 @@ const dispatch = useDispatch();
                 </Text>
               </View>
             )}
-
-            {/* Action Buttons */}
-               {/* Cancel Button */}
+ 
              
   <CustomButton 
                       title={confirmText}
                       onPress={onConfirm}
-                      // onPress={handleLogin}
-                      />
+                       />
                     
-              {/* Confirm Button */}
+ 
             
         
           </View>

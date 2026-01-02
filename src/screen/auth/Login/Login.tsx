@@ -75,7 +75,7 @@ export default function Login() {
                     
                     <CustomInput
                       placeholder="Enter Mobile Number"
-                      leftIcon={<Icon source={imageIndex.phone} size={20} />}
+                      leftIcon={<Icon source={imageIndex.phone}   />}
                       value={phone}
                       onChangeText={handlePhoneChange}
                       keyboardType="phone-pad"

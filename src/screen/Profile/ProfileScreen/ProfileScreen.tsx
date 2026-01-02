@@ -4,11 +4,10 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  StyleSheet,
+ 
   ScrollView,
 } from "react-native";
-import ImagePicker from "react-native-image-crop-picker";
-import Icon from "react-native-vector-icons/Feather";
+ import Icon from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
 import imageIndex from "../../../assets/imageIndex";
 import { color, navigateToScreen } from "../../../constant";
@@ -17,32 +16,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarComponent from "../../../component/StatusBarCompoent";
 import ScreenNameEnum from "../../../routes/screenName.enum";
 import LogoutModal from "../../../component/LogoutModal";
-import { logout } from "../../../redux/feature/authSlice";
-import { useDispatch } from "react-redux";
+  import useProfile from "./useProfile";
 
 const UserProfileScreen = () => {
-  const [profileImg, setProfileImg] = useState(null);
-const[showLogoutModal, setshowLogoutModal] = useState(false)
-  const openPicker = () => {
-    ImagePicker.openPicker({
-      width: 500,
-      height: 500,
-      cropping: true,
-      cropperCircleOverlay: true,
-      mediaType: "photo",
-    })
-      .then((img) => {
-        setProfileImg(img.path);
-      })
-      .catch(() => {});
-  };
-  const dispatch = useDispatch();
-  const handleLogout = () => {
-  dispatch(logout());
-  navigateToScreen(ScreenNameEnum.OnboardingScreen);
-};
-
-  return (
+const {    loading,
+  userData ,
+  profileImg, setProfileImg ,
+  showLogoutModal, setshowLogoutModal ,
+  navigation ,
+  handleLogout} = useProfile()
+   return (
     <SafeAreaView style={styles.container}>
       <StatusBarComponent/>
        <LinearGradient
@@ -67,8 +50,8 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
             <Image
               source={
                 profileImg
-                  ? { uri: profileImg }
-                  : imageIndex.dummyProfile
+                  ? { uri: profileImg  }
+                  : {uri: "https://i.pravatar.cc/500?img=12"}
               }
               style={styles.profileImage}
             />
@@ -82,10 +65,9 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
               </TouchableOpacity>
             </LinearGradient> */}
           </View>
-
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>John Doe</Text>
-            <Text style={styles.userEmail}>john.doe@gmail.com</Text>
+            <Text style={styles.userName}>{userData?.userData?.fullName ||"Full Name" }</Text>
+            <Text style={styles.userEmail}> {userData?.userData?.email ||"Email" }</Text>
             <View style={styles.verifiedBadge}>
               <Icon name="check-circle" size={14} color="#4CAF50" />
               <Text style={styles.verifiedText}>Verified</Text>
@@ -113,7 +95,7 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
               <Icon name="user" size={16} color="#F58021" style={styles.rowIcon} />
               <Text style={styles.label}>Full Name</Text>
             </View>
-            <Text style={styles.value}>John Doe</Text>
+            <Text style={styles.value}>{userData?.userData?.fullName}</Text>
           </View>
 
           <View style={styles.row}>
@@ -121,15 +103,15 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
               <Icon name="phone" size={16} color="#F58021" style={styles.rowIcon} />
               <Text style={styles.label}>Phone</Text>
             </View>
-            <Text style={styles.value}>+91 9876543210</Text>
+            <Text style={styles.value}>{userData?.userData?.mobileNo}</Text>
           </View>
 
           <View style={styles.row}>
             <View style={styles.rowLeft}>
               <Icon name="mail" size={16} color="#F58021" style={styles.rowIcon} />
-              <Text style={styles.label}>Email</Text>
+              <Text allowFontScaling={false}  style={styles.label}>Email</Text>
             </View>
-            <Text style={styles.value}>john.doe@gmail.com</Text>
+            <Text style={styles.value}>{userData?.userData?.email}</Text>
           </View>
         </View>
 
@@ -143,7 +125,7 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
             >
               <Icon name="settings" size={18} color="#fff" />
             </LinearGradient>
-            <Text style={styles.cardTitle}>Account Settings</Text>
+            <Text  allowFontScaling={false}  style={styles.cardTitle}>Account Settings</Text>
           </View>
 
           {[
@@ -171,7 +153,7 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
                 >
                   <Icon name={item.icon} size={16} color="#fff" />
                 </LinearGradient>
-                <Text style={styles.menuText}>{item.text}</Text>
+                <Text allowFontScaling={false}   style={styles.menuText}>{item.text}</Text>
               </View>
               <Icon name="chevron-right" size={20} color="#999" />
             </TouchableOpacity>
@@ -198,13 +180,17 @@ const[showLogoutModal, setshowLogoutModal] = useState(false)
 
         {/* -------------------- VERSION INFO -------------------- */}
         <View style={styles.versionContainer}>
-          <Text style={styles.versionText}>Version 1.0.0</Text>
+          <Text allowFontScaling={false}  style={styles.versionText}>Version 1.0.0</Text>
         </View>
 
         <View style={{ height: 30 }} />
    
 <LogoutModal
   visible={showLogoutModal}
+  onClose={()=>{
+      setshowLogoutModal(false);
+
+  }}
 onConfirm={async () => {
   await handleLogout();
   setshowLogoutModal(false);

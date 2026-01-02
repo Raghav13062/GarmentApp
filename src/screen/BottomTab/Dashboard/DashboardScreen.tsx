@@ -11,9 +11,11 @@ import SearchBar from '../../../component/SearchBar';
 import CustomCarousel from '../../../component/CustomCarousel';
 import ProductCard from '../../../component/cart/ProductCard';
 import ScreenNameEnum from '../../../routes/screenName.enum';
-import TopBrands from './TopBrands';
-import PopularSubcategories from './PopularSubcategories';
+import TopBrands from '../TopBrands/TopBrands';
+import PopularSubcategories from '../PopularSubcategories/PopularSubcategories';
 import VideoAd from './VideoAd';
+import useDashboard from './useDashboard';
+import Loading from '../../../utils/Loader';
 
 const data = [
   {
@@ -47,6 +49,8 @@ const products = [
 
 const HomeScreen = () => {
   const [selectedTab, setSelectedTab] = useState("Men");
+  const {  userData,  loading,
+}= useDashboard()
  const banners = [
   "https://mykaladhar.com/cdn/shop/articles/Mangalagiri_Pattu_Sarees_Why_They_re_a_Must_Have_in_Your_Festive_Wardrobe.jpg?v=1748235907",
    "https://mykaladhar.com/cdn/shop/articles/What_s_Your_Saree_Style__Trendy_Picks_for_the_Wedding_Season_ec9cff06-f5cd-4c18-9afe-c275d22d6a8b.jpg?v=1763962437&width=533",
@@ -59,10 +63,9 @@ const HomeScreen = () => {
       <StatusBarComponent />
       <HeaderBar />
       <SearchBar/>
+      <Loading  visible={loading}/>
       <ScrollView showsVerticalScrollIndicator={false}>
-      
       <CategoryTabs selected={selectedTab} onSelect={setSelectedTab} />
-
     <View style={styles.listContainer}>
         <FlatList
           data={data}

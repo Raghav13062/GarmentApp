@@ -140,8 +140,8 @@ export const styles = StyleSheet.create({
   },
   
   cell: {
-    width: 52,
-    height: 45,
+    width: 43,
+    height: 40,
     lineHeight: 58,
     fontSize: 25,
     borderWidth: 1,
@@ -155,7 +155,7 @@ export const styles = StyleSheet.create({
   },
   
   cellText: {
-    fontSize: 24,
+    fontSize: 22,
     color: color.black,
     textAlign: 'center',
   },

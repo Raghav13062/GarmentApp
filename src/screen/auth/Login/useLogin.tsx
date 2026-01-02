@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useDispatch } from 'react-redux';
- import { RegistrationStackParamList } from '../../../navigators/RegistrationRoutes';
-import { validateMobileNumber, validatePassword } from '../../../utils/validation';
- import { navigateToScreen } from '../../../constant';
-import ScreenNameEnum from '../../../routes/screenName.enum';
-import { errorToast, successToast } from '../../../utils/customToast';
+  import { RegistrationStackParamList } from '../../../navigators/RegistrationRoutes';
+import { validateMobileNumber } from '../../../utils/validation';
+ import { errorToast } from '../../../utils/customToast';
 import {   SetOtpApi } from '../../../Api/auth/authservice';
 export default function useLogin() {
-  const [phone, setPhone] = useState("8343513692");
+  const [phone, setPhone] = useState("");
    const [phoneError, setPhoneError] = useState('');
    const [loading, setLoading] = useState(false);
     const navigation = useNavigation<NativeStackNavigationProp<RegistrationStackParamList>>();
@@ -21,8 +18,6 @@ export default function useLogin() {
     const error = validateMobileNumber(value);
     setPhoneError(error);
   };
-
- 
 
   const handleLogin = async () => {
 

@@ -63,7 +63,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         <View style={styles.content}>
           {leftIcon && <View style={styles.icon}>{leftIcon}</View>}
 
-          <Text
+          <Text 
+          allowFontScaling={false} 
              style={[
               styles.text,
               { color: txtcolor },
