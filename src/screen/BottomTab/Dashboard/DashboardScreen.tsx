@@ -48,8 +48,10 @@ const products = [
 ];
 
 const HomeScreen = () => {
-  const [selectedTab, setSelectedTab] = useState("Men");
-  const {  userData,  loading,
+   const {     loading,
+  userData,
+  categories, setCategories,
+  selectedTab, setSelectedTab
 }= useDashboard()
  const banners = [
   "https://mykaladhar.com/cdn/shop/articles/Mangalagiri_Pattu_Sarees_Why_They_re_a_Must_Have_in_Your_Festive_Wardrobe.jpg?v=1748235907",
@@ -63,17 +65,20 @@ const HomeScreen = () => {
       <StatusBarComponent />
       <HeaderBar />
       <SearchBar/>
-      <Loading  visible={loading}/>
+      {/* <Loading  visible={loading}/> */}
       <ScrollView showsVerticalScrollIndicator={false}>
-      <CategoryTabs selected={selectedTab} onSelect={setSelectedTab} />
-    <View style={styles.listContainer}>
-        <FlatList
+ <CategoryTabs
+        categories={categories}
+        selected={selectedTab}
+        onSelect={setSelectedTab}
+      />    <View style={styles.listContainer}>
+        {/* <FlatList
           data={data}
           horizontal
           renderItem={({ item }) => <CategoryItem item={item} />}
           keyExtractor={(item) => item.id.toString()}
           showsHorizontalScrollIndicator={false}
-         />
+         /> */}
       </View>
           <View style={{
             marginHorizontal:12 ,

@@ -2,7 +2,9 @@
   loginotp: "auth/verify-otp",
   sendotpApi: "auth/send-otp",
   UpdateProfile:"user/profile",
-  getProfile:"user/profile"
+  getProfile:"user/profile",
+  categories:"categories",
+  home:"home"
 };
 
   const Params = {

@@ -1,48 +1,96 @@
-// components/CategoryTabs.js
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { color } from '../../constant';
+import React from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
+import { color } from "../../constant";
 
-const tabs = ["All", "Men", "Women", "Kids"];
+interface Category {
+  _id: string;
+  name: string;
+}
 
-const CategoryTabs = ({ selected, onSelect }) => {
+interface CategoryTabsProps {
+  categories: Category[];
+  selected: string;
+  onSelect: (value: string) => void;
+}
+
+const CategoryTabs: React.FC<CategoryTabsProps> = ({
+  categories,
+  selected,
+  onSelect,
+}) => {
   return (
-    <View style={styles.container}>
-      {tabs.map((item) => (
-        <TouchableOpacity key={item} onPress={() => onSelect(item)}>
-          <Text style={[styles.text, selected === item && styles.active]}>{item}</Text> 
+    <View style={styles.wrapper}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.container}
+      >
+        {categories.map((item) => {
+          const isActive = selected === item.name;
 
-          <View style={{
-             height:2,
-              borderRadius:10,
-            backgroundColor:selected  === item  ? color.primary :color.white
-          }}/>
-        </TouchableOpacity>
-      ))}
+          return (
+            <TouchableOpacity
+              key={item._id}
+              onPress={() => onSelect(item.name)}
+              style={[
+                styles.tab,
+                isActive && styles.activeTab,
+              ]}
+              activeOpacity={0.8}
+            >
+              <Text
+                style={[
+                  styles.text,
+                  isActive && styles.activeText,
+                ]}
+              >
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 };
 
 export default CategoryTabs;
-
 const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+  },
+
   container: {
-    flexDirection: 'row',
-    marginTop: 5,
-    justifyContent: 'space-around',
+    paddingHorizontal: 12,
+  },
+
+  tab: {
+    paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: '#fff', 
-   },
+    borderRadius: 20,
+    backgroundColor: "#F4F4F4",
+    marginRight: 10,
+  },
+
+  activeTab: {
+    backgroundColor: color.primary,
+  },
+
   text: {
     fontSize: 14,
-    color: color.primary,
-        fontWeight: '500',
-
+    color: "#555",
+    fontWeight: "500",
   },
-  active: {
-    color: color.black,
-    fontWeight: '500',
-        fontSize: 14,
 
+  activeText: {
+    color: "#fff",
+    fontWeight: "600",
   },
 });
