@@ -4,6 +4,7 @@
   UpdateProfile:"user/profile",
   getProfile:"user/profile",
   categories:"categories",
+  HomeBanners:"banners",
   home:"home"
 };
 

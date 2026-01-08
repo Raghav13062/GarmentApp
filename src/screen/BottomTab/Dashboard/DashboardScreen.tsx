@@ -48,30 +48,23 @@ const products = [
 ];
 
 const HomeScreen = () => {
-   const {     loading,
+   const {    
   userData,
-  categories, setCategories,
-  selectedTab, setSelectedTab
-}= useDashboard()
- const banners = [
-  "https://mykaladhar.com/cdn/shop/articles/Mangalagiri_Pattu_Sarees_Why_They_re_a_Must_Have_in_Your_Festive_Wardrobe.jpg?v=1748235907",
-   "https://mykaladhar.com/cdn/shop/articles/What_s_Your_Saree_Style__Trendy_Picks_for_the_Wedding_Season_ec9cff06-f5cd-4c18-9afe-c275d22d6a8b.jpg?v=1763962437&width=533",
- "https://mykaladhar.com/cdn/shop/articles/Top_Saree_Styles_to_Try_This_Wedding_Season.jpg?v=1763637033&width=533",
-   "https://mykaladhar.com/cdn/shop/articles/How_to_Restyle_Your_Grandmother_s_Banarasi_Saree_for_the_Wedding_Season.jpg?v=1763636468&width=360"
- ];
-
-  return (
+  categories,
+  Banner
+ }= useDashboard()
+ 
+   return (
     <SafeAreaView style={styles.container}>
       <StatusBarComponent />
       <HeaderBar />
       <SearchBar/>
       {/* <Loading  visible={loading}/> */}
       <ScrollView showsVerticalScrollIndicator={false}>
+        
  <CategoryTabs
         categories={categories}
-        selected={selectedTab}
-        onSelect={setSelectedTab}
-      />    <View style={styles.listContainer}>
+       />    <View style={styles.listContainer}>
         {/* <FlatList
           data={data}
           horizontal
@@ -84,11 +77,13 @@ const HomeScreen = () => {
             marginHorizontal:12 ,
             marginTop:11
            }}>
-  <CustomCarousel 
-    images={banners}
-    autoPlay={true}
-    autoPlayInterval={3000}
-    /> 
+ <CustomCarousel 
+        banners={Banner}
+        autoPlay={true}
+        autoPlayInterval={3000}
+        height={180}
+        // onBannerPress={handleBannerPress}
+      />
     <View style={{
       flexDirection:"row",
       justifyContent:"space-between" ,
