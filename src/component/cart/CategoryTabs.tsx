@@ -26,8 +26,7 @@ interface CategoryTabsProps {
 const CategoryTabs: React.FC<CategoryTabsProps> = ({
   categories,
   selected,
-  onSelect,
-}:any) => {
+ }:any) => {
   const navigation: any = useNavigation();
   return (
     <View style={styles.wrapper}>
@@ -36,10 +35,10 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
   showsHorizontalScrollIndicator={false}
   contentContainerStyle={[
     styles.container,
-    categories.length === 0 && styles.emptyContainer,
+    categories?.length === 0 && styles.emptyContainer,
   ]}
 >
-  {categories.length === 0 ? (
+  {categories?.length === 0 ? (
     <ActivityIndicator size="small" color="#0000ff" />
   ) : (
     categories?.map((item) => {
@@ -49,8 +48,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
           key={item._id}
           activeOpacity={0.85}
           onPress={() => {
-            onSelect(item.name);
-            navigation.navigate(ScreenNameEnum.OtherCategoryData, {
+             navigation.navigate(ScreenNameEnum.OtherCategoryData, {
               item: { _id: item._id ?? "all", name: item.name },
             });
           }}

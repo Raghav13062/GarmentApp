@@ -1,5 +1,4 @@
-// components/SearchBar.js
-import React from 'react';
+ import React from 'react';
 import { View, TextInput, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import imageIndex from '../assets/imageIndex';
@@ -35,8 +34,9 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     borderRadius: 10,
-    margin: 10,
-    
+     marginHorizontal:9,
+     marginTop:11,
+     marginBottom:15,
      elevation: 8,
     
      shadowColor: '#000',

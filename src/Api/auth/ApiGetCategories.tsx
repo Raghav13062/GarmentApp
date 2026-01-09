@@ -4,12 +4,14 @@ import { endpointApi } from "../endpoints";
 import { base_url } from "..";
 
 export const GetCategories = async (
-  setLoading: (loading: boolean) => void
+  setLoading: any,
+  gender: string
 ) => {
   try {
     setLoading(true);
     const response = await fetch(
-      `${base_url}${endpointApi.categories}`,
+      `${base_url}home?gender=${gender}`,
+      // `${base_url}${endpointApi.categories}`,
       {
         method: "GET",
         headers: {

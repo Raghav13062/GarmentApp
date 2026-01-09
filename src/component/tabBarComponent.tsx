@@ -66,7 +66,7 @@ export default BottomTabBar;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    marginBottom: 11,
+    marginBottom: 5,
   },
   tabBar: {
     flexDirection: "row",

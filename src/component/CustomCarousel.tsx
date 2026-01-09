@@ -46,11 +46,10 @@ export default function CustomCarousel({
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+const activeBanners = banners
+  ?.filter(banner => banner.isActive !== false)
+  .sort((a, b) => a?.displayOrder - b.displayOrder);
 
-  // Filter active banners and sort by displayOrder
-  const activeBanners = banners
-    ?.filter((banner) => banner.isActive)
-    .sort((a, b) => a.displayOrder - b.displayOrder);
 
   useEffect(() => {
     if (autoPlay && activeBanners.length > 1) {

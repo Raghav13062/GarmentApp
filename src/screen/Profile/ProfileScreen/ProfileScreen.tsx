@@ -66,7 +66,7 @@ const {    loading,
             </LinearGradient> */}
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>{userData?.userData?.fullName ||"Full Name" }</Text>
+            <Text style={styles.userName}>{userData?.userData?.fullName ||"" }</Text>
             <Text style={styles.userEmail}> {userData?.userData?.email ||"Email" }</Text>
             <View style={styles.verifiedBadge}>
               <Icon name="check-circle" size={14} color="#4CAF50" />
@@ -161,27 +161,6 @@ const {    loading,
           })}
         </View>
 
-        {/* -------------------- LOGOUT BUTTON -------------------- */}
-        {/* <LinearGradient
-                  colors={color.buttLinearGradient}
-
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.logoutBtn}
-        >
-          <TouchableOpacity style={styles.logoutTouchable} 
-          onPress={() => setshowLogoutModal(false)}
-          
-          >
-            <Icon name="log-out" size={20} color="#fff" />
-            <Text style={styles.logoutText}>Logout</Text>
-          </TouchableOpacity>
-        </LinearGradient> */}
-
-        {/* -------------------- VERSION INFO -------------------- */}
-        <View style={styles.versionContainer}>
-          <Text allowFontScaling={false}  style={styles.versionText}>Version 1.0.0</Text>
-        </View>
 
         <View style={{ height: 30 }} />
    

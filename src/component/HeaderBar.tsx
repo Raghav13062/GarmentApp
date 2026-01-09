@@ -10,11 +10,11 @@ const HeaderBar = () => {
   const navigator = useNavigation()
   return (
     <View style={styles.container}>
-       <Image source={imageIndex.locationCircle} 
+       {/* <Image source={imageIndex.locationCircle} 
        
        style={{ width: 21, height: 21 }} 
-        />
-      <Text style={styles.address}>Deliver to Ashish - Plot no. 114</Text>
+        /> */}
+      <Text style={styles.address}>Hi John</Text>
       <TouchableOpacity style={{ marginLeft: 'auto' }} 
       
       onPress={()=>{
@@ -41,12 +41,11 @@ export default HeaderBar;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    padding: 10,
-    alignItems: 'center',
+     alignItems: 'center',
+     marginHorizontal:13
    },
   address: {
-    marginLeft: 8,
-    fontSize: 13,
+     fontSize: 13,
     fontWeight: '500',
     color:  color.black, 
   },

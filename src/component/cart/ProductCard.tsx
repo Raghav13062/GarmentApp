@@ -9,8 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import CustomButton from "../CustomButton";
-import { fonts } from "../../constant";
-
+ 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = width / 2 - 13;
 
@@ -21,9 +20,10 @@ export default function ProductCard({
   title,
   buttShow,
   disabled,
-}) {
-  const original = item.originalPrice || Math.round(item.price * 1.5);
-  const discount = Math.round((1 - item.price / original) * 100);
+ }) {
+  const discountPercent = Math.round(
+  ((item.price - item.discountPrice) / item.price) * 100
+);
 
   return (
     <TouchableOpacity
@@ -34,33 +34,32 @@ export default function ProductCard({
       <View style={styles.card}>
         {/* IMAGE */}
         <ImageBackground
-          source={{ uri: item.image }}
+          source={{ uri: item?.images?.[0]|| 'https://e7.pngegg.com/pngimages/64/922/png-clipart-jeans-t-shirt-clothing-graphy-a-pile-of-folded-jeans-blue-white-thumbnail.png' }}
           style={styles.image}
           imageStyle={styles.imageRadius}
-          resizeMode="cover"
+          resizeMode="stretch"
         />
 
         {/* RATING */}
-        <View style={styles.ratingChip}>
+        {/* <View style={styles.ratingChip}>
           <Text style={styles.ratingText}>⭐ {item.rating || 4}</Text>
           <Text style={styles.ratingCount}>
             ({item.reviews || 23})
           </Text>
-        </View>
+        </View> */}
 
         {/* TITLE */}
         <Text numberOfLines={1} style={styles.title}>
-          {item.title || "Mock Collar Striped Pullover"}
+          {item.name || "Mock Collar Striped Pullover"}
         </Text>
-
         {/* PRICE */}
         <View style={styles.priceRow}>
-          <Text style={styles.price}>₹{item.price}</Text>
-          <Text style={styles.oldPrice}>₹{original}</Text>
+          <Text style={styles.price}>₹{item.discountPrice}</Text>
+          <Text style={styles.oldPrice}>₹{item.price}</Text>
         </View>
           <Text style={[styles.off,{
             marginLeft:11,marginTop:2
-           }]}>{discount}% OFF</Text>
+           }]}>{discountPercent}% OFF</Text>
 
         {/* BUTTON */}
         {buttShow && (
