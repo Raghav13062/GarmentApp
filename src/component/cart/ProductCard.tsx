@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
   },
 
   imageRadius: {
-    borderTopLeftRadius: 14,
-    borderTopRightRadius: 14,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
 
   ratingChip: {

@@ -6,7 +6,7 @@ import { validateMobileNumber } from '../../../utils/validation';
  import { errorToast } from '../../../utils/customToast';
 import {   SetOtpApi } from '../../../Api/auth/authservice';
 export default function useLogin() {
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("9876543543");
    const [phoneError, setPhoneError] = useState('');
    const [loading, setLoading] = useState(false);
     const navigation = useNavigation<NativeStackNavigationProp<RegistrationStackParamList>>();

@@ -14,6 +14,42 @@ export const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     flex: 1,
   },
+  emptyContainer: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingVertical: 20,
+},
+emptyText: {
+  color: '#9f9f9fff',
+  fontSize: 14,
+},
+loaderContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+sectionHeader: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginHorizontal: 12,
+  marginTop: 10,
+  marginBottom:18
+},
+sectionTitle: {
+  color: 'black',
+  fontSize: 15,
+  fontWeight: '600',
+},
+viewAll: {
+  color: 'black',
+  fontSize: 14,
+  fontWeight: '500',
+},
+sectionContainer: {
+  marginHorizontal: 12,
+  marginTop: 10,
+},
+
   searchContainer: {
     backgroundColor: 'transparent',
     borderTopWidth: 0,
@@ -26,8 +62,8 @@ export const styles = StyleSheet.create({
   paddingHorizontal: 14,
   borderRadius: 16,
   backgroundColor: "#F1F1F1",
-  marginHorizontal: 6,
-  marginTop:8 ,
+  marginHorizontal: 5,
+  marginTop:5 ,
   marginBottom:5
 },
 

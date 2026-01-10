@@ -13,13 +13,14 @@ const SearchBar = () => {
         resizeMode='contain'
       />
 
-      <TextInput
+      <TextInput 
+      editable={false}
         placeholder='Search "Jeans"'
         style={styles.input} 
         placeholderTextColor= {color.black}
       />
 
-      <Icon name="notifications-outline" size={20} color={color.primary} />
+      {/* <Icon name="notifications-outline" size={20} color={color.primary} /> */}
       {/* <Icon name="heart-outline" size={20} color={color.primary} style={{ marginLeft: 10 }} />
       <Icon name="grid-outline" size={20} color={color.primary} style={{ marginLeft: 10 }} /> */}
     </View>

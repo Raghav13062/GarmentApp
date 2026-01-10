@@ -34,8 +34,7 @@ export default function useDashboard() {
 
       setHomeData(data);
 
-      // 🟢 API controlled gender only first time
-      if (isFirstLoad.current) {
+       if (isFirstLoad.current) {
         const apiGender =
           data.sections.find((s: any) => s?.type === 'GENDER_FILTER')
             ?.data?.selectedGender;

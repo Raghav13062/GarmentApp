@@ -36,7 +36,7 @@
       highlight: ' Garment App',
       description:
         'Discover the latest fashion trends with premium quality garments at the best prices.',
-      image: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzdldnV1d3J2dzc1NW5iY28yeXU1eHljdWRidDFwMHZpN3UydW03MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/msZn5Wu7BYrljtvY51/giphy.gif",
+      image:  "https://img.pikbest.com/png-images/20191028/e-commerce-shopping-festival-shopping-gif_2515306.png!bw700"
    
        },   {
       id: '2',
@@ -44,7 +44,7 @@
       highlight: ' Clothing',
       description:
         'Explore men, women, and kids wear. Easy browsing, quick add to cart, and smooth checkout.',
-      image:"https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWt6c3pvbXVhcTdzM2VyeDlvdWE5c2Z0Y29nY2E4Yzd2ZWV5dXowNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SVimvyz0xFbts4DYrK/giphy.gif"
+      image: "https://img.pikbest.com/png-images/20191028/little-girl-pushing-a-shopping-cart-to-buy-things-gif_2515300.png!sw800"
      },
     {
       id: '3',
@@ -52,7 +52,7 @@
       highlight: ' Delivery',
       description:
         'Get your favorite outfits delivered quickly with order tracking and dedicated support.',
-      image:"https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAyLzI5Ny10ZWQ0NDgxLXRlZGR5LWpvYjE3MDJfMS5wbmc.png"
+      image:   "https://miro.medium.com/1*D-ZiKd0B00tdifaB2X3tKQ.gif"
     },
   ];
 

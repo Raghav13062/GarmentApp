@@ -104,7 +104,7 @@ const activeBanners = banners
       <Image
         source={{ uri: item.image }}
         style={[styles.image, { height }]}
-        resizeMode="cover"
+        resizeMode="stretch"
       />
       {/* Title Overlay */}
       <View style={styles.titleOverlay}>

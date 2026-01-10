@@ -1,167 +1,167 @@
- import React from 'react';
-import { View, FlatList, ScrollView, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React from 'react';
+import {
+  View,
+  FlatList,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  Image,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import HeaderBar from '../../../component/HeaderBar';
 import CategoryTabs from '../../../component/cart/CategoryTabs';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
-import {  navigateToScreen } from '../../../constant';
 import SearchBar from '../../../component/SearchBar';
 import CustomCarousel from '../../../component/CustomCarousel';
 import ProductCard from '../../../component/cart/ProductCard';
-import ScreenNameEnum from '../../../routes/screenName.enum';
 import TopBrands from '../TopBrands/TopBrands';
-import PopularSubcategories from '../PopularSubcategories/PopularSubcategories';
 import VideoAd from './VideoAd';
+import { navigateToScreen } from '../../../constant';
+import ScreenNameEnum from '../../../routes/screenName.enum';
 import useDashboard from './useDashboard';
 import { styles } from './style';
+ import FastImage from 'react-native-fast-image';
 
 const HomeScreen = () => {
   const {
     gender,
     setGender,
-    genderOptions,
-    categories,
-    banners,
-    topProducts,
+    genderOptions = [],
+    categories = [],
+    banners = [],
+    topProducts = [],
+    loading,  
   } = useDashboard();
+ 
+  /* ------------------ Render Helpers ------------------ */
 
+  const renderEmpty = (text: string) => (
+    <View style={styles.emptyContainer}>
+                     
+  <FastImage
+                style={{
+                width: 200,   // adjust according to your design
+  height: 200,  // adjust according to your design
+                }}
+    source={{
+      uri: "https://i.pinimg.com/originals/39/79/6a/39796ac6bf7fb5abd5814c8f61bf3ab1.gif",
+      priority: FastImage.priority.normal,
+    }}
+    resizeMode={FastImage.resizeMode.cover}
+  />
+        <Text style={styles.emptyText}>{text}</Text>
+
+    </View>
+  );
+
+  /* ------------------ Loader ------------------ */
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="black" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBarComponent />
       <HeaderBar />
       <SearchBar />
-      {!genderOptions?.length === 0  > 0 ?  
-      <ActivityIndicator color={"black"}  />
-      :
 
-       <ScrollView showsVerticalScrollIndicator={false}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {genderOptions?.map(item => {
-            const isActive = gender === item;
-            return (
-              <TouchableOpacity
-                key={item}
-                style={[styles.genderTab, isActive && styles.genderActiveTab]}
-                onPress={() => setGender(item)}
-              >
-                <Text style={[styles.genderText, isActive && styles.genderActiveText]}>
-                  {item.toUpperCase()}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-        <CategoryTabs
-          categories={categories}
-        />
-        <View style={{
-          marginHorizontal: 12,
-          marginTop: 11
-        }}>
-          <CustomCarousel
-            banners={banners}
-            autoPlay
-            autoPlayInterval={3000}
-            height={180}
-          />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* ---------------- Gender Tabs ---------------- */}
+        {genderOptions.length > 0 ? (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}
+          style={{
+            marginLeft:4
+          }}
+          >
+            {genderOptions.map(item => {
+              const isActive = gender === item;
+              return (
+                <TouchableOpacity
+                  key={item}
+                  style={[
+                    styles.genderTab,
+                    isActive && styles.genderActiveTab,
+                  ]}
+                  onPress={() => setGender(item)}
+                >
+                  <Text
+                    style={[
+                      styles.genderText,
+                      isActive && styles.genderActiveText,
+                    ]}
+                  >
+                    {item?.toUpperCase()}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        ) : (
+          renderEmpty('No gender options found')
+        )}
 
-          <View style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 5
-          }}>
-            <Text style={{
-              color: "black",
+        {/* ---------------- Categories ---------------- */}
+        {categories.length > 0 ? (
+          <CategoryTabs categories={categories} />
+        ) : (
+          renderEmpty('No categories available')
+        )}
 
-              fontWeight: "600",
-              marginBottom: 6,
-              marginTop: 10,
-              fontSize: 15
-
-            }}>Top Selling Products</Text>
-            <Text style={{
-              color: "black",
-
-              fontWeight: "600",
-              marginBottom: 6,
-              marginTop: 10,
-              fontSize: 15
-
-            }}>View All</Text>
-
-          </View>
-          <View style={styles.container}>
-            <FlatList
-              data={topProducts}
-              numColumns={2}
-              columnWrapperStyle={{ justifyContent: 'space-between' }}
-              keyExtractor={(item) => item.id}
-              style={{
-                marginBottom: 15
-              }}
-              renderItem={({ item }) => (
-                <ProductCard
-                  item={item}
-                  onPress1={() =>
-                    navigateToScreen(ScreenNameEnum.ProductDetails, { item })
-                  }
-                />
-              )}
-              contentContainerStyle={{ paddingBottom: 20 }}
+        {/* ---------------- Banner ---------------- */}
+        {banners.length > 0 && (
+          <View style={styles.sectionContainer}>
+            <CustomCarousel
+              banners={banners}
+              autoPlay
+              autoPlayInterval={3000}
+              height={180}
             />
-            <View style={{
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}>
-              <Text style={{
-                color: "black",
-
-                fontWeight: "600",
-                marginBottom: 6,
-                fontSize: 15
-
-              }}>Top Brands</Text>
-              <Text style={{
-                color: "black",
-
-                fontWeight: "600",
-                marginBottom: 6,
-                fontSize: 15
-
-              }}>View All</Text>
-
-
-            </View>
           </View>
+        )}
 
+        {/* ---------------- Top Products ---------------- */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Top Selling Products</Text>
+          <Text style={styles.viewAll}>View All</Text>
         </View>
 
-        <TopBrands
- title="Top Brands"
-/>
-        <Text style={{
-          color: "black",
+        <FlatList
+          data={topProducts}
+          numColumns={2}
 
-          fontWeight: "600",
-          marginBottom: 6,
-          fontSize: 15,
-          marginTop: 15,
-          marginLeft: 10
+          keyExtractor={item => String(item?.id)}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          contentContainerStyle={{ paddingBottom: 20, marginHorizontal:9, }}
+          ListEmptyComponent={renderEmpty('No products found')}
+          renderItem={({ item }) => (
+            <ProductCard
+              item={item}
+              onPress1={() =>
+                navigateToScreen(ScreenNameEnum.ProductDetails, { item })
+              }
+            />
+          )}
+        />
 
-        }}>PopularSub Categories</Text>
-        {/* <PopularSubcategories /> */}
+        {/* ---------------- Top Brands ---------------- */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Top Brands</Text>
+          <Text style={styles.viewAll}>View All</Text>
+        </View>
+
+        <TopBrands title="Top Brands" />
+
+        {/* ---------------- Video Ad ---------------- */}
         <VideoAd videoUrl="https://reelrecs.s3.us-east-1.amazonaws.com/static/movies/trailers/compressed/tt1645170/tt1645170.m3u8" />
-
       </ScrollView>
-    
-    }
-      
-
     </SafeAreaView>
   );
 };
-
-
 
 export default HomeScreen;

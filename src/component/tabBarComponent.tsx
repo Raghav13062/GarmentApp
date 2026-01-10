@@ -38,7 +38,7 @@ const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
               ) : (
                 <Ionicons
                   name={icons[route.name] || "ellipse"}
-                  size={24}
+                  size={25}
                   color={isFocused ? color.StatusBar : "#000"}
                 />
               )}
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   label: {
-    fontSize: 12,
+    fontSize: 13,
+    marginTop:5
   },
   cartWrapper: {
     alignItems: "center",

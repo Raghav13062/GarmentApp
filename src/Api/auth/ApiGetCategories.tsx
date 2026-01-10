@@ -1,5 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { endpointApi } from "../endpoints";
+ import { endpointApi } from "../endpoints";
  import { errorToast } from "../../utils/customToast";
 import { base_url } from "..";
 
