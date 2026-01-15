@@ -9,7 +9,7 @@ const SearchBar = () => {
   const navigator = useNavigation();
   return (
     <TouchableOpacity 
-    onPress={()=>navigator.navigate(ScreenNameEnum.SearchProduct)}
+    // onPress={()=>navigator.navigate(ScreenNameEnum.SearchProduct)}
     
     style={styles.container}>
       <Image
