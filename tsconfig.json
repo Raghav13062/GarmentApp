@@ -11,6 +11,6 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "scr2/component/StepIndicator.tsx", "scr2/component/CustomSlider.tsx", "scr2/component/YesNoRadio.tsx", "scr2/COLORS.tsx", "scr2/component/COLORS.tsx"],
   "exclude": ["node_modules"]
 }

@@ -13,6 +13,7 @@ import EditProfile from "../screen/Profile/EditProfile/EditProfile";
 import MyOrders from "../screen/Profile/MyOrders/MyOrders";
 import PaymentHistoryScreen from "../screen/Profile/PaymentHistory/PaymentHistory";
 import Privacy from "../screen/Profile/Privacy/Privacy";
+import SearchProduct from "../screen/SearchProduct/SearchProduct";
  
  
  import ScreenNameEnum from "./screenName.enum";
@@ -27,6 +28,11 @@ const _routes: any = {
       name: ScreenNameEnum.Privacy,
       Component: Privacy,
     },
+      {
+      name: ScreenNameEnum.SearchProduct,
+      Component: SearchProduct,
+    },
+    
     {
       name: ScreenNameEnum.PaymentHistory,
       Component: PaymentHistoryScreen,

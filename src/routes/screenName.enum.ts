@@ -9,7 +9,7 @@ enum ScreenNameEnum {
   ChooseRoleScreen = "ChooseRoleScreen",
   FabricCardList = "FabricCardList",
   NonFabricCardList = "NonFabricCardList",
-
+SearchProduct="SearchProduct",
   ViewCartScreen="ViewCartScreen",
   OrderConfirmationScreen="OrderConfirmationScreen",
   OtherCategoryData = "OtherCategoryData",

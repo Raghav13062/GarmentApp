@@ -12,7 +12,12 @@ export default {
 
     share: require('./images/share.png'),
     under: require('./images/under.png'),
-  
+      bag: require('./images/bag.png'),
+            back1: require('./images/back1.png'),
+
+            down: require('./images/gridicons_dropdown.png'),
+            coin: require('./images/coin.png'),
+
      
        rightw: require('./images/rightW.png'),
    

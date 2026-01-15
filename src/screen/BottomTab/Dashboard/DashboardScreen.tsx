@@ -55,15 +55,15 @@ const HomeScreen = () => {
     </View>
   );
 
-  /* ------------------ Loader ------------------ */
+  // /* ------------------ Loader ------------------ */
 
-  if (loading) {
-    return (
-      <SafeAreaView style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="black" />
-      </SafeAreaView>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <SafeAreaView style={styles.loaderContainer}>
+  //       <ActivityIndicator size="large" color="black" />
+  //     </SafeAreaView>
+  //   );
+  // }
 
   return (
     <SafeAreaView style={styles.container}>

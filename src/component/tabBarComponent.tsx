@@ -66,11 +66,10 @@ export default BottomTabBar;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    marginBottom: 5,
-  },
+   },
   tabBar: {
     flexDirection: "row",
-    paddingVertical: 12,
+    paddingVertical: 13,
     justifyContent: "space-around",
   },
   tab: {
