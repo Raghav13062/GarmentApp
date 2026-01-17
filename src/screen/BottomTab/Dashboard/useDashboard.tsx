@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetProfile } from '../../../Api/auth/authservice';
-import { GetCategories } from '../../../Api/auth/ApiGetCategories';
+import { GetAllBrandsProduct, GetCategories } from '../../../Api/auth/ApiGetCategories';
 type GenderType = 'all' | 'men' | 'women' | 'kids';
 const SAFE_ARRAY_LIMIT = 50; // 🔐 crash protection
 export default function useDashboard() {
@@ -13,10 +13,29 @@ export default function useDashboard() {
   const [loading, setLoading] = useState(false);
   const [homeData, setHomeData] = useState<any>(null);
   const [gender, setGender] = useState<GenderType>('all');
+  const [BrandsProduct, setBrandsProduct] = useState<any>(null);
 
   const isFirstLoad = useRef(true);
   const activeRequest = useRef(0); // 🔐 prevent race condition
+// 
 
+  const GetBrandsProduct = useCallback(async () => {
+ 
+    try {
+      const data = await GetAllBrandsProduct();
+
+      // ignore old API responses
+ 
+      if (!data || !Array.isArray(data.sections)) {
+        setBrandsProduct(data);
+        return;
+      }
+
+  
+    } catch (e) {
+      console.log('Home API Error', e);
+     }
+  }, [gender]);
   /* ---------------- Fetch Home ---------------- */
   const fetchHome = useCallback(async (selectedGender: GenderType) => {
     const requestId = ++activeRequest.current;
@@ -53,6 +72,7 @@ export default function useDashboard() {
   /* ---------------- Profile ---------------- */
   useEffect(() => {
     GetProfile(setLoading, dispatch);
+    GetBrandsProduct()
   }, [dispatch]);
 
   /* ---------------- Home Data ---------------- */
@@ -116,5 +136,6 @@ export default function useDashboard() {
     categories,
     banners,
     topProducts,
+    BrandsProduct
   };
 }

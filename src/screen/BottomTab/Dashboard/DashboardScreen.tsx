@@ -32,6 +32,7 @@ const HomeScreen = () => {
     banners = [],
     topProducts = [],
     loading,  
+    BrandsProduct
   } = useDashboard();
  
   /* ------------------ Render Helpers ------------------ */
@@ -143,7 +144,7 @@ const HomeScreen = () => {
             <ProductCard
               item={item}
               onPress1={() =>
-                navigateToScreen(ScreenNameEnum.ProductDetails, { item })
+                navigateToScreen(ScreenNameEnum.ProductDetails, { item:item ,gender})
               }
             />
           )}
@@ -155,9 +156,10 @@ const HomeScreen = () => {
           <Text style={styles.viewAll}>View All</Text>
         </View>
 
-        <TopBrands title="Top Brands" />
-
-        {/* ---------------- Video Ad ---------------- */}
+        <TopBrands
+        brands={BrandsProduct}
+        title="Top Brands" />
+         {/* ---------------- Video Ad ---------------- */}
         <VideoAd videoUrl="https://reelrecs.s3.us-east-1.amazonaws.com/static/movies/trailers/compressed/tt1645170/tt1645170.m3u8" />
       </ScrollView>
     </SafeAreaView>

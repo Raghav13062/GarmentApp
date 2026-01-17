@@ -1,6 +1,7 @@
  import { endpointApi } from "../endpoints";
  import { errorToast } from "../../utils/customToast";
 import { base_url } from "..";
+import axios from "axios";
 
 export const GetCategories = async (
   setLoading: any,
@@ -40,13 +41,10 @@ export const GetCategories = async (
 
 
 
-export const GetCategoriesId = async (categoryId: string) => {
-  if (!categoryId || typeof categoryId !== "string") {
-    throw new Error("Invalid category ID");
-  }
-
+export const GetAllBrandsProduct = async () => {
+ 
   try {
-    const url = `${base_url}categories/${categoryId}`;
+    const url = `${base_url}${endpointApi.AllBrands}`;
     console.log("Fetching URL:", url);
 
     const response = await fetch(url, {
@@ -58,8 +56,6 @@ export const GetCategoriesId = async (categoryId: string) => {
     });
 
     const res = await response.json();
-    console.log("GetCategoriesId response", res);
-
     if (!res?.success) {
       throw new Error(res?.message || "Failed to fetch category");
     }
@@ -101,5 +97,40 @@ export const GetBannersHome = async (
     return null;
   } finally {
     setLoading(false);
+  }
+};
+
+
+
+
+export const TopProductDetail = async (
+  categoryId: string | number,
+   // setLoading: (loading: boolean) => void
+) => {
+  try {
+     const response = await fetch(
+      `${base_url}products/${categoryId}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const res = await response.json();
+     if (!res?.success) {
+      errorToast(res?.message || "Failed to fetch products");
+      return null;
+    }
+
+    return res.data;
+  } catch (error) {
+    console.error("ProductDetailsByCategory error:", error);
+    errorToast("Network error");
+    return null;
+  } finally {
+    // setLoading(false);
   }
 };

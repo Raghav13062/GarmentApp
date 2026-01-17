@@ -5,7 +5,8 @@
   getProfile:"user/profile",
   categories:"categories",
   HomeBanners:"banners",
-  home:"home"
+  home:"home",
+  AllBrands:"brands"
 };
 
   const Params = {

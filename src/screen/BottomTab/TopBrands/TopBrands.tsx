@@ -13,42 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 const cardSize = width * 0.22; // slightly smaller for better spacing
-
-const sampleBrands = [
-  {
-    id: '1',
-    name: 'Adidas',
-    image:
-      'https://shirtsvskins.ie/cdn/shop/collections/adidas.png?v=1747832563',
-  },
-  {
-    id: '2',
-    name: 'Nike',
-    image:
-      'https://www.citypng.com/public/uploads/preview/black-nike-logo-transparent-background-701751694777156f3ewilq1js.png',
-  },
-  {
-    id: '3',
-    name: 'Puma',
-    image:
-      'https://i.pinimg.com/564x/ef/1c/1b/ef1c1b08d8c2236f55ad0001e22f879d.jpg',
-  },
- 
-  {
-    id: '4',
-    name: 'H&M',
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX3DQwfDD6XEW21_Yl5ajzjfbGkR6nusbrSg&s',
-  },
-  {
-    id: '5',
-    name: 'Levi’s',
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5DbwRNK--PWWMFbXV8c9fF0jqQluJMm91Lg&s',
-  },
-];
-
-export default function TopBrands({ brands = sampleBrands, onBrandPress }) {
+export default function TopBrands({ brands , onBrandPress }:any) {
   const navigation = useNavigation()
   return (
     <View style={styles.container}>
@@ -70,7 +35,9 @@ export default function TopBrands({ brands = sampleBrands, onBrandPress }) {
       }}
             // onPress={() => onBrandPress && onBrandPress(item)}
           >
-            <Image source={{ uri: item.image }} style={styles.brandImage} />
+            <Image source={{ uri: item.image }} style={styles.brandImage} 
+            resizeMode="stretch"
+            />
             <Text numberOfLines={1} style={styles.brandName}>
               {item.name}
             </Text>
@@ -83,7 +50,7 @@ export default function TopBrands({ brands = sampleBrands, onBrandPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
+    marginTop: 10,
   },
   title: {
     fontSize: 18,
@@ -104,7 +71,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e0e0e0",
     marginBottom: 8,
-  },
+   },
   brandName: {
     fontSize: 14,
     fontWeight: "600",
