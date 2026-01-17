@@ -32,6 +32,11 @@ export const styles = StyleSheet.create({
   flexShrink: 1,      // ⭐ text cut nahi hoga
   flexWrap: "wrap",
   },
+  ratingSubText: {
+  fontSize: 12,
+  fontWeight: '400',
+  color: '#666',
+},
   backBtn: {
     height: 40,
     width: 40,

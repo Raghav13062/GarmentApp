@@ -4,15 +4,15 @@ import {
   Text,
   Image,
   TouchableOpacity,
-   ScrollView,
+  ScrollView,
   Dimensions,
- } from "react-native";
+} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import LinearGradient from "react-native-linear-gradient";
 import { useRoute } from "@react-navigation/native";
 import { color, navigateToScreen, navigationBack } from "../../../constant";
 import ScreenNameEnum from "../../../routes/screenName.enum";
- import Loading from "../../../utils/Loader";
+import Loading from "../../../utils/Loader";
 import { TopProductDetail } from "../../../Api/auth/ApiGetCategories";
 import { styles } from "./style";
 
@@ -36,14 +36,14 @@ export default function ProductDetails() {
   if (!product) {
     return (
       <View style={styles.loader}>
-       <Loading /> 
+        <Loading />
       </View>
     );
   }
- 
+
   const discountPercent = Math.round(
-  ((product.price - product.discountPrice) / item.price) * 100
-);
+    ((product.price - product.discountPrice) / item.price) * 100
+  );
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -96,14 +96,19 @@ export default function ProductDetails() {
         {/* PRODUCT INFO */}
         <View style={styles.section}>
           <Text style={styles.brand}>{product.name}</Text>
-           <Text style={[styles.off,{
-            marginTop:2
-           }]}>{discountPercent}% OFF</Text>
+          <Text style={[styles.off, {
+            marginTop: 2
+          }]}>{discountPercent}% OFF</Text>
 
           <View style={styles.ratingRow}>
             <Text style={styles.ratingCount}>
-              {product.reviewCount || 0} Ratings
+              ⭐ {product?.ratings?.average ?? 0}
+              <Text style={styles.ratingSubText}>
+                {' '}({product?.ratings?.count ?? 0} ratings)
+              </Text>
             </Text>
+
+
           </View>
 
           <View style={styles.priceRow}>
@@ -119,9 +124,9 @@ export default function ProductDetails() {
               </Text>
             </LinearGradient>
           </View>
-          
+
         </View>
-         
+
         {/* DESCRIPTION */}
         <View style={{ paddingHorizontal: 16 }}>
           <Text style={styles.title}>Description</Text>
@@ -153,4 +158,3 @@ export default function ProductDetails() {
     </View>
   );
 }
- 
