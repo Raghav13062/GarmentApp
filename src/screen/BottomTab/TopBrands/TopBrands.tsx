@@ -78,5 +78,8 @@ const styles = StyleSheet.create({
     color: "#333",
     textAlign: "center",
     width: cardSize + 10,
+    marginBottom:5,
+    marginTop:2
+    
   },
 });
