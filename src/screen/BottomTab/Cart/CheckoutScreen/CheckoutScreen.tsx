@@ -146,17 +146,17 @@ const CheckoutScreen = () => {
     <View key={index} style={styles.orderItem}>
       <Image
         source={{
-          uri: item.image?.startsWith('http')
-            ? item.image
+          uri: item?.image?.startsWith('http')
+            ? item?.image
             : `https://your-api-base-url/${item.image}`,
         }}
         style={styles.image}
       />
 
       <View style={{ flex: 1, marginLeft: 12 }}>
-        <Text style={styles.title}>{item.name}</Text>
-        {!!item.brand && <Text style={styles.brand}>{item.brand}</Text>}
-        <Text style={styles.qty}>Qty: {item.quantity}</Text>
+        <Text style={styles.title}>{item?.name}</Text>
+        {!!item?.brand && <Text style={styles.brand}>{item.brand}</Text>}
+        <Text style={styles.qty}>Qty: {item?.quantity}</Text>
       </View>
 
       <Text style={styles.price}>
@@ -165,7 +165,7 @@ const CheckoutScreen = () => {
     </View>
   );
   const discountPercent = Math.round(
-    ((product.price - product.discountPrice) / product.price) * 100
+    ((product?.price - product?.discountPrice) / product?.price) * 100
   );
     // <Text style={[styles.off, {
     //           marginTop: 2,
@@ -190,7 +190,7 @@ const CheckoutScreen = () => {
           {/* ITEMS */}
           <Animated.View style={[styles.card, { opacity: fadeAnim }]}>
             <Text style={styles.sectionTitle}>Order Items</Text>
-            {orderItems.map(renderItem)}
+            {orderItems?.map(renderItem)}
           </Animated.View>
 
           {/* PAYMENT */}
@@ -207,7 +207,7 @@ const CheckoutScreen = () => {
                 onPress={() => setPaymentMethod(method)}
               >
                 <Text style={styles.paymentText}>
-                  {method.toUpperCase()}
+                  {method?.toUpperCase()}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -217,7 +217,7 @@ const CheckoutScreen = () => {
           <View style={styles.card}>
             <Text style={styles.sectionTitle}>Order Summary</Text>
 
-            <SummaryRow label="Price" value={product.price} />
+            <SummaryRow label="Price" value={product?.price} />
           
             <SummaryRow label="Discount Price" value={subTotal} />
 

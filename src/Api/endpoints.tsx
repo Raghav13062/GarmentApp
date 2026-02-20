@@ -6,7 +6,9 @@
   categories:"categories",
   HomeBanners:"banners",
   home:"home",
-  AllBrands:"brands"
+  AllBrands:"brands",
+  cartAdd:"cart/add",
+  cartRemove:"cart/remove"
 };
 
   const Params = {
