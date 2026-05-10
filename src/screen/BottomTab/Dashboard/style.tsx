@@ -61,9 +61,6 @@ export const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     borderRadius: 10,
   },
-    backgroundColor: '#f2f2f2',
-    borderRadius: 10,
-  },
   listContainer: {
     flex: 1,
     marginTop: 10,
