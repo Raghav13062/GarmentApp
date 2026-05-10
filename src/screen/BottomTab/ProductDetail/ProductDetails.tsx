@@ -7,6 +7,8 @@ import {
   ScrollView,
   Dimensions,
   Platform,
+  Animated,
+  Modal,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import LinearGradient from "react-native-linear-gradient";
@@ -26,7 +28,12 @@ export default function ProductDetails() {
   const [product, setProduct] = useState<any>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
   const executeProtected = useProtectedAction();
+
+  // Animation values
+  const fadeAnim = useState(new Animated.Value(0))[0];
+  const slideAnim = useState(new Animated.Value(30))[0];
 
   useEffect(() => {
     const productId = item?.id || item?._id;
@@ -47,6 +54,21 @@ export default function ProductDetails() {
       const colors = product?.variants?.colors || [];
       if (sizes.length > 0 && !selectedSize) setSelectedSize(sizes[0]);
       if (colors.length > 0 && !selectedColor) setSelectedColor(colors[0]);
+
+      // Trigger animation when product loads
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+        Animated.spring(slideAnim, {
+          toValue: 0,
+          tension: 50,
+          friction: 7,
+          useNativeDriver: true,
+        })
+      ]).start();
     }
   }, [product]);
 
@@ -62,7 +84,7 @@ export default function ProductDetails() {
 
   // Mapping API data fields
   const displayName = product?.title || product?.name || "Product";
-  
+
   // Handle both flat structures and nested 'pricing' object structures
   const rawMrp = product?.pricing?.mrp || product?.mrp || product?.price || 0;
   const rawSellingPrice = product?.pricing?.sellingPrice || product?.sellingPrice || product?.discountPrice || 0;
@@ -73,13 +95,16 @@ export default function ProductDetails() {
 
   const displayImages = product?.images || product?.baseImages || [];
 
-  const discountPercent = rawDiscount > 0 
-    ? rawDiscount 
+  const discountPercent = rawDiscount > 0
+    ? rawDiscount
     : (displayMrp > 0 ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100) : 0);
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}
+      >
 
         {/* IMAGE SLIDER */}
         <View>
@@ -94,11 +119,12 @@ export default function ProductDetails() {
             }
           >
             {displayImages?.map((img: string, index: number) => (
-              <Image
-                key={index}
-                source={{ uri: img }}
-                style={styles.mainImage}
-              />
+              <TouchableOpacity key={index} activeOpacity={0.9} onPress={() => setFullScreenImage(img)}>
+                <Image
+                  source={{ uri: img }}
+                  style={styles.mainImage}
+                />
+              </TouchableOpacity>
             ))}
           </ScrollView>
 
@@ -161,17 +187,6 @@ export default function ProductDetails() {
             <Text style={{ fontSize: 12, color: '#888', marginTop: 6, fontWeight: '500' }}>Inclusive of all taxes</Text>
           </View>
 
-          <View style={{ height: 1, backgroundColor: '#eaeaea', marginVertical: 20 }} />
-
-          {/* DESCRIPTION */}
-          <View style={{ marginBottom: 24 }}>
-            <Text style={styles.sectionHeader}>DESCRIPTION</Text>
-            <Text style={{ fontSize: 14, color: "#555", lineHeight: 22 }}>
-              {product?.description || "High-quality product. Perfect for everyday styling. Premium fabric and comfortable fit — a must-have in your collection."}
-            </Text>
-          </View>
-
-          {/* VARIANTS: COLORS */}
           {product?.variants?.colors && product.variants.colors.length > 0 && (
             <View style={{ marginBottom: 30 }}>
               <Text style={styles.sectionHeader}>COLOR</Text>
@@ -218,10 +233,20 @@ export default function ProductDetails() {
               </View>
             </View>
           )}
+          {/* DESCRIPTION */}
+          <View style={{ marginBottom: 24 }}>
+            <Text style={styles.sectionHeader}>DESCRIPTION</Text>
+            <Text style={{ fontSize: 14, color: "#555", lineHeight: 22 }}>
+              {product?.description || "High-quality product. Perfect for everyday styling. Premium fabric and comfortable fit — a must-have in your collection."}
+            </Text>
+          </View>
+
+          {/* VARIANTS: COLORS */}
+
 
         </View>
 
-      </ScrollView>
+      </Animated.ScrollView>
 
       {/* FIXED BACK BUTTON */}
       <TouchableOpacity style={[styles.backButton, { zIndex: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 }]} onPress={navigationBack}>
@@ -232,7 +257,7 @@ export default function ProductDetails() {
 
       {/* BOTTOM BAR */}
       <View style={styles.themeBottomBar}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.favoriteBtn}
           onPress={() => executeProtected(() => {
             // Add favorite logic here
@@ -252,6 +277,32 @@ export default function ProductDetails() {
           </LinearGradient>
         </TouchableOpacity>
       </View>
+
+      {/* FULL SCREEN IMAGE MODAL */}
+      <Modal visible={!!fullScreenImage} transparent={true} animationType="fade" onRequestClose={() => setFullScreenImage(null)}>
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.95)' }}>
+          <TouchableOpacity
+            style={{ position: 'absolute', top: Platform.OS === 'ios' ? 60 : 40, right: 20, zIndex: 100 }}
+            onPress={() => setFullScreenImage(null)}
+          >
+            <Ionicons name="close" size={36} color="#fff" />
+          </TouchableOpacity>
+          <ScrollView
+            maximumZoomScale={4}
+            minimumZoomScale={1}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
+            {fullScreenImage && (
+              <Image
+                source={{ uri: fullScreenImage }}
+                style={{ width: width, height: Dimensions.get('window').height * 0.8, resizeMode: 'contain' }}
+              />
+            )}
+          </ScrollView>
+        </View>
+      </Modal>
     </View >
   );
 }
