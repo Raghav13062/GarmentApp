@@ -139,10 +139,10 @@ export default function ProductDetails() {
 
           {/* PRICE */}
           <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginTop: 16 }}>
-            <Text style={{ fontSize: 24, fontWeight: '600', color: '#111' }}>₹{displaySellingPrice}</Text>
+            <Text style={{ fontSize: 24, fontWeight: '600', color: '#111' }}>Rs. {displaySellingPrice}</Text>
             {displayMrp > displaySellingPrice && (
               <>
-                <Text style={{ fontSize: 16, color: '#888', textDecorationLine: 'line-through', marginLeft: 10, marginBottom: 2 }}>₹{displayMrp}</Text>
+                <Text style={{ fontSize: 16, color: '#888', textDecorationLine: 'line-through', marginLeft: 10, marginBottom: 2 }}>Rs. {displayMrp}</Text>
                 <Text style={{ fontSize: 12, fontWeight: '700', color: '#b69262', marginLeft: 10, marginBottom: 3 }}>SAVE {discountPercent}%</Text>
               </>
             )}
@@ -160,7 +160,7 @@ export default function ProductDetails() {
 
           {/* VARIANTS: COLORS */}
           {product?.variants?.colors && product.variants.colors.length > 0 && (
-            <View style={{ marginBottom: 24 }}>
+            <View style={{ marginBottom: 30 }}>
               <Text style={styles.sectionHeader}>COLOR</Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 }}>
                 {product.variants.colors.map((color: string, index: number) => (
@@ -168,7 +168,8 @@ export default function ProductDetails() {
                     key={index}
                     style={[
                       styles.variantBox,
-                      selectedColor === color && styles.variantBoxSelected
+                      selectedColor === color && styles.variantBoxSelected,
+                      { paddingHorizontal: 24, paddingVertical: 14 }
                     ]}
                     onPress={() => setSelectedColor(color)}
                   >
@@ -183,7 +184,7 @@ export default function ProductDetails() {
 
           {/* VARIANTS: SIZES */}
           {product?.variants?.sizes && product.variants.sizes.length > 0 && (
-            <View style={{ marginBottom: 24 }}>
+            <View style={{ marginBottom: 30 }}>
               <Text style={styles.sectionHeader}>SIZE</Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 }}>
                 {product.variants.sizes.map((size: string, index: number) => (
@@ -192,7 +193,7 @@ export default function ProductDetails() {
                     style={[
                       styles.variantBox,
                       selectedSize === size && styles.variantBoxSelected,
-                      { minWidth: 44, alignItems: 'center' }
+                      { width: 56, height: 56, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 0, paddingVertical: 0 }
                     ]}
                     onPress={() => setSelectedSize(size)}
                   >
@@ -227,11 +228,11 @@ export default function ProductDetails() {
           onPress={() => navigateToScreen(ScreenNameEnum.CheckoutScreen, { product })}
         >
           <LinearGradient colors={color.buttLinearGradient} style={styles.themeBtnGradient}>
-            <Ionicons name="cart-outline" size={22} color="#fff" style={{ marginRight: 8 }} />
-            <Text style={styles.themeBtnText}>Add to Cart</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
+          <Ionicons name="cart-outline" size={22} color="#fff" style={{ marginRight: 8 }} />
+          <Text style={styles.themeBtnText}>Add to Cart</Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
+    </View >
   );
 }
