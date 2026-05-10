@@ -24,14 +24,14 @@ export default function ProductDetails() {
   const [product, setProduct] = useState<any>(null);
 
   useEffect(() => {
-    TopProductDetail(item.id)
+    TopProductDetail(item?.id)
       .then(res => {
         if (res) {
           setProduct(res);
         }
       })
       .catch(err => console.log("API Error:", err));
-  }, [item.id,]);
+  }, [item?.id,]);
 
   if (!product) {
     return (
@@ -112,15 +112,15 @@ export default function ProductDetails() {
           </View>
 
           <View style={styles.priceRow}>
-            <Text style={styles.price}>₹{product.discountPrice}</Text>
-            <Text style={styles.mrp}>₹{product.price}</Text>
+            <Text style={styles.price}>₹{product?.discountPrice}</Text>
+            <Text style={styles.mrp}>₹{product?.price}</Text>
 
             <LinearGradient
               colors={color.buttLinearGradient}
               style={styles.discountBadge}
             >
               <Text style={styles.discount}>
-                Stock {product.stock}
+                Stock {product?.stock}
               </Text>
             </LinearGradient>
           </View>

@@ -13,11 +13,12 @@ import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 const cardSize = width * 0.22; // slightly smaller for better spacing
-export default function TopBrands({ brands , onBrandPress }:any) {
+export default function TopBrands({ brands, onBrandPress }: any) {
+  console.log("brands", brands)
   const navigation = useNavigation()
   return (
     <View style={styles.container}>
-       <FlatList
+      <FlatList
         data={brands}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -27,16 +28,16 @@ export default function TopBrands({ brands , onBrandPress }:any) {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.card}
-              onPress={() => {
-        navigation.navigate(ScreenNameEnum.OtherCategoryData, { 
-          categoryId: item.id,
-          categoryName: item.title 
-        });
-      }}
-            // onPress={() => onBrandPress && onBrandPress(item)}
+            onPress={() => {
+              navigation.navigate(ScreenNameEnum.OtherCategoryData, {
+                categoryId: item.id,
+                categoryName: item.title
+              });
+            }}
+          // onPress={() => onBrandPress && onBrandPress(item)}
           >
-            <Image source={{ uri: item.image }} style={styles.brandImage} 
-            resizeMode="stretch"
+            <Image source={{ uri: item.image }} style={styles.brandImage}
+              resizeMode="stretch"
             />
             <Text numberOfLines={1} style={styles.brandName}>
               {item.name}
@@ -71,15 +72,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e0e0e0",
     marginBottom: 8,
-   },
+  },
   brandName: {
     fontSize: 14,
     fontWeight: "600",
     color: "#333",
     textAlign: "center",
     width: cardSize + 10,
-    marginBottom:5,
-    marginTop:2
-    
+    marginBottom: 5,
+    marginTop: 2
+
   },
 });

@@ -4,9 +4,6 @@ export const pathImage: { pathImage: string } = {
     pathImage: '../assets/images',
 
 };
-
- 
-
 export const color = {
  buttLinearGradient : ['#F58021', '#862E92'],
     baground: 'white',
