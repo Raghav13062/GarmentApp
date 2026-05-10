@@ -58,7 +58,8 @@ SearchProduct="SearchProduct",
   About = "About",
   Policy = "Policy",
   UpdateLimit = "UpdateLimit",
-  DocumentView = "DocumentView"
+  DocumentView = "DocumentView",
+  WishList = "WishList"
 }
 
 export default ScreenNameEnum;

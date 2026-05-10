@@ -20,8 +20,13 @@ import { TopProductDetail } from "../../../Api/auth/ApiGetCategories";
 import { styles } from "./style";
 import { useProtectedAction } from "../../../utils/useProtectedAction";
 
+import { useDispatch, useSelector } from "react-redux";
+import { toggleWishlist } from "../../../redux/feature/wishlistSlice";
+
 const { width } = Dimensions.get("window");
 export default function ProductDetails() {
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state: any) => state.wishlist.items);
   const route = useRoute();
   const { item, gender } = route.params as any;
   const [activeImage, setActiveImage] = useState(0);
@@ -30,6 +35,16 @@ export default function ProductDetails() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
   const executeProtected = useProtectedAction();
+
+  const isFavorite = wishlist.some((wishItem: any) => 
+    (wishItem.id || wishItem._id) === (item.id || item._id)
+  );
+
+  const onToggleWishlist = () => {
+    executeProtected(() => {
+      dispatch(toggleWishlist(product || item));
+    });
+  };
 
   // Animation values
   const fadeAnim = useState(new Animated.Value(0))[0];
@@ -259,12 +274,13 @@ export default function ProductDetails() {
       <View style={styles.themeBottomBar}>
         <TouchableOpacity
           style={styles.favoriteBtn}
-          onPress={() => executeProtected(() => {
-            // Add favorite logic here
-            console.log("Added to wishlist");
-          })}
+          onPress={onToggleWishlist}
         >
-          <Ionicons name="heart-outline" size={26} color="#444" />
+          <Ionicons 
+            name={isFavorite ? "heart" : "heart-outline"} 
+            size={26} 
+            color={isFavorite ? "#ff0000" : "#444"} 
+          />
         </TouchableOpacity>
 
         <TouchableOpacity

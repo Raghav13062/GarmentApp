@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import ScreenNameEnum from '../routes/screenName.enum';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import { useDispatch, useSelector } from 'react-redux';
 import Svg, {
   Text as SvgText,
   Defs,
@@ -26,6 +27,7 @@ interface HeaderBarProps {
   currentGender?: string;
   setGender?: (gender: string) => void;
 }
+
 
 const GradientText = ({ text, colors }: { text: string; colors: string[] }) => {
   return (
@@ -90,8 +92,21 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
           <TouchableOpacity style={styles.iconButton}>
             <Icon name="search-outline" size={28} color={color.black} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Icon name="heart-outline" size={28} color={color.black} />
+          <TouchableOpacity
+            style={styles.iconButton}
+          // onPress={() => navigator.navigate(ScreenNameEnum.WishList)}
+          >
+            <View>
+              <Icon name="heart-outline" size={28} color={color.black} />
+              {0 > 0 && (
+                <LinearGradient
+                  colors={['#ff4d4d', '#ff0000']}
+                  style={styles.badge}
+                >
+                  <Text style={styles.badgeText}>0</Text>
+                </LinearGradient>
+              )}
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.iconButton}
@@ -103,7 +118,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
                 colors={['#ff4d4d', '#ff0000']}
                 style={styles.badge}
               >
-                <Text style={styles.badgeText}>9+</Text>
+                <Text style={styles.badgeText}>0</Text>
               </LinearGradient>
             </View>
           </TouchableOpacity>
