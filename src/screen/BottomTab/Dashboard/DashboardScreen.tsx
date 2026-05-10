@@ -12,7 +12,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import HeaderBar from '../../../component/HeaderBar';
 import CategoryTabs from '../../../component/cart/CategoryTabs';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
-import SearchBar from '../../../component/SearchBar';
 import CustomCarousel from '../../../component/CustomCarousel';
 import ProductCard from '../../../component/cart/ProductCard';
 import TopBrands from '../TopBrands/TopBrands';
@@ -68,38 +67,13 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBarComponent barStyle={"dark-content"} />
-      <HeaderBar />
-      <SearchBar />
+      <HeaderBar 
+        genderOptions={genderOptions}
+        currentGender={gender}
+        setGender={setGender}
+      />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* ---------------- Gender Tabs ---------------- */}
-        {genderOptions.length > 0 && (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginLeft: 4 }}
-          >
-            {genderOptions.map(item => {
-              const isActive = gender === item;
-              return (
-                <TouchableOpacity
-                  key={item}
-                  style={[styles.genderTab, isActive && styles.genderActiveTab]}
-                  onPress={() => setGender(item)}
-                >
-                  <Text
-                    style={[
-                      styles.genderText,
-                      isActive && styles.genderActiveText,
-                    ]}
-                  >
-                    {item?.toUpperCase()}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        )}
 
         {/* ---------------- Categories ---------------- */}
         {categories.length > 0 && <CategoryTabs categories={categories} />}

@@ -21,15 +21,16 @@ const SetOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
       }),
     });
     const res = await response.json();
-     setLoading(false);
+    setLoading(false);
     if (res.success == true) {
       successToast(res.message);
-      navigateToScreen(ScreenNameEnum.OtpScreen, { phone: data?.phone ,
+      navigateToScreen(ScreenNameEnum.OtpScreen, {
+        phone: data?.phone,
 
         otp: res?.otp
       });
     } else {
-           setLoading(false);
+      setLoading(false);
 
       errorToast(res.message);
     }
@@ -62,7 +63,7 @@ const ResendOtpApi = async (data: any, setLoading: (loading: boolean) => void) =
     setLoading(false);
     if (res.success === true) {
       successToast(res.message);
-     } else {
+    } else {
       errorToast(res.message);
     }
 
@@ -145,15 +146,15 @@ const LoginApi = async (
 
 
 
- const UpdateProfileApi = async (
+const UpdateProfileApi = async (
   data: any,
   setLoading: (loading: boolean) => void
 ) => {
   try {
     setLoading(true);
 
-     const token = await AsyncStorage.getItem('token');
- 
+    const token = await AsyncStorage.getItem('token');
+
     if (!token) {
       errorToast('Token not found. Please login again.');
       return;
@@ -168,13 +169,13 @@ const LoginApi = async (
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, // ✅ correct
         },
-      body: JSON.stringify({
-  [Params.email]: data?.email,
-  [Params.fullName]: data?.fullName,
-  [Params.address]: data?.address,
-  [Params.gender]: data?.gender?.toLowerCase(), // ✅ FIX
-  [Params.dateOfBirth]: data?.dateOfBirth,
-}),
+        body: JSON.stringify({
+          [Params.email]: data?.email,
+          [Params.fullName]: data?.fullName,
+          [Params.address]: data?.address,
+          [Params.gender]: data?.gender?.toLowerCase(), // ✅ FIX
+          [Params.dateOfBirth]: data?.dateOfBirth,
+        }),
 
       }
     );
@@ -196,8 +197,8 @@ const LoginApi = async (
 };
 
 const GetProfile = async (
-  setLoading: (loading: boolean) => void ,
-  dispatch:any
+  setLoading: (loading: boolean) => void,
+  dispatch: any
 ) => {
   try {
     setLoading(true);
@@ -212,7 +213,7 @@ const GetProfile = async (
     });
     const res = await response.json();
     if (res?.success === true) {
-         dispatch(
+      dispatch(
         loginSuccess({
           userData: res?.data ?? res,
           token: token,
@@ -238,4 +239,4 @@ const GetProfile = async (
 
 
 
-export  {SetOtpApi ,GetProfile, UpdateProfileApi,LoginApi,ResendOtpApi}
+export { SetOtpApi, GetProfile, UpdateProfileApi, LoginApi, ResendOtpApi }

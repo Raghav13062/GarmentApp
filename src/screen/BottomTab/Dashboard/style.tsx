@@ -57,31 +57,10 @@ export const styles = StyleSheet.create({
     marginHorizontal: 10,
     padding: 0
   },
-  genderTab: {
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 16,
-    backgroundColor: "#F1F1F1",
-    marginHorizontal: 5,
-    marginTop: 5,
-    marginBottom: 5
-  },
-
-  genderActiveTab: {
-    backgroundColor: "#000",
-  },
-
-  genderText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#000",
-  },
-
-  genderActiveText: {
-    color: "#FFF",
-  },
-
   searchInputContainer: {
+    backgroundColor: '#f2f2f2',
+    borderRadius: 10,
+  },
     backgroundColor: '#f2f2f2',
     borderRadius: 10,
   },
