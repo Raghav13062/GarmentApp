@@ -188,7 +188,7 @@ export default function ProductDetails() {
           </View>
 
           {product?.variants?.colors && product.variants.colors.length > 0 && (
-            <View style={{ marginBottom: 30 }}>
+            <View style={{ marginBottom: 30, marginTop: 20 }}>
               <Text style={styles.sectionHeader}>COLOR</Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 }}>
                 {product.variants.colors.map((color: string, index: number) => (

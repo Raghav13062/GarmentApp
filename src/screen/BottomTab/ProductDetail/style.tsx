@@ -76,7 +76,6 @@ export const styles = StyleSheet.create({
   variantBox: {
     borderWidth: 1,
     borderColor: "#D9D9D9",
-    backgroundColor: "transparent",
     marginRight: 12,
     marginBottom: 12,
     borderRadius: 0,
