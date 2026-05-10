@@ -30,7 +30,7 @@ const HomeScreen = () => {
     genderOptions = [],
     categories = [],
     banners = [],
-    topProducts = [],
+    productSections = [],
     loading,
     BrandsProduct,
     videoAdUrl
@@ -116,16 +116,16 @@ const HomeScreen = () => {
           </View>
         )}
 
-        {/* ---------------- Top Products ---------------- */}
-        {topProducts.length > 0 && (
-          <>
+        {/* ---------------- Dynamic Product Sections ---------------- */}
+        {productSections.map((section: any, index: number) => (
+          <View key={section.id || index}>
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Top Products</Text>
+              <Text style={styles.sectionTitle}>{section.title || section.data?.title || 'Products'}</Text>
               <Text style={styles.viewAll}>View All</Text>
             </View>
 
             <FlatList
-              data={topProducts}
+              data={section.data?.products?.slice(0, 50)}
               numColumns={2}
               keyExtractor={item => String(item?.id || item?._id)}
               scrollEnabled={false} // Since it's inside ScrollView
@@ -143,8 +143,8 @@ const HomeScreen = () => {
                 />
               )}
             />
-          </>
-        )}
+          </View>
+        ))}
 
         {/* ---------------- Top Brands ---------------- */}
         {BrandsProduct && (

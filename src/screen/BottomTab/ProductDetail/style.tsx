@@ -3,9 +3,9 @@ import { color } from "../../../constant";
  const { width } = Dimensions.get("window");
  
 export const styles = StyleSheet.create({
-   container: {
+  container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFBFA",
   },
 
   loader: {
@@ -65,104 +65,67 @@ export const styles = StyleSheet.create({
     width: 20,
   },
 
-  section: {
-    padding: 16,
-  },
-
-  brand: {
-    fontSize: 22,
-    fontWeight: "800",
-  },
-
-  title: {
-    fontSize: 18,
-    fontWeight: "700",
-    marginBottom: 6,
-  },
-
-  desc: {
-    fontSize: 14,
-    color: "#555",
-    lineHeight: 22,
-  },
-
-  ratingRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 8,
-  },
-
-  ratingCount: {
-    color: "#666",
-  },
-
-  priceRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 12,
-  },
-
-  price: {
-    fontSize: 26,
-    fontWeight: "800",
-  },
-
-  mrp: {
-    marginLeft: 10,
-    textDecorationLine: "line-through",
-    color: "#999",
-  },
-
-  discountBadge: {
-    height: 24,
-    paddingHorizontal: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 10,
-    borderRadius: 6,
-  },
-
-  discount: {
-    color: "#fff",
+  sectionHeader: {
     fontSize: 12,
     fontWeight: "700",
+    letterSpacing: 2,
+    color: "#333",
+    marginBottom: 6,
   },
-
-  bottomBar: {
+  variantBox: {
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    backgroundColor: "#FAFAFA",
+    marginRight: 10,
+    marginBottom: 10,
+    borderRadius: 2,
+  },
+  variantBoxSelected: {
+    borderColor: "#111",
+    backgroundColor: "#fff",
+  },
+  variantText: {
+    fontSize: 13,
+    color: "#666",
+    fontWeight: "500",
+  },
+  variantTextSelected: {
+    color: "#111",
+    fontWeight: "700",
+  },
+  themeBottomBar: {
     flexDirection: "row",
     padding: 16,
     paddingBottom: Platform.OS === "ios" ? 30 : 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#FDFBFA",
+    borderTopWidth: 1,
+    borderColor: "#E5E5E5",
   },
-
-  cartBtn: {
-    flex: 1,
-    marginRight: 10,
-  },
-
-  cartGradient: {
-    height: 50,
-    borderRadius: 25,
+  themeBtnGradient: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    paddingVertical: 14,
+    borderRadius: 25,
   },
-
-  cartText: {
+  themeBtnText: {
     color: "#fff",
     fontWeight: "700",
+    fontSize: 15,
   },
-
-  buyBtn: {
+  themeBtnBuy: {
     flex: 1,
     backgroundColor: "#222",
+    marginLeft: 8,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
   },
-
-  buyText: {
+  themeBtnBuyText: {
     color: "#fff",
     fontWeight: "700",
+    fontSize: 15,
   },
-
-  });
+});

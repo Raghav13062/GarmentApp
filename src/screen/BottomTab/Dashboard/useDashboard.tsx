@@ -26,6 +26,8 @@ export default function useDashboard() {
     try {
       const data = await GetAllBrandsProduct();
       if (data) {
+
+        console.log('data-GetBrandsProduct', data)
         setBrandsProduct(data);
       }
     } catch (e) {
@@ -43,7 +45,7 @@ export default function useDashboard() {
 
       // ignore old API responses
       if (requestId !== activeRequest.current) return;
-
+      console.log('response', response)
       if (!response || !response.success || !Array.isArray(response.data?.sections)) {
         setHomeData(null);
         return;
@@ -118,13 +120,13 @@ export default function useDashboard() {
     const bannerSection = sections.find(
       (i: any) => i?.sectionType === 'SEARCH_BANNER' || i?.sectionType === 'BANNER_CAROUSEL'
     );
-    
+
     if (bannerSection?.sectionType === 'BANNER_CAROUSEL') {
-      return Array.isArray(bannerSection.data?.banners) 
-        ? bannerSection.data.banners.slice(0, SAFE_ARRAY_LIMIT) 
+      return Array.isArray(bannerSection.data?.banners)
+        ? bannerSection.data.banners.slice(0, SAFE_ARRAY_LIMIT)
         : [];
     }
-    
+
     // If it's SEARCH_BANNER with images
     if (bannerSection?.data?.background?.mediaImages) {
       return bannerSection.data.background.mediaImages;
@@ -139,15 +141,43 @@ export default function useDashboard() {
     return bannerSection?.data?.background?.videoUrl || null;
   }, [sections]);
 
-  /* ---------------- Top Products ---------------- */
-  const topProducts = useMemo(() => {
-    // The API uses TOP_PICKS or NEW_ARRIVALS
-    const list = sections.find(
-      (i: any) => i?.sectionType === 'TOP_PICKS' || i?.sectionType === 'TOP_PRODUCTS'
-    )?.data?.products;
+  /* ---------------- Dynamic Product Sections ---------------- */
+  const productSections = useMemo(() => {
+    return sections
+      .map((i: any) => {
+        if (
+          ['TOP_PICKS', 'NEW_ARRIVALS', 'TOP_PRODUCTS'].includes(i?.sectionType) &&
+          Array.isArray(i?.data?.products)
+        ) {
+          let filteredProducts = i.data.products;
+          
+          // Apply local gender filter if needed
+          if (gender && gender !== 'all') {
+            filteredProducts = filteredProducts.filter(
+              (p: any) =>
+                !p.genderFilter ||
+                p.genderFilter.toLowerCase() === gender.toLowerCase() ||
+                p.genderFilter.toLowerCase() === 'all'
+            );
+          }
 
-    return Array.isArray(list) ? list.slice(0, SAFE_ARRAY_LIMIT) : [];
-  }, [sections]);
+          return {
+            ...i,
+            data: {
+              ...i.data,
+              products: filteredProducts,
+            },
+          };
+        }
+        return i;
+      })
+      .filter(
+        (i: any) =>
+          ['TOP_PICKS', 'NEW_ARRIVALS', 'TOP_PRODUCTS'].includes(i?.sectionType) &&
+          Array.isArray(i?.data?.products) &&
+          i.data.products.length > 0
+      );
+  }, [sections, gender]);
 
   /* ---------------- Return ---------------- */
   return {
@@ -159,7 +189,7 @@ export default function useDashboard() {
     genderOptions,
     categories,
     banners,
-    topProducts,
+    productSections,
     BrandsProduct,
     videoAdUrl
   };
