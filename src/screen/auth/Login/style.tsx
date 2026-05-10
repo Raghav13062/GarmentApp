@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: color.baground,
+    backgroundColor: '#FDFBFA', // Premium off-white
   },
   
   keyboardAvoidingView: {
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'white',
+    backgroundColor: '#FDFBFA',
   },
   
   contentContainer: {
@@ -62,16 +62,13 @@ export const styles = StyleSheet.create({
   
   // Bottom Sheet Styles
   bottomSheet: {
-    backgroundColor: color.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     paddingTop: 16,
-    shadowColor: color.primary,
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.05,
     shadowRadius: 20,
     elevation: 10,
     minHeight: height * 0.6,
@@ -123,30 +120,30 @@ export const styles = StyleSheet.create({
   },
   
   inputLabel: {
-    fontSize: 14,
-     color: color.primary,
-    flex:1 
-    ,
-    fontFamily:fonts.black
+    fontSize: 13,
+    color: '#888',
+    flex: 1,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
   },
   
   inputHint: {
     fontSize: 14,
-    color: color.grey,
-    
+    color: '#999',
   },
   
   inputContainer: {
-    backgroundColor: color.inputColor,
-    borderRadius: 14,
+    backgroundColor: '#FDFBFA',
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: color.borderColor,
+    borderColor: '#E5E5E5',
     height: 60,
   },
   
   inputField: {
     fontSize: 16,
-    color: '#1A1A1A',
+    color: '#111',
   },
   
   errorContainer: {
@@ -168,26 +165,23 @@ export const styles = StyleSheet.create({
   },
   
   loginButton: {
-    backgroundColor: color.primary,
-    borderRadius: 16,
+    backgroundColor: '#111',
+    borderRadius: 25,
     height: 56,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: color.primary,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 8,
   },
   
   loginButtonText: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
-    letterSpacing: 0.5,
+    letterSpacing: 1,
   },
   
   termsContainer: {

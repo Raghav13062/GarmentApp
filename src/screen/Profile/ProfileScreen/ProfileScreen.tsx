@@ -25,6 +25,36 @@ const {    loading,
   showLogoutModal, setshowLogoutModal ,
   navigation ,
   handleLogout} = useProfile()
+
+  if (!userData?.isLogin) {
+    return (
+      <SafeAreaView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <StatusBarComponent />
+        <Icon name="user-x" size={60} color="#ccc" style={{ marginBottom: 20 }} />
+        <Text style={{ fontSize: 20, fontWeight: '700', color: '#333', marginBottom: 10 }}>Guest User</Text>
+        <Text style={{ fontSize: 14, color: '#666', marginBottom: 30, textAlign: 'center', paddingHorizontal: 40, lineHeight: 22 }}>
+          Please log in to view your profile, manage your orders, and access saved items.
+        </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: color.primary || "#F58021",
+            paddingVertical: 14,
+            paddingHorizontal: 40,
+            borderRadius: 25,
+            shadowColor: color.primary || "#F58021",
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 8,
+            elevation: 8,
+          }}
+          onPress={() => navigateToScreen(ScreenNameEnum.LoginScreen)}
+        >
+          <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700' }}>Login / Sign Up</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
+
    return (
     <SafeAreaView style={styles.container}>
       <StatusBarComponent/>
@@ -161,6 +191,20 @@ const {    loading,
           })}
         </View>
 
+        <TouchableOpacity 
+          style={styles.logoutBtn}
+          onPress={() => setshowLogoutModal(true)}
+        >
+          <LinearGradient
+            colors={color.buttLinearGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.logoutTouchable}
+          >
+            <Icon name="log-out" size={20} color="#fff" />
+            <Text style={styles.logoutText}>Logout</Text>
+          </LinearGradient>
+        </TouchableOpacity>
 
         <View style={{ height: 30 }} />
    

@@ -16,6 +16,7 @@ import ScreenNameEnum from "../../../routes/screenName.enum";
 import Loading from "../../../utils/Loader";
 import { TopProductDetail } from "../../../Api/auth/ApiGetCategories";
 import { styles } from "./style";
+import { useProtectedAction } from "../../../utils/useProtectedAction";
 
 const { width } = Dimensions.get("window");
 export default function ProductDetails() {
@@ -25,6 +26,7 @@ export default function ProductDetails() {
   const [product, setProduct] = useState<any>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const executeProtected = useProtectedAction();
 
   useEffect(() => {
     const productId = item?.id || item?._id;
@@ -60,14 +62,20 @@ export default function ProductDetails() {
 
   // Mapping API data fields
   const displayName = product?.title || product?.name || "Product";
-  const displayMrp = product?.mrp || product?.price || 0;
-  const displaySellingPrice = product?.sellingPrice || product.discountPrice || 0;
+  
+  // Handle both flat structures and nested 'pricing' object structures
+  const rawMrp = product?.pricing?.mrp || product?.mrp || product?.price || 0;
+  const rawSellingPrice = product?.pricing?.sellingPrice || product?.sellingPrice || product?.discountPrice || 0;
+  const rawDiscount = product?.pricing?.discountPercentage || product?.discountPercentage || 0;
+
+  const displayMrp = parseFloat(rawMrp);
+  const displaySellingPrice = parseFloat(rawSellingPrice);
 
   const displayImages = product?.images || product?.baseImages || [];
 
-  const discountPercent = displayMrp > 0
-    ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100)
-    : product?.discountPercentage || 0;
+  const discountPercent = rawDiscount > 0 
+    ? rawDiscount 
+    : (displayMrp > 0 ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100) : 0);
 
   return (
     <View style={styles.container}>
@@ -138,14 +146,19 @@ export default function ProductDetails() {
           </View>
 
           {/* PRICE */}
-          <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginTop: 16 }}>
-            <Text style={{ fontSize: 24, fontWeight: '600', color: '#111' }}>Rs. {displaySellingPrice}</Text>
-            {displayMrp > displaySellingPrice && (
-              <>
-                <Text style={{ fontSize: 16, color: '#888', textDecorationLine: 'line-through', marginLeft: 10, marginBottom: 2 }}>Rs. {displayMrp}</Text>
-                <Text style={{ fontSize: 12, fontWeight: '700', color: '#b69262', marginLeft: 10, marginBottom: 3 }}>SAVE {discountPercent}%</Text>
-              </>
-            )}
+          <View style={{ marginTop: 16 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ fontSize: 24, fontWeight: '600', color: '#111', fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif' }}>Rs. {displaySellingPrice}</Text>
+              {displayMrp > displaySellingPrice && (
+                <>
+                  <Text style={{ fontSize: 16, color: '#888', textDecorationLine: 'line-through', marginLeft: 12 }}>Rs. {displayMrp}</Text>
+                  <View style={{ backgroundColor: '#FCEFE9', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4, marginLeft: 12 }}>
+                    <Text style={{ fontSize: 12, fontWeight: '700', color: '#D45C2B' }}>{discountPercent}% OFF</Text>
+                  </View>
+                </>
+              )}
+            </View>
+            <Text style={{ fontSize: 12, color: '#888', marginTop: 6, fontWeight: '500' }}>Inclusive of all taxes</Text>
           </View>
 
           <View style={{ height: 1, backgroundColor: '#eaeaea', marginVertical: 20 }} />
@@ -219,20 +232,26 @@ export default function ProductDetails() {
 
       {/* BOTTOM BAR */}
       <View style={styles.themeBottomBar}>
-        <TouchableOpacity style={styles.favoriteBtn}>
+        <TouchableOpacity 
+          style={styles.favoriteBtn}
+          onPress={() => executeProtected(() => {
+            // Add favorite logic here
+            console.log("Added to wishlist");
+          })}
+        >
           <Ionicons name="heart-outline" size={26} color="#444" />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={{ flex: 1, marginLeft: 16 }}
-          onPress={() => navigateToScreen(ScreenNameEnum.CheckoutScreen, { product })}
+          onPress={() => executeProtected(() => navigateToScreen(ScreenNameEnum.CheckoutScreen, { product }))}
         >
           <LinearGradient colors={color.buttLinearGradient} style={styles.themeBtnGradient}>
-          <Ionicons name="cart-outline" size={22} color="#fff" style={{ marginRight: 8 }} />
-          <Text style={styles.themeBtnText}>Add to Cart</Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    </View>
+            <Ionicons name="cart-outline" size={22} color="#fff" style={{ marginRight: 8 }} />
+            <Text style={styles.themeBtnText}>Add to Cart</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
     </View >
   );
 }
