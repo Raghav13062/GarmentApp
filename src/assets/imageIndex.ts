@@ -21,4 +21,5 @@ export default {
      
        rightw: require('./images/rightW.png'),
        loginBg: require('./images/login_bg.png'),
+       profileBg: require('./images/profile_bg.png'),
 }; 

@@ -29,21 +29,11 @@ const UserProfileScreen = () => {
   if (!userData?.isLogin) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: '#FDFBFA' }]}>
-        <StatusBarComponent />
-        
-        {/* Header - same as logged in user */}
-        <LinearGradient
-          colors={color.buttLinearGradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={[styles.headerGradient, { paddingBottom: 60 }]}
-        >
-          <View style={styles.headerTop}>
-            <Text style={styles.headerTitle}>My Profile</Text>
-          </View>
-        </LinearGradient>
+        <StatusBarComponent barStyle={"dark-content"} />
 
-        <View style={{ flex: 1, marginTop: -40, paddingHorizontal: 20 }}>
+
+
+        <View style={{ flex: 1, marginTop: 40, paddingHorizontal: 20 }}>
           {/* Guest Card */}
           <View style={{
             backgroundColor: '#fff',
@@ -54,15 +44,15 @@ const UserProfileScreen = () => {
             shadowOffset: { width: 0, height: 10 },
             shadowOpacity: 0.08,
             shadowRadius: 20,
-            elevation: 10,
+            elevation: 3,
           }}>
             <View style={{
-              width: 90, height: 90, borderRadius: 45, backgroundColor: '#FEF3F2', 
+              width: 90, height: 90, borderRadius: 45, backgroundColor: '#FEF3F2',
               justifyContent: 'center', alignItems: 'center', marginBottom: 20,
             }}>
               <Icon name="user" size={40} color="#F58021" />
               <View style={{
-                position: 'absolute', bottom: 0, right: 0, backgroundColor: '#111', 
+                position: 'absolute', bottom: 0, right: 0, backgroundColor: '#111',
                 borderRadius: 12, width: 24, height: 24, justifyContent: 'center', alignItems: 'center',
                 borderWidth: 2, borderColor: '#fff'
               }}>
@@ -73,11 +63,11 @@ const UserProfileScreen = () => {
             <Text style={{ fontSize: 22, fontWeight: '800', color: '#111', marginBottom: 8, textAlign: 'center' }}>
               Guest User
             </Text>
-            
+
             <Text style={{ fontSize: 14, color: '#666', marginBottom: 24, textAlign: 'center', lineHeight: 22 }}>
               Log in to unlock all features and manage your personalized fashion experience.
             </Text>
-            
+
             <TouchableOpacity
               style={{ width: '100%' }}
               onPress={() => navigateToScreen(ScreenNameEnum.LoginScreen)}
@@ -126,7 +116,7 @@ const UserProfileScreen = () => {
               </View>
             ))}
           </View>
-          
+
         </View>
       </SafeAreaView>
     );
