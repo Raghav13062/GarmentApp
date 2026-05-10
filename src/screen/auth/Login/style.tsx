@@ -97,173 +97,138 @@ export const styles = StyleSheet.create({
   },
   
   headerContainer: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   
   welcomeText: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: color.black,
-    marginBottom: 8,
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#333333',
   },
   
-  subtitle: {
-    fontSize: 14,
-    color: color.grey,
-    lineHeight: 22,
-    
-    },
+  welcomeTextLight: {
+    fontWeight: '400',
+    color: '#4A4A52',
+    fontSize: 20,
+  },
   
   inputSection: {
-    marginBottom: 32,
-
-   },
-  
-  inputLabelContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-    flex:1
-  },
-  
-  inputLabel: {
-    fontSize: 13,
-    color: '#888',
-    flex: 1,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
-  },
-  
-  inputHint: {
-    fontSize: 14,
-    color: '#999',
+    marginBottom: 24,
   },
   
   inputContainer: {
-    backgroundColor: '#FDFBFA',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#E5E5E5',
-    height: 60,
-  },
-  
-  inputField: {
-    fontSize: 16,
-    color: '#111',
-  },
-  
-  errorContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
-    paddingHorizontal: 8,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#D4D5D9',
+    height: 50,
   },
   
-  errorText: {
-    color: color.error,
-    fontSize: 13,
-    marginLeft: 6,
+  prefixContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 16,
+  },
+  
+  prefixText: {
+    fontSize: 16,
+    color: '#94969F',
     fontWeight: '500',
   },
   
+  verticalDivider: {
+    width: 1,
+    height: 20,
+    backgroundColor: '#D4D5D9',
+    marginHorizontal: 12,
+  },
+  
+  inputField: {
+    flex: 1,
+    fontSize: 16,
+    color: '#282C3F',
+    height: '100%',
+  },
+  
+  termsRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 24,
+    paddingRight: 10,
+  },
+  
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderWidth: 1,
+    borderColor: '#7E818C',
+    borderRadius: 3,
+    marginRight: 12,
+    marginTop: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  
+  checkboxActive: {
+    backgroundColor: '#FF3F6C',
+    borderColor: '#FF3F6C',
+  },
+  
+  checkboxInner: {
+    width: 10,
+    height: 10,
+    backgroundColor: '#fff',
+    borderRadius: 1,
+  },
+  
+  termsText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#4A4A52',
+    lineHeight: 20,
+  },
+  
+  termsLink: {
+    color: '#FF3F6C',
+    fontWeight: '700',
+  },
+  
   buttonSection: {
-    marginBottom: 32,
+    marginBottom: 24,
   },
   
   loginButton: {
-    backgroundColor: '#111',
-    borderRadius: 25,
-    height: 56,
+    backgroundColor: '#FF3F6C',
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 8,
+  },
+  
+  loginButtonDisabled: {
+    backgroundColor: '#94969F',
   },
   
   loginButtonText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
     letterSpacing: 1,
   },
   
-  termsContainer: {
-    marginTop: 22,
-    paddingHorizontal: 8,
+  footerContainer: {
+    alignItems: 'flex-start',
+    marginTop: 8,
   },
   
-  termsText: {
-    fontSize: 13,
-    color: '#999',
-    textAlign: 'center',
-    lineHeight: 18,
-  },
-  
-  termsLink: {
-    color: color.primary,
-    fontWeight: '600',
-    textDecorationLine: 'underline',
-  },
-  
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 32,
-  },
-  
-  divider: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#E9ECEF',
-  },
-  
-  dividerText: {
-    marginHorizontal: 16,
-    color: '#999',
+  footerText: {
     fontSize: 14,
-    fontWeight: '600',
+    color: '#4A4A52',
   },
   
-  alternativeOptions: {
-    alignItems: 'center',
-    marginBottom: Platform.OS === 'ios' ? 20 : 10,
-  },
-  
-  alternativeButton: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: '#E9ECEF',
-    borderRadius: 16,
-    height: 56,
-    width: '100%',
-    marginBottom: 24,
-  },
-  
-  alternativeButtonText: {
-    color: '#1A1A1A',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  
-  signupPrompt: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  
-  signupText: {
-    fontSize: 16,
-    color: '#666',
-  },
-  
-  signupLink: {
-    fontSize: 16,
+  footerLink: {
+    color: '#FF3F6C',
     fontWeight: '700',
-    color: color.primary,
   },
 });

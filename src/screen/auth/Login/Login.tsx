@@ -7,6 +7,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
   ImageBackground,
 } from 'react-native';
 import React from 'react';
@@ -22,6 +23,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ErrorText from '../../../component/ErrorText';
 
 export default function Login() {
+  const [agreed, setAgreed] = React.useState(false);
+
   const {
     phone,
     phoneError,
@@ -69,48 +72,60 @@ export default function Login() {
                   {loading && <Loading />}
 
                   <View style={styles.headerContainer}>
-                    <Text allowFontScaling={false} style={styles.welcomeText}>Welcome Back!</Text>
-                    <Text allowFontScaling={false} style={styles.subtitle}>
-                      Enter your mobile number to continue
+                    <Text allowFontScaling={false} style={styles.welcomeText}>
+                      Login <Text style={styles.welcomeTextLight}>or</Text> Signup
                     </Text>
                   </View>
-                  <View style={styles.inputLabelContainer}>
-                    <Text allowFontScaling={false} style={styles.inputLabel}>Mobile Number</Text>
-                  </View>
+
                   <View style={styles.inputSection}>
-
-
                     <CustomInput
-                      placeholder="Enter Mobile Number"
-                      leftIcon={<Icon source={imageIndex.phone} />}
+                      placeholder="Mobile Number*"
+                      placeholderTextColor="#999"
+                      leftIcon={
+                        <View style={styles.prefixContainer}>
+                          <Text style={styles.prefixText}>+91</Text>
+                          <View style={styles.verticalDivider} />
+                        </View>
+                      }
                       value={phone}
                       onChangeText={handlePhoneChange}
                       keyboardType="phone-pad"
                       maxLength={10}
                       containerStyle={styles.inputContainer}
+                      inputStyle={styles.inputField}
                     />
                     <ErrorText error={phoneError} />
+                  </View>
 
-
+                  <View style={styles.termsRow}>
+                    <TouchableOpacity
+                      style={[styles.checkbox, agreed && styles.checkboxActive]}
+                      onPress={() => setAgreed(!agreed)}
+                      activeOpacity={0.8}
+                    >
+                      {agreed && <View style={styles.checkboxInner} />}
+                    </TouchableOpacity>
+                    <Text allowFontScaling={false} style={styles.termsText}>
+                      By continuing, I agree to the <Text style={styles.termsLink}>Terms of Use</Text> & <Text style={styles.termsLink}>Privacy Policy</Text> and I am above 18 years old.
+                    </Text>
                   </View>
 
                   <View style={styles.buttonSection}>
-                    <CustomButton
-                      title="Continue"
+                    <TouchableOpacity
+                      style={[styles.loginButton, (!agreed || phone.length !== 10) && styles.loginButtonDisabled]}
                       onPress={handleLogin}
-                    // onPress={handleLogin}
-                    />
-
-                    <View style={styles.termsContainer}>
-                      <Text allowFontScaling={false} style={styles.termsText}>
-                        By continuing, you agree to our{' '}
-                        <Text style={styles.termsLink}>Terms of Service</Text>
-                        {' '}and{' '}
-                        <Text allowFontScaling={false} style={styles.termsLink}>Privacy Policy</Text>
-                      </Text>
-                    </View>
+                      disabled={!agreed || phone.length !== 10}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.loginButtonText}>CONTINUE</Text>
+                    </TouchableOpacity>
                   </View>
 
+                  <View style={styles.footerContainer}>
+                    <Text allowFontScaling={false} style={styles.footerText}>
+                      Have trouble logging in? <Text style={styles.footerLink}>Get help</Text>
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
