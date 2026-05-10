@@ -8,7 +8,7 @@ import {
   Animated,
   Easing,
   Image,
- 
+
   FlatList,
 } from 'react-native';
 import ProductCard from '../../../component/cart/ProductCard';
@@ -399,18 +399,18 @@ const OtherCategoryData = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [cartCount, setCartCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
-  
+
   // State for categories and filtering
   const [selectedCategory, setSelectedCategory] = useState('1'); // Default: All Saris
   const [selectedSubcategory, setSelectedSubcategory] = useState('All');
   const [products, setProducts] = useState(SARI_PRODUCTS['All']);
-  
+
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
   const cartPulseAnim = useRef(new Animated.Value(1)).current;
   const headerScrollAnim = useRef(new Animated.Value(0)).current;
-  
+
   const navigation = useNavigation();
 
   // User data
@@ -426,7 +426,7 @@ const OtherCategoryData = () => {
 
   useEffect(() => {
     setUserData(userInfo);
-    
+
     // Start animations
     Animated.parallel([
       Animated.timing(fadeAnim, {
@@ -460,10 +460,10 @@ const OtherCategoryData = () => {
   useEffect(() => {
     const totalItems = cart.length;
     const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
-    
+
     setCartCount(totalItems);
     setCartTotal(totalPrice);
-    
+
     // Pulse animation when cart updates
     if (totalItems > 0) {
       Animated.sequence([
@@ -479,7 +479,7 @@ const OtherCategoryData = () => {
         }),
       ]).start();
     }
-    
+
     if (userData) {
       setUserData({
         ...userData,
@@ -512,7 +512,7 @@ const OtherCategoryData = () => {
 
     const updatedCart = [...cart, product];
     setCart(updatedCart);
-    
+
     // Add bounce animation to cart
     Animated.sequence([
       Animated.timing(cartPulseAnim, {
@@ -569,9 +569,9 @@ const OtherCategoryData = () => {
   // Render header with gradient
   const renderHeader = () => {
     const selectedCat = SARI_CATEGORIES.find(cat => cat.id === selectedCategory);
-    
+
     return (
-      <Animated.View 
+      <Animated.View
         style={[
           styles.header,
           {
@@ -597,7 +597,7 @@ const OtherCategoryData = () => {
           end={{ x: 1, y: 0 }}
         />
         <View style={styles.headerLeft}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.backButton}
             onPress={handleBackPress}
             activeOpacity={0.7}
@@ -611,10 +611,10 @@ const OtherCategoryData = () => {
             </Text>
           </View>
         </View>
-        
+
         <View style={styles.headerRight}>
           <Animated.View style={{ transform: [{ scale: cartPulseAnim }] }}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.cartIconContainer}
               onPress={showCartSummary}
               activeOpacity={0.7}
@@ -635,48 +635,49 @@ const OtherCategoryData = () => {
   // Render category item
   const renderCategoryItem = ({ item }) => {
     const isSelected = selectedCategory === item.id;
-    
+
     return (
       <TouchableOpacity
         style={[
           {
-            padding:11
+            padding: 11
           },
           styles.categoryCard,
           isSelected && styles.categoryCardSelected,
-          { borderColor:isSelected ?"black":"black",
-backgroundColor:isSelected ? "black":"white"
+          {
+            borderColor: isSelected ? "black" : "black",
+            backgroundColor: isSelected ? "black" : "white"
 
-           }
+          }
         ]}
         onPress={() => handleCategorySelect(item.id)}
         activeOpacity={0.8}
       >
-        
-            
-           <Text 
-            style={[
-              styles.categoryName,
-              isSelected && { color: '#fffdfdff' }
-            ]}
-            numberOfLines={2}
-          >
-            {item.name}
-          </Text>
-         
-       </TouchableOpacity>
+
+
+        <Text
+          style={[
+            styles.categoryName,
+            isSelected && { color: '#fffdfdff' }
+          ]}
+          numberOfLines={2}
+        >
+          {item.name}
+        </Text>
+
+      </TouchableOpacity>
     );
   };
 
   const renderProductCard = ({ item, index }) => {
     return (
-      <ProductCard 
+      <ProductCard
         item={item}
         onPress={() => item.inStock && addToCart(item)}
         buttShow={true}
         title={item.inStock ? `ADD TO CART` : 'OUT OF STOCK'}
         disabled={!item.inStock}
-        onPress1={() => navigation.navigate(ScreenNameEnum.ProductDetails, { product: item })}
+      // onPress1={() => navigation.navigate(ScreenNameEnum.ProductDetails, { product: item })}
       />
     );
   };
@@ -684,16 +685,16 @@ backgroundColor:isSelected ? "black":"white"
   // Render cart summary bar with gradient
   const renderCartSummary = () => {
     if (cartCount === 0) return null;
-    
+
     const slideUpAnim = new Animated.Value(100);
-    
+
     Animated.spring(slideUpAnim, {
       toValue: 0,
       tension: 50,
       friction: 8,
       useNativeDriver: true,
     }).start();
-    
+
     return (
       <Animated.View style={[styles.cartSummary, { transform: [{ translateY: slideUpAnim }] }]}>
         <LinearGradient
@@ -704,12 +705,12 @@ backgroundColor:isSelected ? "black":"white"
         />
         <View style={styles.cartInfo}>
           <Text allowFontScaling={false} style={styles.cartText}>
-            <Text allowFontScaling={false} style={styles.cartCount}>{cartCount}</Text> 
+            <Text allowFontScaling={false} style={styles.cartCount}>{cartCount}</Text>
             item{cartCount !== 1 ? 's' : ''} in cart
           </Text>
           <Text allowFontScaling={false} style={styles.cartTotal}>Total: ₹{cartTotal}</Text>
         </View>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.viewCartButton}
           onPress={showCartSummary}
           activeOpacity={0.7}
@@ -722,7 +723,7 @@ backgroundColor:isSelected ? "black":"white"
           />
           <Text allowFontScaling={false} style={styles.viewCartButtonText}>VIEW CART</Text>
         </TouchableOpacity>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.clearCartButton}
           onPress={clearCart}
           activeOpacity={0.7}
@@ -739,7 +740,7 @@ backgroundColor:isSelected ? "black":"white"
   return (
     <SafeAreaView style={styles.container}>
       {renderHeader()}
-      
+
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         onScroll={(event) => {
@@ -768,7 +769,7 @@ backgroundColor:isSelected ? "black":"white"
               </View>
             </View>
           </LinearGradient>
-          
+
           <FlatList
             data={SARI_CATEGORIES}
             renderItem={renderCategoryItem}
@@ -779,23 +780,23 @@ backgroundColor:isSelected ? "black":"white"
           />
         </Animated.View>
 
-     
+
 
         {/* Products Section */}
         <Animated.View style={[styles.section, {
           opacity: fadeAnim,
           transform: [{ translateY: slideAnim }]
         }]}>
-          
-            
-           
+
+
+
           {products.length > 0 ? (
             <View style={[styles.productGrid, {
-              flexDirection:"row"
+              flexDirection: "row"
             }]}>
               {products.map((item, index) => (
-                <View 
-                  key={item.id} 
+                <View
+                  key={item.id}
                   style={[
                     styles.productCardContainer,
                     index % 2 === 0 ? styles.productCardLeft : styles.productCardRight
@@ -814,10 +815,10 @@ backgroundColor:isSelected ? "black":"white"
             </View>
           )}
         </Animated.View>
-        
+
         <View style={styles.footer} />
       </Animated.ScrollView>
-      
+
       {renderCartSummary()}
     </SafeAreaView>
   );
@@ -929,22 +930,22 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   categoryCard: {
-   paddingVertical:12, 
+    paddingVertical: 12,
     marginRight: 12,
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-     shadowColor: '#000',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
-    alignItems:"center",
-    marginTop:5
+    alignItems: "center",
+    marginTop: 5
   },
   categoryCardSelected: {
     borderWidth: 1.2,
-  
-     shadowOffset: { width: 0, height: 4 },
+
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
   },

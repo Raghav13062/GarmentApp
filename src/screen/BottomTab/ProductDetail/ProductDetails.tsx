@@ -24,14 +24,18 @@ export default function ProductDetails() {
   const [product, setProduct] = useState<any>(null);
 
   useEffect(() => {
-    TopProductDetail(item?.id)
-      .then(res => {
-        if (res) {
-          setProduct(res);
-        }
-      })
-      .catch(err => console.log("API Error:", err));
-  }, [item?.id,]);
+    const productId = item?.id || item?._id;
+    if (productId) {
+      TopProductDetail(productId)
+        .then(res => {
+          if (res) {
+            setProduct(res);
+          }
+        })
+        .catch(err => console.log("API Error:", err));
+    }
+  }, [item?.id, item?._id]);
+
 
   if (!product) {
     return (
@@ -41,9 +45,16 @@ export default function ProductDetails() {
     );
   }
 
-  const discountPercent = Math.round(
-    ((product.price - product.discountPrice) / item.price) * 100
-  );
+  // Mapping API data fields
+  const displayName = product?.title || product?.name || "Product";
+  const displayMrp = product?.mrp || product?.price || 0;
+  const displaySellingPrice = product?.sellingPrice || product.discountPrice || 0;
+  const displayImages = product?.images || product?.baseImages || [];
+
+  const discountPercent = displayMrp > 0 
+    ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100) 
+    : product?.discountPercentage || 0;
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -60,7 +71,7 @@ export default function ProductDetails() {
               )
             }
           >
-            {product?.images?.map((img: string, index: number) => (
+            {displayImages?.map((img: string, index: number) => (
               <Image
                 key={index}
                 source={{ uri: img }}
@@ -81,7 +92,7 @@ export default function ProductDetails() {
 
           {/* DOT INDICATOR */}
           <View style={styles.indicatorRow}>
-            {product?.images?.map((_: any, i: number) => (
+            {displayImages?.map((_: any, i: number) => (
               <View
                 key={i}
                 style={[
@@ -95,7 +106,7 @@ export default function ProductDetails() {
 
         {/* PRODUCT INFO */}
         <View style={styles.section}>
-          <Text style={styles.brand}>{product.name}</Text>
+          <Text style={styles.brand}>{displayName}</Text>
           <Text style={[styles.off, {
             marginTop: 2
           }]}>{discountPercent}% OFF</Text>
@@ -112,15 +123,17 @@ export default function ProductDetails() {
           </View>
 
           <View style={styles.priceRow}>
-            <Text style={styles.price}>₹{product?.discountPrice}</Text>
-            <Text style={styles.mrp}>₹{product?.price}</Text>
+            <Text style={styles.price}>₹{displaySellingPrice}</Text>
+            {displayMrp > displaySellingPrice && (
+              <Text style={styles.mrp}>₹{displayMrp}</Text>
+            )}
 
             <LinearGradient
               colors={color.buttLinearGradient}
               style={styles.discountBadge}
             >
               <Text style={styles.discount}>
-                Stock {product?.stock}
+                Stock {product?.stock || product?.inventory?.stockQuantity}
               </Text>
             </LinearGradient>
           </View>

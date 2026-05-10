@@ -2,9 +2,13 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetProfile } from '../../../Api/auth/authservice';
-import { GetAllBrandsProduct, GetCategories } from '../../../Api/auth/ApiGetCategories';
+import { GetAllBrandsProduct } from '../../../Api/auth/ApiGetCategories';
+import { getHomePageData } from '../../../Api/auth/homeService';
+
 type GenderType = 'all' | 'men' | 'women' | 'kids';
+
 const SAFE_ARRAY_LIMIT = 50; // 🔐 crash protection
+
 export default function useDashboard() {
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
@@ -17,63 +21,61 @@ export default function useDashboard() {
 
   const isFirstLoad = useRef(true);
   const activeRequest = useRef(0); // 🔐 prevent race condition
-// 
 
   const GetBrandsProduct = useCallback(async () => {
- 
     try {
       const data = await GetAllBrandsProduct();
-
-      // ignore old API responses
- 
-      if (!data || !Array.isArray(data.sections)) {
+      if (data) {
         setBrandsProduct(data);
-        return;
       }
-
-  
     } catch (e) {
-      console.log('Home API Error', e);
-     }
-  }, [gender]);
+      console.log('Brands API Error', e);
+    }
+  }, []);
+
   /* ---------------- Fetch Home ---------------- */
   const fetchHome = useCallback(async (selectedGender: GenderType) => {
     const requestId = ++activeRequest.current;
+    setLoading(true);
 
     try {
-      const data = await GetCategories(setLoading, selectedGender);
+      const response = await getHomePageData(selectedGender);
 
       // ignore old API responses
       if (requestId !== activeRequest.current) return;
 
-      if (!data || !Array.isArray(data.sections)) {
+      if (!response || !response.success || !Array.isArray(response.data?.sections)) {
         setHomeData(null);
         return;
       }
 
-      setHomeData(data);
+      setHomeData(response.data);
 
-       if (isFirstLoad.current) {
-        const apiGender =
-          data.sections.find((s: any) => s?.type === 'GENDER_FILTER')
-            ?.data?.selectedGender;
+      if (isFirstLoad.current) {
+        // Find if there's any implicit gender filter in sections (though current API seems to use query param)
+        const genderSection = response.data.sections.find(
+          (s: any) => s?.sectionType === 'GENDER_FILTER'
+        );
+        const apiGender = genderSection?.data?.selectedGender;
 
         if (apiGender && apiGender !== gender) {
-          setGender(apiGender);
+          setGender(apiGender as GenderType);
         }
         isFirstLoad.current = false;
       }
     } catch (e) {
       console.log('Home API Error', e);
       setHomeData(null);
+    } finally {
+      setLoading(false);
     }
-  }, [gender]);
+  }, []);
 
-  /* ---------------- Profile ---------------- */
+  /* ---------------- Initial Load ---------------- */
   useEffect(() => {
     GetProfile(setLoading, dispatch);
-    GetBrandsProduct()
-  }, [dispatch]);
+    GetBrandsProduct();
+  }, [dispatch, GetBrandsProduct]);
 
   /* ---------------- Home Data ---------------- */
   useEffect(() => {
@@ -90,7 +92,7 @@ export default function useDashboard() {
 
   /* ---------------- Gender ---------------- */
   const genderSection = useMemo(
-    () => sections.find((item: any) => item?.type === 'GENDER_FILTER'),
+    () => sections.find((item: any) => item?.sectionType === 'GENDER_FILTER'),
     [sections]
   );
 
@@ -98,29 +100,51 @@ export default function useDashboard() {
     const options = genderSection?.data?.options;
     return Array.isArray(options)
       ? options.filter(Boolean)
-      : ['all', 'men', 'women'];
+      : ['all', 'men', 'women', 'kids'];
   }, [genderSection]);
 
   /* ---------------- Categories ---------------- */
   const categories = useMemo(() => {
-    const list =
-      sections.find((i: any) => i?.type === 'CATEGORIES')?.data?.categories;
+    const list = sections.find(
+      (i: any) => i?.sectionType === 'CATEGORY_GRID'
+    )?.data?.categories;
 
     return Array.isArray(list) ? list.slice(0, SAFE_ARRAY_LIMIT) : [];
   }, [sections]);
 
   /* ---------------- Banners ---------------- */
   const banners = useMemo(() => {
-    const list =
-      sections.find((i: any) => i?.type === 'BANNER_CAROUSEL')?.data?.banners;
+    // API response has SEARCH_BANNER which contains videoUrl or mediaImages
+    const bannerSection = sections.find(
+      (i: any) => i?.sectionType === 'SEARCH_BANNER' || i?.sectionType === 'BANNER_CAROUSEL'
+    );
+    
+    if (bannerSection?.sectionType === 'BANNER_CAROUSEL') {
+      return Array.isArray(bannerSection.data?.banners) 
+        ? bannerSection.data.banners.slice(0, SAFE_ARRAY_LIMIT) 
+        : [];
+    }
+    
+    // If it's SEARCH_BANNER with images
+    if (bannerSection?.data?.background?.mediaImages) {
+      return bannerSection.data.background.mediaImages;
+    }
 
-    return Array.isArray(list) ? list.slice(0, SAFE_ARRAY_LIMIT) : [];
+    return [];
+  }, [sections]);
+
+  /* ---------------- Video Ad ---------------- */
+  const videoAdUrl = useMemo(() => {
+    const bannerSection = sections.find((i: any) => i?.sectionType === 'SEARCH_BANNER');
+    return bannerSection?.data?.background?.videoUrl || null;
   }, [sections]);
 
   /* ---------------- Top Products ---------------- */
   const topProducts = useMemo(() => {
-    const list =
-      sections.find((i: any) => i?.type === 'TOP_PRODUCTS')?.data?.products;
+    // The API uses TOP_PICKS or NEW_ARRIVALS
+    const list = sections.find(
+      (i: any) => i?.sectionType === 'TOP_PICKS' || i?.sectionType === 'TOP_PRODUCTS'
+    )?.data?.products;
 
     return Array.isArray(list) ? list.slice(0, SAFE_ARRAY_LIMIT) : [];
   }, [sections]);
@@ -136,6 +160,7 @@ export default function useDashboard() {
     categories,
     banners,
     topProducts,
-    BrandsProduct
+    BrandsProduct,
+    videoAdUrl
   };
 }

@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import CustomButton from "../CustomButton";
- 
+
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = width / 2 - 13;
 
@@ -20,10 +20,16 @@ export default function ProductCard({
   title,
   buttShow,
   disabled,
- }) {
-  const discountPercent = Math.round(
-  ((item.price - item.discountPrice) / item.price) * 100
-);
+}) {
+  // Robust data mapping for different API responses
+  const titleText = item?.title || item?.name || "Product";
+  const displayMrp = item?.pricing?.mrp || item?.mrp || item?.price || 0;
+  const displaySellingPrice = item?.pricing?.sellingPrice || item?.sellingPrice || item?.discountPrice || 0;
+  const productImage = item?.images?.[0] || item?.baseImages?.[0] || 'https://via.placeholder.com/150';
+
+  const discountPercent = displayMrp > 0
+    ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100)
+    : item?.pricing?.discountPercentage || item?.discountPercentage || 0;
 
   return (
     <TouchableOpacity
@@ -34,48 +40,47 @@ export default function ProductCard({
       <View style={styles.card}>
         {/* IMAGE */}
         <ImageBackground
-          source={{ uri: item?.images?.[0]|| 'https://e7.pngegg.com/pngimages/64/922/png-clipart-jeans-t-shirt-clothing-graphy-a-pile-of-folded-jeans-blue-white-thumbnail.png' }}
+          source={{ uri: productImage }}
           style={styles.image}
           imageStyle={styles.imageRadius}
           resizeMode="stretch"
         />
 
-        {/* RATING */}
-        {/* <View style={styles.ratingChip}>
-          <Text style={styles.ratingText}>⭐ {item.rating || 4}</Text>
-          <Text style={styles.ratingCount}>
-            ({item.reviews || 23})
-          </Text>
-        </View> */}
-
         {/* TITLE */}
         <Text numberOfLines={1} style={styles.title}>
-          {item.name || "Mock Collar Striped Pullover"}
+          {titleText}
         </Text>
+
         {/* PRICE */}
         <View style={styles.priceRow}>
-          <Text style={styles.price}>₹{item.discountPrice}</Text>
-          <Text style={styles.oldPrice}>₹{item.price}</Text>
+          <Text style={styles.price}>₹{displaySellingPrice}</Text>
+          {displayMrp > displaySellingPrice && (
+            <Text style={styles.oldPrice}>₹{displayMrp}</Text>
+          )}
         </View>
-          <Text style={[styles.off,{
-            marginLeft:11,marginTop:2
-           }]}>{discountPercent}% OFF</Text>
+
+        {discountPercent > 0 && (
+          <Text style={[styles.off, { marginLeft: 11, marginTop: 2 }]}>
+            {discountPercent}% OFF
+          </Text>
+        )}
+
 
         {/* BUTTON */}
         {buttShow && (
           <View style={{
-            marginHorizontal:14,
-            marginTop:10,
-            marginBottom:10
+            marginHorizontal: 14,
+            marginTop: 10,
+            marginBottom: 10
           }}>
-             <CustomButton
+            <CustomButton
               title={title}
               onPress={onPress}
               disabled={disabled}
-             
+
             />
-            </View>
-     
+          </View>
+
         )}
       </View>
     </TouchableOpacity>
@@ -160,19 +165,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#777",
     textDecorationLine: "line-through",
-   flexWrap: "wrap",
+    flexWrap: "wrap",
 
   },
 
   off: {
-  fontSize: 12,
-  fontWeight: "700",
-  color: "#FF7A00",
-  flexShrink: 1,      // ⭐ text cut nahi hoga
-  flexWrap: "wrap",
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#FF7A00",
+    flexShrink: 1,      // ⭐ text cut nahi hoga
+    flexWrap: "wrap",
   },
 
   buttonWrap: {
     marginTop: 10,
-   },
+  },
 });
