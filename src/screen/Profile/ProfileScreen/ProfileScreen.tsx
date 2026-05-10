@@ -10,7 +10,7 @@ import {
 import Icon from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
 import imageIndex from "../../../assets/imageIndex";
-import { color, navigateToScreen } from "../../../constant";
+import { color, fonts, navigateToScreen } from "../../../constant";
 import { styles } from "./style";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarComponent from "../../../component/StatusBarCompoent";
@@ -28,44 +28,76 @@ const UserProfileScreen = () => {
 
   if (!userData?.isLogin) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: '#FDFBFA' }]}>
+      <SafeAreaView style={[styles.container, { backgroundColor: '#F9F9F9' }]}>
         <StatusBarComponent barStyle={"dark-content"} />
 
-
-
-        <View style={{ flex: 1, marginTop: 40, paddingHorizontal: 20 }}>
-          {/* Guest Card */}
-          <View style={{
-            backgroundColor: '#fff',
-            borderRadius: 20,
-            padding: 30,
-            alignItems: 'center',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 10 },
-            shadowOpacity: 0.08,
-            shadowRadius: 20,
-            elevation: 3,
-          }}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
+          {/* Modern Header Section */}
+          <LinearGradient
+            colors={color.buttLinearGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{
+              height: 280,
+              borderBottomLeftRadius: 40,
+              borderBottomRightRadius: 40,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 40,
+            }}
+          >
             <View style={{
-              width: 90, height: 90, borderRadius: 45, backgroundColor: '#FEF3F2',
-              justifyContent: 'center', alignItems: 'center', marginBottom: 20,
+              width: 100,
+              height: 100,
+              borderRadius: 50,
+              backgroundColor: 'rgba(255,255,255,0.2)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderWidth: 2,
+              borderColor: 'rgba(255,255,255,0.5)',
             }}>
-              <Icon name="user" size={40} color="#F58021" />
-              <View style={{
-                position: 'absolute', bottom: 0, right: 0, backgroundColor: '#111',
-                borderRadius: 12, width: 24, height: 24, justifyContent: 'center', alignItems: 'center',
-                borderWidth: 2, borderColor: '#fff'
-              }}>
-                <Icon name="lock" size={10} color="#fff" />
-              </View>
+              <Icon name="user" size={50} color="#fff" />
             </View>
-
-            <Text style={{ fontSize: 22, fontWeight: '800', color: '#111', marginBottom: 8, textAlign: 'center' }}>
-              Guest User
+            <Text style={{
+              color: '#fff',
+              fontSize: 28,
+              marginTop: 15,
+              letterSpacing: 1
+            }}>
+              Welcome, Guest
             </Text>
+            <Text style={{
+              color: 'rgba(255,255,255,0.9)',
+              fontSize: 14,
+              marginTop: 5,
+            }}>
+              Your style journey starts here
+            </Text>
+          </LinearGradient>
 
-            <Text style={{ fontSize: 14, color: '#666', marginBottom: 24, textAlign: 'center', lineHeight: 22 }}>
-              Log in to unlock all features and manage your personalized fashion experience.
+          {/* Login Card */}
+          <View style={{
+            marginTop: -60,
+            marginHorizontal: 24,
+            backgroundColor: '#fff',
+            borderRadius: 24,
+            padding: 30,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 15 },
+            shadowOpacity: 0.1,
+            shadowRadius: 20,
+            elevation: 10,
+            alignItems: 'center',
+          }}>
+            <Text style={{
+              fontSize: 18,
+              color: '#333',
+              textAlign: 'center',
+              fontFamily: fonts.semiBold,
+              lineHeight: 26,
+              marginBottom: 24
+            }}>
+              Login to access your orders, wishlist, and personalized offers.
             </Text>
 
             <TouchableOpacity
@@ -78,46 +110,77 @@ const UserProfileScreen = () => {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={{
-                  paddingVertical: 14,
-                  borderRadius: 25,
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  paddingVertical: 16,
+                  borderRadius: 30,
+                  shadowColor: color.primary,
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  elevation: 5,
                 }}
               >
-                <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>
-                  LOGIN / SIGN UP
+                <Text style={{
+                  color: '#fff',
+                  fontSize: 16,
+                  fontFamily: fonts.bold,
+                  textAlign: 'center',
+                  letterSpacing: 1.5
+                }}>
+                  LOG IN / SIGN UP
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
 
-          {/* Benefits Section */}
-          <View style={{ marginTop: 30, paddingHorizontal: 10 }}>
-            <Text style={{ fontSize: 16, fontWeight: '700', color: '#111', marginBottom: 20 }}>
-              Why log in?
+          {/* Premium Benefits Grid */}
+          <View style={{ padding: 24, marginTop: 10 }}>
+            <Text style={{
+              fontSize: 18,
+              fontFamily: fonts.bold,
+              color: '#111',
+              marginBottom: 20,
+              marginLeft: 5
+            }}>
+              Membership Perks
             </Text>
 
-            {[
-              { icon: 'shopping-bag', title: 'Manage Orders', desc: 'Track, return, or cancel your orders' },
-              { icon: 'heart', title: 'Wishlist & Save', desc: 'Save your favorite items for later' },
-              { icon: 'tag', title: 'Exclusive Offers', desc: 'Get access to personalized discounts' },
-            ].map((item, index) => (
-              <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-                <View style={{
-                  width: 46, height: 46, borderRadius: 23, backgroundColor: '#FDFBFA',
-                  justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#EEE'
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+              {[
+                { icon: 'shopping-bag', title: 'Orders', desc: 'Fast Tracking' },
+                { icon: 'heart', title: 'Wishlist', desc: 'Save Styles' },
+                { icon: 'tag', title: 'Offers', desc: 'Member Price' },
+                { icon: 'award', title: 'Points', desc: 'Earn Rewards' },
+              ].map((item, index) => (
+                <View key={index} style={{
+                  width: '48%',
+                  backgroundColor: '#fff',
+                  borderRadius: 20,
+                  padding: 20,
+                  marginBottom: 16,
+                  borderWidth: 1,
+                  borderColor: '#F0F0F0',
+                  alignItems: 'center'
                 }}>
-                  <Icon name={item.icon} size={20} color="#F58021" />
+                  <View style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 22,
+                    backgroundColor: '#FFF5EE',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginBottom: 12
+                  }}>
+                    <Icon name={item.icon} size={20} color="#F58021" />
+                  </View>
+                  <Text style={{ fontSize: 14, fontFamily: fonts.bold, color: '#111' }}>{item.title}</Text>
+                  <Text style={{ fontSize: 11, color: '#888', marginTop: 2 }}>{item.desc}</Text>
                 </View>
-                <View style={{ marginLeft: 16, flex: 1 }}>
-                  <Text style={{ fontSize: 15, fontWeight: '600', color: '#111', marginBottom: 2 }}>{item.title}</Text>
-                  <Text style={{ fontSize: 13, color: '#666' }}>{item.desc}</Text>
-                </View>
-              </View>
-            ))}
+              ))}
+            </View>
           </View>
 
-        </View>
+          <View style={{ height: 40 }} />
+        </ScrollView>
       </SafeAreaView>
     );
   }

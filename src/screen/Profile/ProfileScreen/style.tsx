@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 import { color } from "../../../constant";
- 
+
 export const styles = StyleSheet.create({
-    container: {
+  container: {
     flex: 1,
     backgroundColor: color.white,
   },
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
-   },
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 15,
-    marginBottom:20
+    marginBottom: 20
   },
   profileImgWrapper: {
     position: "relative",
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 4,
     borderColor: color.white,
-    backgroundColor:color.white,
+    backgroundColor: color.white,
   },
   editIconGradient: {
     position: "absolute",
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
   },
   userEmail: {
     fontSize: 14,
-    color:color.white,
+    color: color.white,
     marginBottom: 8,
   },
   verifiedBadge: {
@@ -133,7 +133,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor:color.white,
+    borderBottomColor: color.white,
   },
   rowLeft: {
     flexDirection: 'row',
@@ -196,7 +196,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   logoutText: {
-    color:  color.white,
+    color: color.white,
     fontSize: 16,
     fontWeight: "700",
     marginLeft: 10,
@@ -210,4 +210,4 @@ export const styles = StyleSheet.create({
     color: "#999",
   },
 
- });
+});
