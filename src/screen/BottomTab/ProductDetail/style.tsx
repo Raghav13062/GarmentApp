@@ -1,7 +1,7 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
 import { color } from "../../../constant";
- const { width } = Dimensions.get("window");
- 
+const { width } = Dimensions.get("window");
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -26,17 +26,17 @@ export const styles = StyleSheet.create({
     left: 16,
   },
   off: {
-  fontSize: 12,
-  fontWeight: "700",
-  color: "#FF7A00",
-  flexShrink: 1,      // ⭐ text cut nahi hoga
-  flexWrap: "wrap",
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#FF7A00",
+    flexShrink: 1,      // ⭐ text cut nahi hoga
+    flexWrap: "wrap",
   },
   ratingSubText: {
-  fontSize: 12,
-  fontWeight: '400',
-  color: '#666',
-},
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#666',
+  },
   backBtn: {
     height: 40,
     width: 40,
@@ -102,30 +102,29 @@ export const styles = StyleSheet.create({
     backgroundColor: "#FDFBFA",
     borderTopWidth: 1,
     borderColor: "#E5E5E5",
+    alignItems: "center",
+  },
+  favoriteBtn: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   themeBtnGradient: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 14,
-    borderRadius: 25,
+    borderRadius: 15,
   },
   themeBtnText: {
     color: "#fff",
     fontWeight: "700",
-    fontSize: 15,
-  },
-  themeBtnBuy: {
-    flex: 1,
-    backgroundColor: "#222",
-    marginLeft: 8,
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  themeBtnBuyText: {
-    color: "#fff",
-    fontWeight: "700",
-    fontSize: 15,
+    fontSize: 16,
+    letterSpacing: 1,
   },
 });

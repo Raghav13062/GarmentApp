@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Platform,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import LinearGradient from "react-native-linear-gradient";
@@ -93,12 +94,7 @@ export default function ProductDetails() {
             ))}
           </ScrollView>
 
-          {/* BACK BUTTON */}
-          <TouchableOpacity style={styles.backButton} onPress={navigationBack}>
-            <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.8)', alignItems: 'center', justifyContent: 'center' }}>
-              <Ionicons name="arrow-back" size={22} color="#111" />
-            </View>
-          </TouchableOpacity>
+
 
           {/* PREMIUM OVERLAYS */}
           {discountPercent > 0 && (
@@ -213,20 +209,27 @@ export default function ProductDetails() {
 
       </ScrollView>
 
+      {/* FIXED BACK BUTTON */}
+      <TouchableOpacity style={[styles.backButton, { zIndex: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 }]} onPress={navigationBack}>
+        <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.9)', alignItems: 'center', justifyContent: 'center' }}>
+          <Ionicons name="arrow-back" size={22} color="#111" />
+        </View>
+      </TouchableOpacity>
+
       {/* BOTTOM BAR */}
       <View style={styles.themeBottomBar}>
+        <TouchableOpacity style={styles.favoriteBtn}>
+          <Ionicons name="heart-outline" size={26} color="#444" />
+        </TouchableOpacity>
+
         <TouchableOpacity
-          style={{ flex: 1, marginRight: 8 }}
+          style={{ flex: 1, marginLeft: 16 }}
           onPress={() => navigateToScreen(ScreenNameEnum.CheckoutScreen, { product })}
         >
           <LinearGradient colors={color.buttLinearGradient} style={styles.themeBtnGradient}>
-            <Ionicons name="bag-outline" size={18} color="#fff" style={{ marginRight: 8 }} />
-            <Text style={styles.themeBtnText}>Add to Bag</Text>
+            <Ionicons name="cart-outline" size={22} color="#fff" style={{ marginRight: 8 }} />
+            <Text style={styles.themeBtnText}>Add to Cart</Text>
           </LinearGradient>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.themeBtnBuy}>
-          <Text style={styles.themeBtnBuyText}>Buy Now</Text>
         </TouchableOpacity>
       </View>
     </View>

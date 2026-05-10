@@ -9,18 +9,18 @@ type StatusBarComponentProps = {
 };
 
 const StatusBarComponent: React.FC<StatusBarComponentProps> = ({
-  barStyle = 'dark-content',
-  backgroundColor = color.borderPrimary,
+  barStyle = 'light-content',
+  backgroundColor = color.white,
   translucent = false,
 }) => {
   return (
- 
-      <StatusBar
-        barStyle={barStyle}
-        backgroundColor={backgroundColor}
-        translucent={translucent}
-      />
- 
+
+    <StatusBar
+      barStyle={barStyle}
+      backgroundColor={backgroundColor}
+      translucent={translucent}
+    />
+
   );
 };
 

@@ -67,7 +67,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBarComponent />
+      <StatusBarComponent barStyle={"dark-content"} />
       <HeaderBar />
       <SearchBar />
 
