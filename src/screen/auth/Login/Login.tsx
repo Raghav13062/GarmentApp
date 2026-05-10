@@ -21,6 +21,8 @@ import { styles } from './style';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ErrorText from '../../../component/ErrorText';
+import LinearGradient from 'react-native-linear-gradient';
+import { color } from '../../../constant';
 
 export default function Login() {
   const [agreed, setAgreed] = React.useState(false);
@@ -112,12 +114,28 @@ export default function Login() {
 
                   <View style={styles.buttonSection}>
                     <TouchableOpacity
-                      style={[styles.loginButton, (!agreed || phone.length !== 10) && styles.loginButtonDisabled]}
+                      style={[
+                        styles.loginButtonBase,
+                        (!agreed || phone.length !== 10) && styles.loginButtonDisabled
+                      ]}
                       onPress={handleLogin}
                       disabled={!agreed || phone.length !== 10}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.loginButtonText}>CONTINUE</Text>
+                      {agreed && phone.length === 10 ? (
+                        <LinearGradient
+                          colors={color.buttLinearGradient}
+                          start={{ x: 0, y: 0 }}
+                          end={{ x: 1, y: 0 }}
+                          style={styles.loginButtonGradient}
+                        >
+                          <Text style={styles.loginButtonText}>CONTINUE</Text>
+                        </LinearGradient>
+                      ) : (
+                        <View style={styles.loginButtonGradient}>
+                          <Text style={styles.loginButtonText}>CONTINUE</Text>
+                        </View>
+                      )}
                     </TouchableOpacity>
                   </View>
 

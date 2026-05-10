@@ -30,57 +30,103 @@ const UserProfileScreen = () => {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: '#FDFBFA' }]}>
         <StatusBarComponent />
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 30 }}>
-          
+        
+        {/* Header - same as logged in user */}
+        <LinearGradient
+          colors={color.buttLinearGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={[styles.headerGradient, { paddingBottom: 60 }]}
+        >
+          <View style={styles.headerTop}>
+            <Text style={styles.headerTitle}>My Profile</Text>
+          </View>
+        </LinearGradient>
+
+        <View style={{ flex: 1, marginTop: -40, paddingHorizontal: 20 }}>
+          {/* Guest Card */}
           <View style={{
-            width: 120, height: 120, borderRadius: 60, backgroundColor: '#FEF3F2', 
-            justifyContent: 'center', alignItems: 'center', marginBottom: 24,
-            shadowColor: '#F58021', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.1, shadowRadius: 15
+            backgroundColor: '#fff',
+            borderRadius: 20,
+            padding: 30,
+            alignItems: 'center',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.08,
+            shadowRadius: 20,
+            elevation: 10,
           }}>
-            <Icon name="user" size={50} color="#F58021" />
             <View style={{
-              position: 'absolute', bottom: 5, right: 5, backgroundColor: '#fff', 
-              borderRadius: 15, width: 30, height: 30, justifyContent: 'center', alignItems: 'center',
-              shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4
+              width: 90, height: 90, borderRadius: 45, backgroundColor: '#FEF3F2', 
+              justifyContent: 'center', alignItems: 'center', marginBottom: 20,
             }}>
-              <Icon name="lock" size={14} color="#333" />
+              <Icon name="user" size={40} color="#F58021" />
+              <View style={{
+                position: 'absolute', bottom: 0, right: 0, backgroundColor: '#111', 
+                borderRadius: 12, width: 24, height: 24, justifyContent: 'center', alignItems: 'center',
+                borderWidth: 2, borderColor: '#fff'
+              }}>
+                <Icon name="lock" size={10} color="#fff" />
+              </View>
             </View>
+
+            <Text style={{ fontSize: 22, fontWeight: '800', color: '#111', marginBottom: 8, textAlign: 'center' }}>
+              Guest User
+            </Text>
+            
+            <Text style={{ fontSize: 14, color: '#666', marginBottom: 24, textAlign: 'center', lineHeight: 22 }}>
+              Log in to unlock all features and manage your personalized fashion experience.
+            </Text>
+            
+            <TouchableOpacity
+              style={{ width: '100%' }}
+              onPress={() => navigateToScreen(ScreenNameEnum.LoginScreen)}
+              activeOpacity={0.8}
+            >
+              <LinearGradient
+                colors={color.buttLinearGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={{
+                  paddingVertical: 14,
+                  borderRadius: 25,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>
+                  LOGIN / SIGN UP
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
           </View>
 
-          <Text style={{ fontSize: 24, fontWeight: '800', color: '#222', marginBottom: 12, textAlign: 'center' }}>
-            Guest User
-          </Text>
+          {/* Benefits Section */}
+          <View style={{ marginTop: 30, paddingHorizontal: 10 }}>
+            <Text style={{ fontSize: 16, fontWeight: '700', color: '#111', marginBottom: 20 }}>
+              Why log in?
+            </Text>
+
+            {[
+              { icon: 'shopping-bag', title: 'Manage Orders', desc: 'Track, return, or cancel your orders' },
+              { icon: 'heart', title: 'Wishlist & Save', desc: 'Save your favorite items for later' },
+              { icon: 'tag', title: 'Exclusive Offers', desc: 'Get access to personalized discounts' },
+            ].map((item, index) => (
+              <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+                <View style={{
+                  width: 46, height: 46, borderRadius: 23, backgroundColor: '#FDFBFA',
+                  justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#EEE'
+                }}>
+                  <Icon name={item.icon} size={20} color="#F58021" />
+                </View>
+                <View style={{ marginLeft: 16, flex: 1 }}>
+                  <Text style={{ fontSize: 15, fontWeight: '600', color: '#111', marginBottom: 2 }}>{item.title}</Text>
+                  <Text style={{ fontSize: 13, color: '#666' }}>{item.desc}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
           
-          <Text style={{ fontSize: 15, color: '#666', marginBottom: 40, textAlign: 'center', lineHeight: 24 }}>
-            Log in to manage your orders, track deliveries, save addresses, and access your wishlist.
-          </Text>
-          
-          <TouchableOpacity
-            style={{ width: '100%', maxWidth: 300 }}
-            onPress={() => navigateToScreen(ScreenNameEnum.LoginScreen)}
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={color.buttLinearGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{
-                paddingVertical: 16,
-                borderRadius: 25,
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: color.primary || "#F58021",
-                shadowOffset: { width: 0, height: 6 },
-                shadowOpacity: 0.3,
-                shadowRadius: 12,
-                elevation: 8,
-              }}
-            >
-              <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 1 }}>
-                LOGIN / SIGN UP
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
