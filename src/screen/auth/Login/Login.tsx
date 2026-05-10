@@ -7,6 +7,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  ImageBackground,
 } from 'react-native';
 import React from 'react';
 import Loading from '../../../utils/Loader';
@@ -32,84 +33,90 @@ export default function Login() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAvoidingView
-          style={styles.keyboardAvoidingView}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 30}
-        >
-      <SafeAreaView style={styles.main}>
-        <StatusBarComponent translucent={true} backgroundColor="transparent" />
-         <View style={styles.backgroundOverlay} />
-          <ScrollView 
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 30}
+      >
+        <View style={styles.main}>
+          <StatusBarComponent translucent={true} backgroundColor="transparent" />
+          <ImageBackground
+            source={imageIndex.loginBg}
+            style={styles.backgroundOverlay}
+            resizeMode="cover"
+          >
+            <View style={styles.darkOverlay} />
+          </ImageBackground>
+          <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="handled"
           >
-             <View style={styles.contentContainer}>
-               <View style={styles.topSection}>
-                <Image 
-                  source={imageIndex.logo} 
-                  style={styles.logo} 
-                 />
- 
+            <View style={styles.contentContainer}>
+              <View style={styles.topSection}>
+                <Image
+                  source={imageIndex.logo}
+                  style={styles.logo}
+                />
+
               </View>
 
               {/* Bottom   */}
               <View style={styles.bottomSheet}>
-                  
-                
+                <View style={styles.handleBar} />
+
                 <View style={styles.bottomSheetContent}>
                   {loading && <Loading />}
 
                   <View style={styles.headerContainer}>
-                    <Text  allowFontScaling={false}  style={styles.welcomeText}>Welcome Back!</Text>
-                    <Text  allowFontScaling={false}  style={styles.subtitle}>
+                    <Text allowFontScaling={false} style={styles.welcomeText}>Welcome Back!</Text>
+                    <Text allowFontScaling={false} style={styles.subtitle}>
                       Enter your mobile number to continue
                     </Text>
                   </View>
-  <View style={styles.inputLabelContainer}>
-                      <Text  allowFontScaling={false}  style={styles.inputLabel}>Mobile Number</Text>
-                     </View>
+                  <View style={styles.inputLabelContainer}>
+                    <Text allowFontScaling={false} style={styles.inputLabel}>Mobile Number</Text>
+                  </View>
                   <View style={styles.inputSection}>
-                  
-                    
+
+
                     <CustomInput
                       placeholder="Enter Mobile Number"
-                      leftIcon={<Icon source={imageIndex.phone}   />}
+                      leftIcon={<Icon source={imageIndex.phone} />}
                       value={phone}
                       onChangeText={handlePhoneChange}
                       keyboardType="phone-pad"
                       maxLength={10}
                       containerStyle={styles.inputContainer}
-                     />
-                     <ErrorText error={phoneError} />
+                    />
+                    <ErrorText error={phoneError} />
 
-                 
+
                   </View>
 
                   <View style={styles.buttonSection}>
-                    <CustomButton 
-                      title="Continue" 
+                    <CustomButton
+                      title="Continue"
                       onPress={handleLogin}
-                      // onPress={handleLogin}
-                      />
-                    
+                    // onPress={handleLogin}
+                    />
+
                     <View style={styles.termsContainer}>
-                      <Text   allowFontScaling={false} style={styles.termsText}>
+                      <Text allowFontScaling={false} style={styles.termsText}>
                         By continuing, you agree to our{' '}
                         <Text style={styles.termsLink}>Terms of Service</Text>
                         {' '}and{' '}
-                        <Text   allowFontScaling={false} style={styles.termsLink}>Privacy Policy</Text>
+                        <Text allowFontScaling={false} style={styles.termsLink}>Privacy Policy</Text>
                       </Text>
                     </View>
                   </View>
- 
+
                 </View>
               </View>
             </View>
           </ScrollView>
-      </SafeAreaView>
-              </KeyboardAvoidingView>
+        </View>
+      </KeyboardAvoidingView>
 
     </TouchableWithoutFeedback>
   );

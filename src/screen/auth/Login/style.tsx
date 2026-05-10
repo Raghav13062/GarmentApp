@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#FDFBFA', // Premium off-white
+    backgroundColor: '#EAEAEA', // Darker gray so bottom sheet pops
   },
   
   keyboardAvoidingView: {
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   
   scrollContainer: {
     flexGrow: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end', // Push everything down
   },
   
   backgroundOverlay: {
@@ -24,7 +24,12 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#FDFBFA',
+    backgroundColor: '#EAEAEA',
+  },
+  
+  darkOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)', // Dark overlay so logo pops
   },
   
   contentContainer: {
@@ -38,12 +43,15 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: Platform.OS === 'ios' ? 40 : 60,
-    maxHeight: height * 0.4,
+    paddingBottom: 40,
   },
   
   logo: {
-    width: width * 0.77,
-    height: width * 0.77,
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
     marginBottom: 16,
   },
   
@@ -63,24 +71,24 @@ export const styles = StyleSheet.create({
   // Bottom Sheet Styles
   bottomSheet: {
     backgroundColor: '#fff',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingTop: 16,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    paddingTop: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: -10 },
+    shadowOpacity: 0.1,
     shadowRadius: 20,
-    elevation: 10,
-    minHeight: height * 0.6,
+    elevation: 20,
+    minHeight: height * 0.65, // Taller so it looks prominent
   },
   
   handleBar: {
-    width: 40,
-    height: 1.6,
-    backgroundColor: color.primary,
-    borderRadius: 1,
+    width: 45,
+    height: 5,
+    backgroundColor: '#D1D1D1',
+    borderRadius: 3,
     alignSelf: 'center',
-    marginBottom: 16,
+    marginBottom: 24,
   },
   
   bottomSheetContent: {
