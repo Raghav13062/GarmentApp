@@ -108,7 +108,15 @@ export default function ProductDetails() {
   const displayMrp = parseFloat(rawMrp);
   const displaySellingPrice = parseFloat(rawSellingPrice);
 
-  const displayImages = product?.images || product?.baseImages || [];
+  let displayImages = product?.baseImages || product?.images || [];
+  if (selectedColor && product?.variantImages?.length > 0) {
+    const variant = product.variantImages.find((v: any) => v.color === selectedColor);
+    if (variant && variant.urls && variant.urls.length > 0) {
+      displayImages = variant.urls;
+    }
+  }
+
+  const categoryName = product?.categoryId?.name || product?.category?.name || "Category";
 
   const discountPercent = rawDiscount > 0
     ? rawDiscount
@@ -170,7 +178,7 @@ export default function ProductDetails() {
         <View style={{ padding: 20, backgroundColor: '#FDFBFA' }}>
           {/* CATEGORY */}
           <Text style={{ fontSize: 12, color: '#888', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-            {product?.category?.name} {product?.subcategory ? `• ${product.subcategory}` : ''}
+            {categoryName} {product?.subcategory ? `• ${product.subcategory}` : ''}
           </Text>
 
           {/* TITLE */}
@@ -183,7 +191,7 @@ export default function ProductDetails() {
             <Ionicons name="star" size={14} color="#b69262" />
             <Ionicons name="star" size={14} color="#b69262" />
             <Ionicons name="star-half" size={14} color="#b69262" />
-            <Text style={{ fontSize: 12, color: color.textMedium, marginLeft: 8 }}>({product?.ratings?.count || 'Premium Quality'})</Text>
+            <Text style={{ fontSize: 12, color: color.textMedium, marginLeft: 8 }}>({product?.ratings?.count ?? 'Premium Quality'})</Text>
           </View>
 
           {/* PRICE */}
@@ -206,21 +214,30 @@ export default function ProductDetails() {
             <View style={{ marginBottom: 30, marginTop: 20 }}>
               <Text style={styles.sectionHeader}>COLOR</Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 }}>
-                {product.variants.colors.map((color: string, index: number) => (
+                {product.variants.colors.map((c: string, index: number) => {
+                  const variant = product.variantImages?.find((v: any) => v.color === c);
+                  return (
                   <TouchableOpacity
                     key={index}
                     style={[
                       styles.variantBox,
-                      selectedColor === color && styles.variantBoxSelected,
-                      { paddingHorizontal: 24, paddingVertical: 14 }
+                      selectedColor === c && styles.variantBoxSelected,
+                      { paddingHorizontal: variant ? 4 : 24, paddingVertical: variant ? 4 : 14 }
                     ]}
-                    onPress={() => setSelectedColor(color)}
+                    onPress={() => {
+                      setSelectedColor(c);
+                      setActiveImage(0);
+                    }}
                   >
-                    <Text style={[styles.variantText, selectedColor === color && styles.variantTextSelected]}>
-                      {color}
-                    </Text>
+                    {variant && variant.urls && variant.urls.length > 0 ? (
+                      <Image source={{ uri: variant.urls[0] }} style={{ width: 40, height: 40, borderRadius: 4 }} />
+                    ) : (
+                      <Text style={[styles.variantText, selectedColor === c && styles.variantTextSelected]}>
+                        {c}
+                      </Text>
+                    )}
                   </TouchableOpacity>
-                ))}
+                )})}
               </View>
             </View>
           )}
