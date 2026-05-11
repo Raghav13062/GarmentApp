@@ -28,7 +28,9 @@ export default function ProductDetails() {
   const dispatch = useDispatch();
   const wishlist = useSelector((state: any) => state.wishlist.items);
   const route = useRoute();
-  const { item, gender } = route.params as any;
+  const routeItem = route.params?.item;
+  const productId = routeItem?._id || routeItem?.id || (typeof routeItem === 'string' ? routeItem : null) || route.params?.id || route.params?.productId;
+
   const [activeImage, setActiveImage] = useState(0);
   const [product, setProduct] = useState<any>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -36,13 +38,15 @@ export default function ProductDetails() {
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
   const executeProtected = useProtectedAction();
 
-  const isFavorite = wishlist.some((wishItem: any) => 
-    (wishItem.id || wishItem._id) === (item.id || item._id)
+  const isFavorite = wishlist.some((wishItem: any) =>
+    (wishItem.id || wishItem._id) === (product?._id || product?.id || productId)
   );
 
   const onToggleWishlist = () => {
     executeProtected(() => {
-      dispatch(toggleWishlist(product || item));
+      if (product) {
+        dispatch(toggleWishlist(product));
+      }
     });
   };
 
@@ -51,17 +55,17 @@ export default function ProductDetails() {
   const slideAnim = useState(new Animated.Value(30))[0];
 
   useEffect(() => {
-    const productId = item?.id || item?._id;
     if (productId) {
       TopProductDetail(productId)
         .then(res => {
           if (res) {
+            console.log("res", res);
             setProduct(res);
           }
         })
         .catch(err => console.log("API Error:", err));
     }
-  }, [item?.id, item?._id]);
+  }, [productId]);
 
   useEffect(() => {
     if (product) {
@@ -176,10 +180,17 @@ export default function ProductDetails() {
 
         {/* INFO SECTION */}
         <View style={{ padding: 20, backgroundColor: '#FDFBFA' }}>
-          {/* CATEGORY */}
-          <Text style={{ fontSize: 12, color: '#888', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-            {categoryName} {product?.subcategory ? `• ${product.subcategory}` : ''}
-          </Text>
+          {/* CATEGORY & BADGES */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+            <Text style={{ fontSize: 12, color: '#888', textTransform: 'uppercase', letterSpacing: 1 }}>
+              {categoryName} {product?.subcategory ? `• ${product.subcategory}` : ''} {product?.genderFilter ? `(${product.genderFilter})` : ''}
+            </Text>
+            {product?.isTopSelling && (
+              <View style={{ backgroundColor: '#FFD700', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
+                <Text style={{ fontSize: 10, fontWeight: 'bold', color: '#111' }}>TOP SELLING</Text>
+              </View>
+            )}
+          </View>
 
           {/* TITLE */}
           <Text style={{ fontSize: 26, fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif', color: '#111' }}>{displayName}</Text>
@@ -207,7 +218,14 @@ export default function ProductDetails() {
                 </>
               )}
             </View>
-            <Text style={{ fontSize: 12, color: '#888', marginTop: 6, fontWeight: '500' }}>Inclusive of all taxes</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6 }}>
+              <Text style={{ fontSize: 12, color: '#888', fontWeight: '500' }}>Inclusive of all taxes</Text>
+              {product?.inventory?.stockQuantity !== undefined && (
+                <Text style={{ fontSize: 12, fontWeight: '600', color: product.inventory.stockQuantity > 0 ? color.success : color.error }}>
+                  {product.inventory.stockQuantity > 0 ? `In Stock (${product.inventory.stockQuantity})` : 'Out of Stock'}
+                </Text>
+              )}
+            </View>
           </View>
 
           {product?.variants?.colors && product.variants.colors.length > 0 && (
@@ -217,27 +235,28 @@ export default function ProductDetails() {
                 {product.variants.colors.map((c: string, index: number) => {
                   const variant = product.variantImages?.find((v: any) => v.color === c);
                   return (
-                  <TouchableOpacity
-                    key={index}
-                    style={[
-                      styles.variantBox,
-                      selectedColor === c && styles.variantBoxSelected,
-                      { paddingHorizontal: variant ? 4 : 24, paddingVertical: variant ? 4 : 14 }
-                    ]}
-                    onPress={() => {
-                      setSelectedColor(c);
-                      setActiveImage(0);
-                    }}
-                  >
-                    {variant && variant.urls && variant.urls.length > 0 ? (
-                      <Image source={{ uri: variant.urls[0] }} style={{ width: 40, height: 40, borderRadius: 4 }} />
-                    ) : (
-                      <Text style={[styles.variantText, selectedColor === c && styles.variantTextSelected]}>
-                        {c}
-                      </Text>
-                    )}
-                  </TouchableOpacity>
-                )})}
+                    <TouchableOpacity
+                      key={index}
+                      style={[
+                        styles.variantBox,
+                        selectedColor === c && styles.variantBoxSelected,
+                        { paddingHorizontal: variant ? 4 : 24, paddingVertical: variant ? 4 : 14 }
+                      ]}
+                      onPress={() => {
+                        setSelectedColor(c);
+                        setActiveImage(0);
+                      }}
+                    >
+                      {variant && variant.urls && variant.urls.length > 0 ? (
+                        <Image source={{ uri: variant.urls[0] }} style={{ width: 40, height: 40, borderRadius: 4 }} />
+                      ) : (
+                        <Text style={[styles.variantText, selectedColor === c && styles.variantTextSelected]}>
+                          {c}
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                  )
+                })}
               </View>
             </View>
           )}
@@ -293,10 +312,10 @@ export default function ProductDetails() {
           style={styles.favoriteBtn}
           onPress={onToggleWishlist}
         >
-          <Ionicons 
-            name={isFavorite ? "heart" : "heart-outline"} 
-            size={26} 
-            color={isFavorite ? color.error : "#444"} 
+          <Ionicons
+            name={isFavorite ? "heart" : "heart-outline"}
+            size={26}
+            color={isFavorite ? color.error : "#444"}
           />
         </TouchableOpacity>
 
