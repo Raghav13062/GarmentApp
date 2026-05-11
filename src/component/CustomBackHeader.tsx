@@ -35,9 +35,9 @@ const CustomBackHeader: React.FC<Props> = ({ rightIcons = [{icon:imageIndex.help
           <>
             {item?.type == "text" ?
               <TouchableOpacity style={{ backgroundColor: color.primary, height: 33, paddingHorizontal: 10, borderRadius: 10, alignItems: 'center', flexDirection: 'row' }} key={index.toString()} onPress={item.onPress}>
-                <Image source={imageIndex.calendar} tintColor={"#fff"} style={styles.iconR1} resizeMode="cover" />
+                <Image source={imageIndex.calendar} tintColor={color.white} style={styles.iconR1} resizeMode="cover" />
 
-                <Text style={{ color: "#fff", fontWeight: 'bold' }}>{item.icon}</Text>
+                <Text style={{ color: color.white, fontWeight: 'bold' }}>{item.icon}</Text>
               </TouchableOpacity>
               :
               // <TouchableOpacity key={index.toString()} onPress={item.onPress}>
@@ -86,12 +86,12 @@ const styles = StyleSheet.create({
   txtHeading: {
     fontSize: 20,
     lineHeight: 36,
-    color: '#000000',
+    color: color.black,
     // marginTop: 7,
     marginLeft: 15,
     fontFamily: fonts.bold,
     textAlignVertical: 'center',
-    // backgroundColor:'red',
+    // backgroundColor: color.error,
     flex: 1,
     textAlign: 'center'
   },

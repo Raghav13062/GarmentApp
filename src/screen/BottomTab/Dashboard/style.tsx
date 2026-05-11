@@ -36,12 +36,12 @@ export const styles = StyleSheet.create({
     marginBottom: 18
   },
   sectionTitle: {
-    color: 'black',
+    color: color.black,
     fontSize: 15,
     fontWeight: '600',
   },
   viewAll: {
-    color: 'black',
+    color: color.black,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
   },
 
   searchContainer: {
-    backgroundColor: 'transparent',
+    backgroundColor: color.transparent,
     borderTopWidth: 0,
     borderBottomWidth: 0,
     marginHorizontal: 10,

@@ -193,13 +193,13 @@ const MyOrders = ({ navigation }) => {
       case "shipped":
         return "#4169E1";
       case "delivered":
-        return "#4CAF50";
+        return color.success;
       case "cancelled":
         return "#FF6B6B";
       case "returned":
         return "#9C27B0";
       default:
-        return "#666";
+        return color.textMedium;
     }
   };
 
@@ -320,7 +320,7 @@ const MyOrders = ({ navigation }) => {
                 style={[styles.actionButton, styles.reorderButton]}
                 onPress={() => handleOrderAction(item.id, "reorder")}
               >
-                <Icon name="repeat" size={16} color="#4CAF50" />
+                <Icon name="repeat" size={16} color={color.success} />
                 <Text style={styles.reorderButtonText}>Reorder</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -358,7 +358,7 @@ const MyOrders = ({ navigation }) => {
 
   const renderEmptyState = () => (
     <View style={styles.emptyContainer}>
-      <Icon name="package" size={80} color="#e0e0e0" />
+      <Icon name="package" size={80} color={color.borderLight} />
       <Text style={styles.emptyTitle}>No Orders Found</Text>
       <Text style={styles.emptyText}>
         {activeTab === "all" 
@@ -373,7 +373,7 @@ const MyOrders = ({ navigation }) => {
           colors={color.buttLinearGradient}
           style={styles.shopButtonGradient}
         >
-          <Icon name="shopping-bag" size={20} color="#fff" />
+          <Icon name="shopping-bag" size={20} color={color.white} />
           <Text style={styles.shopButtonText}>Start Shopping</Text>
         </LinearGradient>
       </TouchableOpacity>
@@ -403,7 +403,7 @@ const MyOrders = ({ navigation }) => {
               <Icon 
                 name={tab.icon} 
                 size={16} 
-                color={isActive ? "#fff" : "#666"} 
+                color={isActive ? color.white : color.textMedium} 
               />
               <Text style={[
                 styles.tabText,
@@ -448,14 +448,14 @@ const MyOrders = ({ navigation }) => {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="arrow-left" size={24} color="#fff" />
+            <Icon name="arrow-left" size={24} color={color.white} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>My Orders</Text>
           <TouchableOpacity
             style={styles.filterButton}
             onPress={() => navigation.navigate("OrderFilter")}
           >
-            <Icon name="filter" size={24} color="#fff" />
+            <Icon name="filter" size={24} color={color.white} />
           </TouchableOpacity>
         </View>
 
@@ -488,7 +488,7 @@ const MyOrders = ({ navigation }) => {
       {/* Orders List */}
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#F58021" />
+          <ActivityIndicator size="large" color={color.primary} />
           <Text style={styles.loadingText}>Loading your orders...</Text>
         </View>
       ) : (
@@ -517,9 +517,9 @@ const MyOrders = ({ navigation }) => {
                   style={styles.sortButton}
                   onPress={() => navigation.navigate("SortOrders")}
                 >
-                  <Icon name="calendar" size={18} color="#666" />
+                  <Icon name="calendar" size={18} color={color.textMedium} />
                   <Text style={styles.sortButtonText}>Recent</Text>
-                  <Icon name="chevron-down" size={16} color="#666" />
+                  <Icon name="chevron-down" size={16} color={color.textMedium} />
                 </TouchableOpacity>
               </View>
             )
@@ -546,7 +546,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     elevation: 8,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -564,7 +564,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#fff',
+    color: color.white,
   },
   filterButton: {
     padding: 8,
@@ -585,7 +585,7 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#fff',
+    color: color.white,
     marginBottom: 4,
   },
   statLabel: {
@@ -599,11 +599,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   tabContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: color.lightGray,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -619,22 +619,22 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
     marginRight: 10,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: color.backgroundLight,
   },
   activeTabButton: {
-    backgroundColor: '#F58021',
+    backgroundColor: color.primary,
   },
   tabText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#666',
+    color: color.textMedium,
     marginHorizontal: 6,
   },
   activeTabText: {
-    color: '#fff',
+    color: color.white,
   },
   tabBadge: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 10,
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -647,10 +647,10 @@ const styles = StyleSheet.create({
   tabBadgeText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#666',
+    color: color.textMedium,
   },
   activeTabBadgeText: {
-    color: '#fff',
+    color: color.white,
   },
   listContainer: {
     padding: 15,
@@ -665,7 +665,7 @@ const styles = StyleSheet.create({
   },
   listHeaderText: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
     fontWeight: '500',
   },
   sortButton: {
@@ -674,20 +674,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 15,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: color.lightGray,
   },
   sortButtonText: {
     fontSize: 13,
-    color: '#666',
+    color: color.textMedium,
     marginHorizontal: 6,
   },
   orderCard: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 20,
     padding: 16,
     marginBottom: 15,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -699,17 +699,17 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingBottom: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f5f5f5',
+    borderBottomColor: color.backgroundLight,
   },
   orderId: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 4,
   },
   orderDate: {
     fontSize: 13,
-    color: '#666',
+    color: color.textMedium,
   },
   statusBadge: {
     flexDirection: 'row',
@@ -732,7 +732,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 10,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: color.backgroundLight,
   },
   productInfo: {
     flex: 1,
@@ -742,23 +742,23 @@ const styles = StyleSheet.create({
   productName: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 6,
     lineHeight: 20,
   },
   productQuantity: {
     fontSize: 13,
-    color: '#666',
+    color: color.textMedium,
     marginBottom: 4,
   },
   productPrice: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#F58021',
+    color: color.primary,
   },
   moreItems: {
     fontSize: 13,
-    color: '#666',
+    color: color.textMedium,
     fontStyle: 'italic',
     marginBottom: 15,
     textAlign: 'center',
@@ -769,17 +769,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 15,
     borderTopWidth: 1,
-    borderTopColor: '#f5f5f5',
+    borderTopColor: color.backgroundLight,
   },
   totalLabel: {
     fontSize: 13,
-    color: '#666',
+    color: color.textMedium,
     marginBottom: 4,
   },
   totalAmount: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#333',
+    color: color.textDark,
   },
   actionButtons: {
     flexDirection: 'row',
@@ -814,11 +814,11 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   reorderButton: {
-    borderColor: '#4CAF50',
+    borderColor: color.success,
     backgroundColor: '#F0FFF4',
   },
   reorderButtonText: {
-    color: '#4CAF50',
+    color: color.success,
     fontSize: 14,
     fontWeight: '600',
     marginLeft: 6,
@@ -852,7 +852,7 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 15,
     fontSize: 16,
-    color: '#666',
+    color: color.textMedium,
   },
   emptyContainer: {
     alignItems: 'center',
@@ -862,13 +862,13 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#333',
+    color: color.textDark,
     marginTop: 20,
     marginBottom: 10,
   },
   emptyText: {
     fontSize: 16,
-    color: '#666',
+    color: color.textMedium,
     textAlign: 'center',
     marginBottom: 30,
     lineHeight: 24,
@@ -877,7 +877,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: 'hidden',
     elevation: 6,
-    shadowColor: '#F58021',
+    shadowColor: color.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -889,7 +889,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   shopButtonText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 16,
     fontWeight: '700',
     marginLeft: 10,
@@ -900,13 +900,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
+    borderTopColor: color.lightGray,
     elevation: 8,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -918,7 +918,7 @@ const styles = StyleSheet.create({
   },
   footerButtonText: {
     fontSize: 12,
-    color: '#666',
+    color: color.textMedium,
     marginTop: 4,
     fontWeight: '500',
   },

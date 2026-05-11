@@ -1,3 +1,4 @@
+import { color } from "../../../constant";
 import React from "react";
 import {
   View,
@@ -70,13 +71,13 @@ const styles = StyleSheet.create({
     height: cardSize,
     borderRadius: cardSize / 2, // makes it circular
     borderWidth: 1,
-    borderColor: "#e0e0e0",
+    borderColor: color.borderLight,
     marginBottom: 8,
   },
   brandName: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#333",
+    color: color.textDark,
     textAlign: "center",
     width: cardSize + 10,
     marginBottom: 5,

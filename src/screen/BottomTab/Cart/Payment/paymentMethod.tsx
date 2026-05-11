@@ -133,7 +133,7 @@ const paymentMethod = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     flex: 1,
   },
   title: {
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     padding: 12,
     borderRadius: 12,
     marginBottom: 10,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     totalRow: {
       marginTop: hp(1),
       borderTopWidth: 1,
-      borderTopColor: '#E0E0E0',
+      borderTopColor: color.borderLight,
       paddingTop: hp(1),
     },
     totalLabel: {
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     promoContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor:'#F8F8F8',
+      backgroundColor:color.backgroundLight,
       padding:15,
       borderRadius:15
     },
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
       marginLeft: wp(2),
     },
     applyText: {
-      color: '#fff',
+      color: color.white,
       fontFamily: fonts.medium,
       fontSize: wp(3.6),
     },

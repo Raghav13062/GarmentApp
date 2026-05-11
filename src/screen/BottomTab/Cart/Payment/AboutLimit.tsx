@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         marginBottom: 10,
         paddingTop:15,
-        backgroundColor:"#fff",
+        backgroundColor:color.white,
         
     },
     checkboxText: { flex: 1, fontSize: 13, color: "#909090", fontFamily:fonts.regular, lineHeight:20 },
@@ -114,5 +114,5 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         marginBottom:15
     },
-    buttonText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
+    buttonText: { color: color.white, fontWeight: "bold", fontSize: 16 },
 });

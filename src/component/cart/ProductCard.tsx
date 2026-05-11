@@ -1,3 +1,4 @@
+import { color } from "../../constant";
 import React from "react";
 import {
   View,
@@ -93,12 +94,12 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     borderRadius: 14,
     paddingBottom: 10,
     ...Platform.select({
       ios: {
-        shadowColor: "#000",
+        shadowColor: color.black,
         shadowOpacity: 0.12,
         shadowRadius: 6,
         shadowOffset: { width: 0, height: 3 },

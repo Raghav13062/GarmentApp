@@ -71,7 +71,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
             <View>
               <Icon name="mail-outline" size={28} color={color.black} />
               <LinearGradient
-                colors={['#ff4d4d', '#ff0000']}
+                colors={['#ff4d4d', color.error]}
                 style={styles.badge}
               >
                 <Text style={styles.badgeText}>9+</Text>
@@ -100,7 +100,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
               <Icon name="heart-outline" size={28} color={color.black} />
               {0 > 0 && (
                 <LinearGradient
-                  colors={['#ff4d4d', '#ff0000']}
+                  colors={['#ff4d4d', color.error]}
                   style={styles.badge}
                 >
                   <Text style={styles.badgeText}>0</Text>
@@ -115,7 +115,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
             <View>
               <Icon name="cart-outline" size={28} color={color.black} />
               <LinearGradient
-                colors={['#ff4d4d', '#ff0000']}
+                colors={['#ff4d4d', color.error]}
                 style={styles.badge}
               >
                 <Text style={styles.badgeText}>0</Text>
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 13,
     fontFamily: fonts.semiBold,
-    color: '#666',
+    color: color.textMedium,
     letterSpacing: 0.5,
   },
   activeTabText: {

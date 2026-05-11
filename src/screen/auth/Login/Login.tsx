@@ -82,7 +82,7 @@ export default function Login() {
                   <View style={styles.inputSection}>
                     <CustomInput
                       placeholder="Mobile Number*"
-                      placeholderTextColor="#999"
+                      placeholderTextColor={color.textLight}
                       leftIcon={
                         <View style={styles.prefixContainer}>
                           <Text style={styles.prefixText}>+91</Text>

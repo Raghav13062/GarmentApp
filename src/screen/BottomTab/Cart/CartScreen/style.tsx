@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 24,
-    color: '#FFFFFF',
+    color: color.white,
     fontWeight: 'bold',
   },
   headerCenter: {
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: color.white,
     textShadowColor: 'rgba(0, 0, 0, 0.2)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
   },
   menuButtonText: {
     fontSize: 20,
-    color: '#FFFFFF',
+    color: color.white,
     fontWeight: 'bold',
   },
 
@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 30,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -114,13 +114,13 @@ export const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 10,
     textAlign: 'center',
   },
   emptySubtitle: {
     fontSize: 16,
-    color: '#666',
+    color: color.textMedium,
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 30,
@@ -131,7 +131,7 @@ export const styles = StyleSheet.create({
     borderRadius: 28,
     overflow: 'hidden',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -144,7 +144,7 @@ export const styles = StyleSheet.create({
   shopButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: color.white,
   },
 
   // Items Section
@@ -155,7 +155,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 15,
   },
 
@@ -164,7 +164,7 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 15,
     elevation: 3,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -193,7 +193,7 @@ export const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
     flex: 1,
   },
   deleteButton: {
@@ -209,13 +209,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   deleteButtonText: {
-    color: '#FFFFFF',
+    color: color.white,
     fontSize: 14,
     fontWeight: 'bold',
   },
   itemSubtitle: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
     lineHeight: 18,
     marginBottom: 10,
   },
@@ -226,7 +226,7 @@ export const styles = StyleSheet.create({
   detailTag: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F0F0F0',
+    backgroundColor: color.lightGray,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
@@ -234,13 +234,13 @@ export const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
-    color: '#666',
+    color: color.textMedium,
     marginRight: 4,
   },
   detailValue: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#333',
+    color: color.textDark,
   },
   bottomRow: {
     flexDirection: 'row',
@@ -251,12 +251,12 @@ export const styles = StyleSheet.create({
   itemPrice: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#F58021',
+    color: color.primary,
   },
   qtyControl: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F0F0F0',
+    backgroundColor: color.lightGray,
     borderRadius: 20,
     padding: 2,
   },
@@ -273,7 +273,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   qtyButtonText: {
-    color: '#FFFFFF',
+    color: color.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -285,7 +285,7 @@ export const styles = StyleSheet.create({
   qtyText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: color.textDark,
   },
   itemTotalContainer: {
     flexDirection: 'row',
@@ -297,12 +297,12 @@ export const styles = StyleSheet.create({
   },
   itemTotalLabel: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
   },
   itemTotal: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#862E92',
+    color: color.secondary,
   },
 
   // Order Summary
@@ -312,7 +312,7 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 20,
     elevation: 3,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -326,7 +326,7 @@ export const styles = StyleSheet.create({
   summaryTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
   },
   clearAllText: {
     fontSize: 14,
@@ -344,18 +344,18 @@ export const styles = StyleSheet.create({
   },
   summaryLabel: {
     fontSize: 15,
-    color: '#666',
+    color: color.textMedium,
   },
   summaryValue: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#333',
+    color: color.textDark,
   },
   discountLabel: {
-    color: '#4CAF50',
+    color: color.success,
   },
   discountValue: {
-    color: '#4CAF50',
+    color: color.success,
     fontWeight: 'bold',
   },
   divider: {
@@ -369,12 +369,12 @@ export const styles = StyleSheet.create({
   totalLabel: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
   },
   totalValue: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#862E92',
+    color: color.secondary,
   },
 
   // Promo Code
@@ -384,7 +384,7 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 20,
     elevation: 3,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -398,7 +398,7 @@ export const styles = StyleSheet.create({
   promoTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
   },
   removePromoText: {
     fontSize: 14,
@@ -432,7 +432,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   applyButtonText: {
-    color: '#FFFFFF',
+    color: color.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -441,7 +441,7 @@ export const styles = StyleSheet.create({
   },
   promoHint: {
     fontSize: 12,
-    color: '#999',
+    color: color.textLight,
     marginTop: 10,
     textAlign: 'center',
   },
@@ -451,19 +451,19 @@ export const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 20,
     padding: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: color.white,
     borderRadius: 15,
     alignItems: 'center',
   },
   savedTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 10,
   },
   savedText: {
     fontSize: 14,
-    color: '#999',
+    color: color.textLight,
     textAlign: 'center',
   },
 
@@ -479,7 +479,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -500,7 +500,7 @@ export const styles = StyleSheet.create({
   footerTotal: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: color.white,
   },
   checkoutButton: {
     width: 200,
@@ -508,7 +508,7 @@ export const styles = StyleSheet.create({
     borderRadius: 28,
     overflow: 'hidden',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -521,11 +521,11 @@ export const styles = StyleSheet.create({
   checkoutButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#862E92',
+    color: color.secondary,
   },
   checkoutSubtext: {
     fontSize: 12,
-    color: '#999',
+    color: color.textLight,
     marginTop: 2,
   },
 });

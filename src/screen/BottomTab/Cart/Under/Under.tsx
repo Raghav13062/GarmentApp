@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { color } from '../../../../constant';
 import {
   StyleSheet,
   View,
@@ -23,16 +24,16 @@ const CARD_WIDTH = (width - (CARD_MARGIN * (NUM_COLUMNS + 1))) / NUM_COLUMNS;
 
 // Brand Colors
 const BRAND_COLORS = {
-  primaryGradient: ['#F58021', '#862E92'],
-  primaryDark: '#862E92',
-  primaryLight: '#F58021',
-  accent: '#FFD700',
-  background: 'white',
+  primaryGradient: [color.primary, color.secondary],
+  primaryDark: color.secondary,
+  primaryLight: color.primary,
+  accent: color.star,
+  background: color.white,
   textDark: '#2D3436',
-  textLight: '#FFFFFF',
-  cardBg: '#FFFFFF',
-  success: '#4CAF50',
-  warning: '#FF9800',
+  textLight: color.white,
+  cardBg: color.white,
+  success: color.success,
+  warning: color.warning,
   error: '#F44336',
 };
 
@@ -368,7 +369,7 @@ const initialProducts = [
           onPress={clearCart}
           activeOpacity={0.7}
         >
-          <Icon name="delete-outline" size={20} color="#FFFFFF" />
+          <Icon name="delete-outline" size={20} color={color.white} />
         </TouchableOpacity>
       </Animated.View>
     );
@@ -405,7 +406,7 @@ marginHorizontal: 20,
   elevation: 4,
 
   // iOS shadow
-  shadowColor: "#000",
+  shadowColor: color.black,
   shadowOffset: {
     width: 0,
     height: 2,
@@ -422,7 +423,7 @@ marginHorizontal: 20,
         style={{
           fontSize: 18,
           fontWeight: "700",
-          color: "#fff",
+          color: color.white,
         }}
       >
         Under ₹999
@@ -442,7 +443,7 @@ marginHorizontal: 20,
   {/* Right Badge */}
   <View
     style={{
-      backgroundColor: "#fff",
+      backgroundColor: color.white,
       borderRadius: 20,
       paddingHorizontal: 15,
       paddingVertical: 6,
@@ -514,7 +515,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -606,19 +607,19 @@ const styles = StyleSheet.create({
   },
 
     headerTitle: {
-    color: '#FFF',
+    color: color.white,
     fontSize: 17,
     fontWeight: '700',
   },
   viewAll: {
-    color: '#FFF',
+    color: color.white,
     fontSize: 13,
     opacity: 0.9,
   },
   sectionHeader: {
     paddingHorizontal: 16,
     paddingVertical: 16,
-    backgroundColor: 'transparent',
+    backgroundColor: color.transparent,
     borderRadius: 16,
     marginBottom: 8,
     overflow: 'hidden',
@@ -707,7 +708,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewCartButtonText: {
-    color: "white",
+    color: color.white,
     fontWeight: 'bold',
     fontSize: 14,
   },

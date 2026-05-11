@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 10,
     elevation: 7,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 6,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
   userName: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#fff",
+    color: color.white,
     marginBottom: 4,
   },
   userEmail: {
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
@@ -125,7 +125,7 @@ export const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#333",
+    color: color.textDark,
   },
   row: {
     flexDirection: "row",
@@ -144,7 +144,7 @@ export const styles = StyleSheet.create({
   },
   label: {
     fontSize: 15,
-    color: "#666",
+    color: color.textMedium,
   },
   value: {
     fontSize: 15,
@@ -173,7 +173,7 @@ export const styles = StyleSheet.create({
   },
   menuText: {
     fontSize: 16,
-    color: "#333",
+    color: color.textDark,
     fontWeight: '500',
   },
   logoutBtn: {
@@ -182,7 +182,7 @@ export const styles = StyleSheet.create({
     padding: 1,
     borderRadius: 15,
     elevation: 6,
-    shadowColor: '#F58021',
+    shadowColor: color.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -193,7 +193,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
     borderRadius: 15,
-    backgroundColor: 'transparent',
+    backgroundColor: color.transparent,
   },
   logoutText: {
     color: color.white,
@@ -207,7 +207,7 @@ export const styles = StyleSheet.create({
   },
   versionText: {
     fontSize: 13,
-    color: "#999",
+    color: color.textLight,
   },
 
 });

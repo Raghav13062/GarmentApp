@@ -1,3 +1,4 @@
+import { color } from "../../../constant";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
@@ -64,10 +65,10 @@ const styles = StyleSheet.create({
     width: cardWidth,
     marginLeft: 15,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 12,
     paddingVertical: 10,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,

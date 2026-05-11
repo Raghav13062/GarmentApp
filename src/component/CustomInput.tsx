@@ -47,7 +47,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         <TextInput
          allowFontScaling={false}
           style={styles.input}
-          placeholderTextColor="#A59F9F"
+          placeholderTextColor={color.gray}
           secureTextEntry={hidePassword}
            returnKeyType="done"
           
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
 
     // Shadow for iOS
-    // shadowColor: '#000',
+    // shadowColor: color.black,
     // shadowOffset: { width: 0, height: 2 },
     // shadowOpacity: 0.1,
     // shadowRadius: 6,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    color: '#000',
+    color: color.black,
     fontSize: 14,
     fontFamily:fonts.semiBold
   },

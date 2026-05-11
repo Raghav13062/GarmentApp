@@ -56,10 +56,10 @@ const UserProfileScreen = () => {
               borderWidth: 2,
               borderColor: 'rgba(255,255,255,0.5)',
             }}>
-              <Icon name="user" size={50} color="#fff" />
+              <Icon name="user" size={50} color={color.white} />
             </View>
             <Text style={{
-              color: '#fff',
+              color: color.white,
               fontSize: 28,
               marginTop: 15,
               letterSpacing: 1
@@ -79,10 +79,10 @@ const UserProfileScreen = () => {
           <View style={{
             marginTop: -60,
             marginHorizontal: 24,
-            backgroundColor: '#fff',
+            backgroundColor: color.white,
             borderRadius: 24,
             padding: 30,
-            shadowColor: '#000',
+            shadowColor: color.black,
             shadowOffset: { width: 0, height: 15 },
             shadowOpacity: 0.1,
             shadowRadius: 20,
@@ -91,7 +91,7 @@ const UserProfileScreen = () => {
           }}>
             <Text style={{
               fontSize: 18,
-              color: '#333',
+              color: color.textDark,
               textAlign: 'center',
               fontFamily: fonts.semiBold,
               lineHeight: 26,
@@ -120,7 +120,7 @@ const UserProfileScreen = () => {
                 }}
               >
                 <Text style={{
-                  color: '#fff',
+                  color: color.white,
                   fontSize: 16,
                   fontFamily: fonts.bold,
                   textAlign: 'center',
@@ -153,12 +153,12 @@ const UserProfileScreen = () => {
               ].map((item, index) => (
                 <View key={index} style={{
                   width: '48%',
-                  backgroundColor: '#fff',
+                  backgroundColor: color.white,
                   borderRadius: 20,
                   padding: 20,
                   marginBottom: 16,
                   borderWidth: 1,
-                  borderColor: '#F0F0F0',
+                  borderColor: color.lightGray,
                   alignItems: 'center'
                 }}>
                   <View style={{
@@ -170,7 +170,7 @@ const UserProfileScreen = () => {
                     alignItems: 'center',
                     marginBottom: 12
                   }}>
-                    <Icon name={item.icon} size={20} color="#F58021" />
+                    <Icon name={item.icon} size={20} color={color.primary} />
                   </View>
                   <Text style={{ fontSize: 14, fontFamily: fonts.bold, color: '#111' }}>{item.title}</Text>
                   <Text style={{ fontSize: 11, color: '#888', marginTop: 2 }}>{item.desc}</Text>
@@ -200,7 +200,7 @@ const UserProfileScreen = () => {
           <TouchableOpacity
             onPress={() => setshowLogoutModal(true)}
             style={styles.headerIcon}>
-            <Icon name="log-out" size={24} color="#fff" />
+            <Icon name="log-out" size={24} color={color.white} />
           </TouchableOpacity>
         </View>
 
@@ -221,7 +221,7 @@ const UserProfileScreen = () => {
               style={styles.editIconGradient}
             >
               <TouchableOpacity onPress={openPicker}>
-                <Icon name="camera" size={18} color="#fff" />
+                <Icon name="camera" size={18} color={color.white} />
               </TouchableOpacity>
             </LinearGradient> */}
           </View>
@@ -229,7 +229,7 @@ const UserProfileScreen = () => {
             <Text style={styles.userName}>{userData?.userData?.fullName || ""}</Text>
             <Text style={styles.userEmail}> {userData?.userData?.email || "Email"}</Text>
             <View style={styles.verifiedBadge}>
-              <Icon name="check-circle" size={14} color="#4CAF50" />
+              <Icon name="check-circle" size={14} color={color.success} />
               <Text style={styles.verifiedText}>Verified</Text>
             </View>
           </View>
@@ -245,14 +245,14 @@ const UserProfileScreen = () => {
 
               style={styles.cardIconGradient}
             >
-              <Icon name="user" size={18} color="#fff" />
+              <Icon name="user" size={18} color={color.white} />
             </LinearGradient>
             <Text style={styles.cardTitle}>Personal Information</Text>
           </View>
 
           <View style={styles.row}>
             <View style={styles.rowLeft}>
-              <Icon name="user" size={16} color="#F58021" style={styles.rowIcon} />
+              <Icon name="user" size={16} color={color.primary} style={styles.rowIcon} />
               <Text style={styles.label}>Full Name</Text>
             </View>
             <Text style={styles.value}>{userData?.userData?.fullName}</Text>
@@ -260,7 +260,7 @@ const UserProfileScreen = () => {
 
           <View style={styles.row}>
             <View style={styles.rowLeft}>
-              <Icon name="phone" size={16} color="#F58021" style={styles.rowIcon} />
+              <Icon name="phone" size={16} color={color.primary} style={styles.rowIcon} />
               <Text style={styles.label}>Phone</Text>
             </View>
             <Text style={styles.value}>{userData?.userData?.mobileNo}</Text>
@@ -268,7 +268,7 @@ const UserProfileScreen = () => {
 
           <View style={styles.row}>
             <View style={styles.rowLeft}>
-              <Icon name="mail" size={16} color="#F58021" style={styles.rowIcon} />
+              <Icon name="mail" size={16} color={color.primary} style={styles.rowIcon} />
               <Text allowFontScaling={false} style={styles.label}>Email</Text>
             </View>
             <Text style={styles.value}>{userData?.userData?.email}</Text>
@@ -283,7 +283,7 @@ const UserProfileScreen = () => {
 
               style={styles.cardIconGradient}
             >
-              <Icon name="settings" size={18} color="#fff" />
+              <Icon name="settings" size={18} color={color.white} />
             </LinearGradient>
             <Text allowFontScaling={false} style={styles.cardTitle}>Account Settings</Text>
           </View>
@@ -311,11 +311,11 @@ const UserProfileScreen = () => {
 
                     style={styles.menuIconGradient}
                   >
-                    <Icon name={item.icon} size={16} color="#fff" />
+                    <Icon name={item.icon} size={16} color={color.white} />
                   </LinearGradient>
                   <Text allowFontScaling={false} style={styles.menuText}>{item.text}</Text>
                 </View>
-                <Icon name="chevron-right" size={20} color="#999" />
+                <Icon name="chevron-right" size={20} color={color.textLight} />
               </TouchableOpacity>
             )
           })}
@@ -331,7 +331,7 @@ const UserProfileScreen = () => {
             end={{ x: 1, y: 0 }}
             style={styles.logoutTouchable}
           >
-            <Icon name="log-out" size={20} color="#fff" />
+            <Icon name="log-out" size={20} color={color.white} />
             <Text style={styles.logoutText}>Logout</Text>
           </LinearGradient>
         </TouchableOpacity>

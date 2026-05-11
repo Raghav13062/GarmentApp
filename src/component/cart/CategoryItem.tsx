@@ -1,3 +1,4 @@
+import { color } from "../../constant";
 import React from 'react';
 import { 
   View, 
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f9fa',
     overflow: 'hidden',
     marginBottom: 10,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   badgeText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 0.5,
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#f0f0f0',
+    borderColor: color.lightGray,
   },
   image: {
     width: '70%',
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
     fontWeight: '500',
-    color: '#333',
+    color: color.textDark,
     textAlign: 'center',
     maxWidth: 90,
   },

@@ -39,7 +39,7 @@ const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
                 <Ionicons
                   name={icons[route.name] || "ellipse"}
                   size={25}
-                  color={isFocused ? color.StatusBar : "#000"}
+                  color={isFocused ? color.StatusBar : color.black}
                 />
               )}
 
@@ -47,7 +47,7 @@ const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
                 <Text
                   style={[
                     styles.label,
-                    { color: isFocused ? color.StatusBar : "#000" },
+                    { color: isFocused ? color.StatusBar : color.black },
                   ]}
                 >
                   {route.name}
@@ -65,7 +65,7 @@ export default BottomTabBar;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: color.white,
    },
   tabBar: {
     flexDirection: "row",
@@ -94,13 +94,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -4,
     right: -10,
-    backgroundColor: "red",
+    backgroundColor: color.error,
     borderRadius: 10,
     paddingHorizontal: 5,
     paddingVertical: 1,
   },
   badgeText: {
-    color: "#fff",
+    color: color.white,
     fontSize: 12,
     fontWeight: "bold",
   },

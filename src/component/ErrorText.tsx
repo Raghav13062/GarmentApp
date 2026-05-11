@@ -1,3 +1,4 @@
+import { color } from "../constant";
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   errorText: {
-    color: 'red',
+    color: color.error,
     fontSize: 12,
   },
 });

@@ -1,3 +1,4 @@
+import { color } from "../constant";
 import React, { useRef, useState, useEffect } from "react";
 import {
   View,
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     ...Platform.select({
       ios: {
-        shadowColor: "#000",
+        shadowColor: color.black,
         shadowOpacity: 0.12,
         shadowRadius: 8,
         shadowOffset: { width: 0, height: 3 },
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
   },
 
   titleText: {
-    color: "#fff",
+    color: color.white,
     fontSize: 16,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Helvetica" : "Roboto",
@@ -239,12 +240,12 @@ const styles = StyleSheet.create({
     width: 22,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
   },
 
   noBannersText: {
     textAlign: "center",
-    color: "#666",
+    color: color.textMedium,
     fontSize: 14,
     padding: 20,
     fontFamily: Platform.OS === "ios" ? "Helvetica" : "Roboto",

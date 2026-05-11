@@ -1,3 +1,4 @@
+import { color } from "../../constant";
 import React, { useState } from 'react';
 import {
   View,
@@ -18,7 +19,7 @@ export default function CartScreen({ navigation }) {
       price: 499,
       originalPrice: 799,
       image: 'https://via.placeholder.com/100/FF6B6B/FFFFFF?text=T-Shirt',
-      color: 'Red',
+      color: color.error,
       size: 'M',
       quantity: 2,
     },
@@ -94,7 +95,7 @@ export default function CartScreen({ navigation }) {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>My Cart ({cartItems.length})</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Icon name="home" size={28} color="#333" />
+          <Icon name="home" size={28} color={color.textDark} />
         </TouchableOpacity>
       </View>
 
@@ -127,14 +128,14 @@ export default function CartScreen({ navigation }) {
                     style={styles.quantityButton}
                     onPress={() => updateQuantity(item.id, item.quantity - 1)}
                   >
-                    <Icon name="remove" size={20} color="#333" />
+                    <Icon name="remove" size={20} color={color.textDark} />
                   </TouchableOpacity>
                   <Text style={styles.quantityText}>{item.quantity}</Text>
                   <TouchableOpacity
                     style={styles.quantityButton}
                     onPress={() => updateQuantity(item.id, item.quantity + 1)}
                   >
-                    <Icon name="add" size={20} color="#333" />
+                    <Icon name="add" size={20} color={color.textDark} />
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.removeButton}
@@ -173,7 +174,7 @@ export default function CartScreen({ navigation }) {
             </View>
             {appliedCoupon && (
               <View style={styles.couponApplied}>
-                <Icon name="check-circle" size={20} color="#4CAF50" />
+                <Icon name="check-circle" size={20} color={color.success} />
                 <Text style={styles.couponAppliedText}>
                   {appliedCoupon.code} applied! Save {appliedCoupon.discount}%
                 </Text>
@@ -208,7 +209,7 @@ export default function CartScreen({ navigation }) {
 
           {/* Savings Info */}
           <View style={styles.savingsInfo}>
-            <Icon name="savings" size={24} color="#4CAF50" />
+            <Icon name="savings" size={24} color={color.success} />
             <Text style={styles.savingsText}>
               You save ₹{calculateSubtotal() - calculateTotal()} on this order
             </Text>
@@ -252,7 +253,7 @@ export default function CartScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: color.backgroundLight,
   },
   header: {
     flexDirection: 'row',
@@ -260,13 +261,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 15,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     elevation: 3,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
   },
   emptyCart: {
     flex: 1,
@@ -276,7 +277,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 18,
-    color: '#666',
+    color: color.textMedium,
     marginTop: 20,
     marginBottom: 30,
   },
@@ -287,13 +288,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   shopButtonText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
   cartItem: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     marginHorizontal: 10,
     marginTop: 10,
     borderRadius: 10,
@@ -312,7 +313,7 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 5,
   },
   itemPrice: {
@@ -327,7 +328,7 @@ const styles = StyleSheet.create({
   },
   itemDetail: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
     marginRight: 15,
   },
   quantityContainer: {
@@ -347,13 +348,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
   },
   removeButton: {
     marginLeft: 'auto',
   },
   couponSection: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     marginHorizontal: 10,
     marginTop: 15,
     padding: 15,
@@ -363,7 +364,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 10,
   },
   couponInputContainer: {
@@ -390,7 +391,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#90A4AE',
   },
   applyButtonText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 14,
     fontWeight: 'bold',
   },
@@ -408,7 +409,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   priceDetails: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     marginHorizontal: 10,
     marginTop: 15,
     padding: 15,
@@ -420,25 +421,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: color.lightGray,
   },
   priceLabel: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
   },
   priceValue: {
     fontSize: 14,
-    color: '#333',
+    color: color.textDark,
     fontWeight: '500',
   },
   deliveryFree: {
     fontSize: 14,
-    color: '#4CAF50',
+    color: color.success,
     fontWeight: 'bold',
   },
   discountValue: {
     fontSize: 14,
-    color: '#4CAF50',
+    color: color.success,
     fontWeight: 'bold',
   },
   totalRow: {
@@ -449,7 +450,7 @@ const styles = StyleSheet.create({
   totalLabel: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
   },
   totalValue: {
     fontSize: 20,
@@ -459,7 +460,7 @@ const styles = StyleSheet.create({
   savingsInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     marginHorizontal: 10,
     marginTop: 15,
     padding: 15,
@@ -469,13 +470,13 @@ const styles = StyleSheet.create({
   savingsText: {
     marginLeft: 10,
     fontSize: 14,
-    color: '#4CAF50',
+    color: color.success,
     fontWeight: '500',
   },
   loyaltyCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     marginHorizontal: 10,
     marginTop: 15,
     marginBottom: 100,
@@ -490,7 +491,7 @@ const styles = StyleSheet.create({
   loyaltyTitle: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 5,
   },
   loyaltyPoints: {
@@ -500,7 +501,7 @@ const styles = StyleSheet.create({
   },
   loyaltyNote: {
     fontSize: 10,
-    color: '#666',
+    color: color.textMedium,
   },
   checkoutContainer: {
     position: 'absolute',
@@ -508,7 +509,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     paddingHorizontal: 15,
     paddingVertical: 15,
     elevation: 8,
@@ -526,7 +527,7 @@ const styles = StyleSheet.create({
   },
   totalLabel: {
     fontSize: 12,
-    color: '#666',
+    color: color.textMedium,
   },
   checkoutButton: {
     flex: 1,
@@ -537,7 +538,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   checkoutButtonText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 16,
     fontWeight: 'bold',
   },

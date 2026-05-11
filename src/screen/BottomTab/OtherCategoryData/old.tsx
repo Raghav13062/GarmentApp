@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { color } from '../../../constant';
 import {
   StyleSheet,
   View,
@@ -23,16 +24,16 @@ const CARD_WIDTH = (width - (CARD_MARGIN * (NUM_COLUMNS + 1))) / NUM_COLUMNS;
 
 // Brand Colors
 const BRAND_COLORS = {
-  primaryGradient: ['#F58021', '#862E92'],
-  primaryDark: '#862E92',
-  primaryLight: '#F58021',
-  accent: '#FFD700',
-  background: '#F5F5F5',
+  primaryGradient: [color.primary, color.secondary],
+  primaryDark: color.secondary,
+  primaryLight: color.primary,
+  accent: color.star,
+  background: color.backgroundLight,
   textDark: '#2D3436',
-  textLight: '#FFFFFF',
-  cardBg: '#FFFFFF',
-  success: '#4CAF50',
-  warning: '#FF9800',
+  textLight: color.white,
+  cardBg: color.white,
+  success: color.success,
+  warning: color.warning,
   error: '#F44336',
 };
 
@@ -346,7 +347,7 @@ const OtherCategoryData = () => {
           onPress={handleBackPress}
           activeOpacity={0.7}
         >
-          <Icon name="arrow-back" size={24} color="#fff" />
+          <Icon name="arrow-back" size={24} color={color.white} />
         </TouchableOpacity>
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Fredly Shop</Text>
@@ -361,7 +362,7 @@ const OtherCategoryData = () => {
             onPress={showCartSummary}
             activeOpacity={0.7}
           >
-            <Icon name="shopping-cart" size={24} color="#fff" />
+            <Icon name="shopping-cart" size={24} color={color.white} />
             {cartCount > 0 && (
               <Animated.View style={styles.cartBadge}>
                 <Text style={styles.cartBadgeText}>{cartCount}</Text>
@@ -434,7 +435,7 @@ const OtherCategoryData = () => {
           onPress={clearCart}
           activeOpacity={0.7}
         >
-          <Icon name="delete-outline" size={20} color="#FFFFFF" />
+          <Icon name="delete-outline" size={20} color={color.white} />
         </TouchableOpacity>
       </Animated.View>
     );
@@ -519,7 +520,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -616,7 +617,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     paddingHorizontal: 16,
     paddingVertical: 16,
-    backgroundColor: 'transparent',
+    backgroundColor: color.transparent,
     borderRadius: 16,
     marginBottom: 8,
     overflow: 'hidden',
@@ -708,7 +709,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewCartButtonText: {
-    color: "white",
+    color: color.white,
     fontWeight: 'bold',
     fontSize: 14,
   },

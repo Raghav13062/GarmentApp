@@ -45,13 +45,13 @@ const styles = StyleSheet.create({
      marginBottom:15,
      elevation: 8,
     
-     shadowColor: '#000',
+     shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
      
   
-    backgroundColor: '#fff', // important for shadows
+    backgroundColor: color.white, // important for shadows
   },
   input: {
     flex: 1,

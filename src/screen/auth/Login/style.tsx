@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     height: 110,
     borderRadius: 55,
     borderWidth: 2,
-    borderColor: '#FFFFFF',
+    borderColor: color.white,
     marginBottom: 16,
   },
 
@@ -64,17 +64,17 @@ export const styles = StyleSheet.create({
 
   appTagline: {
     fontSize: 16,
-    color: '#666',
+    color: color.textMedium,
     opacity: 0.8,
   },
 
   // Bottom Sheet Styles
   bottomSheet: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
     paddingTop: 12,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#333333',
+    color: color.textDark,
   },
 
   welcomeTextLight: {
@@ -119,7 +119,7 @@ export const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderWidth: 1,
     borderColor: '#D4D5D9',
     height: 60,
@@ -167,7 +167,7 @@ export const styles = StyleSheet.create({
     marginTop: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
 
   checkboxActive: {
@@ -178,7 +178,7 @@ export const styles = StyleSheet.create({
   checkboxInner: {
     width: 10,
     height: 10,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 1,
   },
 
@@ -215,7 +215,7 @@ export const styles = StyleSheet.create({
   },
 
   loginButtonText: {
-    color: '#FFFFFF',
+    color: color.white,
     fontSize: 14,
     fontWeight: '700',
     letterSpacing: 1,

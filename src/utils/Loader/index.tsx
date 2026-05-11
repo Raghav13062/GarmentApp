@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: color.backgroundLight,
   },
   spinnerArc: {
     position: 'absolute',
@@ -244,8 +244,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderLeftColor: THEME_COLOR,
     borderTopColor: THEME_COLOR,
-    borderRightColor: 'transparent',
-    borderBottomColor: 'transparent',
+    borderRightColor: color.transparent,
+    borderBottomColor: color.transparent,
   },
   centerIcon: {
     position: 'absolute',
@@ -260,13 +260,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoText: {
-    color: 'white',
+    color: color.white,
     fontWeight: 'bold',
     fontSize: 12,
   },
   message: {
     fontSize: 15,
-     color: 'white',
+     color: color.white,
     marginBottom: 15,
     textAlign: 'center',
     fontFamily:fonts.blackItalic

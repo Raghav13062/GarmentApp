@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   ratingSubText: {
     fontSize: 12,
     fontWeight: '400',
-    color: '#666',
+    color: color.textMedium,
   },
   backBtn: {
     height: 40,
@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
   },
 
   activeDot: {
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     width: 20,
   },
 
@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
   variantBoxSelected: {
     borderColor: "#111",
     borderWidth: 1.5,
-    backgroundColor: "transparent",
+    backgroundColor: color.transparent,
   },
   variantText: {
     fontSize: 14,
@@ -109,7 +109,7 @@ export const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 1,
     borderColor: "#E5E5E5",
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -121,7 +121,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   themeBtnText: {
-    color: "#fff",
+    color: color.white,
     fontWeight: "700",
     fontSize: 16,
     letterSpacing: 1,
@@ -136,7 +136,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.95)",
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 10,
@@ -148,10 +148,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 16,
     paddingBottom: Platform.OS === "ios" ? 34 : 20,
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    shadowColor: "#000",
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.08,
     shadowRadius: 16,
@@ -162,7 +162,7 @@ export const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: color.backgroundLight,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -172,14 +172,14 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     height: 56,
     borderRadius: 28,
-    shadowColor: "#F58021",
+    shadowColor: color.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 8,
   },
   premiumThemeBtnText: {
-    color: "#fff",
+    color: color.white,
     fontWeight: "800",
     fontSize: 15,
     letterSpacing: 1.5,

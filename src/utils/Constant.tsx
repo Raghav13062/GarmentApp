@@ -1,3 +1,4 @@
+import { color } from "../constant";
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import {
@@ -79,7 +80,7 @@ const Countdown = ({ eventTime = 1683526848, interval = 1000 }) => {
     }, [eventTime]);
 
     return (
-        <Text size={14} fontWeight="700" color="#FFF">
+        <Text size={14} fontWeight="700" color={color.white}>
             This class start in - {duration.days()}D : {duration.hours()}H :{' '}
             {duration.minutes()}M : {duration.seconds()}S
         </Text>

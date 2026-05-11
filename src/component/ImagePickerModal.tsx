@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     paddingVertical: 20,
     paddingHorizontal: 20,
     borderTopLeftRadius: 20,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     gap: 10,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '800',
-    color: 'black',
+    color: color.black,
     marginBottom: 10,
   },
   optionButton: {
@@ -95,12 +95,12 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
-    color: '#333',
+    color: color.textDark,
     fontWeight: '500',
   },
   cancelButton: {
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: color.black,
     paddingVertical: 15,
     borderRadius: 15,
     alignItems: 'center',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     fontSize: 16,
-    color: 'white',
+    color: color.white,
     fontWeight: '600',
   },
 });

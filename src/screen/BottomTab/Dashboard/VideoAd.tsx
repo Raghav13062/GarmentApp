@@ -1,3 +1,4 @@
+import { color } from "../../../constant";
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Video from "react-native-video";
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     height: 220,
     marginVertical: 10,
      overflow: "hidden",
-    backgroundColor: "#000", 
+    backgroundColor: color.black, 
   },
   video: {
     width: "100%",
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     top: 10,
     left: 10,
     zIndex: 1,
-    color: "#fff",
+    color: color.white,
     fontWeight: "bold",
     backgroundColor: "rgba(0,0,0,0.5)",
     paddingHorizontal: 8,

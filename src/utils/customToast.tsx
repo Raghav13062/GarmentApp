@@ -1,3 +1,4 @@
+import { color } from "../constant";
 import React from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -11,14 +12,14 @@ const toastConfig = {
         <Icon 
           name="checkmark-circle" 
           size={28} 
-          color="#FFFFFF" 
+          color={color.white} 
           style={styles.icon} 
         />
       </View>
       <View style={styles.contentContainer}>
         <TextCompoent
           size={Size.Small}
-          color={'#FFFFFF'}
+          color={color.white}
           fontWeight="600"
           style={styles.title}
           numberOfLines={2}>
@@ -51,14 +52,14 @@ const toastConfig = {
         <Icon 
           name="close-circle" 
           size={28} 
-          color="#FFFFFF" 
+          color={color.white} 
           style={styles.icon} 
         />
       </View>
       <View style={styles.contentContainer}>
         <TextCompoent
           size={Size.Small}
-          color={'#FFFFFF'}
+          color={color.white}
           fontWeight="600"
           style={styles.title}
           numberOfLines={2}>
@@ -91,14 +92,14 @@ const toastConfig = {
         <Icon 
           name="information-circle" 
           size={28} 
-          color="#FFFFFF" 
+          color={color.white} 
           style={styles.icon} 
         />
       </View>
       <View style={styles.contentContainer}>
         <TextCompoent
           size={Size.Small}
-          color={'#FFFFFF'}
+          color={color.white}
           fontWeight="600"
           style={styles.title}
           numberOfLines={2}>
@@ -131,14 +132,14 @@ const toastConfig = {
         <Icon 
           name="warning" 
           size={28} 
-          color="#FFFFFF" 
+          color={color.white} 
           style={styles.icon} 
         />
       </View>
       <View style={styles.contentContainer}>
         <TextCompoent
           size={Size.Small}
-          color={'#FFFFFF'}
+          color={color.white}
           fontWeight="600"
           style={styles.title}
           numberOfLines={2}>

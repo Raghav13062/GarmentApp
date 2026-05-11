@@ -1,3 +1,4 @@
+import { color } from "../../../constant";
 import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
@@ -26,16 +27,16 @@ const CARD_WIDTH = (width - (CARD_MARGIN * (NUM_COLUMNS + 1))) / NUM_COLUMNS;
 
 // Brand Colors
 const BRAND_COLORS = {
-  primaryGradient: ['#F58021', '#862E92'],
-  primaryDark: '#862E92',
-  primaryLight: '#F58021',
-  accent: '#FFD700',
-  background: '#F5F5F5',
+  primaryGradient: [color.primary, color.secondary],
+  primaryDark: color.secondary,
+  primaryLight: color.primary,
+  accent: color.star,
+  background: color.backgroundLight,
   textDark: '#2D3436',
-  textLight: '#FFFFFF',
-  cardBg: '#FFFFFF',
-  success: '#4CAF50',
-  warning: '#FF9800',
+  textLight: color.white,
+  cardBg: color.white,
+  success: color.success,
+  warning: color.warning,
   error: '#F44336',
 };
 
@@ -45,7 +46,7 @@ const SARI_CATEGORIES = [
     id: '1',
     name: 'All Saris',
     icon: 'all-inclusive',
-    color: '#862E92',
+    color: color.secondary,
     subcategories: ['All'],
     count: 24,
   },
@@ -53,7 +54,7 @@ const SARI_CATEGORIES = [
     id: '2',
     name: 'Banarasi Silk',
     icon: 'silk',
-    color: '#F58021',
+    color: color.primary,
     subcategories: ['Pure Silk', 'Zari Work', 'Kadhwa', 'Tanchoi'],
     count: 8,
   },
@@ -61,7 +62,7 @@ const SARI_CATEGORIES = [
     id: '3',
     name: 'Mangalagiri',
     icon: 'local-florist',
-    color: '#4CAF50',
+    color: color.success,
     subcategories: ['Cotton', 'Silk Cotton', 'Nizam Borders'],
     count: 6,
   },
@@ -124,7 +125,7 @@ const SARI_PRODUCTS = {
       reviews: 128,
       inStock: true,
       isNew: true,
-      colors: ['#862E92', '#F58021', '#000000']
+      colors: [color.secondary, color.primary, color.black]
     },
     {
       id: '2',
@@ -140,7 +141,7 @@ const SARI_PRODUCTS = {
       reviews: 89,
       inStock: true,
       isNew: false,
-      colors: ['#4CAF50', '#FFFFFF', '#000000']
+      colors: [color.success, color.white, color.black]
     },
     {
       id: '3',
@@ -156,7 +157,7 @@ const SARI_PRODUCTS = {
       reviews: 256,
       inStock: true,
       isNew: true,
-      colors: ['#E91E63', '#FFD700', '#000000']
+      colors: ['#E91E63', color.star, color.black]
     },
     {
       id: '4',
@@ -172,7 +173,7 @@ const SARI_PRODUCTS = {
       reviews: 67,
       inStock: true,
       isNew: false,
-      colors: ['#2196F3', '#FFFFFF', '#FFD700']
+      colors: ['#2196F3', color.white, color.star]
     },
     {
       id: '5',
@@ -188,7 +189,7 @@ const SARI_PRODUCTS = {
       reviews: 42,
       inStock: true,
       isNew: true,
-      colors: ['#9C27B0', '#FF5722', '#000000']
+      colors: ['#9C27B0', '#FF5722', color.black]
     },
     {
       id: '6',
@@ -204,7 +205,7 @@ const SARI_PRODUCTS = {
       reviews: 203,
       inStock: true,
       isNew: false,
-      colors: ['#FF5722', '#FFD700', '#000000']
+      colors: ['#FF5722', color.star, color.black]
     },
     {
       id: '7',
@@ -220,7 +221,7 @@ const SARI_PRODUCTS = {
       reviews: 56,
       inStock: true,
       isNew: false,
-      colors: ['#00BCD4', '#FFFFFF', '#FFD700']
+      colors: ['#00BCD4', color.white, color.star]
     },
     {
       id: '8',
@@ -236,7 +237,7 @@ const SARI_PRODUCTS = {
       reviews: 98,
       inStock: true,
       isNew: true,
-      colors: ['#862E92', '#FFD700', '#000000']
+      colors: [color.secondary, color.star, color.black]
     },
   ],
   'Pure Silk': [
@@ -255,7 +256,7 @@ const SARI_PRODUCTS = {
       reviews: 128,
       inStock: true,
       isNew: true,
-      colors: ['#862E92', '#F58021', '#000000']
+      colors: [color.secondary, color.primary, color.black]
     },
   ],
   'Cotton': [
@@ -274,7 +275,7 @@ const SARI_PRODUCTS = {
       reviews: 89,
       inStock: true,
       isNew: false,
-      colors: ['#4CAF50', '#FFFFFF', '#000000']
+      colors: [color.success, color.white, color.black]
     },
   ],
   'Temple': [
@@ -293,7 +294,7 @@ const SARI_PRODUCTS = {
       reviews: 256,
       inStock: true,
       isNew: true,
-      colors: ['#E91E63', '#FFD700', '#000000']
+      colors: ['#E91E63', color.star, color.black]
     },
   ],
   'Sheer': [
@@ -312,7 +313,7 @@ const SARI_PRODUCTS = {
       reviews: 67,
       inStock: true,
       isNew: false,
-      colors: ['#2196F3', '#FFFFFF', '#FFD700']
+      colors: ['#2196F3', color.white, color.star]
     },
   ],
   'Double Ikat': [
@@ -331,7 +332,7 @@ const SARI_PRODUCTS = {
       reviews: 42,
       inStock: true,
       isNew: true,
-      colors: ['#9C27B0', '#FF5722', '#000000']
+      colors: ['#9C27B0', '#FF5722', color.black]
     },
   ],
   'Kadiyal': [
@@ -350,7 +351,7 @@ const SARI_PRODUCTS = {
       reviews: 203,
       inStock: true,
       isNew: false,
-      colors: ['#FF5722', '#FFD700', '#000000']
+      colors: ['#FF5722', color.star, color.black]
     },
   ],
   'Traditional': [
@@ -369,7 +370,7 @@ const SARI_PRODUCTS = {
       reviews: 56,
       inStock: true,
       isNew: false,
-      colors: ['#00BCD4', '#FFFFFF', '#FFD700']
+      colors: ['#00BCD4', color.white, color.star]
     },
   ],
   'Zari Work': [
@@ -388,7 +389,7 @@ const SARI_PRODUCTS = {
       reviews: 98,
       inStock: true,
       isNew: true,
-      colors: ['#862E92', '#FFD700', '#000000']
+      colors: [color.secondary, color.star, color.black]
     },
   ],
 };
@@ -602,7 +603,7 @@ const OtherCategoryData = () => {
             onPress={handleBackPress}
             activeOpacity={0.7}
           >
-            <Icon name="arrow-back" size={24} color="#fff" />
+            <Icon name="arrow-back" size={24} color={color.white} />
           </TouchableOpacity>
           <View style={styles.headerTextContainer}>
             <Text style={styles.headerTitle}>Sari Collection</Text>
@@ -619,7 +620,7 @@ const OtherCategoryData = () => {
               onPress={showCartSummary}
               activeOpacity={0.7}
             >
-              <Icon name="shopping-cart" size={24} color="#fff" />
+              <Icon name="shopping-cart" size={24} color={color.white} />
               {cartCount > 0 && (
                 <Animated.View style={styles.cartBadge}>
                   <Text style={styles.cartBadgeText}>{cartCount}</Text>
@@ -728,7 +729,7 @@ const OtherCategoryData = () => {
           onPress={clearCart}
           activeOpacity={0.7}
         >
-          <Icon name="delete-outline" size={20} color="#FFFFFF" />
+          <Icon name="delete-outline" size={20} color={color.white} />
         </TouchableOpacity>
       </Animated.View>
     );
@@ -755,7 +756,7 @@ const OtherCategoryData = () => {
           transform: [{ translateY: slideAnim }]
         }]}>
           <LinearGradient
-            colors={['#FFFFFF', '#F8F8F8']}
+            colors={[color.white, color.backgroundLight]}
             style={styles.sectionHeaderGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
@@ -836,7 +837,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -935,7 +936,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -972,7 +973,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   categoryNameSelected: {
-    color: '#FFFFFF',
+    color: color.white,
     fontWeight: 'bold',
   },
   categoryCountBadge: {
@@ -1003,11 +1004,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginRight: 10,
     borderRadius: 25,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: color.white,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: color.borderLight,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -1027,7 +1028,7 @@ const styles = StyleSheet.create({
     color: BRAND_COLORS.textDark,
   },
   subcategoryNameSelected: {
-    color: '#FFFFFF',
+    color: color.white,
     fontWeight: '600',
   },
   subcategoryCheck: {
@@ -1081,7 +1082,7 @@ const styles = StyleSheet.create({
     padding: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: color.white,
     marginHorizontal: 16,
     marginVertical: 20,
     borderRadius: 16,
@@ -1089,7 +1090,7 @@ const styles = StyleSheet.create({
   },
   emptyStateText: {
     fontSize: 16,
-    color: '#666666',
+    color: color.textMedium,
     marginTop: 12,
     textAlign: 'center',
   },
@@ -1139,7 +1140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewCartButtonText: {
-    color: "white",
+    color: color.white,
     fontWeight: 'bold',
     fontSize: 14,
   },

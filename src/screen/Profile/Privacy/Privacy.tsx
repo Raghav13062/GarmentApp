@@ -1,3 +1,4 @@
+import { color } from "../../../constant";
 
 import React, { useEffect, useState } from 'react'
 import {
@@ -57,7 +58,7 @@ const Privacy = () => {
                     />
                 </View>
                 <View style={{ paddingHorizontal: 15 }}>
-                    <Text style={{ color: "black", fontWeight: "800", fontSize: 18 }}>Condition of Use</Text>
+                    <Text style={{ color: color.black, fontWeight: "800", fontSize: 18 }}>Condition of Use</Text>
                     <Text>This Privacy Policy describes Our policies and procedures on the
                         collection, use and disclosure of Your information when You use the
                         Service and tells You about Your privacy rights and how the law protects
@@ -67,7 +68,7 @@ const Privacy = () => {
                         This Privacy Policy has been created with the help of the</Text>
 
 
-                    <Text style={{ color: "black", fontWeight: "800", fontSize: 18, marginTop: 40 }}>Terms of Use</Text>
+                    <Text style={{ color: color.black, fontWeight: "800", fontSize: 18, marginTop: 40 }}>Terms of Use</Text>
                     <Text>This Privacy Policy describes Our policies and procedures on the
                         collection, use and disclosure of Your information when You use the
                         Service and tells You about Your privacy rights and how the law protects
@@ -90,7 +91,7 @@ const Privacy = () => {
                 } */}
 
                 {/* {faqData.length != 0 && (
-                    <Text style={{marginTop:20, color: "black",fontWeight:"800" ,fontSize:18}}>Terms and Conditions</Text>
+                    <Text style={{marginTop:20, color: color.black,fontWeight:"800" ,fontSize:18}}>Terms and Conditions</Text>
                 )}
 
                 {faqData &&
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     htmlStyles: {
         p: {
             fontSize: 14,
-            color: '#333',
+            color: color.textDark,
             lineHeight: 24,
             textAlign: 'justify',
             fontWeight: "500",
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
         h1: {
             fontSize: 22,
             fontWeight: '500',
-            color: '#000',
+            color: color.black,
             marginBottom: 10,
         },
         h2: {
@@ -137,14 +138,14 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: color.white,
     },
     headerContainer: {
         paddingHorizontal: 16,
         paddingVertical: 2,
-        backgroundColor: '#FFF',
+        backgroundColor: color.white,
         // Add shadow on iOS
-        shadowColor: '#000',
+        shadowColor: color.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 18,
         fontWeight: '600',
-        color: '#333',
+        color: color.textDark,
     },
     contentContainer: {
         padding: 12,
@@ -179,14 +180,14 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 20,
         fontWeight: '700',
-        color: 'black',
+        color: color.black,
         marginBottom: 10,
         lineHeight: 30
     },
     bodyText: {
         fontSize: 14,
         lineHeight: 20,
-        color: '#666',
+        color: color.textMedium,
         textAlign: 'justify',
     },
 

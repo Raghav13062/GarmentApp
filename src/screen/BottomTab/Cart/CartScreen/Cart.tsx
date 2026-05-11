@@ -1,3 +1,4 @@
+import { color } from "../../../../constant";
 import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
@@ -21,19 +22,19 @@ const { width, height } = Dimensions.get('window');
 
 // Brand Colors
 const BRAND_COLORS = {
-  primaryGradient: ['#F58021', '#862E92'],
-  primaryDark: '#862E92',
-  primaryLight: '#F58021',
-  accent: '#FFD700',
-  background: '#F5F5F5',
+  primaryGradient: [color.primary, color.secondary],
+  primaryDark: color.secondary,
+  primaryLight: color.primary,
+  accent: color.star,
+  background: color.backgroundLight,
   textDark: '#2D3436',
-  textLight: '#FFFFFF',
-  cardBg: '#FFFFFF',
-  success: '#4CAF50',
-  warning: '#FF9800',
+  textLight: color.white,
+  cardBg: color.white,
+  success: color.success,
+  warning: color.warning,
   error: '#F44336',
   gray: '#757575',
-  lightGray: '#E0E0E0',
+  lightGray: color.borderLight,
 };
 
 const CartScreen = () => {
@@ -320,7 +321,7 @@ const cartTotal = sampleCartData.reduce((total, item) => total + item.price, 0);
               onPress={() => toggleItemSelection(item.id)}
               activeOpacity={0.8}
             >
-              {isSelected && <Icon name="check" size={16} color="#FFFFFF" />}
+              {isSelected && <Icon name="check" size={16} color={color.white} />}
             </TouchableOpacity>
           </View>
 
@@ -435,7 +436,7 @@ const cartTotal = sampleCartData.reduce((total, item) => total + item.price, 0);
             activeOpacity={0.8}
           >
             <View style={[styles.selectAllCheckbox, selectAll && styles.selectAllCheckboxSelected]}>
-              {selectAll && <Icon name="check" size={16} color="#FFFFFF" />}
+              {selectAll && <Icon name="check" size={16} color={color.white} />}
             </View>
             <Text style={styles.selectAllText}>Select All</Text>
           </TouchableOpacity>
@@ -456,7 +457,7 @@ const cartTotal = sampleCartData.reduce((total, item) => total + item.price, 0);
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={selectedCount > 0 ? ['#FFFFFF', '#F0F0F0'] : ['#CCCCCC', '#DDDDDD']}
+              colors={selectedCount > 0 ? [color.white, color.lightGray] : ['#CCCCCC', '#DDDDDD']}
               style={StyleSheet.absoluteFill}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
@@ -518,7 +519,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -610,7 +611,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 12,
     elevation: 3,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -717,7 +718,7 @@ const styles = StyleSheet.create({
     right: 0,
     padding: 16,
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,

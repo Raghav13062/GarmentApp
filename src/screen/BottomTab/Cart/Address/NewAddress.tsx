@@ -69,7 +69,7 @@ const AddressFormScreen = () => {
             key={index}
             style={styles.input}
             placeholder={`${placeholder}*`}
-            placeholderTextColor="#999"
+            placeholderTextColor={color.textLight}
           />
         ))}
 
@@ -100,7 +100,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
 
   },
   tabRow: {
@@ -129,7 +129,7 @@ export const styles = StyleSheet.create({
     fontFamily:fonts.semiBold
   },
   activeTabText: {
-    color: '#fff',
+    color: color.white,
     fontFamily:fonts.bold
     
   },
@@ -139,7 +139,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 14,
-    color: '#333',
+    color: color.textDark,
     marginBottom: 12,
     fontFamily:fonts.regular,
     height:55

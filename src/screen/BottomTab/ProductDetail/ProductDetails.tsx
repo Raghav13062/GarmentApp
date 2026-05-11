@@ -148,7 +148,7 @@ export default function ProductDetails() {
           {/* PREMIUM OVERLAYS */}
           {discountPercent > 0 && (
             <View style={{ position: 'absolute', top: Platform.OS === 'ios' ? 55 : 40, right: 16, backgroundColor: '#b69262', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 2 }}>
-              <Text style={{ color: '#fff', fontSize: 11, fontWeight: '700', letterSpacing: 1 }}>{discountPercent}% OFF</Text>
+              <Text style={{ color: color.white, fontSize: 11, fontWeight: '700', letterSpacing: 1 }}>{discountPercent}% OFF</Text>
             </View>
           )}
 
@@ -183,7 +183,7 @@ export default function ProductDetails() {
             <Ionicons name="star" size={14} color="#b69262" />
             <Ionicons name="star" size={14} color="#b69262" />
             <Ionicons name="star-half" size={14} color="#b69262" />
-            <Text style={{ fontSize: 12, color: '#666', marginLeft: 8 }}>({product?.ratings?.count || 'Premium Quality'})</Text>
+            <Text style={{ fontSize: 12, color: color.textMedium, marginLeft: 8 }}>({product?.ratings?.count || 'Premium Quality'})</Text>
           </View>
 
           {/* PRICE */}
@@ -264,7 +264,7 @@ export default function ProductDetails() {
       </Animated.ScrollView>
 
       {/* FIXED BACK BUTTON */}
-      <TouchableOpacity style={[styles.backButton, { zIndex: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 }]} onPress={navigationBack}>
+      <TouchableOpacity style={[styles.backButton, { zIndex: 10, shadowColor: color.black, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 }]} onPress={navigationBack}>
         <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.9)', alignItems: 'center', justifyContent: 'center' }}>
           <Ionicons name="arrow-back" size={22} color="#111" />
         </View>
@@ -279,7 +279,7 @@ export default function ProductDetails() {
           <Ionicons 
             name={isFavorite ? "heart" : "heart-outline"} 
             size={26} 
-            color={isFavorite ? "#ff0000" : "#444"} 
+            color={isFavorite ? color.error : "#444"} 
           />
         </TouchableOpacity>
 
@@ -288,7 +288,7 @@ export default function ProductDetails() {
           onPress={() => executeProtected(() => navigateToScreen(ScreenNameEnum.CheckoutScreen, { product }))}
         >
           <LinearGradient colors={color.buttLinearGradient} style={styles.themeBtnGradient}>
-            <Ionicons name="cart-outline" size={22} color="#fff" style={{ marginRight: 8 }} />
+            <Ionicons name="cart-outline" size={22} color={color.white} style={{ marginRight: 8 }} />
             <Text style={styles.themeBtnText}>Add to Cart</Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -301,7 +301,7 @@ export default function ProductDetails() {
             style={{ position: 'absolute', top: Platform.OS === 'ios' ? 60 : 40, right: 20, zIndex: 100 }}
             onPress={() => setFullScreenImage(null)}
           >
-            <Ionicons name="close" size={36} color="#fff" />
+            <Ionicons name="close" size={36} color={color.white} />
           </TouchableOpacity>
           <ScrollView
             maximumZoomScale={4}

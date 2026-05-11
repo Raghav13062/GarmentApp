@@ -34,7 +34,7 @@ const GradientButton = ({ children, onPress, style, icon }) => (
       end={{ x: 1, y: 0 }}
       style={styles.gradientButton}
     >
-      {icon && <Icon name={icon} size={16} color="#fff" style={{ marginRight: 6 }} />}
+      {icon && <Icon name={icon} size={16} color={color.white} style={{ marginRight: 6 }} />}
       <Text style={styles.gradientButtonText}>{children}</Text>
     </LinearGradient>
   </TouchableOpacity>
@@ -78,7 +78,7 @@ const PaymentRow = ({ item, index }) => {
             name={item.type === 'order' ? 'shopping-bag' : 
                   item.type === 'subscription' ? 'repeat' : 'credit-card'} 
             size={20} 
-            color="#fff" 
+            color={color.white} 
           />
         </LinearGradient>
       </View>
@@ -86,11 +86,11 @@ const PaymentRow = ({ item, index }) => {
       <View style={styles.center}>
         <Text style={styles.title}>{item.title}</Text>
         <View style={styles.dateContainer}>
-          <Icon name="calendar" size={12} color="#666" />
+          <Icon name="calendar" size={12} color={color.textMedium} />
           <Text style={styles.subtitle}>  {item.date} • {item.time}</Text>
         </View>
         <Text style={styles.paymentMethod}>
-          <Icon name="credit-card" size={12} color="#666" />  {item.paymentMethod}
+          <Icon name="credit-card" size={12} color={color.textMedium} />  {item.paymentMethod}
         </Text>
       </View>
 
@@ -156,7 +156,7 @@ const FilterModal = ({ visible, onClose, onApply, selectedFilters }) => {
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Filter Payments</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Icon name="x" size={24} color="#666" />
+              <Icon name="x" size={24} color={color.textMedium} />
             </TouchableOpacity>
           </View>
 
@@ -175,7 +175,7 @@ const FilterModal = ({ visible, onClose, onApply, selectedFilters }) => {
                   filters[option.id] && styles.filterCheckboxSelected
                 ]}>
                   {filters[option.id] && (
-                    <Icon name="check" size={12} color="#fff" />
+                    <Icon name="check" size={12} color={color.white} />
                   )}
                 </View>
                 <Text style={[
@@ -193,7 +193,7 @@ const FilterModal = ({ visible, onClose, onApply, selectedFilters }) => {
               style={styles.resetButton}
               onPress={handleReset}
             >
-              <Icon name="refresh-ccw" size={16} color="#666" />
+              <Icon name="refresh-ccw" size={16} color={color.textMedium} />
               <Text style={styles.resetButtonText}>Reset</Text>
             </TouchableOpacity>
             <GradientButton
@@ -226,13 +226,13 @@ const DateRangeModal = ({ visible, onClose, onApply }) => {
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Select Date Range</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Icon name="x" size={24} color="#666" />
+              <Icon name="x" size={24} color={color.textMedium} />
             </TouchableOpacity>
           </View>
 
           <View style={styles.dateInputContainer}>
             <View style={styles.dateInputWrapper}>
-              <Icon name="calendar" size={20} color="#862E92" style={styles.dateIcon} />
+              <Icon name="calendar" size={20} color={color.secondary} style={styles.dateIcon} />
               <TextInput
                 style={styles.dateInput}
                 placeholder="Start Date (DD/MM/YYYY)"
@@ -242,7 +242,7 @@ const DateRangeModal = ({ visible, onClose, onApply }) => {
             </View>
             <Text style={styles.dateTo}>to</Text>
             <View style={styles.dateInputWrapper}>
-              <Icon name="calendar" size={20} color="#862E92" style={styles.dateIcon} />
+              <Icon name="calendar" size={20} color={color.secondary} style={styles.dateIcon} />
               <TextInput
                 style={styles.dateInput}
                 placeholder="End Date (DD/MM/YYYY)"
@@ -260,7 +260,7 @@ const DateRangeModal = ({ visible, onClose, onApply }) => {
                 setEndDate('');
               }}
             >
-              <Icon name="x" size={16} color="#666" />
+              <Icon name="x" size={16} color={color.textMedium} />
               <Text style={styles.resetButtonText}>Clear</Text>
             </TouchableOpacity>
             <GradientButton
@@ -476,7 +476,7 @@ export default function PaymentHistoryScreen() {
       {/* Search Bar */}
       {/* <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
-          <Icon name="search" size={20} color="#666" />
+          <Icon name="search" size={20} color={color.textMedium} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search payments..."
@@ -485,7 +485,7 @@ export default function PaymentHistoryScreen() {
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Icon name="x" size={20} color="#666" />
+              <Icon name="x" size={20} color={color.textMedium} />
             </TouchableOpacity>
           )}
         </View>
@@ -535,7 +535,7 @@ export default function PaymentHistoryScreen() {
                 name={sort === 'recent' ? 'calendar' : 
                       sort === 'amount-high' ? 'arrow-up' : 'arrow-down'} 
                 size={16} 
-                color={activeSort === sort ? '#fff' : '#666'} 
+                color={activeSort === sort ? color.white : color.textMedium} 
               />
               <Text style={[
                 styles.sortButtonText,
@@ -567,7 +567,7 @@ export default function PaymentHistoryScreen() {
                       setSelectedFilters(newFilters);
                       applyFilters(newFilters);
                     }}>
-                      <Icon name="x" size={12} color="#fff" />
+                      <Icon name="x" size={12} color={color.white} />
                     </TouchableOpacity>
                   </View>
                 );
@@ -598,7 +598,7 @@ export default function PaymentHistoryScreen() {
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <Icon name="credit-card" size={80} color="#e0e0e0" />
+            <Icon name="credit-card" size={80} color={color.borderLight} />
             <Text style={styles.emptyTitle}>No Payments Found</Text>
             <Text style={styles.emptyText}>
               Try adjusting your filters or search terms
@@ -652,12 +652,12 @@ const styles = StyleSheet.create({
   searchContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: color.backgroundLight,
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -666,7 +666,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 12,
     fontSize: 16,
-    color: '#333',
+    color: color.textDark,
   },
   
   // Stats Cards
@@ -678,7 +678,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
      elevation: 8,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -693,7 +693,7 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#fff',
+    color: color.white,
     marginBottom: 4,
   },
   statLabel: {
@@ -714,9 +714,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: color.lightGray,
   },
   sortButtons: {
     flexDirection: 'row',
@@ -728,19 +728,19 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
     marginRight: 10,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: color.backgroundLight,
   },
   activeSortButton: {
-    backgroundColor: '#F58021',
+    backgroundColor: color.primary,
   },
   sortButtonText: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
     marginLeft: 6,
     fontWeight: '600',
   },
   activeSortButtonText: {
-    color: '#fff',
+    color: color.white,
   },
   filterButtons: {
     flexDirection: 'row',
@@ -751,13 +751,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 12,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: color.backgroundLight,
     marginLeft: 10,
     position: 'relative',
   },
   filterButtonText: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
     marginLeft: 6,
     fontWeight: '600',
   },
@@ -774,29 +774,29 @@ const styles = StyleSheet.create({
   },
   filterBadgeText: {
     fontSize: 10,
-    color: '#fff',
+    color: color.white,
     fontWeight: '700',
   },
   
   // Active Filters
   activeFilters: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: color.lightGray,
   },
   activeFilterTag: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F58021',
+    backgroundColor: color.primary,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 15,
     marginRight: 8,
   },
   activeFilterText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 12,
     fontWeight: '600',
     marginRight: 6,
@@ -808,7 +808,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E53E3E',
   },
   clearAllText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -823,22 +823,22 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     padding: 16,
     borderRadius: 20,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
   },
   evenRow: {
     borderLeftWidth: 4,
-    borderLeftColor: '#F58021',
+    borderLeftColor: color.primary,
   },
   oddRow: {
     borderLeftWidth: 4,
-    borderLeftColor: '#862E92',
+    borderLeftColor: color.secondary,
   },
   left: {
     width: 60,
@@ -859,7 +859,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 4,
   },
   dateContainer: {
@@ -869,11 +869,11 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 13,
-    color: '#666',
+    color: color.textMedium,
   },
   paymentMethod: {
     fontSize: 12,
-    color: '#666',
+    color: color.textMedium,
   },
   right: {
     alignItems: 'flex-end',
@@ -881,7 +881,7 @@ const styles = StyleSheet.create({
   amount: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 8,
   },
   statusBadge: {
@@ -890,7 +890,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: color.backgroundLight,
   },
   statusText: {
     fontSize: 12,
@@ -914,10 +914,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 8,
-    backgroundColor: '#F58021',
+    backgroundColor: color.primary,
   },
   retryText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 11,
     fontWeight: '600',
   },
@@ -931,13 +931,13 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#333',
+    color: color.textDark,
     marginTop: 20,
     marginBottom: 10,
   },
   emptyText: {
     fontSize: 16,
-    color: '#666',
+    color: color.textMedium,
     textAlign: 'center',
     marginBottom: 30,
     lineHeight: 24,
@@ -958,7 +958,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   gradientButtonText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 16,
     fontWeight: '700',
   },
@@ -974,7 +974,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: 'hidden',
     elevation: 8,
-    shadowColor: '#F58021',
+    shadowColor: color.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -987,7 +987,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     maxHeight: '80%',
@@ -998,12 +998,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: color.lightGray,
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#333',
+    color: color.textDark,
   },
   closeButton: {
     padding: 4,
@@ -1017,7 +1017,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f5f5f5',
+    borderBottomColor: color.backgroundLight,
   },
   filterOptionSelected: {
     backgroundColor: '#F0F0FF',
@@ -1033,22 +1033,22 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   filterCheckboxSelected: {
-    backgroundColor: '#F58021',
-    borderColor: '#F58021',
+    backgroundColor: color.primary,
+    borderColor: color.primary,
   },
   filterLabel: {
     fontSize: 16,
-    color: '#333',
+    color: color.textDark,
   },
   filterLabelSelected: {
-    color: '#F58021',
+    color: color.primary,
     fontWeight: '600',
   },
   modalFooter: {
     flexDirection: 'row',
     padding: 20,
     borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
+    borderTopColor: color.lightGray,
   },
   resetButton: {
     flexDirection: 'row',
@@ -1056,12 +1056,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 12,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: color.backgroundLight,
     marginRight: 12,
   },
   resetButtonText: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
     fontWeight: '600',
     marginLeft: 6,
   },
@@ -1078,7 +1078,7 @@ const styles = StyleSheet.create({
   dateInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: color.backgroundLight,
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -1090,12 +1090,12 @@ const styles = StyleSheet.create({
   dateInput: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: color.textDark,
   },
   dateTo: {
     textAlign: 'center',
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
     marginVertical: 8,
   },
 });

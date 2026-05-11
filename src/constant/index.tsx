@@ -5,21 +5,40 @@ export const pathImage: { pathImage: string } = {
 
 };
 export const color = {
- buttLinearGradient : ['#F58021', '#862E92'],
-    baground: 'white',
-    StatusBar:"#F58021",
-    buttonColor:'#1F8695',
-    borderColor:'#E9ECEF',
-    borderPrimary:'#081041',
-    white:'#fff',
-    inputColor:"white",
-    grey:"#A59F9F",
-    black:'#1A1A1A',
-    primary:"#852D91",
-    secondary:"#852D91",
-    error:"red" ,
-    gray:"#666" ,
- 
+  // Brand Colors
+  primary: '#F58021', // Note: Updating to standard app primary (orange) based on usage
+  secondary: '#862E92',
+  primaryGradient: ['#F58021', '#862E92'],
+  
+  // Base Colors
+  white: '#FFFFFF',
+  black: '#000000',
+  transparent: 'transparent',
+  
+  // Grays & Text
+  textDark: '#333333',
+  textMedium: '#666666',
+  textLight: '#999999',
+  gray: '#A59F9F',
+  lightGray: '#F0F0F0',
+  backgroundLight: '#F5F5F5',
+  borderLight: '#E0E0E0',
+  
+  // Semantic / Utility
+  success: '#4CAF50',
+  error: '#FF0000',
+  warning: '#FF9800',
+  star: '#FFD700',
+
+  // Existing legacy colors (kept for compatibility)
+  buttLinearGradient : ['#F58021', '#862E92'],
+  baground: 'white',
+  StatusBar:"#F58021",
+  buttonColor:'#1F8695',
+  borderColor:'#E9ECEF',
+  borderPrimary:'#081041',
+  inputColor:"white",
+  grey:"#A59F9F",
 }
 export const fonts = {
   black: 'Montserrat-Black',

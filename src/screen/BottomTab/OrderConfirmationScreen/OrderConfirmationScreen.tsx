@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { color } from '../../../constant';
 import {
   StyleSheet,
   View,
@@ -25,20 +26,20 @@ const { width, height } = Dimensions.get('window');
 
 // Brand Colors
 const BRAND_COLORS = {
-  primaryGradient: ['#F58021', '#862E92'],
+  primaryGradient: [color.primary, color.secondary],
   primaryGradient1: ['#16f564ff', '#01e761ff'],
-  primaryDark: '#862E92',
-  primaryLight: '#F58021',
-  accent: '#FFD700',
-  background: '#F5F5F5',
+  primaryDark: color.secondary,
+  primaryLight: color.primary,
+  accent: color.star,
+  background: color.backgroundLight,
   textDark: '#2D3436',
-  textLight: '#FFFFFF',
-  cardBg: '#FFFFFF',
-  success: '#4CAF50',
-  warning: '#FF9800',
+  textLight: color.white,
+  cardBg: color.white,
+  success: color.success,
+  warning: color.warning,
   error: '#F44336',
   gray: '#757575',
-  lightGray: '#E0E0E0',
+  lightGray: color.borderLight,
   successLight: 'rgba(76, 175, 80, 0.1)',
   infoLight: 'rgba(33, 150, 243, 0.1)',
 };
@@ -312,7 +313,7 @@ const OrderConfirmationScreen = () => {
             styles.confettiPiece,
             {
               backgroundColor: [
-                '#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', 
+                color.star, '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', 
                 '#FFEAA7', '#DDA0DD', '#98D8C8'
               ][index % 8],
               transform: [
@@ -401,7 +402,7 @@ const OrderConfirmationScreen = () => {
           onPress={() => navigation.goBack()}
           activeOpacity={0.7}
         >
-          <Icon name="arrow-back" size={24} color="#FFFFFF" />
+          <Icon name="arrow-back" size={24} color={color.white} />
         </TouchableOpacity>
         
         <View style={styles.headerTitleContainer}>
@@ -416,9 +417,9 @@ const OrderConfirmationScreen = () => {
             disabled={isSharing}
           >
             {isSharing ? (
-              <ActivityIndicator size="small" color="#FFFFFF" />
+              <ActivityIndicator size="small" color={color.white} />
             ) : (
-              <Icon name="share" size={22} color="#FFFFFF" />
+              <Icon name="share" size={22} color={color.white} />
             )}
           </TouchableOpacity>
         </View> */}
@@ -437,7 +438,7 @@ const OrderConfirmationScreen = () => {
       >
         <View style={styles.statusContent}>
           <View style={styles.statusHeader}>
-            <Icon name="local-shipping" size={28} color="#FFFFFF" />
+            <Icon name="local-shipping" size={28} color={color.white} />
             <Text style={styles.statusTitle}>Order Status</Text>
           </View>
           
@@ -455,28 +456,28 @@ const OrderConfirmationScreen = () => {
           <View style={styles.statusSteps}>
             <View style={[styles.statusStep, styles.statusStepActive]}>
               <View style={styles.statusStepIcon}>
-                <Icon name="shopping-cart" size={16} color="#FFFFFF" />
+                <Icon name="shopping-cart" size={16} color={color.white} />
               </View>
               <Text style={styles.statusStepText}>Ordered</Text>
             </View>
             
             <View style={[styles.statusStep, order.status === 'Confirmed' || order.status === 'Processing' || order.status === 'Shipped' ? styles.statusStepActive : {}]}>
               <View style={[styles.statusStepIcon, (order.status === 'Confirmed' || order.status === 'Processing' || order.status === 'Shipped') && styles.statusStepIconActive]}>
-                <Icon name="check-circle" size={16} color="#FFFFFF" />
+                <Icon name="check-circle" size={16} color={color.white} />
               </View>
               <Text style={styles.statusStepText}>Confirmed</Text>
             </View>
             
             <View style={[styles.statusStep, order.status === 'Processing' || order.status === 'Shipped' ? styles.statusStepActive : {}]}>
               <View style={[styles.statusStepIcon, (order.status === 'Processing' || order.status === 'Shipped') && styles.statusStepIconActive]}>
-                <Icon name="build" size={16} color="#FFFFFF" />
+                <Icon name="build" size={16} color={color.white} />
               </View>
               <Text style={styles.statusStepText}>Processing</Text>
             </View>
             
             <View style={[styles.statusStep, order.status === 'Shipped' ? styles.statusStepActive : {}]}>
               <View style={[styles.statusStepIcon, order.status === 'Shipped' && styles.statusStepIconActive]}>
-                <Icon name="local-shipping" size={16} color="#FFFFFF" />
+                <Icon name="local-shipping" size={16} color={color.white} />
               </View>
               <Text style={styles.statusStepText}>Shipped</Text>
             </View>
@@ -592,10 +593,10 @@ const OrderConfirmationScreen = () => {
           activeOpacity={0.8}
         >
           {isDownloading ? (
-            <ActivityIndicator size="small" color="#FFFFFF" />
+            <ActivityIndicator size="small" color={color.white} />
           ) : (
             <>
-              <Icon name="download" size={20} color="#FFFFFF" />
+              <Icon name="download" size={20} color={color.white} />
               <Text style={styles.downloadButtonText}>Download Invoice</Text>
             </>
           )}
@@ -663,7 +664,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -726,7 +727,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-     shadowColor: '#000',
+     shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -737,7 +738,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -828,7 +829,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -956,7 +957,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -1003,7 +1004,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,

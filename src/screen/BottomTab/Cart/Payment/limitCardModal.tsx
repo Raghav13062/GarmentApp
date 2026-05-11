@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         height: 'auto',
-        backgroundColor: '#fff',
+        backgroundColor: color.white,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         padding: 20,
@@ -117,10 +117,10 @@ const styles = StyleSheet.create({
     },
     card: {
         width: width - 40,
-        backgroundColor: '#fff',
+        backgroundColor: color.white,
         borderRadius: 12,
         padding: 15,
-        shadowColor: '#000',
+        shadowColor: color.black,
         shadowOpacity: 0.1,
         shadowRadius: 4,
         marginBottom: 15,
@@ -131,12 +131,12 @@ const styles = StyleSheet.create({
     progressText: {
         fontSize: 14,
         marginBottom: 6,
-        color:'black',
+        color: color.black,
         fontFamily:fonts.bold
     },
     progressBarBackground: {
         height: 7,
-        backgroundColor: '#E0E0E0',
+        backgroundColor: color.borderLight,
         borderRadius: 3.5,
         marginVertical: 6,
         overflow: 'hidden',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         fontFamily:fonts.bold
     },
     input: {
-        backgroundColor: '#f5f5f5',
+        backgroundColor: color.backgroundLight,
         borderRadius: 8,
         padding: 10,
         marginTop: 6,

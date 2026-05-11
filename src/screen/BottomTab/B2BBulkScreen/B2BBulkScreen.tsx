@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { color } from '../../../constant';
 import {
   View,
   Text,
@@ -18,7 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 const { width } = Dimensions.get('window');
-const primaryGradient = ['#F58021', '#862E92'];
+const primaryGradient = [color.primary, color.secondary];
 
 const B2BBulkScreen = () => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -119,7 +120,7 @@ const B2BBulkScreen = () => {
         ]}
       >
         <LinearGradient
-          colors={isBulkEligible ? ['#4CAF50', '#2E7D32'] : ['#ff9800', '#f57c00']}
+          colors={isBulkEligible ? [color.success, '#2E7D32'] : [color.warning, '#f57c00']}
           style={styles.bulkBadgeGradient}
         >
           <MaterialIcons 
@@ -152,17 +153,17 @@ const B2BBulkScreen = () => {
       <View style={styles.featuresContainer}>
         <View style={styles.featureRow}>
           <View style={styles.featureItem}>
-            <FontAwesome5 name="boxes" size={24} color="#F58021" />
+            <FontAwesome5 name="boxes" size={24} color={color.primary} />
             <Text                allowFontScaling={false}
  style={styles.featureText}>Bulk Buying</Text>
           </View>
           <View style={styles.featureItem}>
-            <Ionicons name="business" size={24} color="#862E92" />
+            <Ionicons name="business" size={24} color={color.secondary} />
             <Text               allowFontScaling={false}
  style={styles.featureText}>Franchise Offers</Text>
           </View>
           <View style={styles.featureItem}>
-            <Entypo name="price-tag" size={24} color="#4CAF50" />
+            <Entypo name="price-tag" size={24} color={color.success} />
             <Text                allowFontScaling={false}
  style={styles.featureText}>Smart Pricing</Text>
           </View>
@@ -221,7 +222,7 @@ const B2BBulkScreen = () => {
             style={styles.quantityButton} 
             onPress={decrementQuantity}
           >
-            <MaterialIcons name="remove" size={24} color="#fff" />
+            <MaterialIcons name="remove" size={24} color={color.white} />
           </TouchableOpacity>
           
           <View style={styles.quantityDisplay}>
@@ -241,7 +242,7 @@ const B2BBulkScreen = () => {
             style={styles.quantityButton} 
             onPress={incrementQuantity}
           >
-            <MaterialIcons name="add" size={24} color="#fff" />
+            <MaterialIcons name="add" size={24} color={color.white} />
           </TouchableOpacity>
         </View>
         
@@ -258,7 +259,7 @@ const B2BBulkScreen = () => {
           <MaterialIcons 
             name={showDetails ? "keyboard-arrow-up" : "keyboard-arrow-down"} 
             size={24} 
-            color="#666" 
+            color={color.textMedium} 
           />
         </TouchableOpacity>
         
@@ -284,7 +285,7 @@ const B2BBulkScreen = () => {
                 <Text style={[styles.tableCell, styles.tableData]}>{tier.price}</Text>
                 <View style={[
                   styles.statusBadge,
-                  { backgroundColor: tier.status.includes('Bulk') ? '#4CAF50' : '#ff9800' }
+                  { backgroundColor: tier.status.includes('Bulk') ? color.success : color.warning }
                 ]}>
                   <Text style={styles.statusText}>{tier.status}</Text>
                 </View>
@@ -316,7 +317,7 @@ const B2BBulkScreen = () => {
               <View style={styles.stepNumber}>
                 <Text style={styles.stepNumberText}>{index + 1}</Text>
               </View>
-              <MaterialIcons name={step.icon} size={24} color="#F58021" style={styles.stepIcon} />
+              <MaterialIcons name={step.icon} size={24} color={color.primary} style={styles.stepIcon} />
               <Text style={styles.stepText}>{step.text}</Text>
             </View>
           ))}
@@ -324,7 +325,7 @@ const B2BBulkScreen = () => {
       </View>
 
       {/* Price Summary */}
-      <LinearGradient colors={['#f8f9fa', '#e9ecef']} style={styles.summaryCard}>
+      <LinearGradient colors={['#f8f9fa', color.borderColor]} style={styles.summaryCard}>
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Selected Product:</Text>
           <Text style={styles.summaryValue}>{selectedProduct}</Text>
@@ -379,7 +380,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
-     color: 'white',
+     color: color.white,
     marginTop: 10,
     marginBottom:10
   },
@@ -400,14 +401,14 @@ const styles = StyleSheet.create({
   },
   featureItem: {
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     padding: 15,
     borderRadius: 15,
     flex: 1,
     marginHorizontal: 5,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: color.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
@@ -421,7 +422,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     marginTop: 10,
-    color: '#333',
+    color: color.textDark,
     textAlign:"center"
   },
   taglineCard: {
@@ -440,14 +441,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   section: {
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     marginHorizontal: 20,
     marginTop: 20,
     padding: 20,
     borderRadius: 20,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: color.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
@@ -460,7 +461,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
     marginBottom: 15,
   },
   productScroll: {
@@ -472,10 +473,10 @@ const styles = StyleSheet.create({
   overflow: 'hidden',
   borderWidth: 1,
   borderColor: '#E5E7EB',   // light gray border
-  backgroundColor: '#fff',
+  backgroundColor: color.white,
 
   // iOS shadow
-  shadowColor: '#000',
+  shadowColor: color.black,
   shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.12,
   shadowRadius: 6,
@@ -496,14 +497,14 @@ marginTop:1,
   productName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: color.textDark,
   },
   productNameSelected: {
-    color: 'white',
+    color: color.white,
   },
   productPrice: {
     fontSize: 12,
-    color: '#666',
+    color: color.textMedium,
     marginTop: 5,
   },
   productMinQty: {
@@ -518,7 +519,7 @@ marginTop:1,
     marginBottom: 20,
   },
   quantityButton: {
-    backgroundColor: '#F58021',
+    backgroundColor: color.primary,
     width: 50,
     height: 50,
     borderRadius: 25,
@@ -532,13 +533,13 @@ marginTop:1,
   quantityInput: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
     textAlign: 'center',
     width: 100,
   },
   quantityLabel: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
   },
   bulkBadge: {
     marginTop: 10,
@@ -554,7 +555,7 @@ marginTop:1,
     borderRadius:10
   },
   bulkBadgeText: {
-    color: 'white',
+    color: color.white,
     fontWeight: 'bold',
     marginLeft: 8,
   },
@@ -566,7 +567,7 @@ marginTop:1,
   pricingTable: {
     marginTop: 15,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: color.borderLight,
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -574,12 +575,12 @@ marginTop:1,
     flexDirection: 'row',
     backgroundColor: '#f8f9fa',
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: color.borderLight,
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: color.lightGray,
   },
   highlightedRow: {
     backgroundColor: '#e8f5e9',
@@ -590,7 +591,7 @@ marginTop:1,
   },
   tableHeaderCell: {
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
   },
   tableData: {
     color: '#555',
@@ -602,7 +603,7 @@ marginTop:1,
     alignSelf: 'center',
   },
   statusText: {
-    color: 'white',
+    color: color.white,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -632,7 +633,7 @@ marginTop:1,
     borderRadius: 10,
   },
   stepNumber: {
-    backgroundColor: '#F58021',
+    backgroundColor: color.primary,
     width: 30,
     height: 30,
     borderRadius: 15,
@@ -640,7 +641,7 @@ marginTop:1,
     alignItems: 'center',
   },
   stepNumberText: {
-    color: 'white',
+    color: color.white,
     fontWeight: 'bold',
   },
   stepIcon: {
@@ -648,7 +649,7 @@ marginTop:1,
   },
   stepText: {
     fontSize: 14,
-    color: '#333',
+    color: color.textDark,
     flex: 1,
   },
   summaryCard: {
@@ -658,7 +659,7 @@ marginTop:1,
     marginBottom: 40,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: color.black,
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.15,
         shadowRadius: 5,
@@ -682,10 +683,10 @@ marginTop:1,
   summaryValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: color.textDark,
   },
   priceHighlight: {
-    color: '#F58021',
+    color: color.primary,
     fontWeight: 'bold',
   },
   divider: {
@@ -701,12 +702,12 @@ marginTop:1,
   totalLabel: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: color.textDark,
   },
   totalAmount: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#862E92',
+    color: color.secondary,
   },
   orderButton: {
     marginTop: 25,
@@ -723,7 +724,7 @@ marginTop:1,
      borderRadius:10
   },
   orderButtonText: {
-    color: 'white',
+    color: color.white,
     fontSize: 18,
     fontWeight: 'bold',
     marginLeft: 10,

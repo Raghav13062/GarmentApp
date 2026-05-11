@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 24,
     lineHeight: 36,
-    color: '#000000',
+    color: color.black,
     marginTop: 7,
   },
 });

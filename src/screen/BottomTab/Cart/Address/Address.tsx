@@ -79,7 +79,7 @@ export default AddressScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   content: {
     padding: 16,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 14,
     borderWidth: 1,
-    borderColor: '#f0f0f0',
+    borderColor: color.lightGray,
     borderRadius: 12,
     marginBottom: 12,
   },
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   cardDesc: {
     fontSize: 13,
-    color: '#666',
+    color: color.textMedium,
     marginTop: 2,
     fontFamily: fonts.regular
   },

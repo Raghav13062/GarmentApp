@@ -1,3 +1,4 @@
+import { color } from "../../../constant";
 import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
@@ -22,19 +23,19 @@ const { width, height } = Dimensions.get('window');
 
 // Brand Colors
 const BRAND_COLORS = {
-  primaryGradient: ['#F58021', '#862E92'],
-  primaryDark: '#862E92',
-  primaryLight: '#F58021',
-  accent: '#FFD700',
-  background: '#F5F5F5',
+  primaryGradient: [color.primary, color.secondary],
+  primaryDark: color.secondary,
+  primaryLight: color.primary,
+  accent: color.star,
+  background: color.backgroundLight,
   textDark: '#2D3436',
-  textLight: '#FFFFFF',
-  cardBg: '#FFFFFF',
-  success: '#4CAF50',
-  warning: '#FF9800',
+  textLight: color.white,
+  cardBg: color.white,
+  success: color.success,
+  warning: color.warning,
   error: '#F44336',
   gray: '#757575',
-  lightGray: '#E0E0E0',
+  lightGray: color.borderLight,
 };
 
 const ViewCartScreen = () => {
@@ -264,7 +265,7 @@ const ViewCartScreen = () => {
               onPress={() => toggleItemSelection(item.id)}
               activeOpacity={0.8}
             >
-              {isSelected && <Icon name="check" size={16} color="#FFFFFF" />}
+              {isSelected && <Icon name="check" size={16} color={color.white} />}
             </TouchableOpacity>
           </View>
 
@@ -368,7 +369,7 @@ const ViewCartScreen = () => {
           onPress={() => navigation.goBack()}
           activeOpacity={0.7}
         >
-          <Icon name="arrow-back" size={24} color="#FFFFFF" />
+          <Icon name="arrow-back" size={24} color={color.white} />
         </TouchableOpacity>
         
         <View style={styles.headerTitleContainer}>
@@ -387,7 +388,7 @@ const ViewCartScreen = () => {
           <Icon 
             name="delete-sweep" 
             size={24} 
-            color={cart.length === 0 ? 'rgba(255, 255, 255, 0.5)' : '#FFFFFF'} 
+            color={cart.length === 0 ? 'rgba(255, 255, 255, 0.5)' : color.white} 
           />
         </TouchableOpacity>
       </View>
@@ -418,7 +419,7 @@ const ViewCartScreen = () => {
             activeOpacity={0.8}
           >
             <View style={[styles.selectAllCheckbox, selectAll && styles.selectAllCheckboxSelected]}>
-              {selectAll && <Icon name="check" size={16} color="#FFFFFF" />}
+              {selectAll && <Icon name="check" size={16} color={color.white} />}
             </View>
             <Text style={styles.selectAllText}>Select All</Text>
           </TouchableOpacity>
@@ -439,7 +440,7 @@ const ViewCartScreen = () => {
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={selectedCount > 0 ? ['#FFFFFF', '#F0F0F0'] : ['#CCCCCC', '#DDDDDD']}
+              colors={selectedCount > 0 ? [color.white, color.lightGray] : ['#CCCCCC', '#DDDDDD']}
               style={StyleSheet.absoluteFill}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
@@ -501,7 +502,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -592,7 +593,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 12,
     elevation: 3,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -699,7 +700,7 @@ const styles = StyleSheet.create({
     right: 0,
     padding: 16,
     elevation: 10,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,

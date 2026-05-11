@@ -94,7 +94,7 @@ const genderOptions = [
                   colors={color.buttLinearGradient}
                   style={styles.editPhotoGradient}
                 >
-                  <Icon name="camera" size={18} color="#fff" />
+                  <Icon name="camera" size={18} color={color.white} />
                 </LinearGradient>
               </TouchableOpacity>
             </View>
@@ -152,7 +152,7 @@ const genderOptions = [
                 <Text style={styles.dateText}>
                   {formData.dateOfBirth || "Select date"}
                 </Text>
-                <Icon name="calendar" size={20} color="#666" />
+                <Icon name="calendar" size={20} color={color.textMedium} />
               </TouchableOpacity>
 
               {errors.dateOfBirth && (

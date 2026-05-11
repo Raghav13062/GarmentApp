@@ -61,14 +61,14 @@ const LogoutModal  = ({
         };
       case "success":
         return {
-          gradient: ['#4CAF50', '#66BB6A'],
-          iconColor: '#4CAF50',
+          gradient: [color.success, '#66BB6A'],
+          iconColor: color.success,
           iconName: 'check-circle',
           iconBg: '#E8F5E9'
         };
       default:
         return {
-          gradient: [color.primary, color.secondary || '#862E92'],
+          gradient: [color.primary, color.secondary || color.secondary],
           iconColor: color.primary,
           iconName: 'log-out',
           iconBg: '#F0F0FF'
@@ -144,11 +144,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     paddingBottom: Platform.OS === 'ios' ? 34 : 20,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
     shadowRadius: 16,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   handleBar: {
     width: 40,
     height: 5,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: color.borderLight,
     borderRadius: 3,
   },
   content: {
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -187,14 +187,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: '700',
-    color: '#333',
+    color: color.textDark,
     textAlign: 'center',
     marginBottom: 12,
     letterSpacing: -0.3,
   },
   message: {
     fontSize: 16,
-    color: '#666',
+    color: color.textMedium,
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 20,
@@ -233,15 +233,15 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
   },
   cancelButton: {
-    backgroundColor: '#fff',
-    borderColor: '#E0E0E0',
+    backgroundColor: color.white,
+    borderColor: color.borderLight,
   },
   gradientButton: {
     flex: 1,
     borderRadius: 14,
     marginHorizontal: 6,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -261,10 +261,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   cancelText: {
-    color: '#666',
+    color: color.textMedium,
   },
   confirmText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -279,12 +279,12 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
     marginLeft: 8,
     fontWeight: '500',
   },
   safeArea: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
 });
 

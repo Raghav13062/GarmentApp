@@ -1,3 +1,4 @@
+import { color } from "../constant";
 import React, { useEffect, useRef } from 'react';
 import {
   View,
@@ -20,7 +21,7 @@ const GramerdHeder = ({
   cartCount = 0,
   onNotificationPress,
   onCartPress,
-  gradientColors = ['#F58021', '#862E92'],
+  gradientColors = [color.primary, color.secondary],
   rightIcons = ['notifications', 'shopping-cart'],
   headerStyle,
   iconStyle,
@@ -83,7 +84,7 @@ const GramerdHeder = ({
           onPress={onPress}
           style={[styles.iconButton, iconStyle]}
         >
-          <Icon name={icon} size={24} color="#fff" />
+          <Icon name={icon} size={24} color={color.white} />
           {icon === 'shopping-cart' && cartCount > 0 && (
             <View style={styles.cartBadge}>
               <Text style={styles.cartBadgeText}>
@@ -161,12 +162,12 @@ const styles = StyleSheet.create({
     height: 46,
     borderRadius: 23,
     marginRight: 10,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   appName: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#fff',
+    color: color.white,
     letterSpacing: 0.5,
   },
 
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   cartBadgeText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 10,
     fontWeight: '700',
   },

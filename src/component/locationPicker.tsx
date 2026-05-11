@@ -1,3 +1,4 @@
+import { color } from "../constant";
 import React, { useState } from 'react';
 import {
     View,
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     },
     container: {
         height: '75%', // Make it like a bottom sheet
-        backgroundColor: "white",
+        backgroundColor: color.white,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         overflow: "hidden",
@@ -174,11 +175,11 @@ const styles = StyleSheet.create({
     searchBar: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: color.white,
         borderRadius: 10,
         paddingHorizontal: 10,
         height: 50,
-        shadowColor: '#000',
+        shadowColor: color.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     suggestionsContainer: {
-        backgroundColor: 'white',
+        backgroundColor: color.white,
         marginTop: 8,
         borderRadius: 10,
         maxHeight: 200,
@@ -207,18 +208,18 @@ const styles = StyleSheet.create({
     },
     suggestionText: {
         fontSize: 16,
-        color: "black"
+        color: color.black
     },
     submitButton: {
         padding: 15,
-        backgroundColor: 'black',
+        backgroundColor: color.black,
         alignItems: 'center',
         borderRadius: 15,
         marginHorizontal: 20,
         marginBottom: 20,
     },
     submitButtonText: {
-        color: 'white',
+        color: color.white,
         fontSize: 16,
         fontWeight: 'bold',
     },

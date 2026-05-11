@@ -1,3 +1,4 @@
+import { color } from "../constant";
 import React from 'react';
 import { View, Text, Modal, StyleSheet, TouchableOpacity, Linking, Platform, Image } from 'react-native';
 
@@ -61,10 +62,10 @@ const styles = StyleSheet.create({
   modalContent: {
     width: '85%',
     padding: 25,
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     borderRadius: 15,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 10,
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
+    color: color.textDark,
     textAlign: 'center',
     marginBottom: 15,
     lineHeight:20
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: 'white',
+    color: color.white,
     fontWeight: '600',
   },
 });

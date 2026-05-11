@@ -1,3 +1,4 @@
+import { color } from "../../constant";
 import React from "react";
 import {
   View,
@@ -76,7 +77,7 @@ export default CategoryTabs;
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: color.white,
     marginTop:4
    },
 
@@ -107,12 +108,12 @@ const styles = StyleSheet.create({
 
   activeImage: {
     borderWidth: 2,
-    borderColor: "#FFFFFF",
+    borderColor: color.white,
   },
 
   text: {
     fontSize: 13,
-    color: "#000000",
+    color: color.black,
     fontWeight: "600",
     textAlign: "center",
   },
@@ -122,7 +123,7 @@ emptyContainer: {
   alignItems: "center",
 },
   activeText: {
-    color: "#FFFFFF",
+    color: color.white,
     fontWeight: "600",
   },
 });

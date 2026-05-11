@@ -1,3 +1,4 @@
+import { color } from "../../constant";
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -19,20 +20,20 @@ const { width } = Dimensions.get("window");
 
 // Updated COLORS with your theme
 const COLORS = {
-  gradient: ['#F58021', '#862E92'],
-  background: '#FFFFFF',
-  statusBar: '#F58021',
-  cardBackground: '#FFFFFF',
-  text: '#333333',
-  textLight: '#666666',
-  border: '#E0E0E0',
-  primary: '#F58021',
-  secondary: '#862E92',
-  success: '#4CAF50',
-  warning: '#FF9800',
+  gradient: [color.primary, color.secondary],
+  background: color.white,
+  statusBar: color.primary,
+  cardBackground: color.white,
+  text: color.textDark,
+  textLight: color.textMedium,
+  border: color.borderLight,
+  primary: color.primary,
+  secondary: color.secondary,
+  success: color.success,
+  warning: color.warning,
   info: '#2196F3',
-  white: '#FFFFFF',
-  shadow: '#000000',
+  white: color.white,
+  shadow: color.black,
 };
 
 // Extended demo data with images
@@ -252,7 +253,7 @@ export default function SearchProduct() {
           <Text style={styles.categoryText}>{item.category}</Text>
         </View>
         <View style={styles.ratingContainer}>
-          <Icon name="star" size={14} color="#FFD700" />
+          <Icon name="star" size={14} color={color.star} />
           <Text style={styles.ratingText}>{item.rating}</Text>
           <Text style={styles.reviewsText}>({item.reviews})</Text>
         </View>
@@ -294,7 +295,7 @@ export default function SearchProduct() {
             end={{ x: 1, y: 0 }}
             style={styles.addButtonGradient}
           >
-            <Icon name="add" size={20} color="#FFF" />
+            <Icon name="add" size={20} color={color.white} />
             <Text style={styles.addButtonText}>Add to Cart</Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -338,11 +339,11 @@ export default function SearchProduct() {
       >
         <View style={styles.headerTop}>
           <TouchableOpacity style={styles.backButton}>
-            <Icon name="arrow-back" size={24} color="#fff" />
+            <Icon name="arrow-back" size={24} color={color.white} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Search Products</Text>
           <TouchableOpacity style={styles.cartIcon}>
-            <Icon name="shopping-cart" size={24} color="#fff" />
+            <Icon name="shopping-cart" size={24} color={color.white} />
             {cart.length > 0 && (
               <View style={styles.cartBadge}>
                 <Text style={styles.cartBadgeText}>{cart.length}</Text>
@@ -460,7 +461,7 @@ export default function SearchProduct() {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <LinearGradient
-              colors={['#F8F8F8', '#FFFFFF']}
+              colors={[color.backgroundLight, color.white]}
               style={styles.emptyGradient}
             >
               <Icon name="search-off" size={80} color={COLORS.textLight} />
@@ -600,7 +601,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border,
   },
   suggestionChip: {
-    backgroundColor: '#F8F8F8',
+    backgroundColor: color.backgroundLight,
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -626,7 +627,7 @@ const styles = StyleSheet.create({
   categoryItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: '#F8F8F8',
+    backgroundColor: color.backgroundLight,
     borderRadius: 25,
     paddingHorizontal: 16,
     paddingVertical: 10,
@@ -670,7 +671,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     marginRight: 10,
     borderRadius: 15,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: color.backgroundLight,
     borderWidth: 1,
     borderColor: COLORS.border,
   },
@@ -768,7 +769,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 12,
     marginRight: 16,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: color.backgroundLight,
   },
   productInfo: {
     flex: 1,
@@ -811,7 +812,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: color.backgroundLight,
     borderWidth: 1,
     borderColor: COLORS.border,
   },

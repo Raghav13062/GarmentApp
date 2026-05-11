@@ -1,15 +1,16 @@
+import { color } from "../../../../constant";
 import { Dimensions, Platform, StyleSheet } from "react-native";
   const { width } = Dimensions.get("window");
  const BRAND_COLORS = {
-  primaryGradient: ['#F58021', '#862E92'],
-  primaryDark: '#862E92',
-  primaryLight: '#F58021',
-  background: '#F5F5F5',
+  primaryGradient: [color.primary, color.secondary],
+  primaryDark: color.secondary,
+  primaryLight: color.primary,
+  background: color.backgroundLight,
   textDark: '#2D3436',
-  textLight: '#FFFFFF',
-  cardBg: '#FFFFFF',
+  textLight: color.white,
+  cardBg: color.white,
   gray: '#757575',
-  lightGray: '#E0E0E0',
+  lightGray: color.borderLight,
 };
 export const styles = StyleSheet.create({
 
@@ -22,10 +23,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  headerTitle: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+  headerTitle: { color: color.white, fontSize: 18, fontWeight: 'bold' },
 
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     margin: 16,
     borderRadius: 12,
     padding: 16,
@@ -73,7 +74,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     elevation: 10,
   },
   off: {
@@ -90,6 +91,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
   },
-  orderText: { color: '#fff', fontWeight: 'bold' },
+  orderText: { color: color.white, fontWeight: 'bold' },
 
    });

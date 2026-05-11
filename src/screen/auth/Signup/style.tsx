@@ -1,3 +1,4 @@
+import { color } from "../../../constant";
 import { StyleSheet } from "react-native";
 import { hp, wp } from "../../../utils/Constant";
 import ResponsiveSize from "../../../utils/ResponsiveSize";
@@ -6,7 +7,7 @@ import { fonts } from "../../../constant";
 export const styles = StyleSheet.create({
   bgContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     paddingBottom:20
   },
  
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 15,
-    backgroundColor: 'transparent',
+    backgroundColor: color.transparent,
   },
    txtDes:{
       color:'#616161',
@@ -40,7 +41,7 @@ export const styles = StyleSheet.create({
     paddingVertical: hp(2),
   },
   errorText: {
-    color: 'red',
+    color: color.error,
     fontSize: 12,
     marginBottom: 8,
   },

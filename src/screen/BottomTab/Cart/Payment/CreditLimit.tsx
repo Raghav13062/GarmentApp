@@ -67,7 +67,7 @@ const navigation = useNavigation()
   ];
 
   return (
-    <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
+    <SafeAreaView style={{flex:1, backgroundColor:color.white}}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
        <CustomBackHeader menuIcon={imageIndex.back} label={"Credit Limit"} />
 
@@ -119,7 +119,7 @@ const navigation = useNavigation()
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     paddingHorizontal: 16,
     paddingBottom:30,
   },
@@ -140,12 +140,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
     fontFamily:fonts.bold,
-    color: '#fff',
+    color: color.white,
   },
  
   headerSubtitle: {
     fontSize: 14,
-    color: '#fff',
+    color: color.white,
     marginTop: 4,
     fontFamily:fonts.regular,
 
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   faqText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#000000',
+    color: color.black,
     fontFamily:fonts.medium
 
   },
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   faqAnswer: {
     marginTop: 10,
     fontSize: 14,
-    color: '#000',
+    color: color.black,
     fontFamily:fonts.regular,
     lineHeight:18
 

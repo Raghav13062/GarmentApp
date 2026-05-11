@@ -1,3 +1,4 @@
+import { color } from "../../../../constant";
 import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
@@ -24,15 +25,15 @@ import { styles } from './style';
 const { width } = Dimensions.get('window');
 
 const BRAND_COLORS = {
-  primaryGradient: ['#F58021', '#862E92'],
-  primaryDark: '#862E92',
-  primaryLight: '#F58021',
-  background: '#F5F5F5',
+  primaryGradient: [color.primary, color.secondary],
+  primaryDark: color.secondary,
+  primaryLight: color.primary,
+  background: color.backgroundLight,
   textDark: '#2D3436',
-  textLight: '#FFFFFF',
-  cardBg: '#FFFFFF',
+  textLight: color.white,
+  cardBg: color.white,
   gray: '#757575',
-  lightGray: '#E0E0E0',
+  lightGray: color.borderLight,
 };
 
 const TAX_PERCENT = 0.18;
@@ -176,7 +177,7 @@ const CheckoutScreen = () => {
       {/* HEADER */}
       <LinearGradient colors={BRAND_COLORS.primaryGradient} style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={24} color="#fff" />
+          <Icon name="arrow-back" size={24} color={color.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Checkout</Text>
         <View />

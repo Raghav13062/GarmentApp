@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 55,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     borderRadius: 15,
     paddingHorizontal: 15,
     justifyContent: 'center',
@@ -90,12 +90,12 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 16,
-    color: 'black',
+    color: color.black,
     lineHeight: 18,
   },
   selectedText: {
     fontSize: 16,
-    color: '#000',
+    color: color.black,
     lineHeight: 18,
     marginLeft:10
   },
