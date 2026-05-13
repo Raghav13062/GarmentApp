@@ -10,13 +10,15 @@ import { store, persistor } from '../redux/store';
 import Toast from 'react-native-toast-message';
 import toastConfig from '../utils/customToast';
 import { navigationRef } from '../constant';
- 
+import StatusBarComponent from '../component/StatusBarCompoent';
+
 const AppNavigator: React.FC = () => {
  
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <GestureHandlerRootView style={{ flex: 1 }}>
+          <StatusBarComponent />
           <NavigationContainer ref={navigationRef}>
             {/* <NetworkStatusModal
               modalVisible={modalVisible}

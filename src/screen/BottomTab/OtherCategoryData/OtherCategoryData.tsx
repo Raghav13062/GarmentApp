@@ -15,7 +15,6 @@ import {
 import ProductCard from '../../../component/cart/ProductCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { errorToast } from '../../../utils/customToast';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getProductsByCategory } from '../../../Api/auth/productService';
 import Loading from '../../../utils/Loader';
@@ -46,12 +45,6 @@ const BRAND_COLORS = {
   error: '#F44336',
 };
 
-// Sari Categories and Subcategories Data
-
-
-// Sari Products Data organized by subcategory
-
-
 const OtherCategoryData = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
@@ -69,10 +62,7 @@ const OtherCategoryData = () => {
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
-  const cartPulseAnim = useRef(new Animated.Value(1)).current;
   const headerScrollAnim = useRef(new Animated.Value(0)).current;
-
-
 
   useEffect(() => {
     Animated.parallel([
@@ -103,7 +93,7 @@ const OtherCategoryData = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-      const res = await getProductsByCategory(selectedCategory, 'all');
+      const res = await getProductsByCategory(categoryId, 'all');
       if (res && res.data) {
         const productList = res.data.products || [];
         setProducts(productList);
@@ -111,11 +101,6 @@ const OtherCategoryData = () => {
         // Derive subcategories from products if they exist
         const uniqueSubcats = ['All', ...new Set(productList.map((p: any) => p.subcategory).filter(Boolean))];
         setSubcategories(uniqueSubcats as string[]);
-
-        // Optionally update categoryName from API if available
-        if (res.data.categoryName && !categoryName) {
-          // We could use a state for dynamicTitle if needed
-        }
       }
       setLoading(false);
     };
@@ -128,7 +113,6 @@ const OtherCategoryData = () => {
   const filteredProducts = selectedSubcategory === 'All'
     ? products
     : products.filter((p: any) => p.subcategory === selectedSubcategory);
-
 
   // Handle category selection
   const handleCategorySelect = useCallback((id: string) => {
@@ -243,7 +227,6 @@ const OtherCategoryData = () => {
     );
   };
 
-  // Render cart summary bar with gradient
   return (
     <SafeAreaView style={styles.container}>
       {renderHeader()}
@@ -262,53 +245,7 @@ const OtherCategoryData = () => {
           contentContainerStyle={styles.productList}
           showsVerticalScrollIndicator={false}
           columnWrapperStyle={styles.productRow}
-          ListHeaderComponent={() => (
-            <>
-              {/* Categories Section */}
-              <View style={styles.categoriesSection}>
-                <FlatList
-                  data={categories}
-                  renderItem={renderCategoryItem}
-                  keyExtractor={item => item._id}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.categoryList}
-                />
-              </View>
 
-              {/* Subcategories Section */}
-              {subcategories.length > 1 && (
-                <View style={styles.subcategoryWrapper}>
-                  <ScrollView 
-                    horizontal 
-                    showsHorizontalScrollIndicator={false} 
-                    contentContainerStyle={styles.subcategoryList}
-                  >
-                    {subcategories.map((sub) => (
-                      <TouchableOpacity
-                        key={sub}
-                        style={[
-                          styles.subcategoryTab, 
-                          selectedSubcategory === sub && styles.subcategoryTabSelected
-                        ]}
-                        onPress={() => setSelectedSubcategory(sub)}
-                        activeOpacity={0.8}
-                      >
-                        <Text 
-                          style={[
-                            styles.subcategoryText, 
-                            selectedSubcategory === sub && styles.subcategoryTextSelected
-                          ]}
-                        >
-                          {sub}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
-              )}
-            </>
-          )}
           ListEmptyComponent={() => (
             <View style={styles.emptyState}>
               <Icon name="inventory" size={60} color="#CCCCCC" />
@@ -433,9 +370,6 @@ const styles = StyleSheet.create({
   categoryNameSelected: {
     color: color.white,
   },
-  section: {
-    flex: 1,
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -512,62 +446,6 @@ const styles = StyleSheet.create({
   subcategoryTextSelected: {
     color: color.white,
     fontWeight: '600',
-  },
-  cartSummary: {
-    position: 'absolute',
-    bottom: 20,
-    left: 16,
-    right: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    borderRadius: 16,
-    elevation: 10,
-    shadowColor: BRAND_COLORS.primaryDark,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    overflow: 'hidden',
-  },
-  cartInfo: {
-    flex: 1,
-  },
-  cartText: {
-    fontWeight: '600',
-    color: BRAND_COLORS.textLight,
-    fontSize: 14,
-  },
-  cartCount: {
-    fontWeight: 'bold',
-    color: BRAND_COLORS.accent,
-    fontSize: 16,
-  },
-  cartTotal: {
-    fontWeight: 'bold',
-    color: BRAND_COLORS.textLight,
-    fontSize: 16,
-    marginTop: 4,
-  },
-  viewCartButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginLeft: 12,
-    overflow: 'hidden',
-    minWidth: 100,
-    alignItems: 'center',
-  },
-  viewCartButtonText: {
-    color: color.white,
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
-  clearCartButton: {
-    padding: 10,
-    marginLeft: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 8,
   },
   footer: {
     height: 100,
