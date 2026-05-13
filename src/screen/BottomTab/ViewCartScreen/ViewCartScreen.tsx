@@ -18,6 +18,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import { errorToast } from '../../../utils/customToast';
+import { GetCartApi, RemoveFromCartApi } from '../../../Api/auth/cartService';
+import Loading from '../../../utils/Loader';
 
 const { width, height } = Dimensions.get('window');
 
@@ -51,11 +53,47 @@ const ViewCartScreen = () => {
   const [totalItems, setTotalItems] = useState(initialCart.length);
   const [selectedItems, setSelectedItems] = useState(new Set());
   const [selectAll, setSelectAll] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [cartData, setCartData] = useState<any>(null);
   
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
   const cartItemAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const fetchCart = async () => {
+    try {
+      const data = await GetCartApi(setLoading);
+      if (data) {
+        setCartData(data);
+        const mappedItems = data.items.map((item: any) => ({
+          id: item._id,
+          productId: item.product?._id,
+          title: item.product?.title || 'Product',
+          image: item.product?.baseImages?.[0]?.replace(/\.avif$/i, '.webp') || 'https://via.placeholder.com/150',
+          price: item.lineTotal || item.price,
+          quantity: item.quantity,
+          brand: item.product?.brand || 'Garment',
+          category: item.product?.categoryId?.name || 'Apparel',
+          originalPrice: item.mrp
+        }));
+        setCart(mappedItems);
+        setTotalPrice(data.totalPrice);
+        setTotalItems(data.totalItems);
+        
+        // Auto-select all items by default
+        const allItemIds = mappedItems.map((item: any) => item.id);
+        setSelectedItems(new Set(allItemIds));
+        setSelectAll(true);
+      }
+    } catch (error) {
+      console.error('Fetch cart error:', error);
+    }
+  };
 
   useEffect(() => {
     // Start animations
@@ -80,7 +118,9 @@ const ViewCartScreen = () => {
       }),
     ]).start();
 
-    calculateTotals();
+    if (cart.length > 0) {
+        calculateTotals();
+    }
   }, [cart]);
 
   // Calculate totals
@@ -92,7 +132,7 @@ const ViewCartScreen = () => {
   };
 
   // Remove item from cart
-  const removeItem = (itemId) => {
+  const removeItem = (item: any) => {
     Alert.alert(
       'Remove Item',
       'Are you sure you want to remove this item from cart?',
@@ -101,16 +141,16 @@ const ViewCartScreen = () => {
         {
           text: 'Remove',
           style: 'destructive',
-          onPress: () => {
-            const updatedCart = cart.filter(item => item.id !== itemId);
-            setCart(updatedCart);
-            // Also remove from selected items
-            const updatedSelected = new Set(selectedItems);
-            updatedSelected.delete(itemId);
-            setSelectedItems(updatedSelected);
-            
-            // Show toast
-            Alert.alert('Removed', 'Item removed from cart');
+          onPress: async () => {
+            try {
+              const productId = item.productId;
+              if (productId) {
+                await RemoveFromCartApi(productId, setLoading);
+                fetchCart(); // Refresh cart data
+              }
+            } catch (error) {
+              console.error('Remove error:', error);
+            }
           }
         }
       ]
@@ -313,7 +353,7 @@ const ViewCartScreen = () => {
             
             <TouchableOpacity
               style={styles.removeButton}
-              onPress={() => removeItem(item.id)}
+              onPress={() => removeItem(item)}
               activeOpacity={0.7}
             >
               <Icon name="delete-outline" size={20} color={BRAND_COLORS.error} />
@@ -468,6 +508,7 @@ const ViewCartScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {loading && <Loading />}
       {renderHeader()}
       
       {cart.length === 0 ? (

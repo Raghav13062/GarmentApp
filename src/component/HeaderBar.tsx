@@ -89,9 +89,9 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
 
         {/* Right: Icons */}
         <View style={styles.rightSection}>
-          <TouchableOpacity style={styles.iconButton}>
+          {/* <TouchableOpacity style={styles.iconButton}>
             <Icon name="search-outline" size={28} color={color.black} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.iconButton}
           // onPress={() => navigator.navigate(ScreenNameEnum.WishList)}
@@ -110,7 +110,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.iconButton}
-            onPress={() => navigator.navigate(ScreenNameEnum.Cart)}
+            onPress={() => navigator.navigate(ScreenNameEnum.ViewCartScreen)}
           >
             <View>
               <Icon name="cart-outline" size={28} color={color.black} />

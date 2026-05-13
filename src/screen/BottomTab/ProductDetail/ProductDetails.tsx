@@ -17,6 +17,7 @@ import { color, navigateToScreen, navigationBack } from "../../../constant";
 import ScreenNameEnum from "../../../routes/screenName.enum";
 import Loading from "../../../utils/Loader";
 import { TopProductDetail } from "../../../Api/auth/ApiGetCategories";
+import { AddToCartApi } from "../../../Api/auth/cartService";
 import { styles } from "./style";
 import { useProtectedAction } from "../../../utils/useProtectedAction";
 
@@ -324,7 +325,12 @@ export default function ProductDetails() {
 
         <TouchableOpacity
           style={{ flex: 1, marginLeft: 16 }}
-          onPress={() => executeProtected(() => navigateToScreen(ScreenNameEnum.CheckoutScreen, { product }))}
+          onPress={() => executeProtected(async () => {
+            const id = product?._id || product?.id || productId;
+            if (id) {
+              await AddToCartApi(id);
+            }
+          })}
         >
           <LinearGradient colors={color.buttLinearGradient} style={styles.themeBtnGradient}>
             <Ionicons name="cart-outline" size={22} color={color.white} style={{ marginRight: 8 }} />
