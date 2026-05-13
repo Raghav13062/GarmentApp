@@ -31,7 +31,7 @@ export default function useProfile() {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{ name: ScreenNameEnum.LoginScreen }],
+          routes: [{ name: ScreenNameEnum.BottomTabs }],
         })
       );
 
@@ -41,16 +41,16 @@ export default function useProfile() {
     }
   };
   const [loading, setLoading] = useState(false);
-// useEffect(() => {
-//   GetProfile(setLoading,dispatch);
-// }, []);
+  // useEffect(() => {
+  //   GetProfile(setLoading,dispatch);
+  // }, []);
 
   return {
     loading,
-  userData ,
-  profileImg, setProfileImg ,
-  showLogoutModal, setshowLogoutModal ,
-  navigation ,
-  handleLogout
+    userData,
+    profileImg, setProfileImg,
+    showLogoutModal, setshowLogoutModal,
+    navigation,
+    handleLogout
   };
 }
