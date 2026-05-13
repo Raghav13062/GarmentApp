@@ -16,7 +16,8 @@ import Privacy from "../screen/Profile/Privacy/Privacy";
 import SearchProduct from "../screen/SearchProduct/SearchProduct";
  
  
- import ScreenNameEnum from "./screenName.enum";
+ import WishlistScreen from "../screen/BottomTab/Wishlist/WishlistScreen";
+import ScreenNameEnum from "./screenName.enum";
 
 const _routes: any = {
   REGISTRATION_ROUTE: [
@@ -28,11 +29,14 @@ const _routes: any = {
       name: ScreenNameEnum.Privacy,
       Component: Privacy,
     },
-      {
+    {
       name: ScreenNameEnum.SearchProduct,
       Component: SearchProduct,
     },
-    
+    {
+      name: ScreenNameEnum.WishList,
+      Component: WishlistScreen,
+    },
     {
       name: ScreenNameEnum.PaymentHistory,
       Component: PaymentHistoryScreen,

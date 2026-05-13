@@ -54,3 +54,20 @@ export const getProductDetails = async (productId: string) => {
     return null;
   }
 };
+
+export const getProductsByCategory = async (categoryId: string, gender: string = 'all') => {
+  try {
+    const response = await apiClient.get(`categories/${categoryId}/products`, {
+      params: { gender }
+    });
+    if (response.data.success) {
+      return response.data;
+    } else {
+      errorToast(response.data.message || 'Failed to fetch category products');
+      return null;
+    }
+  } catch (error) {
+    errorToast('Network error while fetching category products');
+    return null;
+  }
+};

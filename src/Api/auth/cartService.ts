@@ -76,8 +76,8 @@ export const RemoveFromCartApi = async (
   try {
     if (setLoading) setLoading(true);
     
-    const response = await apiClient.post(endpointApi.cartRemove, {
-      productId: productId
+    const response = await apiClient.delete(endpointApi.cartRemove, {
+      data: { productId: productId }
     });
     
     if (response.data.success) {
@@ -111,8 +111,7 @@ export const UpdateCartQuantityApi = async (
   try {
     if (setLoading) setLoading(true);
     
-    // Note: Assuming there's an update endpoint, if not we might use cartAdd again or similar
-    const response = await apiClient.post('cart/update', {
+    const response = await apiClient.put(endpointApi.cartUpdate, {
       productId,
       quantity
     });
@@ -120,6 +119,35 @@ export const UpdateCartQuantityApi = async (
     return response.data;
   } catch (error: any) {
     console.error('UpdateCartQuantityApi Error:', error);
+    throw error;
+  } finally {
+    if (setLoading) setLoading(false);
+  }
+};
+
+/**
+ * Clears all items from the user's cart
+ * @param setLoading Optional loading state setter
+ * @returns Response data
+ */
+export const ClearCartApi = async (
+  setLoading?: (loading: boolean) => void
+) => {
+  try {
+    if (setLoading) setLoading(true);
+    
+    const response = await apiClient.delete(endpointApi.cartClear);
+    
+    if (response.data.success) {
+      successToast(response.data.message || 'Cart cleared');
+      return response.data;
+    } else {
+      errorToast(response.data.message || 'Failed to clear cart');
+      return response.data;
+    }
+  } catch (error: any) {
+    console.error('ClearCartApi Error:', error);
+    errorToast(error.response?.data?.message || 'Network error');
     throw error;
   } finally {
     if (setLoading) setLoading(false);

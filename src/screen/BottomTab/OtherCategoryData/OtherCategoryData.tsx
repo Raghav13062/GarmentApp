@@ -1,5 +1,5 @@
-import { color } from "../../../constant";
-import React, { useState, useEffect, useRef } from 'react';
+import { color, fonts } from "../../../constant";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,16 +9,22 @@ import {
   Animated,
   Easing,
   Image,
-
   FlatList,
+  ScrollView,
 } from 'react-native';
 import ProductCard from '../../../component/cart/ProductCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
-import ScreenNameEnum from '../../../routes/screenName.enum';
-import LinearGradient from 'react-native-linear-gradient';
 import { errorToast } from '../../../utils/customToast';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getProductsByCategory } from '../../../Api/auth/productService';
+import Loading from '../../../utils/Loader';
+import { navigateToScreen } from "../../../constant";
+import LinearGradient from "react-native-linear-gradient";
+import { useSelector } from 'react-redux';
+import ScreenNameEnum from '../../../routes/screenName.enum';
+import { getAllCategories } from '../../../Api/auth/categoryService';
+import { AddToCartApi } from '../../../Api/auth/cartService';
 
 const { width, height } = Dimensions.get('window');
 const NUM_COLUMNS = 2;
@@ -41,370 +47,24 @@ const BRAND_COLORS = {
 };
 
 // Sari Categories and Subcategories Data
-const SARI_CATEGORIES = [
-  {
-    id: '1',
-    name: 'All Saris',
-    icon: 'all-inclusive',
-    color: color.secondary,
-    subcategories: ['All'],
-    count: 24,
-  },
-  {
-    id: '2',
-    name: 'Banarasi Silk',
-    icon: 'silk',
-    color: color.primary,
-    subcategories: ['Pure Silk', 'Zari Work', 'Kadhwa', 'Tanchoi'],
-    count: 8,
-  },
-  {
-    id: '3',
-    name: 'Mangalagiri',
-    icon: 'local-florist',
-    color: color.success,
-    subcategories: ['Cotton', 'Silk Cotton', 'Nizam Borders'],
-    count: 6,
-  },
-  {
-    id: '4',
-    name: 'Chanderi',
-    icon: 'style',
-    color: '#2196F3',
-    subcategories: ['Sheer', 'Zari', 'Motifs'],
-    count: 5,
-  },
-  {
-    id: '5',
-    name: 'Kanjivaram',
-    icon: 'star',
-    color: '#E91E63',
-    subcategories: ['Pure Silk', 'Zari Borders', 'Temple'],
-    count: 7,
-  },
-  {
-    id: '6',
-    name: 'Patola',
-    icon: 'pattern',
-    color: '#9C27B0',
-    subcategories: ['Double Ikat', 'Geometric', 'Floral'],
-    count: 4,
-  },
-  {
-    id: '7',
-    name: 'Paithani',
-    icon: 'brightness-1',
-    color: '#FF5722',
-    subcategories: ['Kadiyal', 'Brocade', 'Pallu'],
-    count: 5,
-  },
-  {
-    id: '8',
-    name: 'Bandhani',
-    icon: 'adjust',
-    color: '#00BCD4',
-    subcategories: ['Traditional', 'Leheriya', 'Echo Dye'],
-    count: 6,
-  },
-];
+
 
 // Sari Products Data organized by subcategory
-const SARI_PRODUCTS = {
-  'All': [
-    {
-      id: '1',
-      title: 'Pure Banarasi Silk',
-      name: 'Pure Banarasi Silk Sari',
-      price: 12999,
-      originalPrice: 15999,
-      discount: 19,
-      image: 'https://e7.pngegg.com/pngimages/245/531/png-clipart-banarasi-sari-silk-shopping-zone-india-tv-pvt-ltd-clothing-silk-saree-textile-fashion-thumbnail.png',
-      category: 'Banarasi Silk',
-      subcategory: 'Pure Silk',
-      rating: 4.8,
-      reviews: 128,
-      inStock: true,
-      isNew: true,
-      colors: [color.secondary, color.primary, color.black]
-    },
-    {
-      id: '2',
-      title: 'Mangalagiri Cotton',
-      name: 'Mangalagiri Cotton Sari',
-      price: 4499,
-      originalPrice: 5999,
-      discount: 25,
-      image: 'https://e7.pngegg.com/pngimages/983/257/png-clipart-woman-wearing-purple-and-beige-saree-dress-chanderi-sari-fashion-georgette-clothing-indian-girl-purple-india-thumbnail.png',
-      category: 'Mangalagiri',
-      subcategory: 'Cotton',
-      rating: 4.2,
-      reviews: 89,
-      inStock: true,
-      isNew: false,
-      colors: [color.success, color.white, color.black]
-    },
-    {
-      id: '3',
-      title: 'Kanjivaram Temple',
-      name: 'Kanjivaram Temple Sari',
-      price: 18999,
-      originalPrice: 22999,
-      discount: 17,
-      image: "https://e7.pngegg.com/pngimages/982/157/png-clipart-sari-georgette-clothing-churidar-blouse-sarees-fashion-formal-wear-thumbnail.png",
-      category: 'Kanjivaram',
-      subcategory: 'Temple',
-      rating: 4.7,
-      reviews: 256,
-      inStock: true,
-      isNew: true,
-      colors: ['#E91E63', color.star, color.black]
-    },
-    {
-      id: '4',
-      title: 'Chanderi Sheer',
-      name: 'Chanderi Sheer Sari',
-      price: 8499,
-      originalPrice: 10999,
-      discount: 23,
-      image: 'https://e7.pngegg.com/pngimages/1007/977/png-clipart-paithani-sari-silk-handloom-saree-surprise-wedding-reveal-purple-violet-thumbnail.png',
-      category: 'Chanderi',
-      subcategory: 'Sheer',
-      rating: 4.0,
-      reviews: 67,
-      inStock: true,
-      isNew: false,
-      colors: ['#2196F3', color.white, color.star]
-    },
-    {
-      id: '5',
-      title: 'Patola Double Ikat',
-      name: 'Patola Double Ikat Sari',
-      price: 24999,
-      originalPrice: 29999,
-      discount: 17,
-      image: 'https://png.pngtree.com/png-clipart/20250126/original/pngtree-stylish-red-designer-saree-for-weddings-and-celebrations-png-image_20330724.png',
-      category: 'Patola',
-      subcategory: 'Double Ikat',
-      rating: 4.9,
-      reviews: 42,
-      inStock: true,
-      isNew: true,
-      colors: ['#9C27B0', '#FF5722', color.black]
-    },
-    {
-      id: '6',
-      title: 'Paithani Kadiyal',
-      name: 'Paithani Kadiyal Sari',
-      price: 15999,
-      originalPrice: 19999,
-      discount: 20,
-      image: 'https://e7.pngegg.com/pngimages/64/922/png-clipart-jeans-t-shirt-clothing-graphy-a-pile-of-folded-jeans-blue-white-thumbnail.png',
-      category: 'Paithani',
-      subcategory: 'Kadiyal',
-      rating: 4.4,
-      reviews: 203,
-      inStock: true,
-      isNew: false,
-      colors: ['#FF5722', color.star, color.black]
-    },
-    {
-      id: '7',
-      title: 'Bandhani Traditional',
-      name: 'Bandhani Traditional Sari',
-      price: 6999,
-      originalPrice: 8999,
-      discount: 22,
-      image: 'https://e7.pngegg.com/pngimages/64/922/png-clipart-jeans-t-shirt-clothing-graphy-a-pile-of-folded-jeans-blue-white-thumbnail.png',
-      category: 'Bandhani',
-      subcategory: 'Traditional',
-      rating: 4.1,
-      reviews: 56,
-      inStock: true,
-      isNew: false,
-      colors: ['#00BCD4', color.white, color.star]
-    },
-    {
-      id: '8',
-      title: 'Banarasi Zari Work',
-      name: 'Banarasi Zari Work Sari',
-      price: 9999,
-      originalPrice: 12999,
-      discount: 23,
-      image: 'https://e7.pngegg.com/pngimages/64/922/png-clipart-jeans-t-shirt-clothing-graphy-a-pile-of-folded-jeans-blue-white-thumbnail.png',
-      category: 'Banarasi Silk',
-      subcategory: 'Zari Work',
-      rating: 4.6,
-      reviews: 98,
-      inStock: true,
-      isNew: true,
-      colors: [color.secondary, color.star, color.black]
-    },
-  ],
-  'Pure Silk': [
-    // Banarasi Pure Silk products
-    {
-      id: '1',
-      title: 'Pure Banarasi Silk',
-      name: 'Pure Banarasi Silk Sari',
-      price: 12999,
-      originalPrice: 15999,
-      discount: 19,
-      image: 'https://e7.pngegg.com/pngimages/245/531/png-clipart-banarasi-sari-silk-shopping-zone-india-tv-pvt-ltd-clothing-silk-saree-textile-fashion-thumbnail.png',
-      category: 'Banarasi Silk',
-      subcategory: 'Pure Silk',
-      rating: 4.8,
-      reviews: 128,
-      inStock: true,
-      isNew: true,
-      colors: [color.secondary, color.primary, color.black]
-    },
-  ],
-  'Cotton': [
-    // Mangalagiri Cotton products
-    {
-      id: '2',
-      title: 'Mangalagiri Cotton',
-      name: 'Mangalagiri Cotton Sari',
-      price: 4499,
-      originalPrice: 5999,
-      discount: 25,
-      image: 'https://e7.pngegg.com/pngimages/983/257/png-clipart-woman-wearing-purple-and-beige-saree-dress-chanderi-sari-fashion-georgette-clothing-indian-girl-purple-india-thumbnail.png',
-      category: 'Mangalagiri',
-      subcategory: 'Cotton',
-      rating: 4.2,
-      reviews: 89,
-      inStock: true,
-      isNew: false,
-      colors: [color.success, color.white, color.black]
-    },
-  ],
-  'Temple': [
-    // Kanjivaram Temple products
-    {
-      id: '3',
-      title: 'Kanjivaram Temple',
-      name: 'Kanjivaram Temple Sari',
-      price: 18999,
-      originalPrice: 22999,
-      discount: 17,
-      image: "https://e7.pngegg.com/pngimages/982/157/png-clipart-sari-georgette-clothing-churidar-blouse-sarees-fashion-formal-wear-thumbnail.png",
-      category: 'Kanjivaram',
-      subcategory: 'Temple',
-      rating: 4.7,
-      reviews: 256,
-      inStock: true,
-      isNew: true,
-      colors: ['#E91E63', color.star, color.black]
-    },
-  ],
-  'Sheer': [
-    // Chanderi Sheer products
-    {
-      id: '4',
-      title: 'Chanderi Sheer',
-      name: 'Chanderi Sheer Sari',
-      price: 8499,
-      originalPrice: 10999,
-      discount: 23,
-      image: 'https://e7.pngegg.com/pngimages/1007/977/png-clipart-paithani-sari-silk-handloom-saree-surprise-wedding-reveal-purple-violet-thumbnail.png',
-      category: 'Chanderi',
-      subcategory: 'Sheer',
-      rating: 4.0,
-      reviews: 67,
-      inStock: true,
-      isNew: false,
-      colors: ['#2196F3', color.white, color.star]
-    },
-  ],
-  'Double Ikat': [
-    // Patola Double Ikat products
-    {
-      id: '5',
-      title: 'Patola Double Ikat',
-      name: 'Patola Double Ikat Sari',
-      price: 24999,
-      originalPrice: 29999,
-      discount: 17,
-      image: 'https://png.pngtree.com/png-clipart/20250126/original/pngtree-stylish-red-designer-saree-for-weddings-and-celebrations-png-image_20330724.png',
-      category: 'Patola',
-      subcategory: 'Double Ikat',
-      rating: 4.9,
-      reviews: 42,
-      inStock: true,
-      isNew: true,
-      colors: ['#9C27B0', '#FF5722', color.black]
-    },
-  ],
-  'Kadiyal': [
-    // Paithani Kadiyal products
-    {
-      id: '6',
-      title: 'Paithani Kadiyal',
-      name: 'Paithani Kadiyal Sari',
-      price: 15999,
-      originalPrice: 19999,
-      discount: 20,
-      image: 'https://e7.pngegg.com/pngimages/64/922/png-clipart-jeans-t-shirt-clothing-graphy-a-pile-of-folded-jeans-blue-white-thumbnail.png',
-      category: 'Paithani',
-      subcategory: 'Kadiyal',
-      rating: 4.4,
-      reviews: 203,
-      inStock: true,
-      isNew: false,
-      colors: ['#FF5722', color.star, color.black]
-    },
-  ],
-  'Traditional': [
-    // Bandhani Traditional products
-    {
-      id: '7',
-      title: 'Bandhani Traditional',
-      name: 'Bandhani Traditional Sari',
-      price: 6999,
-      originalPrice: 8999,
-      discount: 22,
-      image: 'https://e7.pngegg.com/pngimages/64/922/png-clipart-jeans-t-shirt-clothing-graphy-a-pile-of-folded-jeans-blue-white-thumbnail.png',
-      category: 'Bandhani',
-      subcategory: 'Traditional',
-      rating: 4.1,
-      reviews: 56,
-      inStock: true,
-      isNew: false,
-      colors: ['#00BCD4', color.white, color.star]
-    },
-  ],
-  'Zari Work': [
-    // Banarasi Zari Work products
-    {
-      id: '8',
-      title: 'Banarasi Zari Work',
-      name: 'Banarasi Zari Work Sari',
-      price: 9999,
-      originalPrice: 12999,
-      discount: 23,
-      image: 'https://e7.pngegg.com/pngimages/64/922/png-clipart-jeans-t-shirt-clothing-graphy-a-pile-of-folded-jeans-blue-white-thumbnail.png',
-      category: 'Banarasi Silk',
-      subcategory: 'Zari Work',
-      rating: 4.6,
-      reviews: 98,
-      inStock: true,
-      isNew: true,
-      colors: [color.secondary, color.star, color.black]
-    },
-  ],
-};
+
 
 const OtherCategoryData = () => {
-  const [userData, setUserData] = useState(null);
-  const [cart, setCart] = useState([]);
-  const [viewMode, setViewMode] = useState('grid');
-  const [cartCount, setCartCount] = useState(0);
-  const [cartTotal, setCartTotal] = useState(0);
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const { categoryId, categoryName } = route.params || {};
 
-  // State for categories and filtering
-  const [selectedCategory, setSelectedCategory] = useState('1'); // Default: All Saris
+  const cartCount = useSelector((state: any) => state.cart.totalItems);
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(categoryId || '1');
   const [selectedSubcategory, setSelectedSubcategory] = useState('All');
-  const [products, setProducts] = useState(SARI_PRODUCTS['All']);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [subcategories, setSubcategories] = useState(['All']);
 
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -412,23 +72,9 @@ const OtherCategoryData = () => {
   const cartPulseAnim = useRef(new Animated.Value(1)).current;
   const headerScrollAnim = useRef(new Animated.Value(0)).current;
 
-  const navigation = useNavigation();
 
-  // User data
-  const userInfo = {
-    name: "Sari Shopper",
-    email: "sari@example.com",
-    membership: "Gold Member",
-    joinDate: "2024-01-15",
-    totalOrders: 47,
-    cartItems: 0,
-    address: "123 Fashion Street, City",
-  };
 
   useEffect(() => {
-    setUserData(userInfo);
-
-    // Start animations
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -443,154 +89,67 @@ const OtherCategoryData = () => {
         useNativeDriver: true,
       }),
     ]).start();
+
+    const fetchCategories = async () => {
+      const res = await getAllCategories();
+      if (res && res.data) {
+        setCategories(res.data || []);
+      }
+    };
+    fetchCategories();
   }, []);
 
   // Filter products based on selected category and subcategory
   useEffect(() => {
-    if (selectedSubcategory === 'All') {
-      // Show all products if "All" subcategory is selected
-      setProducts(SARI_PRODUCTS['All']);
-    } else {
-      // Filter by subcategory
-      const filteredProducts = SARI_PRODUCTS[selectedSubcategory] || [];
-      setProducts(filteredProducts);
+    const fetchProducts = async () => {
+      setLoading(true);
+      const res = await getProductsByCategory(selectedCategory, 'all');
+      if (res && res.data) {
+        const productList = res.data.products || [];
+        setProducts(productList);
+
+        // Derive subcategories from products if they exist
+        const uniqueSubcats = ['All', ...new Set(productList.map((p: any) => p.subcategory).filter(Boolean))];
+        setSubcategories(uniqueSubcats as string[]);
+
+        // Optionally update categoryName from API if available
+        if (res.data.categoryName && !categoryName) {
+          // We could use a state for dynamicTitle if needed
+        }
+      }
+      setLoading(false);
+    };
+
+    if (selectedCategory) {
+      fetchProducts();
     }
-  }, [selectedSubcategory]);
+  }, [selectedCategory]);
 
-  // Update cart totals whenever cart changes
-  useEffect(() => {
-    const totalItems = cart.length;
-    const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+  const filteredProducts = selectedSubcategory === 'All'
+    ? products
+    : products.filter((p: any) => p.subcategory === selectedSubcategory);
 
-    setCartCount(totalItems);
-    setCartTotal(totalPrice);
-
-    // Pulse animation when cart updates
-    if (totalItems > 0) {
-      Animated.sequence([
-        Animated.timing(cartPulseAnim, {
-          toValue: 1.3,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-        Animated.timing(cartPulseAnim, {
-          toValue: 1,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-
-    if (userData) {
-      setUserData({
-        ...userData,
-        cartItems: totalItems
-      });
-    }
-  }, [cart]);
 
   // Handle category selection
-  const handleCategorySelect = (categoryId) => {
-    setSelectedCategory(categoryId);
-    const category = SARI_CATEGORIES.find(cat => cat.id === categoryId);
-    if (category && category.subcategories.length > 0) {
-      // Reset to first subcategory when changing category
-      setSelectedSubcategory(category.subcategories[0]);
+  const handleCategorySelect = useCallback((id: string) => {
+    setSelectedCategory(id);
+    setSelectedSubcategory('All');
+  }, []);
+
+  const addToCart = async (product: any) => {
+    try {
+      await AddToCartApi(product._id || product.id, setLoading);
+    } catch (error) {
+      console.error('Add to cart error:', error);
     }
   };
 
-  // Handle subcategory selection
-  const handleSubcategorySelect = (subcategory) => {
-    setSelectedSubcategory(subcategory);
-  };
-
-  // Add to cart function with animation
-  const addToCart = (product) => {
-    if (!product.inStock) {
-      errorToast(" Out of Stock This product is currently out of stock.")
-      return;
-    }
-
-    const updatedCart = [...cart, product];
-    setCart(updatedCart);
-
-    // Add bounce animation to cart
-    Animated.sequence([
-      Animated.timing(cartPulseAnim, {
-        toValue: 1.5,
-        duration: 150,
-        useNativeDriver: true,
-      }),
-      Animated.timing(cartPulseAnim, {
-        toValue: 1,
-        duration: 150,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
-
-  // Show cart summary
-  const showCartSummary = () => {
-    navigation.navigate(ScreenNameEnum.ViewCartScreen, {
-      cart: cart,
-    });
-  };
-
-  // Clear cart with animation
-  const clearCart = () => {
-    Animated.timing(cartPulseAnim, {
-      toValue: 0.8,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      setCart([]);
-      cartPulseAnim.setValue(1);
-      errorToast("All items have been removed from your cart.")
-    });
-  };
-
-  // Handle back button press
-  const handleBackPress = () => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: 50,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      navigation.goBack();
-    });
-  };
-
-  // Render header with gradient
+  // Render header
   const renderHeader = () => {
-    const selectedCat = SARI_CATEGORIES.find(cat => cat.id === selectedCategory);
+    const selectedCat: any = categories.find((cat: any) => cat._id === selectedCategory);
 
     return (
-      <Animated.View
-        style={[
-          styles.header,
-          {
-            transform: [{
-              translateY: headerScrollAnim.interpolate({
-                inputRange: [0, 50],
-                outputRange: [0, -50],
-                extrapolate: 'clamp',
-              })
-            }],
-            opacity: headerScrollAnim.interpolate({
-              inputRange: [0, 50],
-              outputRange: [1, 0],
-              extrapolate: 'clamp',
-            })
-          }
-        ]}
-      >
+      <View style={styles.header}>
         <LinearGradient
           colors={BRAND_COLORS.primaryGradient}
           style={StyleSheet.absoluteFill}
@@ -600,214 +159,157 @@ const OtherCategoryData = () => {
         <View style={styles.headerLeft}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={handleBackPress}
+            onPress={() => navigation.goBack()}
             activeOpacity={0.7}
           >
             <Icon name="arrow-back" size={24} color={color.white} />
           </TouchableOpacity>
           <View style={styles.headerTextContainer}>
-            <Text style={styles.headerTitle}>Sari Collection</Text>
+            <Text style={styles.headerTitle}>{categoryName || selectedCat?.name || 'Collection'}</Text>
             <Text style={styles.headerSubtitle}>
-              {selectedCat?.name || 'All Saris'}
+              {selectedSubcategory === 'All' ? 'Discover your style' : selectedSubcategory}
             </Text>
           </View>
         </View>
 
         <View style={styles.headerRight}>
-          <Animated.View style={{ transform: [{ scale: cartPulseAnim }] }}>
-            <TouchableOpacity
-              style={styles.cartIconContainer}
-              onPress={showCartSummary}
-              activeOpacity={0.7}
-            >
-              <Icon name="shopping-cart" size={24} color={color.white} />
-              {cartCount > 0 && (
-                <Animated.View style={styles.cartBadge}>
-                  <Text style={styles.cartBadgeText}>{cartCount}</Text>
-                </Animated.View>
-              )}
-            </TouchableOpacity>
-          </Animated.View>
+          <TouchableOpacity
+            style={styles.cartIconContainer}
+            onPress={() => navigation.navigate(ScreenNameEnum.ViewCartScreen)}
+            activeOpacity={0.7}
+          >
+            <Icon name="shopping-bag" size={24} color={color.white} />
+            {cartCount > 0 && (
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>{cartCount}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
         </View>
-      </Animated.View>
+      </View>
     );
   };
 
   // Render category item
   const renderCategoryItem = ({ item }) => {
-    const isSelected = selectedCategory === item.id;
+    const isSelected = selectedCategory === item._id;
 
     return (
       <TouchableOpacity
         style={[
-          {
-            padding: 11
-          },
           styles.categoryCard,
           isSelected && styles.categoryCardSelected,
-          {
-            borderColor: isSelected ? "black" : "black",
-            backgroundColor: isSelected ? "black" : "white"
-
-          }
         ]}
-        onPress={() => handleCategorySelect(item.id)}
+        onPress={() => handleCategorySelect(item._id)}
         activeOpacity={0.8}
       >
-
-
         <Text
           style={[
             styles.categoryName,
-            isSelected && { color: '#fffdfdff' }
+            isSelected && styles.categoryNameSelected
           ]}
-          numberOfLines={2}
+          numberOfLines={1}
         >
           {item.name}
         </Text>
-
       </TouchableOpacity>
     );
   };
 
-  const renderProductCard = ({ item, index }) => {
+  const renderProductCard = ({ item }) => {
     return (
-      <ProductCard
-        item={item}
-        onPress={() => item.inStock && addToCart(item)}
-        buttShow={true}
-        title={item.inStock ? `ADD TO CART` : 'OUT OF STOCK'}
-        disabled={!item.inStock}
-      // onPress1={() => navigation.navigate(ScreenNameEnum.ProductDetails, { product: item })}
-      />
+      <View style={styles.productCardWrapper}>
+        <ProductCard
+          item={item}
+          onPress={() => addToCart(item)}
+          buttShow={true}
+          title={item.inventory?.stockQuantity > 0 ? `ADD TO CART` : 'OUT OF STOCK'}
+          disabled={!(item.inventory?.stockQuantity > 0)}
+          onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item })}
+        />
+        {item.isTopSelling && (
+          <View style={styles.topSellingBadge}>
+            <LinearGradient
+              colors={['#FFD700', '#FFA500']}
+              style={styles.badgeGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
+              <Text style={styles.badgeText}>BEST SELLER</Text>
+            </LinearGradient>
+          </View>
+        )}
+      </View>
     );
   };
 
   // Render cart summary bar with gradient
-  const renderCartSummary = () => {
-    if (cartCount === 0) return null;
-
-    const slideUpAnim = new Animated.Value(100);
-
-    Animated.spring(slideUpAnim, {
-      toValue: 0,
-      tension: 50,
-      friction: 8,
-      useNativeDriver: true,
-    }).start();
-
-    return (
-      <Animated.View style={[styles.cartSummary, { transform: [{ translateY: slideUpAnim }] }]}>
-        <LinearGradient
-          colors={BRAND_COLORS.primaryGradient}
-          style={[StyleSheet.absoluteFill, { borderRadius: 16 }]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        />
-        <View style={styles.cartInfo}>
-          <Text allowFontScaling={false} style={styles.cartText}>
-            <Text allowFontScaling={false} style={styles.cartCount}>{cartCount}</Text>
-            item{cartCount !== 1 ? 's' : ''} in cart
-          </Text>
-          <Text allowFontScaling={false} style={styles.cartTotal}>Total: ₹{cartTotal}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.viewCartButton}
-          onPress={showCartSummary}
-          activeOpacity={0.7}
-        >
-          <LinearGradient
-            colors={['#FF6B6B', '#FF8E53']}
-            style={StyleSheet.absoluteFill}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          />
-          <Text allowFontScaling={false} style={styles.viewCartButtonText}>VIEW CART</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.clearCartButton}
-          onPress={clearCart}
-          activeOpacity={0.7}
-        >
-          <Icon name="delete-outline" size={20} color={color.white} />
-        </TouchableOpacity>
-      </Animated.View>
-    );
-  };
-
-  // Get selected category data
-  const selectedCatData = SARI_CATEGORIES.find(cat => cat.id === selectedCategory);
-
   return (
     <SafeAreaView style={styles.container}>
       {renderHeader()}
 
-      <Animated.ScrollView
-        showsVerticalScrollIndicator={false}
-        onScroll={(event) => {
-          const offsetY = event.nativeEvent.contentOffset.y;
-          headerScrollAnim.setValue(offsetY);
-        }}
-        scrollEventThrottle={16}
-      >
-        {/* Categories Section */}
-        <Animated.View style={[styles.section, {
-          opacity: fadeAnim,
-          transform: [{ translateY: slideAnim }]
-        }]}>
-          <LinearGradient
-            colors={[color.white, color.backgroundLight]}
-            style={styles.sectionHeaderGradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          >
-            <View style={styles.sectionHeaderContent}>
-              <Text allowFontScaling={false} style={styles.sectionTitle}>Sari Categories</Text>
-              <View style={styles.sectionSubtitleContainer}>
-                <Text allowFontScaling={false} style={styles.sectionSubtitle}>
-                  {SARI_CATEGORIES.length} categories
-                </Text>
+      {/* Products Section */}
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <Loading />
+        </View>
+      ) : (
+        <FlatList
+          data={filteredProducts}
+          renderItem={renderProductCard}
+          keyExtractor={item => item._id}
+          numColumns={2}
+          contentContainerStyle={styles.productList}
+          showsVerticalScrollIndicator={false}
+          columnWrapperStyle={styles.productRow}
+          ListHeaderComponent={() => (
+            <>
+              {/* Categories Section */}
+              <View style={styles.categoriesSection}>
+                <FlatList
+                  data={categories}
+                  renderItem={renderCategoryItem}
+                  keyExtractor={item => item._id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.categoryList}
+                />
               </View>
-            </View>
-          </LinearGradient>
 
-          <FlatList
-            data={SARI_CATEGORIES}
-            renderItem={renderCategoryItem}
-            keyExtractor={item => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.categoryList}
-          />
-        </Animated.View>
-
-
-
-        {/* Products Section */}
-        <Animated.View style={[styles.section, {
-          opacity: fadeAnim,
-          transform: [{ translateY: slideAnim }]
-        }]}>
-
-
-
-          {products.length > 0 ? (
-            <View style={[styles.productGrid, {
-              flexDirection: "row"
-            }]}>
-              {products.map((item, index) => (
-                <View
-                  key={item.id}
-                  style={[
-                    styles.productCardContainer,
-                    index % 2 === 0 ? styles.productCardLeft : styles.productCardRight
-                  ]}
-                >
-                  {renderProductCard({ item, index })}
+              {/* Subcategories Section */}
+              {subcategories.length > 1 && (
+                <View style={styles.subcategoryWrapper}>
+                  <ScrollView 
+                    horizontal 
+                    showsHorizontalScrollIndicator={false} 
+                    contentContainerStyle={styles.subcategoryList}
+                  >
+                    {subcategories.map((sub) => (
+                      <TouchableOpacity
+                        key={sub}
+                        style={[
+                          styles.subcategoryTab, 
+                          selectedSubcategory === sub && styles.subcategoryTabSelected
+                        ]}
+                        onPress={() => setSelectedSubcategory(sub)}
+                        activeOpacity={0.8}
+                      >
+                        <Text 
+                          style={[
+                            styles.subcategoryText, 
+                            selectedSubcategory === sub && styles.subcategoryTextSelected
+                          ]}
+                        >
+                          {sub}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
                 </View>
-              ))}
-            </View>
-          ) : (
+              )}
+            </>
+          )}
+          ListEmptyComponent={() => (
             <View style={styles.emptyState}>
               <Icon name="inventory" size={60} color="#CCCCCC" />
               <Text style={styles.emptyStateText}>
@@ -815,12 +317,9 @@ const OtherCategoryData = () => {
               </Text>
             </View>
           )}
-        </Animated.View>
-
-        <View style={styles.footer} />
-      </Animated.ScrollView>
-
-      {renderCartSummary()}
+          ListFooterComponent={() => <View style={styles.footer} />}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -836,11 +335,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    elevation: 5,
+    elevation: 8,
     shadowColor: color.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
     zIndex: 10,
     overflow: 'hidden',
   },
@@ -859,9 +358,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: BRAND_COLORS.textLight,
+    color: color.white,
   },
   headerSubtitle: {
     fontSize: 12,
@@ -880,219 +379,139 @@ const styles = StyleSheet.create({
   },
   cartBadge: {
     position: 'absolute',
-    top: -5,
-    right: -5,
-    backgroundColor: BRAND_COLORS.accent,
+    top: -4,
+    right: -4,
+    backgroundColor: color.error,
     borderRadius: 10,
-    width: 20,
-    height: 20,
+    minWidth: 18,
+    height: 18,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: BRAND_COLORS.primaryDark,
+    borderWidth: 1.5,
+    borderColor: color.white,
   },
   cartBadgeText: {
-    color: BRAND_COLORS.textDark,
-    fontSize: 10,
+    color: color.white,
+    fontSize: 9,
     fontWeight: 'bold',
   },
-  section: {
-    marginBottom: 16,
-  },
-  sectionHeaderGradient: {
-    paddingHorizontal: 16,
+  categoriesSection: {
+    backgroundColor: color.white,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
-  },
-  sectionHeaderContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: BRAND_COLORS.textDark,
-  },
-  sectionSubtitleContainer: {
-    backgroundColor: 'rgba(134, 46, 146, 0.1)',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  sectionSubtitle: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: BRAND_COLORS.primaryDark,
+    borderBottomColor: color.borderLight,
   },
   categoryList: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 4,
   },
   categoryCard: {
-    paddingVertical: 12,
-    marginRight: 12,
-    borderRadius: 16,
-    overflow: 'hidden',
-    borderWidth: 1,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    alignItems: "center",
-    marginTop: 5
-  },
-  categoryCardSelected: {
-    borderWidth: 1.2,
-
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-  },
-  categoryGradient: {
-    flex: 1,
-    padding: 16,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  categoryIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  categoryName: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: BRAND_COLORS.textDark,
-    textAlign: 'center',
-    flex: 1,
-  },
-  categoryNameSelected: {
-    color: color.white,
-    fontWeight: 'bold',
-  },
-  categoryCountBadge: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 10,
-    minWidth: 24,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 6,
-  },
-  categoryCountText: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: BRAND_COLORS.textDark,
-  },
-  subcategoryList: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  subcategoryCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 18,
     paddingVertical: 10,
-    marginRight: 10,
+    marginRight: 12,
     borderRadius: 25,
     backgroundColor: color.white,
     borderWidth: 1,
     borderColor: color.borderLight,
+    justifyContent: 'center',
+    alignItems: 'center',
     elevation: 2,
     shadowColor: color.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  subcategoryCardSelected: {
-    backgroundColor: BRAND_COLORS.primaryDark,
-    borderColor: BRAND_COLORS.primaryDark,
-    elevation: 4,
-    shadowColor: BRAND_COLORS.primaryDark,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
-  subcategoryName: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: BRAND_COLORS.textDark,
+  categoryCardSelected: {
+    backgroundColor: color.black,
+    borderColor: color.black,
   },
-  subcategoryNameSelected: {
+  categoryName: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: color.black,
+  },
+  categoryNameSelected: {
     color: color.white,
-    fontWeight: '600',
   },
-  subcategoryCheck: {
-    marginLeft: 8,
+  section: {
+    flex: 1,
   },
-  productsHeaderGradient: {
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    marginTop: 8,
-  },
-  productsHeaderContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 100,
   },
-  productsTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: BRAND_COLORS.textLight,
-  },
-  productsCountBadge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  productsCount: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: BRAND_COLORS.textLight,
-  },
-  productGrid: {
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    paddingHorizontal: CARD_MARGIN,
+  productList: {
     paddingBottom: 20,
   },
-  productCardContainer: {
-    width: CARD_WIDTH,
-    marginBottom: CARD_MARGIN * 2,
+  productRow: {
+    justifyContent: 'space-between',
+    paddingHorizontal: 8,
   },
-  productCardLeft: {
-    marginRight: CARD_MARGIN,
+  productCardWrapper: {
+    position: 'relative',
+    width: '48%',
   },
-  productCardRight: {
-    marginLeft: CARD_MARGIN,
+  topSellingBadge: {
+    position: 'absolute',
+    top: 10,
+    left: 0,
+    zIndex: 5,
+  },
+  badgeGradient: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  badgeText: {
+    color: color.white,
+    fontSize: 8,
+    fontWeight: 'bold',
   },
   emptyState: {
-    padding: 40,
+    flex: 1,
+    padding: 60,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: color.white,
-    marginHorizontal: 16,
-    marginVertical: 20,
-    borderRadius: 16,
-    elevation: 2,
   },
   emptyStateText: {
     fontSize: 16,
     color: color.textMedium,
     marginTop: 12,
     textAlign: 'center',
+    fontWeight: '500',
+  },
+  subcategoryWrapper: {
+    backgroundColor: color.white,
+    paddingVertical: 4,
+  },
+  subcategoryList: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  subcategoryTab: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginRight: 10,
+    borderRadius: 20,
+    backgroundColor: color.backgroundLight,
+    borderWidth: 1,
+    borderColor: color.borderLight,
+  },
+  subcategoryTabSelected: {
+    backgroundColor: color.black,
+    borderColor: color.black,
+  },
+  subcategoryText: {
+    fontSize: 13,
+    color: color.black,
+    fontWeight: '500',
+  },
+  subcategoryTextSelected: {
+    color: color.white,
+    fontWeight: '600',
   },
   cartSummary: {
     position: 'absolute',

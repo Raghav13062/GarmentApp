@@ -16,9 +16,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useDispatch } from 'react-redux';
+import { setCart as setCartRedux } from '../../../redux/feature/cartSlice';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import { errorToast } from '../../../utils/customToast';
-import { GetCartApi, RemoveFromCartApi } from '../../../Api/auth/cartService';
+import { ClearCartApi, GetCartApi, RemoveFromCartApi, UpdateCartQuantityApi } from '../../../Api/auth/cartService';
 import Loading from '../../../utils/Loader';
 
 const { width, height } = Dimensions.get('window');
@@ -43,6 +45,7 @@ const BRAND_COLORS = {
 const ViewCartScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const dispatchRedux = useDispatch();
   
   // Get cart data from route params or initialize empty
   const initialCart = route.params?.cart || [];
@@ -84,6 +87,13 @@ const ViewCartScreen = () => {
         setCart(mappedItems);
         setTotalPrice(data.totalPrice);
         setTotalItems(data.totalItems);
+        
+        // Update Redux state
+        dispatchRedux(setCartRedux({
+          items: mappedItems,
+          totalItems: data.totalItems,
+          totalPrice: data.totalPrice
+        }));
         
         // Auto-select all items by default
         const allItemIds = mappedItems.map((item: any) => item.id);
@@ -158,28 +168,26 @@ const ViewCartScreen = () => {
   };
 
   // Update quantity
-  const updateQuantity = (itemId, action) => {
-    const updatedCart = cart.map(item => {
-      if (item.id === itemId) {
-        const currentQty = item.quantity || 1;
-        let newQty = currentQty;
-        
-        if (action === 'increase') {
-          newQty = currentQty + 1;
-        } else if (action === 'decrease' && currentQty > 1) {
-          newQty = currentQty - 1;
-        }
-        
-        return {
-          ...item,
-          quantity: newQty,
-          price: item.basePrice ? item.basePrice * newQty : item.price * newQty
-        };
-      }
-      return item;
-    });
+  const updateQuantity = async (item: any, action: string) => {
+    const currentQty = item.quantity || 1;
+    let newQty = currentQty;
     
-    setCart(updatedCart);
+    if (action === 'increase') {
+      newQty = currentQty + 1;
+    } else if (action === 'decrease' && currentQty > 1) {
+      newQty = currentQty - 1;
+    }
+    
+    if (newQty === currentQty) return;
+
+    try {
+      if (item.productId) {
+        await UpdateCartQuantityApi(item.productId, newQty, setLoading);
+        fetchCart(); // Refresh cart data
+      }
+    } catch (error) {
+      console.error('Update quantity error:', error);
+    }
   };
 
   // Toggle item selection
@@ -235,11 +243,13 @@ const ViewCartScreen = () => {
         {
           text: 'Clear All',
           style: 'destructive',
-          onPress: () => {
-            setCart([]);
-            setSelectedItems(new Set());
-            setSelectAll(false);
-            errorToast("All items removed from cart")
+          onPress: async () => {
+            try {
+              await ClearCartApi(setLoading);
+              fetchCart(); // Refresh cart data from API
+            } catch (error) {
+              console.error('Clear cart error:', error);
+            }
            }
         }
       ]
@@ -327,7 +337,7 @@ const ViewCartScreen = () => {
             <View style={styles.quantityContainer}>
               <TouchableOpacity
                 style={styles.quantityButton}
-                onPress={() => updateQuantity(item.id, 'decrease')}
+                onPress={() => updateQuantity(item, 'decrease')}
                 disabled={quantity <= 1}
               >
                 <Icon name="remove" size={18} color={quantity <= 1 ? BRAND_COLORS.gray : BRAND_COLORS.primaryDark} />
@@ -337,7 +347,7 @@ const ViewCartScreen = () => {
               
               <TouchableOpacity
                 style={styles.quantityButton}
-                onPress={() => updateQuantity(item.id, 'increase')}
+                onPress={() => updateQuantity(item, 'increase')}
               >
                 <Icon name="add" size={18} color={BRAND_COLORS.primaryDark} />
               </TouchableOpacity>

@@ -50,7 +50,8 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
           activeOpacity={0.85}
           onPress={() => {
              navigation.navigate(ScreenNameEnum.OtherCategoryData, {
-              item: { _id: item._id ?? "all", name: item.name },
+              categoryId: item._id,
+              categoryName: item.name
             });
           }}
           style={[styles.tab, isActive && styles.activeTab]}

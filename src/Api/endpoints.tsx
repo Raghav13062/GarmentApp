@@ -22,6 +22,8 @@ const endpointApi = {
   AllBrands: "brands",
   cartAdd: "cart/add",
   cartRemove: "cart/remove",
+  cartUpdate: "cart/update",
+  cartClear: "cart/clear",
   products: "products",
   topSellingProducts: "products/top-selling",
   productDetails: "products", // base path, ID will be appended

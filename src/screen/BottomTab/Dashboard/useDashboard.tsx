@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GetProfile } from '../../../Api/auth/authservice';
 import { GetAllBrandsProduct } from '../../../Api/auth/ApiGetCategories';
 import { getHomePageData } from '../../../Api/auth/homeService';
+import { GetCartApi } from '../../../Api/auth/cartService';
+import { setCart } from '../../../redux/feature/cartSlice';
 
 type GenderType = 'all' | 'men' | 'women' | 'kids';
 
@@ -34,6 +36,32 @@ export default function useDashboard() {
       console.log('Brands API Error', e);
     }
   }, []);
+
+  const fetchCart = useCallback(async () => {
+    try {
+      const data = await GetCartApi();
+      if (data) {
+        const mappedItems = data.items.map((item: any) => ({
+          id: item._id,
+          productId: item.product?._id,
+          title: item.product?.title || 'Product',
+          image: item.product?.baseImages?.[0]?.replace(/\.avif$/i, '.webp') || 'https://via.placeholder.com/150',
+          price: item.lineTotal || item.price,
+          quantity: item.quantity,
+          brand: item.product?.brand || 'Garment',
+          category: item.product?.categoryId?.name || 'Apparel',
+          originalPrice: item.mrp
+        }));
+        dispatch(setCart({
+          items: mappedItems,
+          totalItems: data.totalItems,
+          totalPrice: data.totalPrice
+        }));
+      }
+    } catch (e) {
+      console.log('Cart API Error', e);
+    }
+  }, [dispatch]);
 
   /* ---------------- Fetch Home ---------------- */
   const fetchHome = useCallback(async (selectedGender: GenderType) => {
@@ -77,7 +105,8 @@ export default function useDashboard() {
   useEffect(() => {
     GetProfile(setLoading, dispatch);
     GetBrandsProduct();
-  }, [dispatch, GetBrandsProduct]);
+    fetchCart();
+  }, [dispatch, GetBrandsProduct, fetchCart]);
 
   /* ---------------- Home Data ---------------- */
   useEffect(() => {

@@ -29,7 +29,7 @@ interface HeaderBarProps {
 }
 
 
-const GradientText = ({ text, colors }: { text: string; colors: string[] }) => {
+const GradientText = React.memo(({ text, colors }: { text: string; colors: string[] }) => {
   return (
     <Svg height="40" width="160">
       <Defs>
@@ -52,14 +52,58 @@ const GradientText = ({ text, colors }: { text: string; colors: string[] }) => {
       </SvgText>
     </Svg>
   );
-};
+});
+
+const IconWithBadge = React.memo(({
+  iconName,
+  count,
+  onPress,
+  badgeColors = ['#ff4d4d', color.error]
+}: {
+  iconName: string;
+  count?: number | string;
+  onPress?: () => void;
+  badgeColors?: string[];
+}) => (
+  <TouchableOpacity style={styles.iconButton} onPress={onPress}>
+    <View>
+      <Icon name={iconName} size={28} color={color.black} />
+      {((typeof count === 'number' && count > 0) || (typeof count === 'string')) && (
+        <LinearGradient
+          colors={badgeColors}
+          style={styles.badge}
+        >
+          <Text style={styles.badgeText}>{count}</Text>
+        </LinearGradient>
+      )}
+    </View>
+  </TouchableOpacity>
+));
 
 const HeaderBar: React.FC<HeaderBarProps> = ({
   genderOptions = [],
   currentGender,
   setGender,
 }) => {
-  const navigator = useNavigation();
+  const navigator = useNavigation<any>();
+  const wishlistCount = useSelector((state: any) => state.wishlist?.items?.length || 0);
+  const cartCount = useSelector((state: any) => state.cart?.totalItems || 0);
+
+  const handleLogoPress = React.useCallback(() => {
+    navigator.navigate(ScreenNameEnum.Dashboard);
+  }, [navigator]);
+
+  const handleWishlistPress = React.useCallback(() => {
+    navigator.navigate(ScreenNameEnum.WishList);
+  }, [navigator]);
+
+  const handleCartPress = React.useCallback(() => {
+    navigator.navigate(ScreenNameEnum.ViewCartScreen);
+  }, [navigator]);
+
+  const handleGenderPress = React.useCallback((item: string) => {
+    setGender && setGender(item);
+  }, [setGender]);
 
   return (
     <View style={styles.mainContainer}>
@@ -67,61 +111,30 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
       <View style={styles.topRow}>
         {/* Left: Message Icon */}
         <View style={styles.leftSection}>
-          <TouchableOpacity style={styles.iconButton}>
-            <View>
-              <Icon name="mail-outline" size={28} color={color.black} />
-              <LinearGradient
-                colors={['#ff4d4d', color.error]}
-                style={styles.badge}
-              >
-                <Text style={styles.badgeText}>9+</Text>
-              </LinearGradient>
-            </View>
-          </TouchableOpacity>
+          <IconWithBadge
+            iconName="mail-outline"
+            count="9+"
+            onPress={() => { /* Handle messages */ }}
+          />
         </View>
 
         {/* Center: Logo */}
         <View style={styles.centerSection}>
-          <TouchableOpacity onPress={() => navigator.navigate(ScreenNameEnum.Dashboard)}>
-            <GradientText text="Garment" colors={color.buttLinearGradient} />
-          </TouchableOpacity>
+          <GradientText text="Garment" colors={color.buttLinearGradient} />
         </View>
 
         {/* Right: Icons */}
         <View style={styles.rightSection}>
-          {/* <TouchableOpacity style={styles.iconButton}>
-            <Icon name="search-outline" size={28} color={color.black} />
-          </TouchableOpacity> */}
-          <TouchableOpacity
-            style={styles.iconButton}
-          // onPress={() => navigator.navigate(ScreenNameEnum.WishList)}
-          >
-            <View>
-              <Icon name="heart-outline" size={28} color={color.black} />
-              {0 > 0 && (
-                <LinearGradient
-                  colors={['#ff4d4d', color.error]}
-                  style={styles.badge}
-                >
-                  <Text style={styles.badgeText}>0</Text>
-                </LinearGradient>
-              )}
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconButton}
-            onPress={() => navigator.navigate(ScreenNameEnum.ViewCartScreen)}
-          >
-            <View>
-              <Icon name="cart-outline" size={28} color={color.black} />
-              <LinearGradient
-                colors={['#ff4d4d', color.error]}
-                style={styles.badge}
-              >
-                <Text style={styles.badgeText}>0</Text>
-              </LinearGradient>
-            </View>
-          </TouchableOpacity>
+          <IconWithBadge
+            iconName="heart-outline"
+            count={wishlistCount}
+            onPress={handleWishlistPress}
+          />
+          <IconWithBadge
+            iconName="cart-outline"
+            count={cartCount}
+            onPress={handleCartPress}
+          />
         </View>
       </View>
 
@@ -142,7 +155,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
                 <TouchableOpacity
                   key={item}
                   style={[styles.tab, isActive && styles.activeTab]}
-                  onPress={() => setGender && setGender(item)}
+                  onPress={() => handleGenderPress(item)}
                 >
                   <View style={styles.tabContent}>
                     <Text
@@ -281,7 +294,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HeaderBar;
+export default React.memo(HeaderBar);
 
 
 
