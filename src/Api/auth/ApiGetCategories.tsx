@@ -1,5 +1,5 @@
- import { endpointApi } from "../endpoints";
- import { errorToast } from "../../utils/customToast";
+import { endpointApi } from "../endpoints";
+import { errorToast } from "../../utils/customToast";
 import { base_url } from "..";
 import axios from "axios";
 
@@ -16,7 +16,7 @@ export const GetCategories = async (
         method: "GET",
         headers: {
           Accept: "application/json",
-        //   Authorization: token ? `Bearer ${token}` : "",
+          //   Authorization: token ? `Bearer ${token}` : "",
         },
       }
     );
@@ -24,7 +24,7 @@ export const GetCategories = async (
     const res = await response.json();
 
     if (!res?.success) {
-      errorToast(res?.message || "Failed to fetch categories");
+      // errorToast(res?.message || "Failed to fetch categories");
       return null;
     }
 
@@ -42,7 +42,7 @@ export const GetCategories = async (
 
 
 export const GetAllBrandsProduct = async () => {
- 
+
   try {
     const url = `${base_url}${endpointApi.AllBrands}`;
     console.log("Fetching URL:", url);
@@ -79,14 +79,14 @@ export const GetBannersHome = async (
         method: "GET",
         headers: {
           Accept: "application/json",
-         },
+        },
       }
     );
 
     const res = await response.json();
 
     if (!res?.success) {
-      errorToast(res?.message || "Failed to fetch categories");
+      // errorToast(res?.message || "Failed to fetch categories");
       return null;
     }
 
@@ -105,10 +105,10 @@ export const GetBannersHome = async (
 
 export const TopProductDetail = async (
   categoryId: string | number,
-   // setLoading: (loading: boolean) => void
+  // setLoading: (loading: boolean) => void
 ) => {
   try {
-     const response = await fetch(
+    const response = await fetch(
       `${base_url}products/${categoryId}`,
       {
         method: "GET",
@@ -120,7 +120,7 @@ export const TopProductDetail = async (
     );
 
     const res = await response.json();
-     if (!res?.success) {
+    if (!res?.success) {
       errorToast(res?.message || "Failed to fetch products");
       return null;
     }
