@@ -73,7 +73,7 @@ const IconWithBadge = React.memo(({
           colors={badgeColors}
           style={styles.badge}
         >
-          <Text style={styles.badgeText}>{count}</Text>
+          <Text style={styles.badgeText}>0</Text>
         </LinearGradient>
       )}
     </View>

@@ -11,10 +11,10 @@ import {
   ImageBackground,
 } from 'react-native';
 import React from 'react';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Loading from '../../../utils/Loader';
 import imageIndex from '../../../assets/imageIndex';
 import CustomInput from '../../../component/CustomInput';
-import Icon from '../../../component/Icon';
 import useLogin from './useLogin';
 import { styles } from './style';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
@@ -43,7 +43,6 @@ export default function Login() {
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
         <View style={styles.main}>
           <StatusBarComponent translucent={true} backgroundColor="transparent" />
@@ -62,12 +61,8 @@ export default function Login() {
           >
             <View style={styles.contentContainer}>
               <View style={styles.topSection}>
-                <Image
-                  source={imageIndex.logo}
-                  style={styles.logo}
-                  resizeMode="contain"
-                />
-                <Text style={styles.appName}>SURAT GARMENT</Text>
+
+                <Text style={styles.appName}>SFS GARMENT</Text>
                 <Text style={styles.appTagline}>Fashion Hub at Your Fingertips</Text>
               </View>
 
@@ -88,7 +83,7 @@ export default function Login() {
                     <CustomInput
                       placeholder="Email Address"
                       placeholderTextColor={color.textLight}
-                      leftIcon={<Icon source={imageIndex.email} size={20} color={color.primary} />}
+                      leftIcon={<MaterialIcon name="mail-outline" size={20} color={color.primary} />}
                       value={email}
                       onChangeText={handleEmailChange}
                       keyboardType="email-address"
@@ -103,7 +98,7 @@ export default function Login() {
                     <CustomInput
                       placeholder="Password"
                       placeholderTextColor={color.textLight}
-                      leftIcon={<Icon source={imageIndex.lock} size={20} color={color.primary} />}
+                      leftIcon={<MaterialIcon name="lock-outline" size={20} color={color.primary} />}
                       value={password}
                       onChangeText={handlePasswordChange}
                       secureTextEntryToggle
@@ -164,6 +159,10 @@ export default function Login() {
                       </Text>
                     </Text>
                   </View>
+
+
+
+
                 </View>
               </View>
             </View>

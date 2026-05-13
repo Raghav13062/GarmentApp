@@ -1,12 +1,12 @@
- 
+
 export const validateEmail = (email: string): string => {
   const trimmed = email.trim();
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (!trimmed) {
-    return "dffv";
+    return "Email is required";
   } else if (!emailRegex.test(trimmed)) {
-    return "localizationStrings.inValidEmail";
+    return "Please enter a valid email address";
   }
   return ''; // No error
 };
@@ -15,7 +15,7 @@ export const validatePassword = (password: string): string => {
   const trimmed = password.trim();
 
   if (!trimmed) {
-    return  "Password is required"
+    return "Password is required"
   } else if (trimmed.length < 8) {
     return "Password must be at least 8 characters"
   } else if (!/[A-Z]/.test(trimmed)) {
@@ -29,8 +29,8 @@ export const validatePassword = (password: string): string => {
   return ''; // ✅ No error
 };
 export const validateConfirmPassword = (password: string, confirmPassword: string): string => {
-  if (!confirmPassword) return localizationStrings.cPassRquire;
-  if (password !== confirmPassword) return localizationStrings.cPassError;
+  if (!confirmPassword) return "Please confirm your password";
+  if (password !== confirmPassword) return "Passwords do not match";
   return '';
 };
 
@@ -38,11 +38,8 @@ export const validateConfirmPassword = (password: string, confirmPassword: strin
 export const validateFirstName = (firstName: string): string => {
   const trimmed = firstName.trim();
   if (!trimmed) {
-    return localizationStrings.fnameReq;
-  } 
-  // else if (!/^[a-zA-Z\s'-]+$/.test(trimmed)) {
-  //   return 'First name can only contain letters';
-  // }
+    return "Full Name is required";
+  }
   return '';
 };
 
@@ -50,11 +47,8 @@ export const validateFirstName = (firstName: string): string => {
 export const validateLastName = (lastName: string): string => {
   const trimmed = lastName.trim();
   if (!trimmed) {
-    return localizationStrings.lnameReq;
+    return "Last Name is required";
   }
-  //  else if (!/^[a-zA-Z\s'-]+$/.test(trimmed)) {
-  //   return 'Last name can only contain letters';
-  // }
   return '';
 };
 

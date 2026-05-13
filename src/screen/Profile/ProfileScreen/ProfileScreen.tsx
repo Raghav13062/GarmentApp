@@ -290,7 +290,6 @@ const UserProfileScreen = () => {
 
           {[
             { icon: "edit-2", text: "Edit Profile", screen: ScreenNameEnum.EditProfile },
-            { icon: "shopping-bag", text: "My Orders", screen: ScreenNameEnum.MyOrders },
             // { icon: "map-pin", text: "Saved Addresses",screen: ScreenNameEnum.EditProfile },
             { icon: "credit-card", text: "Payment Histort", screen: ScreenNameEnum.PaymentHistory },
             // { icon: "bell", text: "Notifications",screen: ScreenNameEnum.EditProfile },

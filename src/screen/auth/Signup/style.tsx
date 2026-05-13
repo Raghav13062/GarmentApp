@@ -1,5 +1,5 @@
 import { color, fonts } from "../../../constant";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
 const { width, height } = Dimensions.get('window');
 
@@ -11,31 +11,31 @@ export const styles = StyleSheet.create({
   
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 30,
+    paddingBottom: 40,
   },
 
   mainContainer: {
     flex: 1,
-    paddingHorizontal: 25,
+    paddingHorizontal: 24,
   },
 
   headerSection: {
-    marginTop: 30,
-    marginBottom: 30,
-    alignItems: 'center',
+    marginTop: Platform.OS === 'ios' ? 20 : 40,
+    marginBottom: 35,
   },
 
   txtHeading: {
     fontSize: 32,
     fontWeight: '800',
     color: color.textDark,
-    letterSpacing: 1,
+    letterSpacing: 0.5,
   },
 
   txtDes: {
     fontSize: 16,
     color: color.textMedium,
     marginTop: 8,
+    fontFamily: fonts.regular,
   },
 
   formContainer: {
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
   },
 
   inputWrapper: {
-    marginBottom: 15,
+    marginBottom: 18,
   },
 
   inputContainer: {
@@ -51,24 +51,17 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: '#E9ECEF',
-    height: 55,
+    height: 58,
     paddingHorizontal: 15,
-  },
-
-  errorText: {
-    color: color.error,
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 5,
-    fontWeight: '500',
+    marginTop: 0, // Override default margin
   },
 
   termsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 30,
-    paddingHorizontal: 5,
+    paddingHorizontal: 2,
   },
 
   checkbox: {
@@ -80,24 +73,18 @@ export const styles = StyleSheet.create({
     marginRight: 12,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: color.white,
   },
 
   checkboxActive: {
     backgroundColor: color.primary,
   },
 
-  checkboxInner: {
-    width: 12,
-    height: 12,
-    backgroundColor: color.white,
-    borderRadius: 2,
-  },
-
   termsText: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 13,
     color: color.textMedium,
-    lineHeight: 20,
+    lineHeight: 18,
   },
 
   linkText: {
@@ -110,10 +97,10 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: 'hidden',
     shadowColor: color.primary,
-    shadowOffset: { width: 0, height: 8 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 8,
+    shadowRadius: 8,
+    elevation: 6,
   },
 
   gradientButton: {
@@ -125,13 +112,14 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: color.white,
     fontSize: 16,
-    fontWeight: '800',
-    letterSpacing: 1.5,
+    fontWeight: 'bold',
+    letterSpacing: 1,
   },
 
   loginLinkContainer: {
-    marginTop: 30,
+    marginTop: 35,
     alignItems: 'center',
+    marginBottom: 20,
   },
 
   loginLinkText: {
@@ -140,7 +128,7 @@ export const styles = StyleSheet.create({
   },
 
   loginLinkHighlight: {
-    color: color.secondary,
-    fontWeight: '800',
+    color: color.primary,
+    fontWeight: 'bold',
   },
 });

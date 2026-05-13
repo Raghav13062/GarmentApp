@@ -10,9 +10,8 @@ import {
 } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import imageIndex from '../../../assets/imageIndex';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import CustomInput from '../../../component/CustomInput';
-import Icon from '../../../component/Icon';
 import LoadingModal from '../../../utils/Loader';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import { color } from '../../../constant';
@@ -20,6 +19,7 @@ import useSignup from './useSignup';
 import { styles } from './style';
 import LinearGradient from 'react-native-linear-gradient';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
+import ErrorText from '../../../component/ErrorText';
 
 export default function Signup() {
   const {
@@ -47,12 +47,11 @@ export default function Signup() {
 
   return (
     <SafeAreaView style={styles.bgContainer}>
-      <StatusBarComponent translucent={true} backgroundColor="transparent" />
+      <StatusBarComponent barStyle="dark-content" />
       {loading && <LoadingModal />}
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView 
@@ -63,68 +62,68 @@ export default function Signup() {
             <View style={styles.mainContainer}>
               <View style={styles.headerSection}>
                 <Text style={styles.txtHeading}>Create Account</Text>
-                <Text style={styles.txtDes}>Join Surat Garment today</Text>
+                <Text style={styles.txtDes}>Join SFS GARMENT family today</Text>
               </View>
 
               <View style={styles.formContainer}>
                 <View style={styles.inputWrapper}>
                   <CustomInput
                     placeholder="Full Name"
-                    leftIcon={<Icon source={imageIndex.user} size={20} color={color.primary} />}
+                    leftIcon={<MaterialIcon name="person-outline" size={20} color={color.primary} />}
                     value={fullName}
                     onChangeText={handleFullNameChange}
                     containerStyle={styles.inputContainer}
                   />
-                  {fullNameError ? <Text style={styles.errorText}>{fullNameError}</Text> : null}
+                  <ErrorText error={fullNameError} />
                 </View>
 
                 <View style={styles.inputWrapper}>
                   <CustomInput
                     placeholder="Email Address"
-                    leftIcon={<Icon source={imageIndex.email} size={20} color={color.primary} />}
+                    leftIcon={<MaterialIcon name="mail-outline" size={20} color={color.primary} />}
                     value={email}
                     onChangeText={handleEmailChange}
                     keyboardType="email-address"
                     autoCapitalize="none"
                     containerStyle={styles.inputContainer}
                   />
-                  {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+                  <ErrorText error={emailError} />
                 </View>
 
                 <View style={styles.inputWrapper}>
                   <CustomInput
                     placeholder="Mobile Number"
-                    leftIcon={<Icon source={imageIndex.phone} size={20} color={color.primary} />}
+                    leftIcon={<MaterialIcon name="phone-iphone" size={20} color={color.primary} />}
                     value={mobileNo}
                     onChangeText={handleMobileNoChange}
                     keyboardType='phone-pad'
                     maxLength={10}
                     containerStyle={styles.inputContainer}
                   />
-                  {mobileNoError ? <Text style={styles.errorText}>{mobileNoError}</Text> : null}
+                  <ErrorText error={mobileNoError} />
                 </View>
 
                 <View style={styles.inputWrapper}>
                   <CustomInput
                     placeholder="Shop Address / Location"
-                    leftIcon={<Icon source={imageIndex.location} size={20} color={color.primary} />}
+                    leftIcon={<MaterialIcon name="location-on" size={20} color={color.primary} />}
                     value={address}
                     onChangeText={handleAddressChange}
                     containerStyle={styles.inputContainer}
                   />
-                  {addressError ? <Text style={styles.errorText}>{addressError}</Text> : null}
+                  <ErrorText error={addressError} />
                 </View>
 
                 <View style={styles.inputWrapper}>
                   <CustomInput
                     placeholder="Password"
                     secureTextEntryToggle
-                    leftIcon={<Icon source={imageIndex.lock} size={20} color={color.primary} />}
+                    leftIcon={<MaterialIcon name="lock-outline" size={20} color={color.primary} />}
                     value={password}
                     onChangeText={handlePasswordChange}
                     containerStyle={styles.inputContainer}
                   />
-                  {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+                  <ErrorText error={passwordError} />
                 </View>
 
                 <View style={styles.termsContainer}>
@@ -132,7 +131,7 @@ export default function Signup() {
                     onPress={() => setChecked(!checked)}
                     style={[styles.checkbox, checked && styles.checkboxActive]}
                   >
-                    {checked && <View style={styles.checkboxInner} />}
+                    {checked && <MaterialIcon name="check" size={14} color={color.white} />}
                   </TouchableOpacity>
 
                   <Text style={styles.termsText}>
@@ -143,6 +142,7 @@ export default function Signup() {
                 <TouchableOpacity 
                   style={styles.signupButton}
                   onPress={handleSignup}
+                  activeOpacity={0.8}
                 >
                   <LinearGradient
                     colors={color.buttLinearGradient}

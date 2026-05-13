@@ -9,8 +9,7 @@ import {
   ViewStyle,
   Text,
 } from 'react-native';
-import Icon from './Icon';
-import imageIndex from '../assets/imageIndex';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { color, fonts } from '../constant';
 
 interface CustomInputProps extends TextInputProps {
@@ -19,8 +18,8 @@ interface CustomInputProps extends TextInputProps {
   secureTextEntryToggle?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   type?: string;
-  onpress?: any,
-  date?: string
+  onpress?: any;
+  date?: string;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -32,39 +31,39 @@ const CustomInput: React.FC<CustomInputProps> = ({
   date,
   rightIcon,
   ...rest
-
 }) => {
   const [hidePassword, setHidePassword] = useState(secureTextEntryToggle);
 
   return (
     <View style={[styles.container, containerStyle]}>
       {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
-      {type == "date" ?
-        <TouchableOpacity onPress={onpress} style={{ width: '93%',}}>
-          <Text  allowFontScaling={false}  style={[styles.input, { width: '100%' }]}>{date}</Text>
+      {type === "date" ? (
+        <TouchableOpacity onPress={onpress} style={{ width: '93%' }}>
+          <Text allowFontScaling={false} style={[styles.input, { width: '100%' }]}>{date}</Text>
         </TouchableOpacity>
-        :
+      ) : (
         <TextInput
-         allowFontScaling={false}
+          allowFontScaling={false}
           style={styles.input}
           placeholderTextColor={color.gray}
           secureTextEntry={hidePassword}
-           returnKeyType="done"
-          
+          returnKeyType="done"
           {...rest}
         />
-      }
+      )}
       {secureTextEntryToggle && (
-        <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
-          <Icon
-            source={hidePassword ? imageIndex.eye : imageIndex.eyeoff}
-            size={20}
-             colorIcon={color.primary}
+        <TouchableOpacity 
+          onPress={() => setHidePassword(!hidePassword)}
+          style={styles.eyeIcon}
+        >
+          <MaterialIcon
+            name={hidePassword ? 'visibility-off' : 'visibility'}
+            size={22}
+            color={color.primary}
           />
         </TouchableOpacity>
       )}
       {rightIcon && <View style={styles.leftIcon}>{rightIcon}</View>}
-
     </View>
   );
 };
@@ -78,15 +77,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     height: 65,
     marginTop: 15,
-
-    // Shadow for iOS
-    // shadowColor: color.black,
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.1,
-    // shadowRadius: 6,
-
-    // Shadow for Android
-    // elevation: 5
   },
   leftIcon: {
     marginRight: 10,
@@ -95,7 +85,10 @@ const styles = StyleSheet.create({
     flex: 1,
     color: color.black,
     fontSize: 14,
-    fontFamily:fonts.semiBold
+    fontFamily: fonts.semiBold,
+  },
+  eyeIcon: {
+    padding: 5,
   },
 });
 

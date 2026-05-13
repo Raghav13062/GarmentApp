@@ -46,9 +46,9 @@ export const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 16,
+    width: 150,
+    height: 150,
+    borderRadius: 100
   },
 
   appName: {
@@ -219,12 +219,67 @@ export const styles = StyleSheet.create({
   },
 
   footerText: {
-    fontSize: 15,
+    fontSize: 14,
     color: color.textMedium,
   },
 
   footerLink: {
-    color: color.secondary,
-    fontWeight: '800',
+    color: color.primary,
+    fontWeight: 'bold',
+  },
+
+  dividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 25,
+  },
+
+  divider: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#EEEEEE',
+  },
+
+  dividerText: {
+    paddingHorizontal: 15,
+    color: color.textMedium,
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 1,
+  },
+
+  socialContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+
+  socialButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '48%',
+    height: 50,
+    borderRadius: 12,
+    backgroundColor: color.white,
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    shadowColor: color.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+
+  socialIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+
+  socialButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: color.textDark,
   },
 });

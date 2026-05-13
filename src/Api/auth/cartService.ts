@@ -14,11 +14,11 @@ export const AddToCartApi = async (
 ) => {
   try {
     if (setLoading) setLoading(true);
-    
+
     const response = await apiClient.post(endpointApi.cartAdd, {
       productId: productId
     });
-    
+
     if (response.data.success || response.status === 200 || response.status === 201) {
       successToast(response.data.message || 'Added to cart successfully');
       return response.data;
@@ -46,9 +46,9 @@ export const GetCartApi = async (
 ) => {
   try {
     if (setLoading) setLoading(true);
-    
+
     const response = await apiClient.get('cart');
-    
+
     if (response.data.success) {
       return response.data.data;
     } else {
@@ -75,11 +75,11 @@ export const RemoveFromCartApi = async (
 ) => {
   try {
     if (setLoading) setLoading(true);
-    
+
     const response = await apiClient.delete(endpointApi.cartRemove, {
       data: { productId: productId }
     });
-    
+
     if (response.data.success) {
       successToast(response.data.message || 'Removed from cart');
       return response.data;
@@ -110,12 +110,12 @@ export const UpdateCartQuantityApi = async (
 ) => {
   try {
     if (setLoading) setLoading(true);
-    
+
     const response = await apiClient.put(endpointApi.cartUpdate, {
       productId,
       quantity
     });
-    
+
     return response.data;
   } catch (error: any) {
     console.error('UpdateCartQuantityApi Error:', error);
@@ -135,9 +135,9 @@ export const ClearCartApi = async (
 ) => {
   try {
     if (setLoading) setLoading(true);
-    
+
     const response = await apiClient.delete(endpointApi.cartClear);
-    
+
     if (response.data.success) {
       successToast(response.data.message || 'Cart cleared');
       return response.data;

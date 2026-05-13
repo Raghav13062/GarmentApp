@@ -33,7 +33,10 @@ export default function useLogin() {
     // setEmailError(emailErr);
     // setPasswordError(passErr);
 
-    // if (emailErr || passErr) return;
+    // if (emailErr || passErr) {
+    //   errorToast("Please check your email and password");
+    //   return;
+    // }
 
     try {
       const params = {
