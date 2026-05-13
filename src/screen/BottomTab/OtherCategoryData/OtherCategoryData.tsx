@@ -247,19 +247,7 @@ const OtherCategoryData = () => {
           columnWrapperStyle={styles.productRow}
           ListHeaderComponent={() => (
             <>
-              {/* Categories Section */}
-              {/* <View style={styles.categoriesSection}>
-                <FlatList
-                  data={categories}
-                  renderItem={renderCategoryItem}
-                  keyExtractor={item => item._id}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.categoryList}
-                />
-              </View> */}
 
-              {/* Subcategories Section */}
               {subcategories.length > 1 && (
                 <View style={styles.subcategoryWrapper}>
                   <ScrollView
