@@ -46,11 +46,11 @@ const ViewCartScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const dispatchRedux = useDispatch();
-  
+
   // Get cart data from route params or initialize empty
   const initialCart = route.params?.cart || [];
   const cartTotal = route.params?.cartTotal || 0;
-  
+
   const [cart, setCart] = useState(initialCart);
   const [totalPrice, setTotalPrice] = useState(cartTotal);
   const [totalItems, setTotalItems] = useState(initialCart.length);
@@ -58,7 +58,7 @@ const ViewCartScreen = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [loading, setLoading] = useState(false);
   const [cartData, setCartData] = useState<any>(null);
-  
+
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
@@ -87,14 +87,14 @@ const ViewCartScreen = () => {
         setCart(mappedItems);
         setTotalPrice(data.totalPrice);
         setTotalItems(data.totalItems);
-        
+
         // Update Redux state
         dispatchRedux(setCartRedux({
           items: mappedItems,
           totalItems: data.totalItems,
           totalPrice: data.totalPrice
         }));
-        
+
         // Auto-select all items by default
         const allItemIds = mappedItems.map((item: any) => item.id);
         setSelectedItems(new Set(allItemIds));
@@ -129,7 +129,7 @@ const ViewCartScreen = () => {
     ]).start();
 
     if (cart.length > 0) {
-        calculateTotals();
+      calculateTotals();
     }
   }, [cart]);
 
@@ -171,13 +171,13 @@ const ViewCartScreen = () => {
   const updateQuantity = async (item: any, action: string) => {
     const currentQty = item.quantity || 1;
     let newQty = currentQty;
-    
+
     if (action === 'increase') {
       newQty = currentQty + 1;
     } else if (action === 'decrease' && currentQty > 1) {
       newQty = currentQty - 1;
     }
-    
+
     if (newQty === currentQty) return;
 
     try {
@@ -193,15 +193,15 @@ const ViewCartScreen = () => {
   // Toggle item selection
   const toggleItemSelection = (itemId) => {
     const updatedSelected = new Set(selectedItems);
-    
+
     if (updatedSelected.has(itemId)) {
       updatedSelected.delete(itemId);
     } else {
       updatedSelected.add(itemId);
     }
-    
+
     setSelectedItems(updatedSelected);
-    
+
     // Update select all state
     if (updatedSelected.size === cart.length) {
       setSelectAll(true);
@@ -221,17 +221,31 @@ const ViewCartScreen = () => {
     setSelectAll(!selectAll);
   };
 
-  // Get selected items total
-  const getSelectedTotal = () => {
-    let total = 0;
+  // Get selected items metrics
+  const getSelectedMetrics = () => {
+    let subtotal = 0;
+    let sellingPrice = 0;
     selectedItems.forEach(itemId => {
       const item = cart.find(cartItem => cartItem.id === itemId);
       if (item) {
-        total += item.price;
+        // Assume item.price is already lineTotal (qty * unitPrice) 
+        // and item.originalPrice is unit MRP
+        const qty = item.quantity || 1;
+        const mrp = item.originalPrice || (item.price / qty);
+        subtotal += mrp * qty;
+        sellingPrice += item.price;
       }
     });
-    return total;
+    
+    return {
+      subtotal,
+      discount: subtotal - sellingPrice,
+      total: sellingPrice,
+      count: selectedItems.size
+    };
   };
+
+  const getSelectedTotal = () => getSelectedMetrics().total;
 
   // Clear cart
   const clearCart = () => {
@@ -250,7 +264,7 @@ const ViewCartScreen = () => {
             } catch (error) {
               console.error('Clear cart error:', error);
             }
-           }
+          }
         }
       ]
     );
@@ -259,25 +273,65 @@ const ViewCartScreen = () => {
   // Proceed to checkout
   const proceedToCheckout = () => {
     if (cart.length === 0) {
-                  errorToast("Your cart is empty. Add some items first!")
-
-       return;
+      errorToast("Your cart is empty. Add some items first!")
+      return;
     }
-    
+
     if (selectedItems.size === 0) {
-                        errorToast("Please select items to checkout")
-
-       return;
+      errorToast("Please select items to checkout")
+      return;
     }
-    
+
     const selectedCartItems = cart.filter(item => selectedItems.has(item.id));
-    const selectedTotal = getSelectedTotal();
-    
-    // Navigate to checkout screen
-    navigation.navigate('CheckoutScreen', {
+    const metrics = getSelectedMetrics();
+
+    // Navigate to checkout screen with full details
+    navigation.navigate(ScreenNameEnum.CheckoutScreen, {
       cartItems: selectedCartItems,
-      totalAmount: selectedTotal,
+      totalAmount: metrics.total,
+      subtotal: metrics.subtotal,
+      discount: metrics.discount,
+      itemCount: metrics.count
     });
+  };
+
+  // Render summary section
+  const renderSummary = () => {
+    if (cart.length === 0) return null;
+    
+    const { subtotal, discount, total } = getSelectedMetrics();
+    
+    return (
+      <View style={styles.summaryContainer}>
+        <Text style={styles.summaryTitle}>Price Details ({selectedItems.size} Items)</Text>
+        
+        <View style={styles.summaryRow}>
+          <Text style={styles.summaryLabel}>Total MRP</Text>
+          <Text style={styles.summaryValue}>₹{subtotal}</Text>
+        </View>
+        
+        <View style={styles.summaryRow}>
+          <Text style={styles.summaryLabel}>Discount on MRP</Text>
+          <Text style={[styles.summaryValue, { color: color.success }]}>-₹{discount}</Text>
+        </View>
+        
+        <View style={styles.summaryRow}>
+          <Text style={styles.summaryLabel}>Shipping Fee</Text>
+          <Text style={[styles.summaryValue, { color: color.success }]}>FREE</Text>
+        </View>
+        
+        <View style={styles.dividerSmall} />
+        
+        <View style={[styles.summaryRow, { marginTop: 8 }]}>
+          <Text style={styles.grandTotalLabel}>Total Amount</Text>
+          <Text style={styles.grandTotalValue}>₹{total}</Text>
+        </View>
+        
+        <View style={styles.savingsContainer}>
+          <Text style={styles.savingsText}>You will save ₹{discount} on this order</Text>
+        </View>
+      </View>
+    );
   };
 
   // Render cart item
@@ -323,7 +377,7 @@ const ViewCartScreen = () => {
           <Image
             source={{ uri: item.image }}
             style={styles.productImage}
-           />
+          />
 
           {/* Product Details */}
           <View style={styles.productDetails}>
@@ -332,7 +386,7 @@ const ViewCartScreen = () => {
             </Text>
             <Text style={styles.productBrand}>{item.brand}</Text>
             <Text style={styles.productCategory}>{item.category}</Text>
-            
+
             {/* Quantity Controls */}
             <View style={styles.quantityContainer}>
               <TouchableOpacity
@@ -342,9 +396,9 @@ const ViewCartScreen = () => {
               >
                 <Icon name="remove" size={18} color={quantity <= 1 ? BRAND_COLORS.gray : BRAND_COLORS.primaryDark} />
               </TouchableOpacity>
-              
+
               <Text style={styles.quantityText}>{quantity}</Text>
-              
+
               <TouchableOpacity
                 style={styles.quantityButton}
                 onPress={() => updateQuantity(item, 'increase')}
@@ -360,7 +414,7 @@ const ViewCartScreen = () => {
             {item.originalPrice && (
               <Text style={styles.originalPrice}>₹{item.originalPrice}</Text>
             )}
-            
+
             <TouchableOpacity
               style={styles.removeButton}
               onPress={() => removeItem(item)}
@@ -370,7 +424,7 @@ const ViewCartScreen = () => {
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
-        
+
         {/* Divider */}
         {index < cart.length - 1 && <View style={styles.divider} />}
       </Animated.View>
@@ -421,24 +475,24 @@ const ViewCartScreen = () => {
         >
           <Icon name="arrow-back" size={24} color={color.white} />
         </TouchableOpacity>
-        
+
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Shopping Cart</Text>
           <Text style={styles.headerSubtitle}>
             {totalItems} item{totalItems !== 1 ? 's' : ''}
           </Text>
         </View>
-        
+
         <TouchableOpacity
           style={styles.clearCartButton}
           onPress={clearCart}
           disabled={cart.length === 0}
           activeOpacity={0.7}
         >
-          <Icon 
-            name="delete-sweep" 
-            size={24} 
-            color={cart.length === 0 ? 'rgba(255, 255, 255, 0.5)' : color.white} 
+          <Icon
+            name="delete-sweep"
+            size={24}
+            color={cart.length === 0 ? 'rgba(255, 255, 255, 0.5)' : color.white}
           />
         </TouchableOpacity>
       </View>
@@ -448,40 +502,40 @@ const ViewCartScreen = () => {
   // Render footer
   const renderFooter = () => {
     if (cart.length === 0) return null;
-    
+
     const selectedTotal = getSelectedTotal();
     const selectedCount = selectedItems.size;
-    
+
     return (
       <Animated.View style={[styles.footer, { opacity: fadeAnim }]}>
         <LinearGradient
-          colors={BRAND_COLORS.primaryGradient}
+          colors={[color.white, BRAND_COLORS.background]}
           style={StyleSheet.absoluteFill}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         />
-        
+
         <View style={styles.footerContent}>
           {/* Select All */}
           <TouchableOpacity
             style={styles.selectAllContainer}
             onPress={toggleSelectAll}
-            activeOpacity={0.8}
+            activeOpacity={0.7}
           >
             <View style={[styles.selectAllCheckbox, selectAll && styles.selectAllCheckboxSelected]}>
               {selectAll && <Icon name="check" size={16} color={color.white} />}
             </View>
             <Text style={styles.selectAllText}>Select All</Text>
           </TouchableOpacity>
-          
+
           {/* Totals */}
           <View style={styles.totalsContainer}>
             <Text style={styles.totalText}>
-              Selected: {selectedCount} item{selectedCount !== 1 ? 's' : ''}
+              Selected ({selectedCount})
             </Text>
             <Text style={styles.totalAmount}>₹{selectedTotal}</Text>
           </View>
-          
+
           {/* Checkout Button */}
           <TouchableOpacity
             style={[styles.checkoutButton, selectedCount === 0 && styles.checkoutButtonDisabled]}
@@ -490,26 +544,21 @@ const ViewCartScreen = () => {
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={selectedCount > 0 ? [color.white, color.lightGray] : ['#CCCCCC', '#DDDDDD']}
+              colors={selectedCount > 0 ? BRAND_COLORS.primaryGradient : ['#CCCCCC', '#DDDDDD']}
               style={StyleSheet.absoluteFill}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             />
-            <TouchableOpacity style={styles.checkoutButtonContent}
-            onPress={() =>{
-                            navigation.navigate(ScreenNameEnum.CheckoutScreen)
-
-            }}
-            >
+            <View style={styles.checkoutButtonContent}>
               <Text style={[styles.checkoutText, selectedCount === 0 && styles.checkoutTextDisabled]}>
                 CHECKOUT
               </Text>
-              <Icon 
-                name="arrow-forward" 
-                size={20} 
-                color={selectedCount === 0 ? BRAND_COLORS.gray : BRAND_COLORS.primaryDark} 
+              <Icon
+                name="arrow-forward"
+                size={20}
+                color={color.white}
               />
-            </TouchableOpacity>
+            </View>
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -520,7 +569,7 @@ const ViewCartScreen = () => {
     <SafeAreaView style={styles.container}>
       {loading && <Loading />}
       {renderHeader()}
-      
+
       {cart.length === 0 ? (
         renderEmptyCart()
       ) : (
@@ -536,6 +585,7 @@ const ViewCartScreen = () => {
                 <Text style={styles.listHeaderTitle}>Your Cart Items</Text>
               </View>
             }
+            ListFooterComponent={renderSummary}
           />
           {renderFooter()}
         </>
@@ -613,14 +663,14 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   shopNowButton: {
-     overflow: 'hidden',
+    overflow: 'hidden',
     width: '90%',
   },
   shopNowGradient: {
-     alignItems: 'center',
+    alignItems: 'center',
     borderRadius: 10,
-    height:55 ,
-    justifyContent:"center"
+    height: 55,
+    justifyContent: "center"
   },
   shopNowText: {
     color: BRAND_COLORS.textLight,
@@ -629,7 +679,7 @@ const styles = StyleSheet.create({
   },
   cartList: {
     paddingHorizontal: 16,
-    paddingBottom: 100,
+    paddingBottom: 120, // More space for summary and footer
   },
   listHeader: {
     paddingVertical: 16,
@@ -683,7 +733,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   productTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: BRAND_COLORS.textDark,
     marginBottom: 4,
@@ -723,9 +773,9 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   productPrice: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
-    color: BRAND_COLORS.primaryDark,
+    color: color.black,
     marginBottom: 4,
   },
   originalPrice: {
@@ -749,80 +799,135 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    padding: 16,
-    elevation: 10,
+    height: 90,
+    backgroundColor: color.white,
+    elevation: 20,
     shadowColor: color.black,
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    overflow: 'hidden',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    paddingHorizontal: 16,
   },
   footerContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    height: '100%',
   },
   selectAllContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
   },
   selectAllCheckbox: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     borderWidth: 2,
-    borderColor: BRAND_COLORS.textLight,
+    borderColor: color.borderLight,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
   },
   selectAllCheckboxSelected: {
-    backgroundColor: BRAND_COLORS.accent,
-    borderColor: BRAND_COLORS.accent,
+    backgroundColor: BRAND_COLORS.primaryDark,
+    borderColor: BRAND_COLORS.primaryDark,
   },
   selectAllText: {
-    color: BRAND_COLORS.textLight,
     fontSize: 14,
+    color: BRAND_COLORS.textDark,
     fontWeight: '600',
   },
   totalsContainer: {
-    alignItems: 'flex-end',
-    marginHorizontal: 16,
+    alignItems: 'center',
   },
   totalText: {
     fontSize: 12,
-    color: BRAND_COLORS.textLight,
-    marginBottom: 2,
+    color: BRAND_COLORS.gray,
   },
   totalAmount: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: BRAND_COLORS.accent,
+    color: color.black,
   },
   checkoutButton: {
-    borderRadius: 8,
+    width: 130,
+    height: 48,
+    borderRadius: 24,
     overflow: 'hidden',
-    minWidth: 120,
   },
   checkoutButtonDisabled: {
-    opacity: 0.7,
+    opacity: 0.6,
   },
   checkoutButtonContent: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   checkoutText: {
-    color: BRAND_COLORS.primaryDark,
-    fontSize: 14,
+    color: color.white,
+    fontSize: 15,
     fontWeight: 'bold',
-    marginRight: 8,
+    marginRight: 6,
   },
   checkoutTextDisabled: {
-    color: BRAND_COLORS.gray,
+    color: 'rgba(255, 255, 255, 0.6)',
+  },
+  summaryContainer: {
+    backgroundColor: color.white,
+    marginTop: 16,
+    padding: 16,
+    borderRadius: 12,
+    marginHorizontal: 16,
+    marginBottom: 20, // Margin before footer spacing
+  },
+  summaryTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: color.black,
+    marginBottom: 16,
+    textTransform: 'uppercase',
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  summaryLabel: {
+    fontSize: 14,
+    color: '#666',
+  },
+  summaryValue: {
+    fontSize: 14,
+    color: color.black,
+    fontWeight: '500',
+  },
+  dividerSmall: {
+    height: 1,
+    backgroundColor: '#EEE',
+    marginVertical: 4,
+  },
+  grandTotalLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: color.black,
+  },
+  grandTotalValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: color.black,
+  },
+  savingsContainer: {
+    backgroundColor: 'rgba(26, 156, 74, 0.1)',
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 16,
+    alignItems: 'center',
+  },
+  savingsText: {
+    color: color.success,
+    fontSize: 13,
+    fontWeight: '600',
   },
 });
 

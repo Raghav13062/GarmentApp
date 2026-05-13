@@ -63,7 +63,7 @@ export const getProductsByCategory = async (categoryId: string, gender: string =
     if (response.data.success) {
       return response.data;
     } else {
-      errorToast(response.data.message || 'Failed to fetch category products');
+      // errorToast(response.data.message || 'Failed to fetch category products');
       return null;
     }
   } catch (error) {
