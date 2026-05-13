@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#EAEAEA', // Darker gray so bottom sheet pops
+    backgroundColor: '#000',
   },
 
   keyboardAvoidingView: {
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
 
   scrollContainer: {
     flexGrow: 1,
-    justifyContent: 'flex-end', // Push everything down
+    justifyContent: 'flex-end',
   },
 
   backgroundOverlay: {
@@ -24,12 +24,11 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#EAEAEA',
   },
 
   darkOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.4)', // Dark overlay so logo pops
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
 
   contentContainer: {
@@ -42,151 +41,139 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'ios' ? 40 : 60,
+    paddingTop: Platform.OS === 'ios' ? 60 : 80,
     paddingBottom: 40,
   },
 
   logo: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    borderWidth: 2,
-    borderColor: color.white,
+    width: 100,
+    height: 100,
     marginBottom: 16,
   },
 
-  appTitle: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: color.primary,
-    marginBottom: 8,
+  appName: {
+    fontSize: 32,
+    fontWeight: '900',
+    color: color.white,
+    letterSpacing: 2,
+    textAlign: 'center',
   },
 
   appTagline: {
-    fontSize: 16,
-    color: color.textMedium,
+    fontSize: 14,
+    color: color.white,
     opacity: 0.8,
+    marginTop: 4,
+    textAlign: 'center',
+    letterSpacing: 1,
   },
 
   // Bottom Sheet Styles
   bottomSheet: {
     backgroundColor: color.white,
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
     paddingTop: 12,
     shadowColor: color.black,
-    shadowOffset: { width: 0, height: -10 },
-    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: -15 },
+    shadowOpacity: 0.2,
     shadowRadius: 20,
-    elevation: 20,
-    minHeight: height * 0.65, // Taller so it looks prominent
+    elevation: 25,
+    minHeight: height * 0.6,
   },
 
   handleBar: {
-    width: 45,
-    height: 5,
-    backgroundColor: '#D1D1D1',
-    borderRadius: 3,
+    width: 40,
+    height: 4,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 2,
     alignSelf: 'center',
-    marginBottom: 24,
+    marginBottom: 30,
   },
 
   bottomSheetContent: {
-    paddingHorizontal: 24,
-    paddingBottom: Platform.OS === 'ios' ? 40 : 24,
+    paddingHorizontal: 30,
+    paddingBottom: Platform.OS === 'ios' ? 40 : 30,
   },
 
   headerContainer: {
-    marginBottom: 24,
+    marginBottom: 35,
   },
 
   welcomeText: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: '800',
     color: color.textDark,
   },
 
-  welcomeTextLight: {
-    fontWeight: '400',
-    color: '#4A4A52',
-    fontSize: 20,
+  subHeaderText: {
+    fontSize: 16,
+    color: color.textMedium,
+    marginTop: 5,
   },
 
   inputSection: {
-    marginBottom: 24,
+    marginBottom: 15,
   },
 
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: color.white,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 15,
     borderWidth: 1,
-    borderColor: '#D4D5D9',
-    height: 60,
-  },
-
-  prefixContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  prefixText: {
-    fontSize: 16,
-    color: '#94969F',
-    fontWeight: '500',
-  },
-
-  verticalDivider: {
-    width: 1,
-    height: 20,
-    backgroundColor: '#D4D5D9',
-    marginHorizontal: 12,
+    borderColor: '#E9ECEF',
+    height: 55,
+    paddingHorizontal: 15,
   },
 
   inputField: {
     flex: 1,
     fontSize: 16,
-    color: '#282C3F',
-    height: '100%',
+    color: color.textDark,
+    paddingLeft: 10,
+  },
+
+  forgotPasswordContainer: {
+    alignItems: 'flex-end',
+    marginBottom: 25,
+  },
+
+  forgotPasswordText: {
+    color: color.primary,
+    fontSize: 14,
+    fontWeight: '600',
   },
 
   termsRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 24,
-    paddingRight: 10,
+    alignItems: 'center',
+    marginBottom: 30,
   },
 
   checkbox: {
-    width: 18,
-    height: 18,
-    borderWidth: 1,
-    borderColor: '#7E818C',
-    borderRadius: 3,
-    marginRight: 12,
-    marginTop: 2,
+    width: 20,
+    height: 20,
+    borderWidth: 1.5,
+    borderColor: color.primary,
+    borderRadius: 6,
+    marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: color.white,
   },
 
   checkboxActive: {
     backgroundColor: color.primary,
-    borderColor: color.primary,
   },
 
   checkboxInner: {
     width: 10,
     height: 10,
     backgroundColor: color.white,
-    borderRadius: 1,
+    borderRadius: 2,
   },
 
   termsText: {
-    flex: 1,
     fontSize: 14,
-    color: '#4A4A52',
-    lineHeight: 20,
+    color: color.textMedium,
   },
 
   termsLink: {
@@ -195,13 +182,18 @@ export const styles = StyleSheet.create({
   },
 
   buttonSection: {
-    marginBottom: 24,
+    marginBottom: 25,
   },
 
   loginButtonBase: {
-    height: 50,
-    borderRadius: 25,
+    height: 55,
+    borderRadius: 15,
     overflow: 'hidden',
+    shadowColor: color.primary,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
   },
 
   loginButtonGradient: {
@@ -211,28 +203,28 @@ export const styles = StyleSheet.create({
   },
 
   loginButtonDisabled: {
-    backgroundColor: '#94969F',
+    opacity: 0.6,
   },
 
   loginButtonText: {
     color: color.white,
-    fontSize: 14,
-    fontWeight: '700',
-    letterSpacing: 1,
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 1.5,
   },
 
   footerContainer: {
-    alignItems: 'flex-start',
-    marginTop: 8,
+    alignItems: 'center',
+    marginTop: 10,
   },
 
   footerText: {
-    fontSize: 14,
-    color: '#4A4A52',
+    fontSize: 15,
+    color: color.textMedium,
   },
 
   footerLink: {
-    color: color.primary,
-    fontWeight: '700',
+    color: color.secondary,
+    fontWeight: '800',
   },
 });

@@ -81,13 +81,13 @@ const LoginApi = async (
   dispatch: any,
   navigation: any
 ) => {
-  console.log('LoginApi data 👉', data?.otp2);
+  console.log('LoginApi data 👉', data);
 
   try {
     setLoading(true);
 
     const response = await fetch(
-      `${base_url}${endpointApi.loginotp}`,
+      `${base_url}${endpointApi.login}`,
       {
         method: 'POST',
         headers: {
@@ -95,8 +95,8 @@ const LoginApi = async (
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          [Params.mobileNo]: data?.phone,
-          [Params.otp]: data?.otp2,
+          [Params.email]: data?.email,
+          [Params.password]: data?.password,
         }),
       }
     );
@@ -104,21 +104,19 @@ const LoginApi = async (
     const res = await response.json();
     console.log('Login Response 👉', res);
 
-    if (res?.success === true) {
+    if (res?.success === true || response.status === 200) {
       successToast(res?.message || 'Login successful');
 
       // 🔐 Save token properly
       if (res?.token) {
         await AsyncStorage.setItem('token', res.token);
         console.log('Saved Token 👉', res.token);
-      } else {
-        console.log('❌ Token not found in response');
       }
 
       // 🧠 Redux store
       dispatch(
         loginSuccess({
-          userData: res?.data ?? res,
+          userData: res?.user ?? res?.data ?? res,
           token: res?.token,
         })
       );
@@ -136,6 +134,51 @@ const LoginApi = async (
     return res;
   } catch (error) {
     console.error('LoginApi Error 👉', error);
+    errorToast('Network error');
+  } finally {
+    setLoading(false);
+  }
+};
+
+const RegisterApi = async (
+  data: any,
+  setLoading: (loading: boolean) => void,
+  navigation: any
+) => {
+  try {
+    setLoading(true);
+
+    const response = await fetch(
+      `${base_url}${endpointApi.register}`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          [Params.email]: data?.email,
+          [Params.password]: data?.password,
+          [Params.fullName]: data?.fullName,
+          [Params.mobileNo]: data?.mobileNo,
+          [Params.address]: data?.address,
+        }),
+      }
+    );
+
+    const res = await response.json();
+    console.log('Register Response 👉', res);
+
+    if (res?.success === true || response.status === 200 || response.status === 201) {
+      successToast(res?.message || 'Registration successful');
+      navigation.navigate(ScreenNameEnum.LoginScreen);
+    } else {
+      errorToast(res?.message || 'Registration failed');
+    }
+
+    return res;
+  } catch (error) {
+    console.error('RegisterApi Error 👉', error);
     errorToast('Network error');
   } finally {
     setLoading(false);
@@ -239,4 +282,4 @@ const GetProfile = async (
 
 
 
-export { SetOtpApi, GetProfile, UpdateProfileApi, LoginApi, ResendOtpApi }
+export { SetOtpApi, GetProfile, UpdateProfileApi, LoginApi, ResendOtpApi, RegisterApi }

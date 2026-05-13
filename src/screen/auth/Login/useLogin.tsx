@@ -1,52 +1,62 @@
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-  import { RegistrationStackParamList } from '../../../navigators/RegistrationRoutes';
-import { validateMobileNumber } from '../../../utils/validation';
- import { errorToast } from '../../../utils/customToast';
-import {   SetOtpApi } from '../../../Api/auth/authservice';
-export default function useLogin() {
-  const [phone, setPhone] = useState("9876543543");
-   const [phoneError, setPhoneError] = useState('');
-   const [loading, setLoading] = useState(false);
-    const navigation = useNavigation<NativeStackNavigationProp<RegistrationStackParamList>>();
- 
- 
+import { useDispatch } from 'react-redux';
+import { RegistrationStackParamList } from '../../../navigators/RegistrationRoutes';
+import { validateEmail, validatePassword } from '../../../utils/validation';
+import { errorToast } from '../../../utils/customToast';
+import { LoginApi } from '../../../Api/auth/authservice';
 
-  const handlePhoneChange = (value: string) => {
-    setPhone(value.trim());
-    const error = validateMobileNumber(value);
-    setPhoneError(error);
+export default function useLogin() {
+  const [email, setEmail] = useState('yasoni715@gmail.com');
+  const [password, setPassword] = useState('password123');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation<NativeStackNavigationProp<RegistrationStackParamList>>();
+  const dispatch = useDispatch();
+
+  const handleEmailChange = (value: string) => {
+    setEmail(value.trim());
+    setEmailError(validateEmail(value.trim()));
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    setPasswordError(validatePassword(value));
   };
 
   const handleLogin = async () => {
+    // const emailErr = validateEmail(email);
+    // const passErr = validatePassword(password);
 
-      const trimmedPhone = phone.trim();
-    if (trimmedPhone === '') return setPhoneError("Mobile number is required");
-    if (validateMobileNumber(trimmedPhone)) return setPhoneError("Please enter a valid mobile number");
+    // setEmailError(emailErr);
+    // setPasswordError(passErr);
+
+    // if (emailErr || passErr) return;
+
     try {
       const params = {
-        phone,
-         navigation,
+        email,
+        password,
       };
-       
-      await SetOtpApi(params, setLoading,);
+      await LoginApi(params, setLoading, dispatch, navigation);
     } catch (error) {
-      setLoading(false)
-      errorToast(error ||"Login error:" )
+      setLoading(false);
+      errorToast("Login error occurred");
       console.error("Login error:", error);
     }
   };
 
   return {
-    phone,
- 
-    phoneError,
- 
+    email,
+    password,
+    emailError,
+    passwordError,
     loading,
-    handlePhoneChange,
-     handleLogin,
+    handleEmailChange,
+    handlePasswordChange,
+    handleLogin,
     navigation,
- 
   };
 }

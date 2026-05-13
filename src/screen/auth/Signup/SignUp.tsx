@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  Image,
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
@@ -12,142 +11,159 @@ import {
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import imageIndex from '../../../assets/imageIndex';
-import CustomButton from '../../../component/CustomButton';
 import CustomInput from '../../../component/CustomInput';
 import Icon from '../../../component/Icon';
-import CustomBackHeader from '../../../component/CustomBackHeader';
 import LoadingModal from '../../../utils/Loader';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import { color } from '../../../constant';
 import useSignup from './useSignup';
 import { styles } from './style';
+import LinearGradient from 'react-native-linear-gradient';
+import StatusBarComponent from '../../../component/StatusBarCompoent';
 
 export default function Signup() {
   const {
+    fullName,
     email,
+    mobileNo,
+    address,
     password,
-    confirmPassword,
+    fullNameError,
     emailError,
+    mobileNoError,
+    addressError,
     passwordError,
-    confirmPasswordError,
     loading,
-    handlePasswordChange,
-    handleConfirmPasswordChange,
-    handleSignup,
-    navigation,
     checked,
     setChecked,
-    fname,
-    gst,
-    proof,
-    fnameError,
-    handlefNameChange,
-    handleProofChange,
-    handleGSTChange,
-    phone,
-    phoneError,
-    handlePhoneChange
+    handleFullNameChange,
+    handleEmailChange,
+    handleMobileNoChange,
+    handleAddressChange,
+    handlePasswordChange,
+    handleSignup,
+    navigation,
   } = useSignup();
 
   return (
     <SafeAreaView style={styles.bgContainer}>
+      <StatusBarComponent translucent={true} backgroundColor="transparent" />
       {loading && <LoadingModal />}
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "padding"}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-            <View style={{ marginLeft: 15 }}>
-              <CustomBackHeader menuIcon={imageIndex.back} label={""} />
-            </View>
-
+          <ScrollView 
+            contentContainerStyle={styles.scrollContainer} 
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             <View style={styles.mainContainer}>
-              <Text style={styles.txtHeading}>Sign Up</Text>
-              <Text style={styles.txtDes}>Create your account to get started</Text>
+              <View style={styles.headerSection}>
+                <Text style={styles.txtHeading}>Create Account</Text>
+                <Text style={styles.txtDes}>Join Surat Garment today</Text>
+              </View>
 
-              <View style={styles.inputContainer}>
-                <CustomInput
-                  placeholder="Full Name"
-                  leftIcon={<Icon source={imageIndex.user} size={20} />}
-                  value={fname}
-                  onChangeText={handlefNameChange}
-                />
-                {fnameError && <Text style={styles.errorText}>{fnameError}</Text>}
-
-                <CustomInput
-                  placeholder="Phone Number"
-                  leftIcon={<Icon source={imageIndex.phone} size={18} />}
-                  value={phone}
-                  onChangeText={handlePhoneChange}
-                  keyboardType='phone-pad'
-                />
-                {phoneError && <Text style={styles.errorText}>{phoneError}</Text>}
-
-                <View style={{ flexDirection: "row", width: "100%" }}>
-                  <View style={{ width: "50%" }}>
-                    <CustomInput
-                      placeholder="GST Number"
-                      containerStyle={{ marginRight: 10 }}
-                      leftIcon={<Icon source={imageIndex.shield} size={18} />}
-                      value={gst}
-                      onChangeText={handleGSTChange}
-                    />
-                  </View>
-                  <View style={{ width: "50%" }}>
-                    <CustomInput
-                      placeholder="Proof ID"
-                      containerStyle={{ marginLeft: 10 }}
-                      leftIcon={<Icon source={imageIndex.id} size={18} />}
-                      value={proof}
-                      onChangeText={handleProofChange}
-                    />
-                  </View>
+              <View style={styles.formContainer}>
+                <View style={styles.inputWrapper}>
+                  <CustomInput
+                    placeholder="Full Name"
+                    leftIcon={<Icon source={imageIndex.user} size={20} color={color.primary} />}
+                    value={fullName}
+                    onChangeText={handleFullNameChange}
+                    containerStyle={styles.inputContainer}
+                  />
+                  {fullNameError ? <Text style={styles.errorText}>{fullNameError}</Text> : null}
                 </View>
 
-                <CustomInput
-                  placeholder="Password"
-                  secureTextEntryToggle
-                  leftIcon={<Icon source={imageIndex.lock} size={20} />}
-                  value={password}
-                  onChangeText={handlePasswordChange}
-                />
-                {passwordError && <Text style={styles.errorText}>{passwordError}</Text>}
-              </View>
+                <View style={styles.inputWrapper}>
+                  <CustomInput
+                    placeholder="Email Address"
+                    leftIcon={<Icon source={imageIndex.email} size={20} color={color.primary} />}
+                    value={email}
+                    onChangeText={handleEmailChange}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    containerStyle={styles.inputContainer}
+                  />
+                  {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+                </View>
 
-              <View style={{ width: "100%", marginBottom: 20, flexDirection: "row" }}>
-                <TouchableOpacity onPress={() => setChecked(!checked)}>
-                  {checked ? 
-                    <Image source={imageIndex.check} style={{ height: 22, width: 22 }} />
-                    : <View style={{ height: 22, width: 22, borderWidth: 2, borderRadius: 11, borderColor: color.secondary }} />
-                  }
+                <View style={styles.inputWrapper}>
+                  <CustomInput
+                    placeholder="Mobile Number"
+                    leftIcon={<Icon source={imageIndex.phone} size={20} color={color.primary} />}
+                    value={mobileNo}
+                    onChangeText={handleMobileNoChange}
+                    keyboardType='phone-pad'
+                    maxLength={10}
+                    containerStyle={styles.inputContainer}
+                  />
+                  {mobileNoError ? <Text style={styles.errorText}>{mobileNoError}</Text> : null}
+                </View>
+
+                <View style={styles.inputWrapper}>
+                  <CustomInput
+                    placeholder="Shop Address / Location"
+                    leftIcon={<Icon source={imageIndex.location} size={20} color={color.primary} />}
+                    value={address}
+                    onChangeText={handleAddressChange}
+                    containerStyle={styles.inputContainer}
+                  />
+                  {addressError ? <Text style={styles.errorText}>{addressError}</Text> : null}
+                </View>
+
+                <View style={styles.inputWrapper}>
+                  <CustomInput
+                    placeholder="Password"
+                    secureTextEntryToggle
+                    leftIcon={<Icon source={imageIndex.lock} size={20} color={color.primary} />}
+                    value={password}
+                    onChangeText={handlePasswordChange}
+                    containerStyle={styles.inputContainer}
+                  />
+                  {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+                </View>
+
+                <View style={styles.termsContainer}>
+                  <TouchableOpacity 
+                    onPress={() => setChecked(!checked)}
+                    style={[styles.checkbox, checked && styles.checkboxActive]}
+                  >
+                    {checked && <View style={styles.checkboxInner} />}
+                  </TouchableOpacity>
+
+                  <Text style={styles.termsText}>
+                    I agree to the <Text style={styles.linkText}>Terms of Service</Text> and <Text style={styles.linkText}>Privacy Policy</Text>
+                  </Text>
+                </View>
+
+                <TouchableOpacity 
+                  style={styles.signupButton}
+                  onPress={handleSignup}
+                >
+                  <LinearGradient
+                    colors={color.buttLinearGradient}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.gradientButton}
+                  >
+                    <Text style={styles.buttonText}>SIGN UP</Text>
+                  </LinearGradient>
                 </TouchableOpacity>
-
-                <Text style={[styles.signupText, { textAlignVertical: "center", lineHeight: 30 }]}>
-                  {" "}I agree to the 
-                  <Text style={{ color: color.secondary }}> Terms of Service </Text>
-                  and 
-                  <Text style={{ color: color.secondary }}> Privacy Policy</Text>
-                </Text>
               </View>
 
-              <CustomButton
-                title="Sign Up"
-                onPress={handleSignup}
-              />
+              <TouchableOpacity
+                style={styles.loginLinkContainer}
+                onPress={() => navigation.navigate(ScreenNameEnum.LoginScreen)}
+              >
+                <Text style={styles.loginLinkText}>
+                  Already have an account? <Text style={styles.loginLinkHighlight}>Login</Text>
+                </Text>
+              </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
-              style={{ alignItems: "center", marginVertical: 15 }}
-              onPress={() => navigation.navigate(ScreenNameEnum.LoginScreen)}
-            >
-              <Text style={styles.signupText}>
-                Already have an account? 
-                <Text style={{ color: color.secondary }}> Login</Text>
-              </Text>
-            </TouchableOpacity>
-
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

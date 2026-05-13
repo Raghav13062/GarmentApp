@@ -6,9 +6,12 @@ const Params = {
   address: "address",
   gender: "gender",
   dateOfBirth: "dateOfBirth",
+  password: "password",
 };
 
 const endpointApi = {
+  login: "auth/login",
+  register: "auth/register",
   loginotp: "auth/verify-otp",
   sendotpApi: "auth/send-otp",
   UpdateProfile: "user/profile",
