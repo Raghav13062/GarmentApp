@@ -1,5 +1,5 @@
 import { color, fonts } from "../../../constant";
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Animated,
   Easing,
-  Image,
   FlatList,
   ScrollView,
 } from 'react-native';
@@ -24,13 +23,10 @@ import { useSelector } from 'react-redux';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import { getAllCategories } from '../../../Api/auth/categoryService';
 import { AddToCartApi } from '../../../Api/auth/cartService';
+import { useProtectedAction } from '../../../utils/useProtectedAction';
 
-const { width, height } = Dimensions.get('window');
-const NUM_COLUMNS = 2;
-const CARD_MARGIN = 8;
-const CARD_WIDTH = (width - (CARD_MARGIN * (NUM_COLUMNS + 1))) / NUM_COLUMNS;
+const { width } = Dimensions.get('window');
 
-// Brand Colors
 const BRAND_COLORS = {
   primaryGradient: [color.primary, color.secondary],
   primaryDark: color.secondary,
@@ -51,9 +47,10 @@ const OtherCategoryData = () => {
   const { categoryId, categoryName } = route.params || {};
 
   const cartCount = useSelector((state: any) => state.cart.totalItems);
+  const executeProtected = useProtectedAction();
 
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(categoryId || '1');
+  const [selectedCategory] = useState(categoryId || '1');
   const [selectedSubcategory, setSelectedSubcategory] = useState('All');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +59,6 @@ const OtherCategoryData = () => {
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
-  const headerScrollAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.parallel([
@@ -87,7 +83,7 @@ const OtherCategoryData = () => {
       }
     };
     fetchCategories();
-  }, []);
+  }, [fadeAnim, slideAnim]);
 
   // Filter products based on selected category and subcategory
   useEffect(() => {
@@ -108,21 +104,20 @@ const OtherCategoryData = () => {
     if (selectedCategory) {
       fetchProducts();
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, categoryId]);
 
   const filteredProducts = selectedSubcategory === 'All'
     ? products
     : products.filter((p: any) => p.subcategory === selectedSubcategory);
 
-  // Handle category selection
-
-
   const addToCart = async (product: any) => {
-    try {
-      await AddToCartApi(product._id || product.id, setLoading);
-    } catch (error) {
-      console.error('Add to cart error:', error);
-    }
+    executeProtected(async () => {
+      try {
+        await AddToCartApi(product._id || product.id, setLoading);
+      } catch (error) {
+        console.error('Add to cart error:', error);
+      }
+    });
   };
 
   // Render header
@@ -171,9 +166,6 @@ const OtherCategoryData = () => {
     );
   };
 
-  // Render category item
-
-
   const renderProductCard = ({ item }) => {
     return (
       <View style={styles.productCardWrapper}>
@@ -221,7 +213,6 @@ const OtherCategoryData = () => {
           columnWrapperStyle={styles.productRow}
           ListHeaderComponent={() => (
             <>
-
               {subcategories.length > 1 && (
                 <View style={styles.subcategoryWrapper}>
                   <ScrollView
@@ -339,44 +330,6 @@ const styles = StyleSheet.create({
     color: color.white,
     fontSize: 9,
     fontWeight: 'bold',
-  },
-  categoriesSection: {
-    backgroundColor: color.white,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: color.borderLight,
-  },
-  categoryList: {
-    paddingHorizontal: 16,
-    paddingVertical: 4,
-  },
-  categoryCard: {
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    marginRight: 12,
-    borderRadius: 25,
-    backgroundColor: color.white,
-    borderWidth: 1,
-    borderColor: color.borderLight,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 2,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-  },
-  categoryCardSelected: {
-    backgroundColor: color.black,
-    borderColor: color.black,
-  },
-  categoryName: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: color.black,
-  },
-  categoryNameSelected: {
-    color: color.white,
   },
   loadingContainer: {
     flex: 1,

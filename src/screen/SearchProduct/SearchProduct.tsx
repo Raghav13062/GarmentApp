@@ -9,12 +9,13 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  Alert,
   ScrollView,
   Dimensions,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useProtectedAction } from "../../utils/useProtectedAction";
+import { AddToCartApi } from "../../Api/auth/cartService";
 
 const { width } = Dimensions.get("window");
 
@@ -40,143 +41,63 @@ const COLORS = {
 const productsData = [
   { 
     id: "1", 
-    name: "Health Insurance", 
+    name: "Saree", 
     price: "₹2,499",
-    category: "Insurance",
-    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=400",
-    description: "Comprehensive health coverage for you and family",
+    category: "Clothing",
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400",
+    description: "Premium silk saree with elegant borders",
     rating: 4.5,
     reviews: 1243
   },
   { 
     id: "2", 
-    name: "Life Insurance", 
+    name: "Kurti", 
     price: "₹1,999",
-    category: "Insurance",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400",
-    description: "Secure your family's future with term life insurance",
+    category: "Clothing",
+    image: "https://images.unsplash.com/photo-1610030469668-935142b96de4?w=400",
+    description: "Comfortable cotton kurti for daily wear",
     rating: 4.7,
     reviews: 892
   },
   { 
     id: "3", 
-    name: "Vehicle Insurance", 
+    name: "Lehenga", 
     price: "₹3,299",
-    category: "Insurance",
-    image: "https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=400",
-    description: "Comprehensive coverage for cars and bikes",
+    category: "Clothing",
+    image: "https://images.unsplash.com/photo-1594235412402-b1cd90450b00?w=400",
+    description: "Designer lehenga for special occasions",
     rating: 4.3,
     reviews: 2100
-  },
-  { 
-    id: "4", 
-    name: "Travel Insurance", 
-    price: "₹899",
-    category: "Insurance",
-    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400",
-    description: "International travel coverage with medical emergency",
-    rating: 4.6,
-    reviews: 1567
-  },
-  { 
-    id: "5", 
-    name: "Mutual Fund", 
-    price: "₹5,000",
-    category: "Investment",
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400",
-    description: "Systematic Investment Plan for long term growth",
-    rating: 4.4,
-    reviews: 3456
-  },
-  { 
-    id: "6", 
-    name: "Fixed Deposit", 
-    price: "₹10,000",
-    category: "Investment",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400",
-    description: "Fixed returns with high interest rates",
-    rating: 4.8,
-    reviews: 2789
-  },
-  { 
-    id: "7", 
-    name: "Gold Plan", 
-    price: "₹4,999",
-    category: "Investment",
-    image: "https://images.unsplash.com/photo-1552422535-c45813c61732?w=400",
-    description: "Digital gold investment with secure storage",
-    rating: 4.2,
-    reviews: 987
-  },
-  { 
-    id: "8", 
-    name: "Retirement Plan", 
-    price: "₹3,500",
-    category: "Pension",
-    image: "https://images.unsplash.com/photo-1579154204601-0151d3407dcb?w=400",
-    description: "Monthly pension plan for post-retirement life",
-    rating: 4.9,
-    reviews: 1234
-  },
-  { 
-    id: "9", 
-    name: "Child Education Plan", 
-    price: "₹2,999",
-    category: "Investment",
-    image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400",
-    description: "Secure your child's education future",
-    rating: 4.7,
-    reviews: 1890
-  },
-  { 
-    id: "10", 
-    name: "Home Insurance", 
-    price: "₹4,499",
-    category: "Insurance",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400",
-    description: "Protect your home against natural disasters",
-    rating: 4.5,
-    reviews: 2100
-  },
+  }
 ];
 
 // Search suggestions
 const searchSuggestions = [
-  "Insurance",
-  "Health",
-  "Investment",
-  "Life Insurance",
-  "Vehicle",
-  "Travel",
-  "Mutual Fund",
-  "Gold",
-  "Retirement",
-  "Education",
-  "Home",
-  "Car",
-  "Bike",
+  "Saree",
+  "Kurti",
+  "Lehenga",
+  "Salwar Suit",
+  "Clothing",
+  "Ethnic Wear",
 ];
 
 // Categories for filter
 const categories = [
   { id: "all", name: "All", icon: "apps" },
-  { id: "insurance", name: "Insurance", icon: "security" },
-  { id: "investment", name: "Investment", icon: "trending-up" },
-  { id: "pension", name: "Pension", icon: "account-balance" },
-  { id: "savings", name: "Savings", icon: "savings" },
+  { id: "clothing", name: "Clothing", icon: "checkroom" },
 ];
 
 export default function SearchProduct() {
   const [search, setSearch] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(productsData);
   const [suggestions, setSuggestions] = useState([]);
-  const [cart, setCart] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("default");
+  const executeProtected = useProtectedAction();
 
   // Filter products based on search and category
   useEffect(() => {
-    let filtered = productsData;
+    let filtered = [...productsData];
 
     // Apply search filter
     if (search.trim() !== "") {
@@ -215,23 +136,17 @@ export default function SearchProduct() {
   }, [search, selectedCategory, sortBy]);
 
   // Add to cart function
-  const addToCart = (product) => {
-    setCart(prevCart => [...prevCart, product]);
-    Alert.alert(
-      "Added to Cart",
-      `${product.name} has been added to your cart`,
-      [
-        { 
-          text: "View Cart", 
-          onPress: () => console.log("View Cart Pressed"),
-          style: "default"
-        },
-        { 
-          text: "Continue Shopping", 
-          style: "cancel" 
+  const addToCart = async (product) => {
+    executeProtected(async () => {
+      try {
+        const id = product._id || product.id;
+        if (id) {
+          await AddToCartApi(id);
         }
-      ]
-    );
+      } catch (error) {
+        console.error('Search add to cart error:', error);
+      }
+    });
   };
 
   // Clear search
@@ -263,7 +178,6 @@ export default function SearchProduct() {
         <Image 
           source={{ uri: item.image }} 
           style={styles.productImage}
-          defaultSource={{ uri: 'https://via.placeholder.com/100' }}
         />
         
         <View style={styles.productInfo}>
@@ -274,7 +188,6 @@ export default function SearchProduct() {
           
           <View style={styles.priceContainer}>
             <Text style={styles.price}>{item.price}</Text>
-            <Text style={styles.monthText}>/month</Text>
           </View>
         </View>
       </View>
@@ -342,14 +255,6 @@ export default function SearchProduct() {
             <Icon name="arrow-back" size={24} color={color.white} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Search Products</Text>
-          <TouchableOpacity style={styles.cartIcon}>
-            <Icon name="shopping-cart" size={24} color={color.white} />
-            {cart.length > 0 && (
-              <View style={styles.cartBadge}>
-                <Text style={styles.cartBadgeText}>{cart.length}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
         </View>
 
         {/* Search Box */}
@@ -357,7 +262,7 @@ export default function SearchProduct() {
           <View style={styles.searchBox}>
             <Icon name="search" size={22} color={COLORS.textLight} style={styles.searchIcon} />
             <TextInput
-              placeholder="Search products, categories, descriptions..."
+              placeholder="Search products, categories..."
               placeholderTextColor={COLORS.textLight}
               value={search}
               onChangeText={setSearch}
@@ -402,55 +307,6 @@ export default function SearchProduct() {
         />
       </View>
 
-      {/* Sort Options */}
-      <View style={styles.sortContainer}>
-        <Text style={styles.sortLabel}>Sort by:</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sortOptions}>
-          <TouchableOpacity 
-            style={[styles.sortOption, sortBy === "default" && styles.sortOptionActive]}
-            onPress={() => setSortBy("default")}
-          >
-            <Text style={[styles.sortOptionText, sortBy === "default" && styles.sortOptionTextActive]}>
-              Featured
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.sortOption, sortBy === "price_low" && styles.sortOptionActive]}
-            onPress={() => setSortBy("price_low")}
-          >
-            <Text style={[styles.sortOptionText, sortBy === "price_low" && styles.sortOptionTextActive]}>
-              Price: Low to High
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.sortOption, sortBy === "price_high" && styles.sortOptionActive]}
-            onPress={() => setSortBy("price_high")}
-          >
-            <Text style={[styles.sortOptionText, sortBy === "price_high" && styles.sortOptionTextActive]}>
-              Price: High to Low
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.sortOption, sortBy === "rating" && styles.sortOptionActive]}
-            onPress={() => setSortBy("rating")}
-          >
-            <Text style={[styles.sortOptionText, sortBy === "rating" && styles.sortOptionTextActive]}>
-              Highest Rated
-            </Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-
-      {/* Results Info */}
-      <View style={styles.resultsInfo}>
-        <Text style={styles.resultsText}>
-          Showing {filteredProducts.length} of {productsData.length} products
-        </Text>
-        {search !== "" && (
-          <Text style={styles.searchQueryText}>for "{search}"</Text>
-        )}
-      </View>
-
       {/* Product List */}
       <FlatList
         data={filteredProducts}
@@ -460,49 +316,20 @@ export default function SearchProduct() {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <LinearGradient
-              colors={[color.backgroundLight, color.white]}
-              style={styles.emptyGradient}
+            <Icon name="search-off" size={80} color={COLORS.textLight} />
+            <Text style={styles.emptyTitle}>No products found</Text>
+            <TouchableOpacity 
+              style={styles.resetButton}
+              onPress={() => {
+                setSearch("");
+                setSelectedCategory("all");
+              }}
             >
-              <Icon name="search-off" size={80} color={COLORS.textLight} />
-              <Text style={styles.emptyTitle}>No products found</Text>
-              <Text style={styles.emptySubtitle}>
-                Try different keywords or browse categories
-              </Text>
-              <TouchableOpacity 
-                style={styles.resetButton}
-                onPress={() => {
-                  setSearch("");
-                  setSelectedCategory("all");
-                  setSortBy("default");
-                }}
-              >
-                <Text style={styles.resetButtonText}>Reset Filters</Text>
-              </TouchableOpacity>
-            </LinearGradient>
+              <Text style={styles.resetButtonText}>Reset Filters</Text>
+            </TouchableOpacity>
           </View>
         }
       />
-
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="home" size={24} color={COLORS.primary} />
-          <Text style={styles.navText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="search" size={24} color={COLORS.primary} />
-          <Text style={[styles.navText, styles.navTextActive]}>Search</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="favorite" size={24} color={COLORS.textLight} />
-          <Text style={styles.navText}>Wishlist</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="person" size={24} color={COLORS.textLight} />
-          <Text style={styles.navText}>Profile</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -512,27 +339,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
   },
-  // Header Styles
   header: {
-    paddingTop: StatusBar.currentHeight + 10,
+    paddingTop: 40,
     paddingBottom: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    shadowColor: COLORS.shadow,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
   },
   headerTop: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     paddingHorizontal: 16,
     marginBottom: 16,
-  },
-  backButton: {
-    padding: 4,
   },
   headerTitle: {
     color: COLORS.white,
@@ -540,29 +357,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     flex: 1,
-    marginHorizontal: 10,
-  },
-  cartIcon: {
-    padding: 4,
-    position: "relative",
-  },
-  cartBadge: {
-    position: "absolute",
-    top: -5,
-    right: -5,
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    width: 20,
-    height: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-  },
-  cartBadgeText: {
-    color: COLORS.primary,
-    fontSize: 12,
-    fontWeight: "bold",
   },
   searchContainer: {
     paddingHorizontal: 16,
@@ -574,11 +368,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    shadowColor: COLORS.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
   },
   searchIcon: {
     marginRight: 10,
@@ -587,12 +376,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: COLORS.text,
-    paddingVertical: 0,
   },
-  clearButton: {
-    padding: 4,
-  },
-  // Suggestions Styles
   suggestionsContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -612,9 +396,7 @@ const styles = StyleSheet.create({
   suggestionChipText: {
     color: COLORS.text,
     fontSize: 14,
-    fontWeight: "500",
   },
-  // Categories Styles
   categoriesContainer: {
     backgroundColor: COLORS.white,
     paddingVertical: 12,
@@ -642,86 +424,22 @@ const styles = StyleSheet.create({
   categoryItemText: {
     color: COLORS.textLight,
     fontSize: 14,
-    fontWeight: "500",
     marginLeft: 6,
   },
   categoryItemTextSelected: {
     color: COLORS.white,
     fontWeight: "bold",
   },
-  // Sort Styles
-  sortContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: COLORS.white,
-  },
-  sortLabel: {
-    color: COLORS.text,
-    fontSize: 14,
-    fontWeight: "600",
-    marginRight: 12,
-  },
-  sortOptions: {
-    flex: 1,
-  },
-  sortOption: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    marginRight: 10,
-    borderRadius: 15,
-    backgroundColor: color.backgroundLight,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  sortOptionActive: {
-    backgroundColor: COLORS.secondary,
-    borderColor: COLORS.secondary,
-  },
-  sortOptionText: {
-    color: COLORS.textLight,
-    fontSize: 13,
-  },
-  sortOptionTextActive: {
-    color: COLORS.white,
-    fontWeight: "bold",
-  },
-  // Results Info
-  resultsInfo: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
-  },
-  resultsText: {
-    color: COLORS.text,
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  searchQueryText: {
-    color: COLORS.primary,
-    fontSize: 14,
-    marginTop: 2,
-    fontWeight: "500",
-  },
-  // Product List
   listContainer: {
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 100,
   },
-  // Card Styles
   card: {
     backgroundColor: COLORS.cardBackground,
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
-    shadowColor: COLORS.shadow,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
     elevation: 3,
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -737,8 +455,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(245, 128, 33, 0.3)',
   },
   categoryText: {
     color: COLORS.primary,
@@ -754,7 +470,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     marginLeft: 4,
-    marginRight: 2,
   },
   reviewsText: {
     color: COLORS.textLight,
@@ -769,138 +484,76 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 12,
     marginRight: 16,
-    backgroundColor: color.backgroundLight,
   },
   productInfo: {
     flex: 1,
-    justifyContent: "center",
   },
   productName: {
     fontSize: 18,
     fontWeight: "bold",
     color: COLORS.text,
-    marginBottom: 6,
   },
   productDescription: {
     fontSize: 14,
     color: COLORS.textLight,
-    marginBottom: 10,
-    lineHeight: 20,
   },
   priceContainer: {
     flexDirection: "row",
     alignItems: "baseline",
+    marginTop: 4,
   },
   price: {
     fontSize: 22,
     fontWeight: "bold",
     color: COLORS.secondary,
   },
-  monthText: {
-    fontSize: 14,
-    color: COLORS.textLight,
-    marginLeft: 4,
-  },
   cardFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
   },
   detailsButton: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-    backgroundColor: color.backgroundLight,
-    borderWidth: 1,
-    borderColor: COLORS.border,
   },
   detailsButtonText: {
+    marginLeft: 4,
     color: COLORS.primary,
-    fontSize: 14,
-    fontWeight: "500",
-    marginLeft: 6,
+    fontWeight: "600",
   },
   addButton: {
     flex: 1,
-    marginLeft: 12,
-    borderRadius: 8,
-    overflow: "hidden",
+    marginLeft: 16,
   },
   addButtonGradient: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
     paddingVertical: 10,
+    borderRadius: 12,
   },
   addButtonText: {
-    color: COLORS.white,
-    fontSize: 14,
-    fontWeight: "600",
-    marginLeft: 6,
+    color: color.white,
+    fontWeight: "bold",
+    marginLeft: 8,
   },
-  // Empty State
   emptyContainer: {
-    marginTop: 40,
-  },
-  emptyGradient: {
     alignItems: "center",
-    padding: 40,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+    marginTop: 50,
   },
   emptyTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    color: COLORS.text,
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  emptySubtitle: {
-    fontSize: 16,
-    color: COLORS.textLight,
-    textAlign: "center",
-    marginBottom: 24,
+    marginTop: 10,
   },
   resetButton: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     backgroundColor: COLORS.primary,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   resetButtonText: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  // Bottom Navigation
-  bottomNav: {
-    flexDirection: "row",
-    backgroundColor: COLORS.white,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.border,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  navItem: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 4,
-  },
-  navText: {
-    color: COLORS.textLight,
-    fontSize: 12,
-    marginTop: 4,
-  },
-  navTextActive: {
-    color: COLORS.primary,
-    fontWeight: "600",
+    color: color.white,
+    fontWeight: "bold",
   },
 });
