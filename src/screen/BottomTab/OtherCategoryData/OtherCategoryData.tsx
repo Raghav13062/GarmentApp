@@ -245,7 +245,53 @@ const OtherCategoryData = () => {
           contentContainerStyle={styles.productList}
           showsVerticalScrollIndicator={false}
           columnWrapperStyle={styles.productRow}
+          ListHeaderComponent={() => (
+            <>
+              {/* Categories Section */}
+              {/* <View style={styles.categoriesSection}>
+                <FlatList
+                  data={categories}
+                  renderItem={renderCategoryItem}
+                  keyExtractor={item => item._id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.categoryList}
+                />
+              </View> */}
 
+              {/* Subcategories Section */}
+              {subcategories.length > 1 && (
+                <View style={styles.subcategoryWrapper}>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.subcategoryList}
+                  >
+                    {subcategories.map((sub) => (
+                      <TouchableOpacity
+                        key={sub}
+                        style={[
+                          styles.subcategoryTab,
+                          selectedSubcategory === sub && styles.subcategoryTabSelected
+                        ]}
+                        onPress={() => setSelectedSubcategory(sub)}
+                        activeOpacity={0.8}
+                      >
+                        <Text
+                          style={[
+                            styles.subcategoryText,
+                            selectedSubcategory === sub && styles.subcategoryTextSelected
+                          ]}
+                        >
+                          {sub}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              )}
+            </>
+          )}
           ListEmptyComponent={() => (
             <View style={styles.emptyState}>
               <Icon name="inventory" size={60} color="#CCCCCC" />
