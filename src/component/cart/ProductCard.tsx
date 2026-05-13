@@ -26,8 +26,8 @@ export default function ProductCard({
   const titleText = item?.title || item?.name || "Product";
   const displayMrp = item?.pricing?.mrp || item?.mrp || item?.price || 0;
   const displaySellingPrice = item?.pricing?.sellingPrice || item?.sellingPrice || item?.discountPrice || 0;
-  const productImage = item?.images?.[0] || item?.baseImages?.[0] || 'https://via.placeholder.com/150';
-
+  const rawImage = item?.images?.[0] || item?.baseImages?.[0] || 'https://via.placeholder.com/150';
+  const productImage = typeof rawImage === 'string' ? rawImage.replace(/\.avif$/i, '.webp') : rawImage;
   const discountPercent = displayMrp > 0
     ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100)
     : item?.pricing?.discountPercentage || item?.discountPercentage || 0;

@@ -145,14 +145,17 @@ export default function ProductDetails() {
               )
             }
           >
-            {displayImages?.map((img: string, index: number) => (
-              <TouchableOpacity key={index} activeOpacity={0.9} onPress={() => setFullScreenImage(img)}>
-                <Image
-                  source={{ uri: img }}
-                  style={styles.mainImage}
-                />
-              </TouchableOpacity>
-            ))}
+            {displayImages?.map((img: string, index: number) => {
+              const safeImg = typeof img === 'string' ? img.replace(/\.avif$/i, '.webp') : img;
+              return (
+                <TouchableOpacity key={index} activeOpacity={0.9} onPress={() => setFullScreenImage(safeImg)}>
+                  <Image
+                    source={{ uri: safeImg }}
+                    style={styles.mainImage}
+                  />
+                </TouchableOpacity>
+              )
+            })}
           </ScrollView>
 
 
@@ -248,7 +251,7 @@ export default function ProductDetails() {
                       }}
                     >
                       {variant && variant.urls && variant.urls.length > 0 ? (
-                        <Image source={{ uri: variant.urls[0] }} style={{ width: 40, height: 40, borderRadius: 4 }} />
+                        <Image source={{ uri: variant.urls[0].replace(/\.avif$/i, '.webp') }} style={{ width: 40, height: 40, borderRadius: 4 }} />
                       ) : (
                         <Text style={[styles.variantText, selectedColor === c && styles.variantTextSelected]}>
                           {c}
@@ -348,7 +351,7 @@ export default function ProductDetails() {
           >
             {fullScreenImage && (
               <Image
-                source={{ uri: fullScreenImage }}
+                source={{ uri: fullScreenImage.replace(/\.avif$/i, '.webp') }}
                 style={{ width: width, height: Dimensions.get('window').height * 0.8, resizeMode: 'contain' }}
               />
             )}

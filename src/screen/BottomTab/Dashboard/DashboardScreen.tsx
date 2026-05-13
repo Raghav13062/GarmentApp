@@ -67,7 +67,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBarComponent barStyle={"dark-content"} />
-      <HeaderBar 
+      <HeaderBar
         genderOptions={genderOptions}
         currentGender={gender}
         setGender={setGender}

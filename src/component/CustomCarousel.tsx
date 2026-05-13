@@ -96,14 +96,16 @@ const activeBanners = banners
     }
   };
 
-  const renderBannerItem = ({ item }: { item: Banner }) => (
+  const renderBannerItem = ({ item }: { item: Banner }) => {
+    const safeImage = typeof item.image === 'string' ? item.image.replace(/\.avif$/i, '.webp') : item.image;
+    return (
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={() => handleBannerPress(item)}
       style={{ width: width - 30 }}
     >
       <Image
-        source={{ uri: item.image }}
+        source={{ uri: safeImage }}
         style={[styles.image, { height }]}
         resizeMode="stretch"
       />
@@ -120,6 +122,7 @@ const activeBanners = banners
       </View>
     </TouchableOpacity>
   );
+};
 
   if (activeBanners.length === 0) {
     return (

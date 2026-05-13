@@ -36,7 +36,7 @@ const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       highlight: ' Garment App',
       description:
         'Discover the latest fashion trends with premium quality garments at the best prices.',
-      image: ""
+      image: "https://img.pikbest.com/png-images/20191028/e-commerce-shopping-festival-shopping-gif_2515306.png!bw700"
 
     }, {
       id: '2',

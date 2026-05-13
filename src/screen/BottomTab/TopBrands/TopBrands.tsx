@@ -37,7 +37,7 @@ export default function TopBrands({ brands, onBrandPress }: any) {
             }}
           // onPress={() => onBrandPress && onBrandPress(item)}
           >
-            <Image source={{ uri: item.image }} style={styles.brandImage}
+            <Image source={{ uri: item.image?.replace(/\.avif$/i, '.webp') }} style={styles.brandImage}
               resizeMode="stretch"
             />
             <Text numberOfLines={1} style={styles.brandName}>

@@ -31,7 +31,7 @@ const CategoryItem = ({ item }: any) => {
     >
       <View style={styles.imageContainer}>
         <Image 
-          source={{ uri: item.image }} 
+          source={{ uri: typeof item.image === 'string' ? item.image.replace(/\.avif$/i, '.webp') : item.image }} 
           style={styles.image}
           resizeMode="cover"
         />
