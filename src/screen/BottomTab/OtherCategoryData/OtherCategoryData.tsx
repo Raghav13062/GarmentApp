@@ -115,10 +115,7 @@ const OtherCategoryData = () => {
     : products.filter((p: any) => p.subcategory === selectedSubcategory);
 
   // Handle category selection
-  const handleCategorySelect = useCallback((id: string) => {
-    setSelectedCategory(id);
-    setSelectedSubcategory('All');
-  }, []);
+
 
   const addToCart = async (product: any) => {
     try {
@@ -175,30 +172,7 @@ const OtherCategoryData = () => {
   };
 
   // Render category item
-  const renderCategoryItem = ({ item }) => {
-    const isSelected = selectedCategory === item._id;
 
-    return (
-      <TouchableOpacity
-        style={[
-          styles.categoryCard,
-          isSelected && styles.categoryCardSelected,
-        ]}
-        onPress={() => handleCategorySelect(item._id)}
-        activeOpacity={0.8}
-      >
-        <Text
-          style={[
-            styles.categoryName,
-            isSelected && styles.categoryNameSelected
-          ]}
-          numberOfLines={1}
-        >
-          {item.name}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
 
   const renderProductCard = ({ item }) => {
     return (
