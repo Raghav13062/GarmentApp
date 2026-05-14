@@ -96,51 +96,53 @@ const activeBanners = banners
     }
   };
 
-  const renderBannerItem = ({ item }: { item: Banner }) => {
-    const safeImage = typeof item.image === 'string' ? item.image.replace(/\.avif$/i, '.webp') : item.image;
-    return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={() => handleBannerPress(item)}
-      style={{ width: width - 30 }}
-    >
-      <Image
-        source={{ uri: safeImage }}
-        style={[styles.image, { height }]}
-        resizeMode="stretch"
-      />
-      {/* Title Overlay */}
-      <View style={styles.titleOverlay}>
-        <View style={styles.titleBackground}>
-          <Text style={styles.titleText} numberOfLines={1}>
-            {item.title}
-          </Text>
-          <Text style={styles.descriptionText} numberOfLines={1}>
-            {item.description}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
+  const renderBannerItem = ({ item }: { item: any }) => {
+    const isString = typeof item === 'string';
+    const imageUrl = isString ? item : item.image;
+    const safeImage = imageUrl?.replace(/\.avif$/i, '.webp');
 
-  if (activeBanners.length === 0) {
     return (
-      <View style={[styles.wrapper, { height }]}>
-        <Text style={styles.noBannersText}>No banners available</Text>
-      </View>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => !isString && handleBannerPress(item)}
+        style={{ width: width - 30 }}
+      >
+        <Image
+          source={{ uri: safeImage }}
+          style={[styles.image, { height }]}
+          resizeMode="cover"
+        />
+        {!isString && (item.title || item.description) && (
+          <View style={styles.titleOverlay}>
+            <View style={styles.titleBackground}>
+              <Text style={styles.titleText} numberOfLines={1}>
+                {item.title}
+              </Text>
+              <Text style={styles.descriptionText} numberOfLines={1}>
+                {item.description}
+              </Text>
+            </View>
+          </View>
+        )}
+      </TouchableOpacity>
     );
+  };
+
+  const dataToRender = activeBanners.length > 0 ? activeBanners : banners;
+
+  if (!dataToRender || dataToRender.length === 0) {
+    return null;
   }
 
   return (
     <View style={[styles.wrapper, { height }]}>
       <FlatList
         ref={flatListRef}
-        data={activeBanners}
+        data={dataToRender}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item, index) => (typeof item === 'string' ? `img-${index}` : item._id)}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         onScrollBeginDrag={stopAutoPlay}
@@ -148,10 +150,10 @@ const activeBanners = banners
         renderItem={renderBannerItem}
       />
 
-      {/* Pagination Dots - Only show if more than 1 banner */}
-      {activeBanners.length > 1 && (
+      {/* Pagination Dots */}
+      {dataToRender.length > 1 && (
         <View style={styles.paginationContainer}>
-          {activeBanners.map((_, index) => (
+          {dataToRender.map((_, index) => (
             <View
               key={index}
               style={[

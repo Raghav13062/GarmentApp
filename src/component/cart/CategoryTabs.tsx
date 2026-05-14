@@ -82,32 +82,42 @@ export default CategoryTabs;
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#fff',
-    paddingVertical: 15,
+    paddingVertical: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#f0f0f0',
   },
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
   },
   tab: {
     alignItems: "center",
-    marginRight: 20,
-    width: 65,
+    marginRight: 15,
+    width: 72,
   },
   imageContainer: {
-    width: 60,
-    height: 75,
-    borderRadius: 8,
+    width: 66,
+    height: 66,
+    borderRadius: 33, // Perfect circle
     backgroundColor: '#FFF0F3',
     overflow: "hidden",
-    marginBottom: 8,
+    marginBottom: 6,
+    borderWidth: 1,
+    borderColor: '#FFF0F3',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   image: {
     width: "100%",
     height: "100%",
   },
   text: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#333',
     fontFamily: fonts.semiBold,
     textAlign: "center",
+    marginTop: 2,
   },
 });

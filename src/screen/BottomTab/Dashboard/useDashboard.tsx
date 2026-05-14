@@ -216,10 +216,11 @@ export default function useDashboard() {
     gender,
     setGender,
     genderOptions,
-    categories,
+    categories, // Circular categories for top bar
     banners,
     productSections,
     BrandsProduct,
-    videoAdUrl
+    videoAdUrl,
+    sections // All sections for dynamic body
   };
 }
