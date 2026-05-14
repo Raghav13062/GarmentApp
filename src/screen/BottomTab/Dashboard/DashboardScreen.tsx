@@ -46,7 +46,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBarComponent barStyle={"light-content"} backgroundColor={color.black} />
+      <StatusBarComponent barStyle={"dark-content"} backgroundColor={color.black} />
       <HeaderBar
         genderOptions={genderOptions}
         currentGender={gender}
@@ -78,7 +78,7 @@ const HomeScreen = () => {
                         banners={background.mediaImages}
                         autoPlay
                         autoPlayInterval={3000}
-                        height={320} // Taller for premium feel
+                        height={200} // Taller for premium feel
                       />
                     </Animated.View>
                   ) : hasVideo ? (

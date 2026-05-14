@@ -52,8 +52,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
       {/* Search & Icons Row */}
       <View style={styles.headerRow}>
         <View style={styles.searchWrapper}>
-          <Image source={imageIndex.logo} style={styles.myntraLogo} resizeMode="contain" />
-          <Text style={styles.searchText}>"Shirts"</Text>
+          <Text style={styles.searchText}>Shirts</Text>
           <Icon name="search-outline" size={20} color="#666" />
         </View>
 
