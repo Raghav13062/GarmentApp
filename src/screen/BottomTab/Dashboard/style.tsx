@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   gridItem: {
-    width: '31%', 
+    width: '31%',
     alignItems: 'center',
     marginBottom: 15,
   },

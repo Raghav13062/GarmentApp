@@ -12,7 +12,7 @@ import Animated, {
 import { color, fonts } from "../constant";
 import imageIndex from "../assets/imageIndex";
 
-const { width } = Dimensions.get("window");
+const TAB_WIDTH = width / 4;
 
 const TabItem = ({ route, isFocused, onPress }: any) => {
   const icons: any = {
@@ -22,22 +22,19 @@ const TabItem = ({ route, isFocused, onPress }: any) => {
     Profile: isFocused ? "person" : "person-outline",
   };
 
-  const scale = useSharedValue(isFocused ? 1.1 : 1);
-  const backgroundScale = useSharedValue(isFocused ? 1 : 0);
+  const scale = useSharedValue(1);
 
   useEffect(() => {
-    scale.value = withSpring(isFocused ? 1.1 : 1, { damping: 12, stiffness: 100 });
-    backgroundScale.value = withTiming(isFocused ? 1 : 0, { duration: 250 });
+    if (isFocused) {
+      scale.value = withSpring(1.1, { damping: 12, stiffness: 100 });
+    } else {
+      scale.value = withSpring(1);
+    }
   }, [isFocused]);
 
   const animatedIconStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
     color: isFocused ? '#FF3F6C' : '#555',
-  }));
-
-  const animatedBgStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: backgroundScale.value }],
-    opacity: backgroundScale.value,
   }));
 
   return (
@@ -47,7 +44,6 @@ const TabItem = ({ route, isFocused, onPress }: any) => {
       style={styles.tab}
     >
       <View style={styles.iconContainer}>
-        <Animated.View style={[styles.activeBg, animatedBgStyle]} />
         <Animated.View style={animatedIconStyle}>
           <Ionicons
             name={icons[route.name] || "ellipse"}
@@ -73,9 +69,28 @@ const TabItem = ({ route, isFocused, onPress }: any) => {
 };
 
 const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
+  const tabWidth = width / state.routes.length;
+  const translateX = useSharedValue(state.index * tabWidth);
+
+  useEffect(() => {
+    translateX.value = withSpring(state.index * tabWidth, {
+      damping: 18,
+      stiffness: 150,
+    });
+  }, [state.index, tabWidth]);
+
+  const pillStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+  }));
+
   return (
     <View style={styles.outerContainer}>
       <View style={styles.tabBar}>
+        {/* Sliding Pill Background */}
+        <Animated.View style={[styles.pillContainer, { width: tabWidth }, pillStyle]}>
+          <View style={styles.pill} />
+        </Animated.View>
+
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
           return (
@@ -121,13 +136,13 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
     paddingBottom: Platform.OS === 'ios' ? 20 : 0,
     alignItems: 'center',
-    justifyContent: 'space-around',
   },
   tab: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 8,
+    zIndex: 1,
   },
   iconContainer: {
     width: 45,
@@ -135,12 +150,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  activeBg: {
+  pillContainer: {
     position: 'absolute',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 8, // Align with icons
+  },
+  pill: {
     width: 45,
     height: 32,
     backgroundColor: '#FFF0F3',
     borderRadius: 16,
+    position: 'absolute',
+    top: 8, // Match iconContainer position
   },
   label: {
     fontSize: 10,
