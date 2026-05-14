@@ -30,7 +30,7 @@ const Splash: React.FC = () => {
     if (isLogin?.isLogin) {
       navigation.replace(ScreenNameEnum.BottomTabs);
     } else {
-      navigation.replace(ScreenNameEnum.OnboardingScreen);
+      navigation.replace(ScreenNameEnum.BottomTabs);
 
     }
   };

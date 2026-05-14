@@ -1,4 +1,3 @@
-import { color } from "../../constant";
 import React from "react";
 import {
   View,
@@ -9,6 +8,13 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
+import Animated, { 
+  FadeIn, 
+  useAnimatedStyle, 
+  useSharedValue, 
+  withSpring 
+} from "react-native-reanimated";
+import { color } from "../../constant";
 import CustomButton from "../CustomButton";
 
 const { width } = Dimensions.get("window");
@@ -21,7 +27,7 @@ export default function ProductCard({
   title,
   buttShow,
   disabled,
-}) {
+}: any) {
   // Robust data mapping for different API responses
   const titleText = item?.title || item?.name || "Product";
   const displayMrp = item?.pricing?.mrp || item?.mrp || item?.price || 0;
@@ -32,13 +38,30 @@ export default function ProductCard({
     ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100)
     : item?.pricing?.discountPercentage || item?.discountPercentage || 0;
 
+  // Animation values
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.96);
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1);
+  };
+
   return (
     <TouchableOpacity
-      activeOpacity={0.85}
+      activeOpacity={1}
       onPress={onPress1}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       style={styles.cardContainer}
     >
-      <View style={styles.card}>
+      <Animated.View entering={FadeIn.duration(500)} style={[styles.card, animatedStyle]}>
         {/* IMAGE */}
         <ImageBackground
           source={{ uri: productImage }}
@@ -83,7 +106,7 @@ export default function ProductCard({
           </View>
 
         )}
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   );
 }

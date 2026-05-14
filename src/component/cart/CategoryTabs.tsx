@@ -1,4 +1,4 @@
-import { color } from "../../constant";
+import { color, fonts } from "../../constant";
 import React from "react";
 import {
   View,
@@ -12,11 +12,13 @@ import {
 import imageIndex from "../../assets/imageIndex";
 import ScreenNameEnum from "../../routes/screenName.enum";
 import { useNavigation } from "@react-navigation/native";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
 interface Category {
   _id?: string;
   name?: string;
   image: string;
+  id?: string;
 }
 
 interface CategoryTabsProps {
@@ -34,44 +36,43 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={[
-          styles.container,
-          categories?.length === 0 && styles.emptyContainer,
-        ]}
+        contentContainerStyle={styles.container}
       >
         {categories?.length === 0 ? (
-          <ActivityIndicator size="small" color="#0000ff" />
+          <ActivityIndicator size="small" color="#FF3F6C" />
         ) : (
-          categories?.map((item) => {
-            console.log("item", item);
-
-            const isActive = selected === item?.name;
+          categories?.map((item: any, index: number) => {
             return (
-              <TouchableOpacity
-                key={item._id}
-                activeOpacity={0.85}
-                onPress={() => {
-                  navigation.navigate(ScreenNameEnum.OtherCategoryData, {
-                    categoryId: item.id,
-                    categoryName: item.name
-                  });
-                }}
-                style={[styles.tab, isActive && styles.activeTab]}
+              <Animated.View 
+                key={item._id} 
+                entering={FadeInDown.duration(500).delay(index * 80)}
               >
-                <Text allowFontScaling={false} style={styles.text}>
-                  {item.name}
-                </Text>
-                <Image
-                  source={{ uri: item.image || imageIndex.smsImg }}
-                  style={styles.image}
-                  resizeMode="stretch"
-                />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navigation.navigate(ScreenNameEnum.OtherCategoryData, {
+                      categoryId: item.id,
+                      categoryName: item.name
+                    });
+                  }}
+                  style={styles.tab}
+                >
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={{ uri: item.image || imageIndex.smsImg }}
+                      style={styles.image}
+                      resizeMode="cover"
+                    />
+                  </View>
+                  <Text allowFontScaling={false} style={styles.text} numberOfLines={1}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              </Animated.View>
             );
           })
         )}
       </ScrollView>
-
     </View>
   );
 };
@@ -80,53 +81,33 @@ export default CategoryTabs;
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: color.white,
-    marginTop: 4
+    backgroundColor: '#fff',
+    paddingVertical: 15,
   },
-
   container: {
-    alignItems: "center",
+    paddingHorizontal: 16,
   },
-
   tab: {
-    paddingVertical: 5,
-    borderRadius: 18,
     alignItems: "center",
-    marginHorizontal: 10,
-
-  },
-
-  activeTab: {
-    // backgroundColor: color.primary,
-    transform: [{ scale: 1.05 }],
-  },
-
-  image: {
+    marginRight: 20,
     width: 65,
-    height: 65,
+  },
+  imageContainer: {
+    width: 60,
+    height: 75,
     borderRadius: 8,
-    backgroundColor: "#EAEAEA",
-    marginTop: 8
+    backgroundColor: '#FFF0F3',
+    overflow: "hidden",
+    marginBottom: 8,
   },
-
-  activeImage: {
-    borderWidth: 2,
-    borderColor: color.white,
+  image: {
+    width: "100%",
+    height: "100%",
   },
-
   text: {
-    fontSize: 13,
-    color: color.black,
-    fontWeight: "600",
+    fontSize: 11,
+    color: '#333',
+    fontFamily: fonts.semiBold,
     textAlign: "center",
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  activeText: {
-    color: color.white,
-    fontWeight: "600",
   },
 });
