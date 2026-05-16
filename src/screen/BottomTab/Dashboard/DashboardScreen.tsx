@@ -58,7 +58,6 @@ const HomeScreen = () => {
         style={{ backgroundColor: '#fff' }}
         contentContainerStyle={{ paddingBottom: 80 }}
       >
-        {/* ---------------- Top Categories (Circular) ---------------- */}
 
 
         {sections.map((section: any, index: number) => {

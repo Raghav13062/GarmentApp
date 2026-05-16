@@ -72,32 +72,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
         </View>
       </View>
 
-      {/* Tabs Row */}
-      <View style={styles.tabsContainer}>
-        <View style={styles.bottomLine} />
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-          {genderOptions.map((item) => {
-            const isActive = currentGender === item;
-            const label = item?.toUpperCase();
-            return (
-              <TouchableOpacity
-                key={item}
-                onPress={() => setGender && setGender(item)}
-                style={[styles.tab, isActive && styles.activeTab]}
-              >
-                <Text style={[styles.tabText, isActive && styles.activeTabText]}>
-                  {label}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-        <View style={styles.gridIconWrapper}>
-          <View style={styles.gridIcon}>
-            <Icon name="apps" size={18} color="#fff" />
-          </View>
-        </View>
-      </View>
+
     </View>
   );
 };

@@ -34,9 +34,10 @@ const BottomTabs = () => {
       tabBar={(props) => <BottomTabBar {...props} />}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
- 
+
       <Tab.Screen name="Cart" component={Under} listeners={protectedTabListener} />
       <Tab.Screen name="Under" component={B2BBulkScreen} />
+
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

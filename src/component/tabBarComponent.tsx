@@ -2,16 +2,16 @@ import React, { useEffect } from "react";
 import { View, Image, TouchableOpacity, StyleSheet, Text, Dimensions, Platform } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import Animated, { 
-  useAnimatedStyle, 
-  withSpring, 
-  useSharedValue, 
+import Animated, {
+  useAnimatedStyle,
+  withSpring,
+  useSharedValue,
   withTiming,
   interpolateColor
 } from "react-native-reanimated";
 import { color, fonts } from "../constant";
 import imageIndex from "../assets/imageIndex";
-
+const { width } = Dimensions.get("window");
 const TAB_WIDTH = width / 4;
 
 const TabItem = ({ route, isFocused, onPress }: any) => {
@@ -52,13 +52,13 @@ const TabItem = ({ route, isFocused, onPress }: any) => {
           />
         </Animated.View>
       </View>
-      
+
       <Text
         style={[
           styles.label,
-          { 
+          {
             color: isFocused ? '#FF3F6C' : '#555',
-            fontFamily: isFocused ? fonts.bold : fonts.semiBold 
+            fontFamily: isFocused ? fonts.bold : fonts.semiBold
           }
         ]}
       >
