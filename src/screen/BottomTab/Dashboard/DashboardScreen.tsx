@@ -17,11 +17,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import Animated, { 
-  FadeInUp, 
-  FadeInDown, 
-  useAnimatedStyle, 
-  useSharedValue, 
+import Animated, {
+  FadeInUp,
+  FadeInDown,
+  useAnimatedStyle,
+  useSharedValue,
   withSpring,
   interpolate,
   Extrapolate,
@@ -33,44 +33,27 @@ import ScreenNameEnum from '../../../routes/screenName.enum';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import ProductCard from '../../../component/cart/ProductCard';
 import useDashboard from './useDashboard';
+import VideoAd from './VideoAd';
 
 const { width } = Dimensions.get('window');
 
 // --- Enhanced Hero Slider with Dynamic Overlays ---
 
-const HERO_SLIDES = [
-  {
-    id: 'h1',
-    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop',
-    tag: 'NEW USERS PERKS',
-    title: "savana's most loved",
-    price: '190',
-    btnText: 'SHOP THE EDIT',
-    tagColor: '#E0C068',
-  },
-  {
-    id: 'h2',
-    image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1000&auto=format&fit=crop',
-    tag: 'SEASONAL FAVORITES',
-    title: 'limited edition sets',
-    price: '299',
-    btnText: 'EXPLORE NOW',
-    tagColor: '#AED581',
-  },
-  {
-    id: 'h3',
-    image: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1000&auto=format&fit=crop',
-    tag: 'SUMMER VIBES',
-    title: 'resort wear collection',
-    price: '449',
-    btnText: 'VIEW LOOKBOOK',
-    tagColor: '#81D4FA',
-  },
-];
 
-const HeroSlider = () => {
+
+const HeroSlider = ({ sections }: { sections: any[] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
+
+  const bannerSection = sections.find(s => s.sectionType === 'SEARCH_BANNER');
+  const bannerData = bannerSection?.data?.background;
+
+  if (!bannerData) return null;
+
+  const carouselData = [
+    // ...(bannerData.videoUrl ? [{ type: 'video', url: bannerData.videoUrl, id: 'vid-1' }] : []),
+    ...(bannerData.mediaImages || []).map((img: string, idx: number) => ({ type: 'image', url: img, id: `img-${idx}` })),
+  ];
 
   const handleScroll = (event: any) => {
     const scrollOffset = event.nativeEvent.contentOffset.x;
@@ -78,37 +61,51 @@ const HeroSlider = () => {
     if (index !== activeIndex) setActiveIndex(index);
   };
 
-  const renderSlide = ({ item, index }: any) => {
+  const renderSlide = ({ item }: any) => {
     return (
       <View style={styles.heroSlide}>
-        <Image source={{ uri: item.image }} style={styles.heroImage} />
+        {/* {item.type === 'video' ? (
+          <VideoAd videoUrl={item.url} height={450} />
+        ) : (
+          <Image source={{ uri: item.url }} style={styles.heroImage} />
+        )} */}
+
+        <Image source={{ uri: item.url }} style={styles.heroImage} />
+
+
         {/* Slide-specific Overlay */}
         <View style={styles.heroOverlay}>
-          <Animated.Text 
+          <Animated.Text
             entering={FadeInUp.delay(300).duration(800)}
-            style={[styles.heroNewUsers, { color: item.tagColor }]}
+            style={[styles.heroNewUsers, { color: '#E0C068' }]}
           >
-            {item.tag}
+            NEW USERS PERKS
           </Animated.Text>
-          <Animated.Text 
+          <Animated.Text
             entering={FadeInUp.delay(500).duration(800)}
             style={styles.heroLoved}
           >
-            {item.title}
+            savana's most loved
           </Animated.Text>
-          <Animated.View 
+          <Animated.View
             entering={FadeInUp.delay(700).duration(800)}
             style={styles.heroPriceRow}
           >
             <Text style={styles.heroFrom}>From</Text>
-            <Text style={styles.heroPrice}>₹{item.price}</Text>
+            <Text style={styles.heroPrice}>₹190</Text>
           </Animated.View>
           <Animated.View entering={FadeInDown.delay(900).duration(800)}>
             <TouchableOpacity style={styles.heroBtn}>
-               <Text style={styles.heroBtnText}>{item.btnText}</Text>
+              <Text style={styles.heroBtnText}>SHOP THE EDIT</Text>
             </TouchableOpacity>
           </Animated.View>
         </View>
+
+        {/* Bottom Gradient for readability */}
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.6)']}
+          style={[StyleSheet.absoluteFill, { top: '60%' }]}
+        />
       </View>
     );
   };
@@ -117,7 +114,7 @@ const HeroSlider = () => {
     <View style={styles.heroContainer}>
       <FlatList
         ref={flatListRef}
-        data={HERO_SLIDES}
+        data={carouselData}
         renderItem={renderSlide}
         horizontal
         pagingEnabled
@@ -128,13 +125,13 @@ const HeroSlider = () => {
       />
       {/* Pagination Dots */}
       <View style={styles.pagination}>
-        {HERO_SLIDES.map((_, i) => (
-          <View 
-            key={i} 
+        {carouselData.map((_, i) => (
+          <View
+            key={i}
             style={[
-              styles.dot, 
+              styles.dot,
               activeIndex === i && styles.activeDot
-            ]} 
+            ]}
           />
         ))}
       </View>
@@ -166,21 +163,7 @@ const HomeHeader = ({ scrollY }: { scrollY: Animated.SharedValue<number> }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.infoBar}>
-        {[
-          { icon: 'return-up-back', title: 'Easy returns', sub: 'Free pick up' },
-          { icon: 'flash', title: 'Fast delivery', sub: '4000+ styles' },
-          { icon: 'gift', title: 'Free shipping', sub: 'For orders 990+' },
-        ].map((item, i) => (
-          <View key={i} style={styles.infoItem}>
-            <Ionicons name={`${item.icon}-outline` as any} size={15} color="#333" />
-            <View style={styles.infoTextContainer}>
-              <Text style={styles.infoTitle}>{item.title}</Text>
-              <Text style={styles.infoSub}>{item.sub}</Text>
-            </View>
-          </View>
-        ))}
-      </View>
+
     </Animated.View>
   );
 };
@@ -202,35 +185,7 @@ const FlashSaleHeader = ({ title, subtitle }: any) => (
   </View>
 );
 
-const PriceDropCorner = () => (
-  <View style={styles.priceDropSection}>
-    <Text style={styles.sectionTitleCenter}>PRICE DROP CORNER</Text>
-    <View style={styles.priceDropRow}>
-      <TouchableOpacity activeOpacity={0.9} style={styles.priceDropCard}>
-        <LinearGradient colors={['#FEF9E7', '#FDEBD0']} style={styles.cardGradient}>
-          <Text style={styles.cardSubtitle}>ALL UNDER</Text>
-          <Text style={styles.cardPrice}>₹500</Text>
-          <Text style={styles.cardSmallText}>Everything iconic</Text>
-          <View style={styles.shopNowBtn}>
-            <Text style={styles.shopNowText}>SHOP NOW</Text>
-          </View>
-        </LinearGradient>
-      </TouchableOpacity>
-      
-      <TouchableOpacity activeOpacity={0.9} style={styles.priceDropCard}>
-        <LinearGradient colors={['#E8F8F5', '#D1F2EB']} style={styles.cardGradient}>
-          <View style={styles.freeBadge}><Text style={styles.freeText}>FREE</Text></View>
-          <Text style={styles.cardPriceLarge}>BUY 1</Text>
-          <Text style={styles.cardPriceLarge}>GET 1</Text>
-          <Text style={styles.cardSmallText}>Accessories & Jewellery</Text>
-          <View style={[styles.shopNowBtn, { backgroundColor: '#16A085' }]}>
-            <Text style={styles.shopNowText}>SHOP NOW</Text>
-          </View>
-        </LinearGradient>
-      </TouchableOpacity>
-    </View>
-  </View>
-);
+
 
 const HotCategories = ({ categories }: any) => (
   <View style={styles.hotCategoriesSection}>
@@ -248,24 +203,7 @@ const HotCategories = ({ categories }: any) => (
   </View>
 );
 
-const CountdownBanner = () => (
-  <View style={styles.timerBanner}>
-    <View style={styles.timerLeft}>
-      <Text style={styles.timerLabel}>LIMITED - TIME STEALS</Text>
-      <View style={styles.timerLine} />
-    </View>
-    <View style={styles.timerRight}>
-      <Text style={styles.timerEndsText}>Ends in</Text>
-      <View style={styles.timerValueContainer}>
-        <Text style={styles.timerValue}>57h : 47m : 46s</Text>
-      </View>
-    </View>
-    <Animated.View entering={FadeInRight.delay(500).springify()} style={styles.couponBadge}>
-      <Text style={styles.couponSub}>COUPON</Text>
-      <Text style={styles.couponValue}>20% OFF</Text>
-    </Animated.View>
-  </View>
-);
+
 
 const DashboardScreen = () => {
   const {
@@ -290,17 +228,16 @@ const DashboardScreen = () => {
       <StatusBarComponent barStyle="dark-content" backgroundColor="#fff" />
       <HomeHeader scrollY={scrollY} />
 
-      <ScrollView 
-        showsVerticalScrollIndicator={false} 
+      <ScrollView
+        showsVerticalScrollIndicator={false}
         onScroll={(e) => { scrollY.value = e.nativeEvent.contentOffset.y; }}
         scrollEventThrottle={16}
         contentContainerStyle={{ paddingBottom: 120 }}
       >
-        <HeroSlider />
-        <CountdownBanner />
+        <HeroSlider sections={sections} />
 
         <Animated.View entering={FadeInUp.delay(200).duration(800)} style={styles.flashSection}>
-          <FlashSaleHeader title="FLASH SALE" subtitle="UP TO 70% OFF" />
+          <FlashSaleHeader title="FLASH" subtitle="SALE" />
           <FlatList
             data={sections.find(s => s.sectionType === 'TOP_PICKS')?.data?.products || []}
             horizontal
@@ -315,32 +252,31 @@ const DashboardScreen = () => {
           />
         </Animated.View>
 
-        <PriceDropCorner />
         <HotCategories categories={categories} />
 
         {sections.map((section: any, index: number) => {
-           if (['SEARCH_BANNER', 'TOP_PICKS', 'GENDER_FILTER'].includes(section.sectionType)) return null;
-           if (section.sectionType === 'PRODUCT_GRID') {
-              return (
-                <View key={index} style={styles.dynamicSection}>
-                  <View style={styles.dynamicHeader}>
-                    <Text style={styles.sectionTitleCenter}>{section.title}</Text>
-                    <View style={styles.titleUnderline} />
-                  </View>
-                  <FlatList
-                    data={section.data?.products || []}
-                    numColumns={2}
-                    scrollEnabled={false}
-                    columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
-                    renderItem={({ item }) => (
-                      <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
-                    )}
-                    keyExtractor={(item) => item.id || item._id}
-                  />
+          if (['SEARCH_BANNER', 'TOP_PICKS', 'GENDER_FILTER'].includes(section.sectionType)) return null;
+          if (section.sectionType === 'PRODUCT_GRID') {
+            return (
+              <View key={index} style={styles.dynamicSection}>
+                <View style={styles.dynamicHeader}>
+                  <Text style={styles.sectionTitleCenter}>{section.title}</Text>
+                  <View style={styles.titleUnderline} />
                 </View>
-              );
-           }
-           return null;
+                <FlatList
+                  data={section.data?.products || []}
+                  numColumns={2}
+                  scrollEnabled={false}
+                  columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
+                  renderItem={({ item }) => (
+                    <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
+                  )}
+                  keyExtractor={(item) => item.id || item._id}
+                />
+              </View>
+            );
+          }
+          return null;
         })}
       </ScrollView>
 
@@ -370,7 +306,7 @@ const styles = StyleSheet.create({
   infoTextContainer: { marginLeft: 6 },
   infoTitle: { fontSize: 10, fontFamily: fonts.bold, color: '#111' },
   infoSub: { fontSize: 8.5, fontFamily: fonts.regular, color: '#888' },
-  
+
   // Hero Slider Styles
   heroContainer: { width: width, height: 450, position: 'relative' },
   heroSlide: { width: width, height: 450, position: 'relative' },
