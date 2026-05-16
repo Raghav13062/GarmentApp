@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import {
   StyleSheet,
   View,
@@ -20,49 +20,73 @@ import StatusBarComponent from '../../../../component/StatusBarCompoent';
 const { width } = Dimensions.get('window');
 const SIDEBAR_WIDTH = 100;
 
-// --- Mock Data ---
+// --- Expanded Mock Data with "Under 999" Theme ---
 const CATEGORIES = [
+  { id: 'all', title: 'UNDER 999' },
   { id: 'sale', title: 'SALE' },
   { id: 'tops', title: 'TOPS' },
   { id: 'dresses', title: 'DRESSES' },
   { id: 'bottoms', title: 'BOTTOMS' },
-  { id: 'one-pieces', title: 'ONE-PIECES & CO-ORDS' },
   { id: 'denim', title: 'DENIM' },
-  { id: 'inclusive', title: 'INCLUSIVE' },
-  { id: 'lingerie', title: 'LINGERIE & LOUNGEWEAR' },
+  { id: 'lingerie', title: 'LINGERIE' },
   { id: 'activewear', title: 'ACTIVEWEAR' },
-  { id: 'outerwear', title: 'OUTERWEAR' },
   { id: 'knitwear', title: 'KNITWEAR' },
   { id: 'bags', title: 'BAGS' },
   { id: 'accessories', title: 'ACCESSORIES' },
 ];
 
 const CONTENT_DATA: any = {
-  sale: [
+  all: [
     {
-      id: 's1',
-      title: 'SALE',
+      id: 'a1',
+      title: 'HOT DEALS UNDER 999',
       items: [
-        { id: 'i1', name: 'Sale Dresses', image: 'https://images.unsplash.com/photo-1539008835757-830ca09eb82c?q=80&w=500&auto=format&fit=crop' },
-        { id: 'i2', name: 'Sale Tops', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i101', name: 'Maxi @ ₹899', image: 'https://images.unsplash.com/photo-1539008835757-830ca09eb82c?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i102', name: 'Tops @ ₹399', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i103', name: 'Denim @ ₹999', image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i104', name: 'Tees @ ₹299', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=500&auto=format&fit=crop' },
       ],
     },
     {
-      id: 's2',
-      title: '',
+      id: 'a2',
+      title: 'BUDGET ACCESSORIES',
       items: [
-        { id: 'i3', name: 'Sale Bottoms', image: 'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?q=80&w=500&auto=format&fit=crop' },
-        { id: 'i4', name: 'Sale Denim', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i105', name: 'Bags @ ₹799', image: 'https://images.unsplash.com/photo-1584917033904-493bb3c3c155?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i106', name: 'Belts @ ₹199', image: 'https://images.unsplash.com/photo-1624222247344-550fbadcd973?q=80&w=500&auto=format&fit=crop' },
+      ],
+    },
+  ],
+  sale: [
+    {
+      id: 's1',
+      title: 'CLEARANCE SALE',
+      items: [
+        { id: 'i1', name: 'Dresses @ ₹599', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i2', name: 'Tops @ ₹199', image: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=500&auto=format&fit=crop' },
       ],
     },
   ],
   tops: [
     {
       id: 't1',
-      title: 'TOPS',
+      title: 'TRENDING TOPS',
       items: [
-        { id: 'i5', name: 'Graphic Tees', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=500&auto=format&fit=crop' },
-        { id: 'i6', name: 'Crop Tops', image: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i5', name: 'Graphic @ ₹499', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i6', name: 'Crops @ ₹349', image: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i7', name: 'Tanks @ ₹249', image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i8', name: 'Shirts @ ₹799', image: 'https://images.unsplash.com/photo-1598033129183-c4f50c7176c8?q=80&w=500&auto=format&fit=crop' },
+      ],
+    },
+  ],
+  dresses: [
+    {
+      id: 'd1',
+      title: 'PARTY DRESSES',
+      items: [
+        { id: 'i9', name: 'Maxi @ ₹999', image: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i10', name: 'Mini @ ₹899', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i11', name: 'Gowns @ ₹999', image: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=500&auto=format&fit=crop' },
+        { id: 'i12', name: 'Skater @ ₹699', image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=500&auto=format&fit=crop' },
       ],
     },
   ],
@@ -70,12 +94,27 @@ const CONTENT_DATA: any = {
 
 const Under = () => {
   const navigation = useNavigation();
-  const [activeCategory, setActiveCategory] = useState('sale');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const scrollRef = useRef<ScrollView>(null);
+
+  const filteredSections = useMemo(() => {
+    const data = CONTENT_DATA[activeCategory] || [];
+    if (!searchQuery.trim()) return data;
+
+    const query = searchQuery.toLowerCase();
+    return data.map((section: any) => ({
+      ...section,
+      items: section.items.filter((item: any) =>
+        item.name.toLowerCase().includes(query)
+      ),
+    })).filter((section: any) => section.items.length > 0);
+  }, [activeCategory, searchQuery]);
 
   const handleCategoryPress = (id: string) => {
     setActiveCategory(id);
-    // In a real app, we might scroll the right content or fetch new data
+    setSearchQuery('');
+    scrollRef.current?.scrollTo({ y: 0, animated: false });
   };
 
   const renderSidebarItem = ({ item }: any) => {
@@ -105,6 +144,9 @@ const Under = () => {
         <View style={styles.arrowIcon}>
           <Ionicons name="arrow-forward" size={14} color="#333" />
         </View>
+        <View style={styles.priceTag}>
+          <Text style={styles.priceTagText}>₹999</Text>
+        </View>
       </View>
       <Text style={styles.gridLabel}>{item.name}</Text>
     </TouchableOpacity>
@@ -112,14 +154,12 @@ const Under = () => {
 
   const renderSection = (section: any) => (
     <View key={section.id} style={styles.sectionContainer}>
-      {section.title !== '' && (
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>{section.title}</Text>
-          <TouchableOpacity>
-            <Text style={styles.viewAll}>View all {'>'}</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>{section.title}</Text>
+        <TouchableOpacity>
+          <Text style={styles.viewAll}>View all {'>'}</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.gridRow}>
         {section.items.map((item: any) => renderGridItem(item))}
       </View>
@@ -134,9 +174,11 @@ const Under = () => {
       <View style={styles.header}>
         <View style={styles.searchBar}>
           <TextInput
-            placeholder="Bikini"
+            placeholder="Search budget fashion..."
             style={styles.searchInput}
             placeholderTextColor="#999"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
           />
           <TouchableOpacity style={styles.headerIconButton}>
             <Ionicons name="camera-outline" size={24} color="#333" />
@@ -164,12 +206,14 @@ const Under = () => {
           style={styles.contentArea}
           showsVerticalScrollIndicator={false}
         >
-          {CONTENT_DATA[activeCategory] ? (
-            CONTENT_DATA[activeCategory].map((section: any) => renderSection(section))
+          {filteredSections.length > 0 ? (
+            filteredSections.map((section: any) => renderSection(section))
           ) : (
             <View style={styles.placeholderContent}>
-              <Text style={styles.sectionTitle}>{CATEGORIES.find(c => c.id === activeCategory)?.title}</Text>
-              <Text style={styles.placeholderText}>Coming soon...</Text>
+              <Ionicons name="pricetag-outline" size={60} color="#eee" />
+              <Text style={styles.placeholderText}>
+                {searchQuery ? "No budget deals found matching your search." : "More budget deals coming soon!"}
+              </Text>
             </View>
           )}
           <View style={{ height: 100 }} />
@@ -247,7 +291,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF3F6C',
   },
   sidebarText: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#333',
     fontFamily: fonts.semiBold,
     textTransform: 'uppercase',
@@ -270,28 +314,30 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 22,
+    fontSize: 18,
     fontFamily: fonts.bold,
     color: '#000',
     textTransform: 'uppercase',
   },
   viewAll: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#666',
     fontFamily: fonts.regular,
   },
   gridRow: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
   gridCard: {
-    width: (width - SIDEBAR_WIDTH - 32 - 12) / 2, // Width - sidebar - horizontal padding - gap
+    width: (width - SIDEBAR_WIDTH - 32 - 12) / 2,
     alignItems: 'center',
+    marginBottom: 20,
   },
   imageWrapper: {
     width: '100%',
     aspectRatio: 0.8,
-    borderRadius: 2,
+    borderRadius: 4,
     overflow: 'hidden',
     backgroundColor: '#f5f5f5',
     position: 'relative',
@@ -305,24 +351,42 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 8,
     alignSelf: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    paddingHorizontal: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
+    zIndex: 2,
+  },
+  priceTag: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: 'rgba(255, 63, 108, 0.9)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderBottomLeftRadius: 4,
+  },
+  priceTagText: {
+    color: '#fff',
+    fontSize: 10,
+    fontFamily: fonts.bold,
   },
   gridLabel: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#333',
-    fontFamily: fonts.regular,
+    fontFamily: fonts.semiBold,
     textAlign: 'center',
   },
   placeholderContent: {
-    paddingTop: 40,
+    paddingTop: 80,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   placeholderText: {
-    marginTop: 10,
+    marginTop: 15,
     color: '#999',
     fontFamily: fonts.regular,
+    textAlign: 'center',
+    paddingHorizontal: 20,
   },
 });
