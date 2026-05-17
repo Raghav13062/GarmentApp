@@ -17,7 +17,8 @@ const TAB_WIDTH = width / 4;
 const TabItem = ({ route, isFocused, onPress }: any) => {
   const icons: any = {
     Home: isFocused ? "home" : "home-outline",
-    Cart: isFocused ? "cart" : "cart-outline",
+    Cart: isFocused ? "pricetag" : "pricetag-outline",
+    ViewCart: isFocused ? "cart" : "cart-outline",
     Under: isFocused ? "business" : "business-outline",
     Profile: isFocused ? "person" : "person-outline",
   };
@@ -62,7 +63,7 @@ const TabItem = ({ route, isFocused, onPress }: any) => {
           }
         ]}
       >
-        {route.name === "Under" ? "B2B" : route.name}
+        {route.name === "Under" ? "B2B" : route.name === "Cart" ? "Under 999" : route.name === "ViewCart" ? "Cart" : route.name}
       </Text>
     </TouchableOpacity>
   );

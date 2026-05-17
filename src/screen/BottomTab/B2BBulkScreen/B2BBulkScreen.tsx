@@ -91,211 +91,211 @@ const B2BBulkScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBarComponent translucent backgroundColor="transparent" barStyle="light-content" />
       <ScrollView showsVerticalScrollIndicator={false}>
-      {/* Modern Header */}
-      <LinearGradient colors={BRAND_COLORS.primaryGradient} style={styles.header}>
-        <View style={[styles.headerTop, { paddingTop: Platform.OS === 'ios' ? 20 : 10 }]}>
-          <View style={styles.headerIconContainer}>
-            <MaterialIcons name="business" size={28} color={BRAND_COLORS.white} />
+        {/* Modern Header */}
+        <LinearGradient colors={BRAND_COLORS.primaryGradient} style={styles.header}>
+          <View style={[styles.headerTop, { paddingTop: Platform.OS === 'ios' ? 20 : 10 }]}>
+            <View style={styles.headerIconContainer}>
+              <MaterialIcons name="business" size={28} color={BRAND_COLORS.white} />
+            </View>
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.headerTitle}>B2B Wholesale</Text>
+              <Text style={styles.headerSubtitle}>Exclusive Franchise Solutions</Text>
+            </View>
           </View>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerTitle}>B2B Wholesale</Text>
-            <Text style={styles.headerSubtitle}>Exclusive Franchise Solutions</Text>
-          </View>
-        </View>
 
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>50%</Text>
-            <Text style={styles.statLabel}>Max Margin</Text>
+          <View style={styles.statsContainer}>
+            <View style={styles.statItem}>
+              <Text style={styles.statValue}>50%</Text>
+              <Text style={styles.statLabel}>Max Margin</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <Text style={styles.statValue}>24h</Text>
+              <Text style={styles.statLabel}>Priority Dispatch</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <Text style={styles.statValue}>100%</Text>
+              <Text style={styles.statLabel}>GST Invoice</Text>
+            </View>
           </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>24h</Text>
-            <Text style={styles.statLabel}>Priority Dispatch</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>100%</Text>
-            <Text style={styles.statLabel}>GST Invoice</Text>
-          </View>
-        </View>
-      </LinearGradient>
+        </LinearGradient>
 
-      <View style={styles.content}>
-        {/* Product Selection */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Select Category</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.productScroll}>
-            {products.map((product) => {
-              const isSelected = selectedProduct === product.name;
-              return (
-                <TouchableOpacity
-                  key={product.id}
-                  onPress={() => setSelectedProduct(product.name)}
-                  activeOpacity={0.9}
-                  style={[styles.productCard, isSelected && styles.productCardSelected]}
-                >
-                  <LinearGradient
-                    colors={isSelected ? BRAND_COLORS.primaryGradient : [BRAND_COLORS.white, BRAND_COLORS.white]}
-                    style={styles.productGradient}
+        <View style={styles.content}>
+          {/* Product Selection */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Select Category</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.productScroll}>
+              {products.map((product) => {
+                const isSelected = selectedProduct === product.name;
+                return (
+                  <TouchableOpacity
+                    key={product.id}
+                    onPress={() => setSelectedProduct(product.name)}
+                    activeOpacity={0.9}
+                    style={[styles.productCard, isSelected && styles.productCardSelected]}
                   >
-                    <MaterialIcons
-                      name={product.icon as any}
-                      size={24}
-                      color={isSelected ? BRAND_COLORS.white : color.primary}
-                    />
-                    <Text style={[styles.productName, isSelected && styles.textWhite]}>{product.name}</Text>
-                    <Text style={[styles.productPrice, isSelected && styles.textWhiteOpacity]}>Starts ₹{product.bulkPrice}</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        </View>
+                    <LinearGradient
+                      colors={isSelected ? BRAND_COLORS.primaryGradient : [BRAND_COLORS.white, BRAND_COLORS.white]}
+                      style={styles.productGradient}
+                    >
+                      <MaterialIcons
+                        name={product.icon as any}
+                        size={24}
+                        color={isSelected ? BRAND_COLORS.white : color.primary}
+                      />
+                      <Text style={[styles.productName, isSelected && styles.textWhite]}>{product.name}</Text>
+                      <Text style={[styles.productPrice, isSelected && styles.textWhiteOpacity]}>Starts ₹{product.bulkPrice}</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
 
-        {/* Quantity Configurator */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Configure Quantity</Text>
-            {selectedQuantity >= currentProduct.minBulkQty && (
-              <View style={styles.bulkActiveBadge}>
-                <MaterialIcons name="verified" size={14} color={BRAND_COLORS.white} />
-                <Text style={styles.bulkActiveText}>BULK DEAL ON</Text>
+          {/* Quantity Configurator */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Configure Quantity</Text>
+              {selectedQuantity >= currentProduct.minBulkQty && (
+                <View style={styles.bulkActiveBadge}>
+                  <MaterialIcons name="verified" size={14} color={BRAND_COLORS.white} />
+                  <Text style={styles.bulkActiveText}>BULK DEAL ON</Text>
+                </View>
+              )}
+            </View>
+
+            <View style={styles.stepperContainer}>
+              <TouchableOpacity
+                style={styles.stepButton}
+                onPress={() => setSelectedQuantity(q => Math.max(1, q - 1))}
+              >
+                <MaterialIcons name="remove" size={24} color={color.primary} />
+              </TouchableOpacity>
+
+              <View style={styles.quantityDisplay}>
+                <TextInput
+                  style={styles.quantityInput}
+                  value={selectedQuantity.toString()}
+                  onChangeText={handleQuantityChange}
+                  keyboardType="numeric"
+                  maxLength={4}
+                />
+                <Text style={styles.unitLabel}>UNITS</Text>
+              </View>
+
+              <TouchableOpacity
+                style={styles.stepButton}
+                onPress={() => setSelectedQuantity(q => q + 1)}
+              >
+                <MaterialIcons name="add" size={24} color={color.primary} />
+              </TouchableOpacity>
+            </View>
+
+            {selectedQuantity < currentProduct.minBulkQty && (
+              <View style={styles.progressContainer}>
+                <View style={styles.progressBarBg}>
+                  <View
+                    style={[
+                      styles.progressBarFill,
+                      { width: `${(selectedQuantity / currentProduct.minBulkQty) * 100}%` }
+                    ]}
+                  />
+                </View>
+                <Text style={styles.progressText}>
+                  Add <Text style={styles.boldText}>{currentProduct.minBulkQty - selectedQuantity}</Text> more units for wholesale prices
+                </Text>
               </View>
             )}
           </View>
 
-          <View style={styles.stepperContainer}>
+          {/* Pricing Tiers Table */}
+          <View style={styles.section}>
             <TouchableOpacity
-              style={styles.stepButton}
-              onPress={() => setSelectedQuantity(q => Math.max(1, q - 1))}
+              style={styles.expandHeader}
+              onPress={() => setShowDetails(!showDetails)}
             >
-              <MaterialIcons name="remove" size={24} color={color.primary} />
+              <Text style={styles.sectionTitle}>Wholesale Pricing Tiers</Text>
+              <MaterialIcons name={showDetails ? "expand-less" : "expand-more"} size={24} color={BRAND_COLORS.textMedium} />
             </TouchableOpacity>
 
-            <View style={styles.quantityDisplay}>
-              <TextInput
-                style={styles.quantityInput}
-                value={selectedQuantity.toString()}
-                onChangeText={handleQuantityChange}
-                keyboardType="numeric"
-                maxLength={4}
-              />
-              <Text style={styles.unitLabel}>UNITS</Text>
-            </View>
-
-            <TouchableOpacity
-              style={styles.stepButton}
-              onPress={() => setSelectedQuantity(q => q + 1)}
-            >
-              <MaterialIcons name="add" size={24} color={color.primary} />
-            </TouchableOpacity>
-          </View>
-
-          {selectedQuantity < currentProduct.minBulkQty && (
-            <View style={styles.progressContainer}>
-              <View style={styles.progressBarBg}>
-                <View
-                  style={[
-                    styles.progressBarFill,
-                    { width: `${(selectedQuantity / currentProduct.minBulkQty) * 100}%` }
-                  ]}
-                />
-              </View>
-              <Text style={styles.progressText}>
-                Add <Text style={styles.boldText}>{currentProduct.minBulkQty - selectedQuantity}</Text> more units for wholesale prices
-              </Text>
-            </View>
-          )}
-        </View>
-
-        {/* Pricing Tiers Table */}
-        <View style={styles.section}>
-          <TouchableOpacity
-            style={styles.expandHeader}
-            onPress={() => setShowDetails(!showDetails)}
-          >
-            <Text style={styles.sectionTitle}>Wholesale Pricing Tiers</Text>
-            <MaterialIcons name={showDetails ? "expand-less" : "expand-more"} size={24} color={BRAND_COLORS.textMedium} />
-          </TouchableOpacity>
-
-          {showDetails && (
-            <View style={styles.tableContainer}>
-              <View style={styles.tableHeader}>
-                <Text style={styles.tableHeaderCell}>Range</Text>
-                <Text style={styles.tableHeaderCell}>Price/pc</Text>
-                <Text style={styles.tableHeaderCell}>Level</Text>
-              </View>
-              {pricingTiers.map((tier, idx) => {
-                const rangeParts = tier.range.split('–');
-                const min = parseInt(rangeParts[0]);
-                const max = rangeParts[1] ? parseInt(rangeParts[1]) : 9999;
-                const isActive = selectedQuantity >= min && selectedQuantity <= max;
-
-                return (
-                  <View key={idx} style={[styles.tableRow, isActive && styles.activeRow]}>
-                    <Text style={[styles.tableCell, isActive && styles.activeTableCell]}>{tier.range}</Text>
-                    <Text style={[styles.tableCell, isActive && styles.activeTableCell]}>{tier.price}</Text>
-                    <View style={[styles.statusTag, isActive ? styles.activeTag : styles.inactiveTag]}>
-                      <Text style={styles.statusTagText}>{tier.status}</Text>
-                    </View>
-                  </View>
-                );
-              })}
-            </View>
-          )}
-        </View>
-
-        {/* Why Partner With Us */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>B2B Benefits</Text>
-          <View style={styles.benefitsGrid}>
-            {[
-              { icon: 'local-shipping', title: 'Fast Delivery', desc: 'Doorstep dispatch' },
-              { icon: 'verified', title: 'Quality Assured', desc: 'SFS Premium Check' },
-              { icon: 'support-agent', title: 'Account Manager', desc: 'Dedicated support' },
-              { icon: 'receipt-long', title: 'GST Ready', desc: 'Automated billing' },
-            ].map((item, index) => (
-              <View key={index} style={styles.benefitCard}>
-                <View style={styles.benefitIconBg}>
-                  <MaterialIcons name={item.icon as any} size={20} color={color.primary} />
+            {showDetails && (
+              <View style={styles.tableContainer}>
+                <View style={styles.tableHeader}>
+                  <Text style={styles.tableHeaderCell}>Range</Text>
+                  <Text style={styles.tableHeaderCell}>Price/pc</Text>
+                  <Text style={styles.tableHeaderCell}>Level</Text>
                 </View>
-                <Text style={styles.benefitTitle}>{item.title}</Text>
-                <Text style={styles.benefitDesc}>{item.desc}</Text>
+                {pricingTiers.map((tier, idx) => {
+                  const rangeParts = tier.range.split('–');
+                  const min = parseInt(rangeParts[0]);
+                  const max = rangeParts[1] ? parseInt(rangeParts[1]) : 9999;
+                  const isActive = selectedQuantity >= min && selectedQuantity <= max;
+
+                  return (
+                    <View key={idx} style={[styles.tableRow, isActive && styles.activeRow]}>
+                      <Text style={[styles.tableCell, isActive && styles.activeTableCell]}>{tier.range}</Text>
+                      <Text style={[styles.tableCell, isActive && styles.activeTableCell]}>{tier.price}</Text>
+                      <View style={[styles.statusTag, isActive ? styles.activeTag : styles.inactiveTag]}>
+                        <Text style={styles.statusTagText}>{tier.status}</Text>
+                      </View>
+                    </View>
+                  );
+                })}
               </View>
-            ))}
+            )}
           </View>
+
+          {/* Why Partner With Us */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>B2B Benefits</Text>
+            <View style={styles.benefitsGrid}>
+              {[
+                { icon: 'local-shipping', title: 'Fast Delivery', desc: 'Doorstep dispatch' },
+                { icon: 'verified', title: 'Quality Assured', desc: 'SFS Premium Check' },
+                { icon: 'support-agent', title: 'Account Manager', desc: 'Dedicated support' },
+                { icon: 'receipt-long', title: 'GST Ready', desc: 'Automated billing' },
+              ].map((item, index) => (
+                <View key={index} style={styles.benefitCard}>
+                  <View style={styles.benefitIconBg}>
+                    <MaterialIcons name={item.icon as any} size={20} color={color.primary} />
+                  </View>
+                  <Text style={styles.benefitTitle}>{item.title}</Text>
+                  <Text style={styles.benefitDesc}>{item.desc}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+
+          <View style={{ height: 120 }} />
         </View>
+      </ScrollView>
 
-        <View style={{ height: 120 }} />
-      </View>
-    </ScrollView>
-
-    {/* Sticky Checkout Summary */}
-    <View style={styles.stickyFooter}>
-      <LinearGradient colors={['rgba(255,255,255,0.9)', '#FFFFFF']} style={styles.footerGradient}>
-        <View style={styles.summaryInfo}>
-          <View>
-            <Text style={styles.totalLabel}>Grand Total</Text>
-            <Text style={styles.totalValue}>₹{calculatePrice().toLocaleString()}</Text>
+      {/* Sticky Checkout Summary */}
+      <View style={styles.stickyFooter}>
+        <LinearGradient colors={['rgba(255,255,255,0.9)', '#FFFFFF']} style={styles.footerGradient}>
+          <View style={styles.summaryInfo}>
+            <View>
+              <Text style={styles.totalLabel}>Grand Total</Text>
+              <Text style={styles.totalValue}>₹{calculatePrice().toLocaleString()}</Text>
+            </View>
+            <View style={styles.summaryBadge}>
+              <Text style={styles.badgeLabel}>₹{getPricePerUnit()}/pc</Text>
+            </View>
           </View>
-          <View style={styles.summaryBadge}>
-            <Text style={styles.badgeLabel}>₹{getPricePerUnit()}/pc</Text>
-          </View>
-        </View>
 
-        <TouchableOpacity style={styles.mainButton} onPress={handleBulkOrder}>
-          <LinearGradient colors={BRAND_COLORS.primaryGradient} style={styles.buttonGradient}>
-            <Text style={styles.buttonText}>PLACE B2B ORDER</Text>
-            <MaterialIcons name="arrow-forward" size={20} color={BRAND_COLORS.white} />
-          </LinearGradient>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.mainButton} onPress={handleBulkOrder}>
+            <LinearGradient colors={BRAND_COLORS.primaryGradient} style={styles.buttonGradient}>
+              <Text style={styles.buttonText}>PLACE B2B ORDER</Text>
+              <MaterialIcons name="arrow-forward" size={20} color={BRAND_COLORS.white} />
+            </LinearGradient>
+          </TouchableOpacity>
         </LinearGradient>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

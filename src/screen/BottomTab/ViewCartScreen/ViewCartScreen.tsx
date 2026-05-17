@@ -73,17 +73,26 @@ const ViewCartScreen = () => {
       const data = await GetCartApi(setLoading);
       if (data) {
         setCartData(data);
-        const mappedItems = data.items.map((item: any) => ({
-          id: item._id,
-          productId: item.product?._id,
-          title: item.product?.title || 'Product',
-          image: item.product?.baseImages?.[0]?.replace(/\.avif$/i, '.webp') || 'https://via.placeholder.com/150',
-          price: item.lineTotal || item.price,
-          quantity: item.quantity,
-          brand: item.product?.brand || 'Garment',
-          category: item.product?.categoryId?.name || 'Apparel',
-          originalPrice: item.mrp
-        }));
+        const mappedItems = data.items.map((item: any) => {
+          const qty = item.quantity || 1;
+          const unitPrice = item.price || 0;
+          const lineTotal = item.lineTotal || (unitPrice * qty);
+          const unitMrp = item.mrp || item.product?.mrp || unitPrice;
+
+          return {
+            id: item._id,
+            productId: item.product?._id,
+            title: item.product?.title || 'Product',
+            image: item.product?.baseImages?.[0]?.replace(/\.avif$/i, '.webp') || 'https://via.placeholder.com/150',
+            price: lineTotal,
+            unitPrice: unitPrice,
+            quantity: qty,
+            brand: item.product?.brand || 'Garment',
+            category: item.product?.categoryId?.name || 'Apparel',
+            originalPrice: unitMrp * qty,
+            unitMrp: unitMrp
+          };
+        });
         setCart(mappedItems);
         setTotalPrice(data.totalPrice);
         setTotalItems(data.totalItems);
@@ -135,7 +144,7 @@ const ViewCartScreen = () => {
 
   // Calculate totals
   const calculateTotals = () => {
-    const items = cart.length;
+    const items = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
     const price = cart.reduce((sum, item) => sum + item.price, 0);
     setTotalItems(items);
     setTotalPrice(price);
@@ -225,23 +234,26 @@ const ViewCartScreen = () => {
   const getSelectedMetrics = () => {
     let subtotal = 0;
     let sellingPrice = 0;
+    let itemCount = 0;
+
     selectedItems.forEach(itemId => {
       const item = cart.find(cartItem => cartItem.id === itemId);
       if (item) {
-        // Assume item.price is already lineTotal (qty * unitPrice) 
-        // and item.originalPrice is unit MRP
         const qty = item.quantity || 1;
-        const mrp = item.originalPrice || (item.price / qty);
-        subtotal += mrp * qty;
-        sellingPrice += item.price;
+        const lineMrp = item.originalPrice || (item.unitMrp ? item.unitMrp * qty : item.price);
+        const lineTotal = item.price || (item.unitPrice ? item.unitPrice * qty : 0);
+
+        subtotal += lineMrp;
+        sellingPrice += lineTotal;
+        itemCount += qty;
       }
     });
-    
+
     return {
       subtotal,
-      discount: subtotal - sellingPrice,
+      discount: Math.max(0, subtotal - sellingPrice),
       total: sellingPrice,
-      count: selectedItems.size
+      count: itemCount
     };
   };
 
@@ -298,35 +310,35 @@ const ViewCartScreen = () => {
   // Render summary section
   const renderSummary = () => {
     if (cart.length === 0) return null;
-    
+
     const { subtotal, discount, total } = getSelectedMetrics();
-    
+
     return (
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryTitle}>Price Details ({selectedItems.size} Items)</Text>
-        
+
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Total MRP</Text>
           <Text style={styles.summaryValue}>₹{subtotal}</Text>
         </View>
-        
+
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Discount on MRP</Text>
           <Text style={[styles.summaryValue, { color: color.success }]}>-₹{discount}</Text>
         </View>
-        
+
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Shipping Fee</Text>
           <Text style={[styles.summaryValue, { color: color.success }]}>FREE</Text>
         </View>
-        
+
         <View style={styles.dividerSmall} />
-        
+
         <View style={[styles.summaryRow, { marginTop: 8 }]}>
           <Text style={styles.grandTotalLabel}>Total Amount</Text>
           <Text style={styles.grandTotalValue}>₹{total}</Text>
         </View>
-        
+
         <View style={styles.savingsContainer}>
           <Text style={styles.savingsText}>You will save ₹{discount} on this order</Text>
         </View>
@@ -468,13 +480,13 @@ const ViewCartScreen = () => {
         end={{ x: 1, y: 0 }}
       />
       <View style={styles.headerContent}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
           activeOpacity={0.7}
         >
           <Icon name="arrow-back" size={24} color={color.white} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Shopping Cart</Text>
@@ -569,6 +581,8 @@ const ViewCartScreen = () => {
     <SafeAreaView style={styles.container}>
       {loading && <Loading />}
       {renderHeader()}
+      {renderFooter()}
+
 
       {cart.length === 0 ? (
         renderEmptyCart()
@@ -587,9 +601,9 @@ const ViewCartScreen = () => {
             }
             ListFooterComponent={renderSummary}
           />
-          {renderFooter()}
         </>
       )}
+
     </SafeAreaView>
   );
 };
@@ -795,10 +809,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
   },
   footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+
     height: 90,
     backgroundColor: color.white,
     elevation: 20,

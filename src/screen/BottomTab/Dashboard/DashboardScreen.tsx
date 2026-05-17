@@ -170,7 +170,7 @@ const FlashSaleHeader = ({ title, subtitle }: any) => (
     <View style={{ flex: 1 }}>
       <View style={styles.shopTheSaleRow}>
         <Text style={styles.shopTheSaleText}>SHOP THE SALE</Text>
-        <LinearGradient colors={color.primaryGradient} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.headerLine} />
+        <LinearGradient colors={color.primaryGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.headerLine} />
       </View>
       <Text style={styles.flashTitle}>{title || 'FLASH SALE'}</Text>
       <Text style={styles.flashSubtitle}>{subtitle || 'UP TO 70% OFF'}</Text>
@@ -222,7 +222,7 @@ const DashboardScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBarComponent barStyle="dark-content" backgroundColor="#fff" />
+      <StatusBarComponent />
       <HomeHeader scrollY={scrollY} />
 
       <ScrollView
@@ -257,7 +257,7 @@ const DashboardScreen = () => {
               <View key={index} style={styles.dynamicSection}>
                 <View style={styles.dynamicHeader}>
                   <Text style={styles.sectionTitleCenter}>{section.title}</Text>
-                  <LinearGradient colors={color.primaryGradient} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.titleUnderline} />
+                  <LinearGradient colors={color.primaryGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.titleUnderline} />
                 </View>
                 <FlatList
                   data={section.data?.products || []}

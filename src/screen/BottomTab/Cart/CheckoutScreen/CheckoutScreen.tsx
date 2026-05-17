@@ -120,7 +120,7 @@ const CheckoutScreen = () => {
 
     Alert.alert(
       'Confirm Order',
-      `Pay ₹${grandTotal}?`,
+      `Pay ₹${subTotal}?`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -132,7 +132,7 @@ const CheckoutScreen = () => {
             navigation.navigate(ScreenNameEnum.OrderConfirmationScreen, {
               orderId,
               orderItems,
-              totalAmount: grandTotal,
+              totalAmount: subTotal,
               paymentMethod,
             });
           },
@@ -168,10 +168,10 @@ const CheckoutScreen = () => {
   const discountPercent = Math.round(
     ((product?.price - product?.discountPrice) / product?.price) * 100
   );
-    // <Text style={[styles.off, {
-    //           marginTop: 2,
-    //           right: 5
-    //         }]}>{discountPercent}% OFF</Text>
+  // <Text style={[styles.off, {
+  //           marginTop: 2,
+  //           right: 5
+  //         }]}>{discountPercent}% OFF</Text>
   return (
     <SafeAreaView style={styles.container}>
       {/* HEADER */}
@@ -219,19 +219,19 @@ const CheckoutScreen = () => {
             <Text style={styles.sectionTitle}>Order Summary</Text>
 
             <SummaryRow label="Price" value={product?.price} />
-          
-            <SummaryRow label="Discount Price" value={subTotal} />
+
+            {/* <SummaryRow label="Discount Price" value={subTotal} /> */}
 
             <View style={styles.divider} />
 
-            <SummaryRow label="Grand Total" value={grandTotal} bold />
+            <SummaryRow label="Grand Total" value={subTotal} bold />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
 
       {/* FOOTER */}
       <View style={styles.footer}>
-        <Text style={styles.footerAmount}>₹{grandTotal}</Text>
+        <Text style={styles.footerAmount}>₹{subTotal}</Text>
         <TouchableOpacity style={styles.orderBtn} onPress={placeOrder}>
           <Text style={styles.orderText}>PLACE ORDER</Text>
         </TouchableOpacity>
@@ -251,6 +251,6 @@ const SummaryRow = ({ label, value, bold }: any) => (
 
 /** ---------------- STYLES ---------------- */
 
- 
+
 
 export default CheckoutScreen;

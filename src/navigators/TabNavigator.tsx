@@ -9,6 +9,7 @@ import HomeScreen from "../screen/BottomTab/Dashboard/DashboardScreen";
 import Under from "../screen/BottomTab/Cart/Under/Under";
 import ProfileScreen from "../screen/Profile/ProfileScreen/ProfileScreen";
 import B2BBulkScreen from "../screen/BottomTab/B2BBulkScreen/B2BBulkScreen";
+import ViewCartScreen from "../screen/BottomTab/ViewCartScreen/ViewCartScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,6 +37,8 @@ const BottomTabs = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
 
       <Tab.Screen name="Cart" component={Under} listeners={protectedTabListener} />
+      <Tab.Screen name="ViewCart" component={ViewCartScreen} listeners={protectedTabListener} />
+
       <Tab.Screen name="Under" component={B2BBulkScreen} />
 
       <Tab.Screen name="Profile" component={ProfileScreen} />
