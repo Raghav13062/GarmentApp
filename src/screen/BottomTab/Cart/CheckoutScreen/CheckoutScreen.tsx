@@ -175,13 +175,21 @@ const CheckoutScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       {/* HEADER */}
-      <LinearGradient colors={BRAND_COLORS.primaryGradient} style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={24} color={color.white} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Checkout</Text>
-        <View />
-      </LinearGradient>
+      <View style={styles.header}>
+        <LinearGradient
+          colors={BRAND_COLORS.primaryGradient}
+          style={StyleSheet.absoluteFill}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        />
+        <View style={styles.headerContent}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+            <Icon name="arrow-back" size={24} color={color.white} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Checkout</Text>
+          <View style={{ width: 40 }} />
+        </View>
+      </View>
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -198,18 +206,35 @@ const CheckoutScreen = () => {
           <View style={styles.card}>
             <Text style={styles.sectionTitle}>Payment Method</Text>
 
-            {['cod', 'upi', 'card'].map(method => (
+            {[
+              { id: 'cod', title: 'Cash on Delivery', icon: 'payments' },
+              { id: 'upi', title: 'UPI Payment', icon: 'qr-code-scanner' },
+              { id: 'card', title: 'Credit / Debit Card', icon: 'credit-card' },
+            ].map(method => (
               <TouchableOpacity
-                key={method}
+                key={method.id}
                 style={[
                   styles.paymentOption,
-                  paymentMethod === method && styles.paymentSelected,
+                  paymentMethod === method.id && styles.paymentSelected,
                 ]}
-                onPress={() => setPaymentMethod(method)}
+                onPress={() => setPaymentMethod(method.id)}
+                activeOpacity={0.8}
               >
-                <Text style={styles.paymentText}>
-                  {method?.toUpperCase()}
-                </Text>
+                <View style={styles.paymentOptionLeft}>
+                  <View style={[styles.iconContainer, paymentMethod === method.id && styles.iconContainerSelected]}>
+                    <Icon
+                      name={method.icon}
+                      size={20}
+                      color={paymentMethod === method.id ? BRAND_COLORS.primaryLight : BRAND_COLORS.gray}
+                    />
+                  </View>
+                  <Text style={[styles.paymentText, paymentMethod === method.id && styles.paymentTextSelected]}>
+                    {method.title}
+                  </Text>
+                </View>
+                <View style={[styles.radioCircle, paymentMethod === method.id && styles.radioCircleSelected]}>
+                  {paymentMethod === method.id && <View style={styles.radioDot} />}
+                </View>
               </TouchableOpacity>
             ))}
           </View>
@@ -231,9 +256,25 @@ const CheckoutScreen = () => {
 
       {/* FOOTER */}
       <View style={styles.footer}>
-        <Text style={styles.footerAmount}>₹{subTotal}</Text>
-        <TouchableOpacity style={styles.orderBtn} onPress={placeOrder}>
-          <Text style={styles.orderText}>PLACE ORDER</Text>
+        <View>
+          <Text style={styles.footerLabel}>Total Amount</Text>
+          <Text style={styles.footerAmount}>₹{subTotal}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.orderBtn}
+          onPress={placeOrder}
+          activeOpacity={0.8}
+        >
+          <LinearGradient
+            colors={BRAND_COLORS.primaryGradient}
+            style={StyleSheet.absoluteFill}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          />
+          <View style={styles.orderBtnContent}>
+            <Text style={styles.orderText}>PLACE ORDER</Text>
+            <Icon name="arrow-forward" size={18} color={color.white} style={{ marginLeft: 6 }} />
+          </View>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

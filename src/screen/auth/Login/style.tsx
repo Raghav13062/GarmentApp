@@ -210,7 +210,6 @@ export const styles = StyleSheet.create({
     color: color.white,
     fontSize: 16,
     fontWeight: '800',
-    letterSpacing: 1.5,
   },
 
   footerContainer: {

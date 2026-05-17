@@ -307,44 +307,7 @@ const ViewCartScreen = () => {
     });
   };
 
-  // Render summary section
-  const renderSummary = () => {
-    if (cart.length === 0) return null;
 
-    const { subtotal, discount, total } = getSelectedMetrics();
-
-    return (
-      <View style={styles.summaryContainer}>
-        <Text style={styles.summaryTitle}>Price Details ({selectedItems.size} Items)</Text>
-
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Total MRP</Text>
-          <Text style={styles.summaryValue}>₹{subtotal}</Text>
-        </View>
-
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Discount on MRP</Text>
-          <Text style={[styles.summaryValue, { color: color.success }]}>-₹{discount}</Text>
-        </View>
-
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Shipping Fee</Text>
-          <Text style={[styles.summaryValue, { color: color.success }]}>FREE</Text>
-        </View>
-
-        <View style={styles.dividerSmall} />
-
-        <View style={[styles.summaryRow, { marginTop: 8 }]}>
-          <Text style={styles.grandTotalLabel}>Total Amount</Text>
-          <Text style={styles.grandTotalValue}>₹{total}</Text>
-        </View>
-
-        <View style={styles.savingsContainer}>
-          <Text style={styles.savingsText}>You will save ₹{discount} on this order</Text>
-        </View>
-      </View>
-    );
-  };
 
   // Render cart item
   const renderCartItem = ({ item, index }) => {
@@ -369,6 +332,7 @@ const ViewCartScreen = () => {
 
     return (
       <Animated.View style={[styles.cartItemContainer, { animationDelay }, itemAnimation]}>
+
         <TouchableOpacity
           style={styles.cartItem}
           onPress={() => toggleItemSelection(item.id)}
@@ -436,7 +400,6 @@ const ViewCartScreen = () => {
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
-
         {/* Divider */}
         {index < cart.length - 1 && <View style={styles.divider} />}
       </Animated.View>
@@ -563,13 +526,9 @@ const ViewCartScreen = () => {
             />
             <View style={styles.checkoutButtonContent}>
               <Text style={[styles.checkoutText, selectedCount === 0 && styles.checkoutTextDisabled]}>
-                CHECKOUT
+                Chekout
               </Text>
-              <Icon
-                name="arrow-forward"
-                size={20}
-                color={color.white}
-              />
+
             </View>
           </TouchableOpacity>
         </View>
@@ -585,7 +544,7 @@ const ViewCartScreen = () => {
       {cart.length === 0 ? (
         renderEmptyCart()
       ) : (
-        <>
+        <View style={{ flex: 1 }}>
           <FlatList
             data={cart}
             renderItem={renderCartItem}
@@ -597,11 +556,11 @@ const ViewCartScreen = () => {
                 <Text style={styles.listHeaderTitle}>Your Cart Items</Text>
               </View>
             }
-            ListFooterComponent={renderSummary}
+            ListFooterComponent={renderFooter()}
           />
-          {renderFooter()}
-        </>
+        </View>
       )}
+
     </SafeAreaView>
   );
 };
@@ -807,21 +766,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
   },
   footer: {
-
-    height: 90,
     backgroundColor: color.white,
-    elevation: 20,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     paddingHorizontal: 16,
+    borderRadius: 22,
+    paddingTop: 16,
+    paddingBottom: 20, // Extra padding for better touch area
+
   },
   footerContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: '100%',
   },
   selectAllContainer: {
     flexDirection: 'row',
@@ -859,10 +816,11 @@ const styles = StyleSheet.create({
     color: color.black,
   },
   checkoutButton: {
-    width: 130,
-    height: 48,
-    borderRadius: 24,
+    width: 140,
+    height: 50,
+    borderRadius: 25,
     overflow: 'hidden',
+
   },
   checkoutButtonDisabled: {
     opacity: 0.6,

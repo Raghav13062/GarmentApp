@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+    marginBottom: 55
   },
   headerGradient: {
     paddingTop: 10,
@@ -76,6 +77,7 @@ export const styles = StyleSheet.create({
     fontWeight: "700",
     color: color.white,
     marginBottom: 4,
+
   },
   userEmail: {
     fontSize: 14,

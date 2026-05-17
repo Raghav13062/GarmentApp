@@ -143,7 +143,7 @@ export default function Login() {
                         end={{ x: 1, y: 0 }}
                         style={styles.loginButtonGradient}
                       >
-                        <Text style={styles.loginButtonText}>LOGIN</Text>
+                        <Text allowFontScaling={false} style={styles.loginButtonText}>Login</Text>
                       </LinearGradient>
                     </TouchableOpacity>
                   </View>

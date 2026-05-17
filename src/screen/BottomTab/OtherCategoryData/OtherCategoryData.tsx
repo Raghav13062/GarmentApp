@@ -173,7 +173,7 @@ const OtherCategoryData = () => {
           item={item}
           onPress={() => addToCart(item)}
           buttShow={true}
-          title={item.inventory?.stockQuantity > 0 ? `ADD TO CART` : 'OUT OF STOCK'}
+          title={item.inventory?.stockQuantity > 0 ? `Add to Cart` : 'Out of Stock'}
           disabled={!(item.inventory?.stockQuantity > 0)}
           onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item })}
         />

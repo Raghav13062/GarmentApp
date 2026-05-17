@@ -275,7 +275,7 @@ const B2BBulkScreen = () => {
       </ScrollView>
 
       {/* Sticky Checkout Summary */}
-      <View style={styles.stickyFooter}>
+      {/* <View style={styles.stickyFooter}>
         <LinearGradient colors={['rgba(255,255,255,0.9)', '#FFFFFF']} style={styles.footerGradient}>
           <View style={styles.summaryInfo}>
             <View>
@@ -294,7 +294,7 @@ const B2BBulkScreen = () => {
             </LinearGradient>
           </TouchableOpacity>
         </LinearGradient>
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };

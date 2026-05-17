@@ -71,24 +71,23 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
 
         {/* Slide-specific Overlay */}
         <View style={styles.heroOverlay}>
-          <Animated.Text
-            entering={FadeInUp.delay(300).duration(800)}
-            style={[styles.heroNewUsers, { color: color.primary }]}
-          >
-            NEW USERS PERKS
-          </Animated.Text>
+
           <Animated.Text
             entering={FadeInUp.delay(500).duration(800)}
             style={styles.heroLoved}
           >
-            savana's most loved
+            Garment most loved
           </Animated.Text>
           <Animated.View
             entering={FadeInUp.delay(700).duration(800)}
             style={styles.heroPriceRow}
           >
-            <Text style={styles.heroFrom}>From</Text>
-            <Text style={styles.heroPrice}>₹190</Text>
+            <Text style={[styles.heroFrom, {
+              color: color.primary
+            }]}>From</Text>
+            <Text style={[styles.heroPrice, {
+              color: "black"
+            }]}>₹190</Text>
           </Animated.View>
           <Animated.View entering={FadeInDown.delay(900).duration(800)}>
             <TouchableOpacity style={styles.heroBtn}>
@@ -190,7 +189,7 @@ const HotCategories = ({ categories }: any) => (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hotCatList}>
       {categories.map((cat: any, index: number) => (
         <Animated.View key={index} entering={FadeInDown.delay(index * 100).duration(600)} style={styles.hotCatItem}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => navigateToScreen(ScreenNameEnum.OtherCategoryData, { categoryId: cat.id, categoryName: cat.name })} style={styles.circularBg}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => navigateToScreen(ScreenNameEnum.OtherCategoryData, { categoryId: cat._id, categoryName: cat.name })} style={styles.circularBg}>
             <Image source={{ uri: cat.image }} style={styles.hotCatImage} />
           </TouchableOpacity>
           <Text style={styles.hotCatText}>{cat.name}</Text>

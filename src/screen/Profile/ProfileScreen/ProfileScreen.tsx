@@ -31,7 +31,10 @@ const UserProfileScreen = () => {
       <SafeAreaView style={[styles.container, { backgroundColor: '#F9F9F9' }]}>
         <StatusBarComponent barStyle={"dark-content"} />
 
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}
+
+
+        >
           {/* Modern Header Section */}
           <LinearGradient
             colors={color.buttLinearGradient}
@@ -126,7 +129,7 @@ const UserProfileScreen = () => {
                   textAlign: 'center',
                   letterSpacing: 1.5
                 }}>
-                  LOG IN / SIGN UP
+                  Login in / Sing up
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
