@@ -11,21 +11,17 @@ import {
   ScrollView,
   Platform,
   ActivityIndicator,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
+
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
 import Animated, {
   FadeInUp,
   FadeInDown,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
   interpolate,
   Extrapolate,
-  FadeInRight,
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import { color, fonts, navigateToScreen } from '../../../constant';

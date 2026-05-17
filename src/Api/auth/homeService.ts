@@ -10,11 +10,11 @@ export const getHomePageData = async (gender: string = 'all') => {
     if (response.data.success) {
       return response.data;
     } else {
-      errorToast(response.data.message || 'Failed to fetch home page data');
+      // errorToast(response.data.message || 'Failed to fetch home page data');
       return null;
     }
   } catch (error) {
-    errorToast('Network error while fetching home page data');
+    // errorToast('Network error while fetching home page data');
     return null;
   }
 };

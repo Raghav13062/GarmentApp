@@ -121,7 +121,7 @@ export const TopProductDetail = async (
 
     const res = await response.json();
     if (!res?.success) {
-      errorToast(res?.message || "Failed to fetch products");
+      // errorToast(res?.message || "Failed to fetch products");
       return null;
     }
 

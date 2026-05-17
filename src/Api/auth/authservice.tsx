@@ -265,7 +265,7 @@ const GetProfile = async (
       // 🔹 Usually GET profile par toast optional hota hai
       // successToast(res?.message);
     } else {
-      errorToast(res?.message || "Failed to fetch profile");
+      // errorToast(res?.message || "Failed to fetch profile");
     }
 
     return res;

@@ -14,11 +14,11 @@ export const getAllProducts = async (params: {
     if (response.data.success) {
       return response.data;
     } else {
-      errorToast(response.data.message || 'Failed to fetch products');
+      // errorToast(response.data.message || 'Failed to fetch products');
       return null;
     }
   } catch (error) {
-    errorToast('Network error while fetching products');
+    // errorToast('Network error while fetching products');
     return null;
   }
 };
