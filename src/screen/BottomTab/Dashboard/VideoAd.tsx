@@ -10,7 +10,7 @@ export default function VideoAd({ videoUrl }) {
     <View style={styles.container}>
       <Text style={styles.title}>Sponsored</Text>
       <Video
-        source={{ uri: videoUrl }} 
+        source={{ uri: videoUrl }}
 
         style={styles.video}
         resizeMode="cover"
@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
     width: width,
     height: 220,
     marginVertical: 10,
-     overflow: "hidden",
-    backgroundColor: color.black, 
+    overflow: "hidden",
+    backgroundColor: color.black,
   },
   video: {
     width: "100%",

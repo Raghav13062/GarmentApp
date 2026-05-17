@@ -231,7 +231,6 @@ const DashboardScreen = () => {
         contentContainerStyle={{ paddingBottom: 120 }}
       >
         <HeroSlider sections={sections} />
-
         <Animated.View entering={FadeInUp.delay(200).duration(800)} style={styles.flashSection}>
           <FlashSaleHeader title="FLASH" subtitle="SALE" />
           <FlatList
@@ -274,6 +273,13 @@ const DashboardScreen = () => {
           }
           return null;
         })}
+        {sections.find(s => s.sectionType === "SEARCH_BANNER")?.data?.background?.videoUrl && (
+          <VideoAd
+            videoUrl={
+              sections.find(s => s.sectionType === "SEARCH_BANNER")?.data?.background?.videoUrl
+            }
+          />
+        )}
       </ScrollView>
 
       <TouchableOpacity style={styles.backToTop}>
