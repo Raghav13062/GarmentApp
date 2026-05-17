@@ -406,7 +406,7 @@ const ViewCartScreen = () => {
                 onPress={() => updateQuantity(item, 'decrease')}
                 disabled={quantity <= 1}
               >
-                <Icon name="remove" size={18} color={quantity <= 1 ? BRAND_COLORS.gray : BRAND_COLORS.primaryDark} />
+                <Icon name="remove" size={18} color={quantity <= 1 ? BRAND_COLORS.gray : BRAND_COLORS.primaryLight} />
               </TouchableOpacity>
 
               <Text style={styles.quantityText}>{quantity}</Text>
@@ -415,7 +415,7 @@ const ViewCartScreen = () => {
                 style={styles.quantityButton}
                 onPress={() => updateQuantity(item, 'increase')}
               >
-                <Icon name="add" size={18} color={BRAND_COLORS.primaryDark} />
+                <Icon name="add" size={18} color={BRAND_COLORS.primaryLight} />
               </TouchableOpacity>
             </View>
           </View>
@@ -581,8 +581,6 @@ const ViewCartScreen = () => {
     <SafeAreaView style={styles.container}>
       {loading && <Loading />}
       {renderHeader()}
-      {renderFooter()}
-
 
       {cart.length === 0 ? (
         renderEmptyCart()
@@ -601,9 +599,9 @@ const ViewCartScreen = () => {
             }
             ListFooterComponent={renderSummary}
           />
+          {renderFooter()}
         </>
       )}
-
     </SafeAreaView>
   );
 };
@@ -732,8 +730,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkboxSelected: {
-    backgroundColor: BRAND_COLORS.primaryDark,
-    borderColor: BRAND_COLORS.primaryDark,
+    backgroundColor: BRAND_COLORS.primaryLight,
+    borderColor: BRAND_COLORS.primaryLight,
   },
   productImage: {
     width: 80,
@@ -754,7 +752,7 @@ const styles = StyleSheet.create({
   },
   productBrand: {
     fontSize: 12,
-    color: BRAND_COLORS.primaryDark,
+    color: BRAND_COLORS.primaryLight,
     marginBottom: 2,
   },
   productCategory: {
@@ -840,8 +838,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   selectAllCheckboxSelected: {
-    backgroundColor: BRAND_COLORS.primaryDark,
-    borderColor: BRAND_COLORS.primaryDark,
+    backgroundColor: BRAND_COLORS.primaryLight,
+    borderColor: BRAND_COLORS.primaryLight,
   },
   selectAllText: {
     fontSize: 14,
