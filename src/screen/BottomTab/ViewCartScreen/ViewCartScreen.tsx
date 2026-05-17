@@ -500,16 +500,16 @@ const ViewCartScreen = () => {
             <View style={[styles.selectAllCheckbox, selectAll && styles.selectAllCheckboxSelected]}>
               {selectAll && <Icon name="check" size={16} color={color.white} />}
             </View>
-            <Text style={styles.selectAllText}>Select All</Text>
+            <View>
+              <Text style={styles.selectAllText}>Select All</Text>
+
+              <Text style={styles.totalAmount}>₹{selectedTotal}</Text>
+
+            </View>
+
           </TouchableOpacity>
 
           {/* Totals */}
-          <View style={styles.totalsContainer}>
-            <Text style={styles.totalText}>
-              Selected ({selectedCount})
-            </Text>
-            <Text style={styles.totalAmount}>₹{selectedTotal}</Text>
-          </View>
 
           {/* Checkout Button */}
           <TouchableOpacity
