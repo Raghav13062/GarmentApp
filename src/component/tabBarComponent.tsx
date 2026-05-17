@@ -34,7 +34,7 @@ const TabItem = ({ route, isFocused, onPress }: any) => {
 
   const animatedIconStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
-    color: isFocused ? '#FF3F6C' : '#555',
+    color: isFocused ? '#F58021' : '#555',
   }));
 
   return (
@@ -48,7 +48,7 @@ const TabItem = ({ route, isFocused, onPress }: any) => {
           <Ionicons
             name={icons[route.name] || "ellipse"}
             size={24}
-            color={isFocused ? '#FF3F6C' : '#555'}
+            color={isFocused ? '#F58021' : '#555'}
           />
         </Animated.View>
       </View>

@@ -12,6 +12,7 @@ import {
   Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { color, fonts } from '../../../../constant';
@@ -124,7 +125,7 @@ const Under = () => {
         onPress={() => handleCategoryPress(item.id)}
         style={[styles.sidebarItem, isActive && styles.sidebarItemActive]}
       >
-        {isActive && <View style={styles.activeIndicator} />}
+        {isActive && <LinearGradient colors={color.primaryGradient} style={styles.activeIndicator} />}
         <Text
           style={[
             styles.sidebarText,
@@ -142,11 +143,11 @@ const Under = () => {
       <View style={styles.imageWrapper}>
         <Image source={{ uri: item.image }} style={styles.gridImage} />
         <View style={styles.arrowIcon}>
-          <Ionicons name="arrow-forward" size={14} color="#333" />
+          <Ionicons name="arrow-forward" size={14} color={color.textDark} />
         </View>
-        <View style={styles.priceTag}>
+        <LinearGradient colors={color.primaryGradient} style={styles.priceTag}>
           <Text style={styles.priceTagText}>₹999</Text>
-        </View>
+        </LinearGradient>
       </View>
       <Text style={styles.gridLabel}>{item.name}</Text>
     </TouchableOpacity>
@@ -176,15 +177,16 @@ const Under = () => {
           <TextInput
             placeholder="Search budget fashion..."
             style={styles.searchInput}
-            placeholderTextColor="#999"
+            placeholderTextColor={color.textLight}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
           <TouchableOpacity style={styles.headerIconButton}>
-            <Ionicons name="camera-outline" size={24} color="#333" />
+            <Ionicons name="camera-outline" size={24} color={color.textDark} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.searchButton}>
-            <Ionicons name="search" size={24} color="#fff" />
+            <LinearGradient colors={color.primaryGradient} style={[StyleSheet.absoluteFill, { borderTopRightRadius: 2, borderBottomRightRadius: 2 }]} />
+            <Ionicons name="search" size={24} color={color.white} />
           </TouchableOpacity>
         </View>
       </View>
@@ -210,7 +212,7 @@ const Under = () => {
             filteredSections.map((section: any) => renderSection(section))
           ) : (
             <View style={styles.placeholderContent}>
-              <Ionicons name="pricetag-outline" size={60} color="#eee" />
+              <Ionicons name="pricetag-outline" size={60} color={color.borderLight} />
               <Text style={styles.placeholderText}>
                 {searchQuery ? "No budget deals found matching your search." : "More budget deals coming soon!"}
               </Text>
@@ -228,19 +230,19 @@ export default Under;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   header: {
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: color.lightGray,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: color.borderLight,
     borderRadius: 4,
     height: 48,
     paddingLeft: 12,
@@ -248,20 +250,20 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: color.textDark,
     fontFamily: fonts.regular,
   },
   headerIconButton: {
     paddingHorizontal: 10,
   },
   searchButton: {
-    backgroundColor: '#000',
     height: '100%',
     width: 48,
     justifyContent: 'center',
     alignItems: 'center',
     borderTopRightRadius: 2,
     borderBottomRightRadius: 2,
+    overflow: 'hidden',
   },
   mainContainer: {
     flex: 1,
@@ -269,9 +271,9 @@ const styles = StyleSheet.create({
   },
   sidebar: {
     width: SIDEBAR_WIDTH,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: color.backgroundLight,
     borderRightWidth: 1,
-    borderRightColor: '#eee',
+    borderRightColor: color.borderLight,
   },
   sidebarItem: {
     paddingVertical: 20,
@@ -280,7 +282,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sidebarItemActive: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   activeIndicator: {
     position: 'absolute',
@@ -288,16 +290,15 @@ const styles = StyleSheet.create({
     top: 20,
     bottom: 20,
     width: 4,
-    backgroundColor: '#FF3F6C',
   },
   sidebarText: {
     fontSize: 11,
-    color: '#333',
+    color: color.textDark,
     fontFamily: fonts.semiBold,
     textTransform: 'uppercase',
   },
   sidebarTextActive: {
-    color: '#FF3F6C',
+    color: color.primary,
   },
   contentArea: {
     flex: 1,
@@ -316,12 +317,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontFamily: fonts.bold,
-    color: '#000',
+    color: color.black,
     textTransform: 'uppercase',
   },
   viewAll: {
     fontSize: 12,
-    color: '#666',
+    color: color.textMedium,
     fontFamily: fonts.regular,
   },
   gridRow: {
@@ -339,7 +340,7 @@ const styles = StyleSheet.create({
     aspectRatio: 0.8,
     borderRadius: 4,
     overflow: 'hidden',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: color.backgroundLight,
     position: 'relative',
     marginBottom: 8,
   },
@@ -361,19 +362,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
-    backgroundColor: 'rgba(255, 63, 108, 0.9)',
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderBottomLeftRadius: 4,
   },
   priceTagText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 10,
     fontFamily: fonts.bold,
   },
   gridLabel: {
     fontSize: 12,
-    color: '#333',
+    color: color.textDark,
     fontFamily: fonts.semiBold,
     textAlign: 'center',
   },
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
   },
   placeholderText: {
     marginTop: 15,
-    color: '#999',
+    color: color.textMedium,
     fontFamily: fonts.regular,
     textAlign: 'center',
     paddingHorizontal: 20,

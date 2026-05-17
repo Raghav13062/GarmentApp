@@ -73,7 +73,7 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
         <View style={styles.heroOverlay}>
           <Animated.Text
             entering={FadeInUp.delay(300).duration(800)}
-            style={[styles.heroNewUsers, { color: '#E0C068' }]}
+            style={[styles.heroNewUsers, { color: color.primary }]}
           >
             NEW USERS PERKS
           </Animated.Text>
@@ -152,10 +152,11 @@ const HomeHeader = ({ scrollY }: { scrollY: Animated.SharedValue<number> }) => {
           placeholderTextColor="#999"
         />
         <TouchableOpacity style={styles.headerIconButton}>
-          <Ionicons name="camera-outline" size={24} color="#333" />
+          <Ionicons name="camera-outline" size={24} color={color.textDark} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.searchButton}>
-          <Ionicons name="search" size={22} color="#fff" />
+        <TouchableOpacity style={[styles.searchButton, { overflow: 'hidden' }]}>
+          <LinearGradient colors={color.primaryGradient} style={StyleSheet.absoluteFill} />
+          <Ionicons name="search" size={22} color={color.white} />
         </TouchableOpacity>
       </View>
 
@@ -169,14 +170,14 @@ const FlashSaleHeader = ({ title, subtitle }: any) => (
     <View style={{ flex: 1 }}>
       <View style={styles.shopTheSaleRow}>
         <Text style={styles.shopTheSaleText}>SHOP THE SALE</Text>
-        <View style={styles.headerLine} />
+        <LinearGradient colors={color.primaryGradient} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.headerLine} />
       </View>
       <Text style={styles.flashTitle}>{title || 'FLASH SALE'}</Text>
       <Text style={styles.flashSubtitle}>{subtitle || 'UP TO 70% OFF'}</Text>
     </View>
     <TouchableOpacity style={styles.dontMissRow}>
       <Text style={styles.dontMissText}>DON'T MISS OUT</Text>
-      <Ionicons name="arrow-forward" size={16} color="#333" />
+      <Ionicons name="arrow-forward" size={16} color={color.textDark} />
     </TouchableOpacity>
   </View>
 );
@@ -256,7 +257,7 @@ const DashboardScreen = () => {
               <View key={index} style={styles.dynamicSection}>
                 <View style={styles.dynamicHeader}>
                   <Text style={styles.sectionTitleCenter}>{section.title}</Text>
-                  <View style={styles.titleUnderline} />
+                  <LinearGradient colors={color.primaryGradient} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.titleUnderline} />
                 </View>
                 <FlatList
                   data={section.data?.products || []}
@@ -283,7 +284,7 @@ const DashboardScreen = () => {
       </ScrollView>
 
       <TouchableOpacity style={styles.backToTop}>
-        <Ionicons name="arrow-up" size={18} color="#333" />
+        <Ionicons name="arrow-up" size={18} color={color.textDark} />
         <Text style={styles.backToTopText}>Back to top</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -293,21 +294,21 @@ const DashboardScreen = () => {
 export default DashboardScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: color.white },
   loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  headerContainer: { backgroundColor: '#fff', paddingBottom: 5, zIndex: 10 },
+  headerContainer: { backgroundColor: color.white, paddingBottom: 5, zIndex: 10 },
   searchBar: {
-    flexDirection: 'row', alignItems: 'center', borderWidth: 1.5, borderColor: '#000',
+    flexDirection: 'row', alignItems: 'center', borderWidth: 1.5, borderColor: color.primary,
     borderRadius: 6, height: 46, marginHorizontal: 16, marginVertical: 10, paddingLeft: 12,
   },
-  searchInput: { flex: 1, fontSize: 15, color: '#333', fontFamily: fonts.regular },
+  searchInput: { flex: 1, fontSize: 15, color: color.textDark, fontFamily: fonts.regular },
   headerIconButton: { paddingHorizontal: 10 },
-  searchButton: { backgroundColor: '#000', height: '100%', width: 46, justifyContent: 'center', alignItems: 'center' },
-  infoBar: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, backgroundColor: '#FBFBFB' },
+  searchButton: { height: '100%', width: 46, justifyContent: 'center', alignItems: 'center' },
+  infoBar: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, backgroundColor: color.backgroundLight },
   infoItem: { flexDirection: 'row', alignItems: 'center' },
   infoTextContainer: { marginLeft: 6 },
-  infoTitle: { fontSize: 10, fontFamily: fonts.bold, color: '#111' },
-  infoSub: { fontSize: 8.5, fontFamily: fonts.regular, color: '#888' },
+  infoTitle: { fontSize: 10, fontFamily: fonts.bold, color: color.textDark },
+  infoSub: { fontSize: 8.5, fontFamily: fonts.regular, color: color.textMedium },
 
   // Hero Slider Styles
   heroContainer: { width: width, height: 450, position: 'relative' },
@@ -315,59 +316,59 @@ const styles = StyleSheet.create({
   heroImage: { width: '100%', height: '100%', resizeMode: 'cover' },
   heroOverlay: { position: 'absolute', top: 50, left: 0, right: 0, alignItems: 'center', zIndex: 5 },
   heroNewUsers: { fontSize: 22, fontFamily: fonts.bold, letterSpacing: 4, textShadowColor: 'rgba(0, 0, 0, 0.4)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
-  heroLoved: { color: '#fff', fontSize: 15, fontFamily: fonts.medium, marginTop: 60, textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowRadius: 4 },
+  heroLoved: { color: color.white, fontSize: 15, fontFamily: fonts.medium, marginTop: 60, textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowRadius: 4 },
   heroPriceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: 10 },
-  heroFrom: { color: '#fff', fontSize: 34, fontFamily: fonts.bold, marginRight: 10 },
-  heroPrice: { color: '#fff', fontSize: 70, fontFamily: fonts.bold },
-  heroBtn: { backgroundColor: '#FEF9E7', paddingHorizontal: 30, paddingVertical: 12, borderRadius: 2, marginTop: 30 },
-  heroBtnText: { color: '#333', fontSize: 14, fontFamily: fonts.bold, letterSpacing: 1 },
+  heroFrom: { color: color.white, fontSize: 34, fontFamily: fonts.bold, marginRight: 10 },
+  heroPrice: { color: color.white, fontSize: 70, fontFamily: fonts.bold },
+  heroBtn: { backgroundColor: color.white, paddingHorizontal: 30, paddingVertical: 12, borderRadius: 2, marginTop: 30 },
+  heroBtnText: { color: color.primary, fontSize: 14, fontFamily: fonts.bold, letterSpacing: 1 },
   pagination: { position: 'absolute', bottom: 20, width: '100%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' },
   dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.4)', marginHorizontal: 4 },
-  activeDot: { width: 20, backgroundColor: '#fff' },
+  activeDot: { width: 20, backgroundColor: color.white },
 
-  timerBanner: { backgroundColor: '#1E4636', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 15 },
-  timerLabel: { color: '#fff', fontSize: 12, fontFamily: fonts.bold, letterSpacing: 1.5 },
+  timerBanner: { backgroundColor: color.secondary, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 15 },
+  timerLabel: { color: color.white, fontSize: 12, fontFamily: fonts.bold, letterSpacing: 1.5 },
   timerLine: { width: 1, height: 18, backgroundColor: 'rgba(255,255,255,0.2)', marginHorizontal: 12 },
   timerRight: { flex: 1, flexDirection: 'row', alignItems: 'center' },
   timerEndsText: { color: 'rgba(255,255,255,0.6)', fontSize: 10, marginRight: 8 },
   timerValueContainer: { backgroundColor: 'rgba(255,255,255,0.1)', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
-  timerValue: { color: '#fff', fontSize: 13, fontFamily: fonts.bold },
-  couponBadge: { position: 'absolute', right: 15, top: -20, backgroundColor: '#FF6F00', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6, alignItems: 'center', transform: [{ rotate: '4deg' }], elevation: 8 },
-  couponSub: { color: '#fff', fontSize: 8, fontFamily: fonts.bold },
-  couponValue: { color: '#fff', fontSize: 14, fontFamily: fonts.bold },
-  flashSection: { paddingTop: 25, backgroundColor: '#EDF4FF', paddingBottom: 30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 },
+  timerValue: { color: color.white, fontSize: 13, fontFamily: fonts.bold },
+  couponBadge: { position: 'absolute', right: 15, top: -20, backgroundColor: color.primary, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6, alignItems: 'center', transform: [{ rotate: '4deg' }], elevation: 8 },
+  couponSub: { color: color.white, fontSize: 8, fontFamily: fonts.bold },
+  couponValue: { color: color.white, fontSize: 14, fontFamily: fonts.bold },
+  flashSection: { paddingTop: 25, backgroundColor: color.backgroundLight, paddingBottom: 30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 },
   flashHeader: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, marginBottom: 20 },
   shopTheSaleRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
-  shopTheSaleText: { fontSize: 10, fontFamily: fonts.bold, color: '#246BD4' },
-  headerLine: { height: 1, flex: 1, backgroundColor: 'rgba(36, 107, 212, 0.3)', marginLeft: 10 },
-  flashTitle: { fontSize: 32, fontFamily: fonts.bold, color: '#154A91', lineHeight: 34 },
-  flashSubtitle: { fontSize: 26, fontFamily: fonts.bold, color: '#154A91' },
+  shopTheSaleText: { fontSize: 10, fontFamily: fonts.bold, color: color.primary },
+  headerLine: { height: 1, flex: 1, opacity: 0.3, marginLeft: 10 },
+  flashTitle: { fontSize: 32, fontFamily: fonts.bold, color: color.secondary, lineHeight: 34 },
+  flashSubtitle: { fontSize: 26, fontFamily: fonts.bold, color: color.secondary },
   dontMissRow: { alignItems: 'flex-end', justifyContent: 'center' },
-  dontMissText: { fontSize: 10, fontFamily: fonts.bold, color: '#444' },
+  dontMissText: { fontSize: 10, fontFamily: fonts.bold, color: color.textDark },
   horizontalList: { paddingLeft: 20 },
   horizontalCardWrapper: { marginRight: 12, width: width * 0.42 },
   priceDropSection: { paddingVertical: 40 },
-  sectionTitleCenter: { fontSize: 22, fontFamily: fonts.bold, color: '#111', textAlign: 'center', marginBottom: 25, textTransform: 'uppercase' },
+  sectionTitleCenter: { fontSize: 22, fontFamily: fonts.bold, color: color.textDark, textAlign: 'center', marginBottom: 25, textTransform: 'uppercase' },
   priceDropRow: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16 },
   priceDropCard: { width: (width - 48) / 2, aspectRatio: 0.85, borderRadius: 12, overflow: 'hidden' },
   cardGradient: { flex: 1, padding: 15, justifyContent: 'center', alignItems: 'center' },
-  cardSubtitle: { fontSize: 12, fontFamily: fonts.bold, color: '#B7950B' },
-  cardPrice: { fontSize: 38, fontFamily: fonts.bold, color: '#E67E22' },
-  cardPriceLarge: { fontSize: 28, fontFamily: fonts.bold, color: '#117A65' },
-  cardSmallText: { fontSize: 10, color: '#777', marginTop: 2, marginBottom: 15 },
-  shopNowBtn: { backgroundColor: '#E67E22', paddingHorizontal: 18, paddingVertical: 8, borderRadius: 20 },
-  shopNowText: { color: '#fff', fontSize: 12, fontFamily: fonts.bold },
-  freeBadge: { position: 'absolute', top: -15, right: -15, backgroundColor: '#27AE60', width: 54, height: 54, borderRadius: 27, justifyContent: 'center', transform: [{ rotate: '12deg' }], borderWidth: 2, borderColor: '#fff' },
-  freeText: { color: '#fff', fontSize: 11, fontFamily: fonts.bold },
+  cardSubtitle: { fontSize: 12, fontFamily: fonts.bold, color: color.secondary },
+  cardPrice: { fontSize: 38, fontFamily: fonts.bold, color: color.primary },
+  cardPriceLarge: { fontSize: 28, fontFamily: fonts.bold, color: color.primary },
+  cardSmallText: { fontSize: 10, color: color.textMedium, marginTop: 2, marginBottom: 15 },
+  shopNowBtn: { backgroundColor: color.primary, paddingHorizontal: 18, paddingVertical: 8, borderRadius: 20 },
+  shopNowText: { color: color.white, fontSize: 12, fontFamily: fonts.bold },
+  freeBadge: { position: 'absolute', top: -15, right: -15, backgroundColor: color.success, width: 54, height: 54, borderRadius: 27, justifyContent: 'center', transform: [{ rotate: '12deg' }], borderWidth: 2, borderColor: color.white },
+  freeText: { color: color.white, fontSize: 11, fontFamily: fonts.bold },
   hotCategoriesSection: { paddingVertical: 30 },
   hotCatList: { paddingLeft: 20 },
   hotCatItem: { marginRight: 20, alignItems: 'center' },
-  circularBg: { width: 85, height: 85, borderRadius: 42.5, backgroundColor: '#FEF9E7', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', borderWidth: 1, borderColor: '#F9E79F' },
+  circularBg: { width: 85, height: 85, borderRadius: 42.5, backgroundColor: color.backgroundLight, justifyContent: 'center', alignItems: 'center', overflow: 'hidden', borderWidth: 1, borderColor: color.borderLight },
   hotCatImage: { width: '100%', height: '100%', resizeMode: 'contain' },
-  hotCatText: { marginTop: 10, fontSize: 12, fontFamily: fonts.semiBold, color: '#444' },
-  backToTop: { position: 'absolute', bottom: 25, left: 20, backgroundColor: '#fff', paddingHorizontal: 14, paddingVertical: 10, borderRadius: 25, flexDirection: 'row', alignItems: 'center', elevation: 8 },
-  backToTopText: { fontSize: 12, fontFamily: fonts.bold, color: '#333', marginLeft: 6 },
+  hotCatText: { marginTop: 10, fontSize: 12, fontFamily: fonts.semiBold, color: color.textDark },
+  backToTop: { position: 'absolute', bottom: 25, left: 20, backgroundColor: color.white, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 25, flexDirection: 'row', alignItems: 'center', elevation: 8 },
+  backToTopText: { fontSize: 12, fontFamily: fonts.bold, color: color.textDark, marginLeft: 6 },
   dynamicSection: { paddingVertical: 30 },
   dynamicHeader: { alignItems: 'center', marginBottom: 25 },
-  titleUnderline: { width: 40, height: 3, backgroundColor: color.primary, marginTop: 8, borderRadius: 2 },
+  titleUnderline: { width: 40, height: 3, marginTop: 8, borderRadius: 2 },
 });
