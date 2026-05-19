@@ -41,8 +41,8 @@ const HeaderBar: React.FC = () => {
   return (
     <View style={styles.mainContainer}>
       {/* Address Bar */}
-      <TouchableOpacity 
-        style={styles.addressBar} 
+      <TouchableOpacity
+        style={styles.addressBar}
         onPress={handleAddressPress}
         activeOpacity={0.8}
       >
@@ -55,13 +55,13 @@ const HeaderBar: React.FC = () => {
 
       {/* Search & Icons Row */}
       <View style={styles.headerRow}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.searchWrapper}
           onPress={handleSearchPress}
           activeOpacity={0.9}
         >
           <Icon name="search-outline" size={18} color={color.textMedium} />
-          <Text style={styles.searchText}>Search for products, brands and more...</Text>
+          <Text style={styles.searchText}>Search </Text>
         </TouchableOpacity>
 
         <View style={styles.rightIcons}>
@@ -69,7 +69,7 @@ const HeaderBar: React.FC = () => {
           <TouchableOpacity onPress={handleWishlistPress} style={styles.iconItem} activeOpacity={0.7}>
             <Icon name="heart-outline" size={25} color={color.textDark} />
             {wishlistCount > 0 && (
-              <LinearGradient 
+              <LinearGradient
                 colors={color.primaryGradient}
                 style={styles.badge}
                 start={{ x: 0, y: 0 }}
@@ -84,7 +84,7 @@ const HeaderBar: React.FC = () => {
           <TouchableOpacity onPress={handleCartPress} style={styles.iconItem} activeOpacity={0.7}>
             <Icon name="bag-outline" size={25} color={color.textDark} />
             {cartCount > 0 && (
-              <LinearGradient 
+              <LinearGradient
                 colors={color.primaryGradient}
                 style={styles.badge}
                 start={{ x: 0, y: 0 }}
@@ -98,7 +98,7 @@ const HeaderBar: React.FC = () => {
       </View>
 
       {/* Themed Bottom Line Separator */}
-      <LinearGradient 
+      <LinearGradient
         colors={color.primaryGradient}
         style={styles.bottomLine}
         start={{ x: 0, y: 0 }}

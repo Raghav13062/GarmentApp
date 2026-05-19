@@ -242,7 +242,7 @@ const HotCategories = ({ categories }: any) => (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hotCatList}>
       {categories.map((cat: any, index: number) => (
         <Animated.View key={index} entering={FadeInDown.delay(index * 100).duration(600)} style={styles.hotCatItem}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => navigateToScreen(ScreenNameEnum.OtherCategoryData, { categoryId: cat._id, categoryName: cat.name })} style={styles.circularBg}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => navigateToScreen(ScreenNameEnum.OtherCategoryData, { categoryId: cat.id, categoryName: cat.name })} style={styles.circularBg}>
             <Image source={{ uri: cat.image }} style={styles.hotCatImage} />
           </TouchableOpacity>
           <Text style={styles.hotCatText}>{cat.name}</Text>
