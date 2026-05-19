@@ -170,7 +170,7 @@ const Under = () => {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <StatusBarComponent barStyle="dark-content" backgroundColor="#fff" />
-      
+
       {/* Top Search Bar */}
       <View style={styles.header}>
         <View style={styles.searchBar}>
@@ -181,9 +181,7 @@ const Under = () => {
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
-          <TouchableOpacity style={styles.headerIconButton}>
-            <Ionicons name="camera-outline" size={24} color={color.textDark} />
-          </TouchableOpacity>
+
           <TouchableOpacity style={styles.searchButton}>
             <LinearGradient colors={color.primaryGradient} style={[StyleSheet.absoluteFill, { borderTopRightRadius: 2, borderBottomRightRadius: 2 }]} />
             <Ionicons name="search" size={24} color={color.white} />
@@ -258,7 +256,7 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     height: '100%',
-    width: 48,
+    width: 40,
     justifyContent: 'center',
     alignItems: 'center',
     borderTopRightRadius: 2,

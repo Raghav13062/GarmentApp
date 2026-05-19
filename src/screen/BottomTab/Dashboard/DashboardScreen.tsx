@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import {
   StyleSheet,
   View,
@@ -30,6 +31,7 @@ import StatusBarComponent from '../../../component/StatusBarCompoent';
 import ProductCard from '../../../component/cart/ProductCard';
 import useDashboard from './useDashboard';
 import VideoAd from './VideoAd';
+import HeaderBar from '../../../component/HeaderBar';
 
 const { width } = Dimensions.get('window');
 
@@ -136,7 +138,16 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
 
 // --- Other Components ---
 
-const HomeHeader = ({ scrollY }: { scrollY: Animated.SharedValue<number> }) => {
+const HomeHeader = ({ scrollY }: { scrollY: any }) => {
+  const isLogin = useSelector((state: any) => state.auth.isLogin);
+  const userData = useSelector((state: any) => state.auth.userData);
+  const cartCount = useSelector((state: any) => state.cart.totalItems || 0);
+  const wishlistCount = useSelector((state: any) => state.wishlist.items?.length || 0);
+
+  const addressText = isLogin && userData?.address
+    ? `Deliver to ${userData.fullName}, ${userData.address}`
+    : "Deliver to ashish mahant, Plot no. 114, lin...";
+
   const animatedHeaderStyle = useAnimatedStyle(() => {
     const translateY = interpolate(scrollY.value, [0, 50], [0, -5], Extrapolate.CLAMP);
     return { transform: [{ translateY }] };
@@ -144,22 +155,64 @@ const HomeHeader = ({ scrollY }: { scrollY: Animated.SharedValue<number> }) => {
 
   return (
     <Animated.View style={[styles.headerContainer, animatedHeaderStyle]}>
-      <View style={styles.searchBar}>
-        <TextInput
-          placeholder="Swim wear 🔥"
-          style={styles.searchInput}
-          placeholderTextColor="#999"
-        />
-        <TouchableOpacity style={styles.headerIconButton}>
-          <Ionicons name="camera-outline" size={24} color={color.textDark} />
+      {/* Location / Delivery Bar */}
+      <TouchableOpacity
+        style={styles.deliveryContainer}
+        onPress={() => navigateToScreen(ScreenNameEnum.Address, {})}
+        activeOpacity={0.8}
+      >
+        <Ionicons name="location" size={18} color={color.primary} />
+        <Text style={styles.deliveryText} numberOfLines={1}>
+          {addressText}
+        </Text>
+        <Ionicons name="chevron-down" size={14} color={color.textMedium} style={{ marginLeft: 4 }} />
+      </TouchableOpacity>
+
+      {/* Search & Actions Bar */}
+      <View style={styles.searchRow}>
+        <TouchableOpacity
+          style={styles.searchBarWrapper}
+          activeOpacity={0.9}
+          onPress={() => navigateToScreen(ScreenNameEnum.SearchProduct, {})}
+        >
+          <Ionicons name="search" size={20} color={color.textMedium} />
+          <TextInput
+            placeholder="Search for products, brands and more..."
+            style={styles.searchInputInputField}
+            placeholderTextColor="#999"
+            editable={false}
+            pointerEvents="none"
+          />
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.searchButton, { overflow: 'hidden' }]}>
-          <LinearGradient colors={color.primaryGradient} style={StyleSheet.absoluteFill} />
-          <Ionicons name="search" size={22} color={color.white} />
+
+        {/* Wishlist */}
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigateToScreen(ScreenNameEnum.WishList, {})}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="heart-outline" size={26} color={color.textDark} />
+          {wishlistCount > 0 && (
+            <View style={styles.badgeContainer}>
+              <Text style={styles.badgeText}>{wishlistCount}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+
+        {/* Cart */}
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigateToScreen(ScreenNameEnum.ViewCartScreen, {})}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="bag-outline" size={26} color={color.textDark} />
+          {cartCount > 0 && (
+            <View style={styles.badgeContainer}>
+              <Text style={styles.badgeText}>{cartCount}</Text>
+            </View>
+          )}
         </TouchableOpacity>
       </View>
-
-
     </Animated.View>
   );
 };
@@ -204,6 +257,8 @@ const HotCategories = ({ categories }: any) => (
 const DashboardScreen = () => {
   const {
     gender,
+    setGender,
+    genderOptions,
     loading,
     sections = [],
     categories = [],
@@ -222,8 +277,7 @@ const DashboardScreen = () => {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBarComponent />
-      <HomeHeader scrollY={scrollY} />
-
+      <HeaderBar />
       <ScrollView
         showsVerticalScrollIndicator={false}
         onScroll={(e) => { scrollY.value = e.nativeEvent.contentOffset.y; }}
@@ -235,13 +289,12 @@ const DashboardScreen = () => {
           <FlashSaleHeader title="FLASH" subtitle="SALE" />
           <FlatList
             data={sections.find(s => s.sectionType === 'TOP_PICKS')?.data?.products || []}
-            horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.horizontalList}
+            scrollEnabled={false}
+            numColumns={2}
+            columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
             renderItem={({ item }) => (
-              <View style={styles.horizontalCardWrapper}>
-                <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
-              </View>
+              <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
             )}
             keyExtractor={(item) => item.id || item._id}
           />
@@ -250,7 +303,7 @@ const DashboardScreen = () => {
         <HotCategories categories={categories} />
 
         {sections.map((section: any, index: number) => {
-          if (['SEARCH_BANNER', 'TOP_PICKS', 'GENDER_FILTER'].includes(section.sectionType)) return null;
+          if (['SEARCH_BANNER', 'TOP_PICKS',].includes(section.sectionType)) return null;
           if (section.sectionType === 'PRODUCT_GRID') {
             return (
               <View key={index} style={styles.dynamicSection}>
@@ -295,14 +348,72 @@ export default DashboardScreen;
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: color.white },
   loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  headerContainer: { backgroundColor: color.white, paddingBottom: 5, zIndex: 10 },
-  searchBar: {
-    flexDirection: 'row', alignItems: 'center', borderWidth: 1.5, borderColor: color.primary,
-    borderRadius: 6, height: 46, marginHorizontal: 16, marginVertical: 10, paddingLeft: 12,
+  headerContainer: { backgroundColor: color.white, paddingBottom: 8, zIndex: 10 },
+  deliveryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF8F4',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#FFE0CC',
   },
-  searchInput: { flex: 1, fontSize: 15, color: color.textDark, fontFamily: fonts.regular },
-  headerIconButton: { paddingHorizontal: 10 },
-  searchButton: { height: '100%', width: 46, justifyContent: 'center', alignItems: 'center' },
+  deliveryText: {
+    fontSize: 13,
+    color: color.textDark,
+    fontFamily: fonts.medium,
+    marginLeft: 6,
+    flex: 1,
+  },
+  searchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  searchBarWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: color.lightGray,
+    borderRadius: 8,
+    height: 44,
+    paddingHorizontal: 12,
+  },
+  searchInputInputField: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: fonts.regular,
+    color: color.textDark,
+    marginLeft: 8,
+    paddingVertical: 0,
+  },
+  iconButton: {
+    marginLeft: 16,
+    padding: 4,
+    position: 'relative',
+  },
+  badgeContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: color.primary,
+    borderRadius: 8,
+    minWidth: 16,
+    height: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 3,
+  },
+  badgeText: {
+    color: color.white,
+    fontSize: 9,
+    fontFamily: fonts.bold,
+    textAlign: 'center',
+  },
   infoBar: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, backgroundColor: color.backgroundLight },
   infoItem: { flexDirection: 'row', alignItems: 'center' },
   infoTextContainer: { marginLeft: 6 },

@@ -7,7 +7,7 @@ import { getHomePageData } from '../../../Api/auth/homeService';
 import { GetCartApi } from '../../../Api/auth/cartService';
 import { setCart } from '../../../redux/feature/cartSlice';
 
-type GenderType = 'all' | 'men' | 'women' | 'kids';
+type GenderType = 'all' | 'men' | 'women' | 'kids' | 'Women' | 'Men' | 'Kids' | 'All';
 
 const SAFE_ARRAY_LIMIT = 50; // 🔐 crash protection
 
@@ -69,7 +69,7 @@ export default function useDashboard() {
     setLoading(true);
 
     try {
-      const response = await getHomePageData(selectedGender);
+      const response = await getHomePageData("Women");
 
       // ignore old API responses
       if (requestId !== activeRequest.current) return;
@@ -86,7 +86,7 @@ export default function useDashboard() {
         const genderSection = response.data.sections.find(
           (s: any) => s?.sectionType === 'GENDER_FILTER'
         );
-        const apiGender = genderSection?.data?.selectedGender;
+        const apiGender = "Women";
 
         if (apiGender && apiGender !== gender) {
           setGender(apiGender as GenderType);
@@ -110,8 +110,8 @@ export default function useDashboard() {
 
   /* ---------------- Home Data ---------------- */
   useEffect(() => {
-    fetchHome(gender);
-  }, [gender, fetchHome]);
+    fetchHome("Women");
+  }, [fetchHome]);
 
   /* ---------------- Sections (safe + sorted) ---------------- */
   const sections = useMemo(() => {
@@ -179,7 +179,7 @@ export default function useDashboard() {
           Array.isArray(i?.data?.products)
         ) {
           let filteredProducts = i.data.products;
-          
+
           // Apply local gender filter if needed
           if (gender && gender !== 'all') {
             filteredProducts = filteredProducts.filter(

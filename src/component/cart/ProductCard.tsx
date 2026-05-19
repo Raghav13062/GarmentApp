@@ -30,7 +30,7 @@ export default function ProductCard({
   disabled,
 }: any) {
   // Robust data mapping for different API responses
-  const brandName = item?.brand?.name || item?.category?.name || "Premium";
+  const brandName = item?.brand?.name || "";
   const titleText = item?.title || item?.name || "Product";
   const displayMrp = item?.pricing?.mrp || item?.mrp || item?.price || 0;
   const displaySellingPrice = item?.pricing?.sellingPrice || item?.sellingPrice || item?.discountPrice || 0;
@@ -93,9 +93,7 @@ export default function ProductCard({
 
         {/* CONTENT SECTION */}
         <View style={styles.content}>
-          <Text numberOfLines={1} style={styles.brand}>
-            {brandName}
-          </Text>
+
           <Text numberOfLines={1} style={styles.title}>
             {titleText}
           </Text>
