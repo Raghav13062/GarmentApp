@@ -23,6 +23,7 @@ import Animated, {
   useSharedValue,
   interpolate,
   Extrapolate,
+  useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import { color, fonts, navigateToScreen } from '../../../constant';
@@ -266,6 +267,8 @@ const DashboardScreen = () => {
 
   const scrollY = useSharedValue(0);
 
+
+
   if (loading && sections.length === 0) {
     return (
       <SafeAreaView style={styles.loaderContainer}>
@@ -278,7 +281,7 @@ const DashboardScreen = () => {
     <SafeAreaView style={styles.container} edges={[]}>
       <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
       <View style={{ flex: 1, backgroundColor: color.white }}>
-        <HeaderBar />
+        <HeaderBar scrollY={scrollY} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           onScroll={(e) => { scrollY.value = e.nativeEvent.contentOffset.y; }}

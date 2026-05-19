@@ -15,8 +15,15 @@ import ScreenNameEnum from '../routes/screenName.enum';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
+import Animated, { useAnimatedStyle, interpolate, Extrapolate, SharedValue } from 'react-native-reanimated';
 
-const HeaderBar: React.FC = () => {
+interface HeaderBarProps {
+  scrollY?: SharedValue<number>;
+}
+
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+
+const HeaderBar: React.FC<HeaderBarProps> = ({ scrollY }) => {
   const navigator = useNavigation<any>();
   const wishlistCount = useSelector((state: any) => state.wishlist?.items?.length || 0);
   const cartCount = useSelector((state: any) => state.cart?.totalItems || 0);
@@ -42,60 +49,115 @@ const HeaderBar: React.FC = () => {
     navigator.navigate(ScreenNameEnum.Address);
   }, [navigator]);
 
+  const addressBarAnimatedStyle = useAnimatedStyle(() => {
+    if (!scrollY) return {};
+    const height = interpolate(scrollY.value, [0, 50], [30, 0], Extrapolate.CLAMP);
+    const opacity = interpolate(scrollY.value, [0, 40], [1, 0], Extrapolate.CLAMP);
+    const translateY = interpolate(scrollY.value, [0, 50], [0, -15], Extrapolate.CLAMP);
+    return {
+      height,
+      opacity,
+      transform: [{ translateY }],
+      overflow: 'hidden',
+    };
+  });
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    if (!scrollY) return {};
+    const elevation = interpolate(scrollY.value, [0, 50], [0, 5], Extrapolate.CLAMP);
+    const shadowOpacity = interpolate(scrollY.value, [0, 50], [0, 0.15], Extrapolate.CLAMP);
+    return {
+      elevation,
+      shadowOpacity,
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowRadius: 4,
+      zIndex: 10,
+    };
+  });
+
+  const headerRowAnimatedStyle = useAnimatedStyle(() => {
+    if (!scrollY) return {};
+    const paddingVertical = interpolate(scrollY.value, [0, 50], [8, 4], Extrapolate.CLAMP);
+    return {
+      paddingVertical,
+    };
+  });
+
+  const searchWrapperAnimatedStyle = useAnimatedStyle(() => {
+    if (!scrollY) return {};
+    const height = interpolate(scrollY.value, [0, 50], [40, 34], Extrapolate.CLAMP);
+    return {
+      height,
+    };
+  });
+
+  const rightIconsAnimatedStyle = useAnimatedStyle(() => {
+    if (!scrollY) return {};
+    const scale = interpolate(scrollY.value, [0, 50], [1, 0.92], Extrapolate.CLAMP);
+    return {
+      transform: [{ scale }],
+    };
+  });
+
   return (
-    <LinearGradient
-      colors={color.primaryGradient}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 0 }}
-      style={styles.mainContainer}
-    >
-      {/* Address Bar */}
-      <TouchableOpacity
-        style={styles.addressBar}
-        onPress={handleAddressPress}
-        activeOpacity={0.8}
+    <Animated.View style={headerAnimatedStyle}>
+      <LinearGradient
+        colors={color.primaryGradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.mainContainer}
       >
-        <Icon name="location-sharp" size={15} color={color.white} />
-        <Text style={styles.addressText} numberOfLines={1}>
-          Deliver to <Text style={styles.boldText}>{displayName} - {displayAddress}</Text>
-        </Text>
-        <Icon name="chevron-down" size={14} color={color.white} style={{ marginLeft: 2 }} />
-      </TouchableOpacity>
-
-      {/* Search & Icons Row */}
-      <View style={styles.headerRow}>
-        <TouchableOpacity
-          style={styles.searchWrapper}
-          onPress={handleSearchPress}
-          activeOpacity={0.9}
-        >
-          <Icon name="search-outline" size={18} color={color.textMedium} />
-          <Text style={styles.searchText}>Search </Text>
-        </TouchableOpacity>
-
-        <View style={styles.rightIcons}>
-          {/* Wishlist */}
-          <TouchableOpacity onPress={handleWishlistPress} style={styles.iconItem} activeOpacity={0.7}>
-            <Icon name="heart-outline" size={25} color={color.white} />
-            {wishlistCount > 0 && (
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>{wishlistCount}</Text>
-              </View>
-            )}
+        {/* Address Bar */}
+        <Animated.View style={addressBarAnimatedStyle}>
+          <TouchableOpacity
+            style={styles.addressBar}
+            onPress={handleAddressPress}
+            activeOpacity={0.8}
+          >
+            <Icon name="location-sharp" size={15} color={color.white} />
+            <Text style={styles.addressText} numberOfLines={1}>
+              Deliver to <Text style={styles.boldText}>{displayName} - {displayAddress}</Text>
+            </Text>
+            <Icon name="chevron-down" size={14} color={color.white} style={{ marginLeft: 2 }} />
           </TouchableOpacity>
+        </Animated.View>
 
-          {/* Cart */}
-          <TouchableOpacity onPress={handleCartPress} style={styles.iconItem} activeOpacity={0.7}>
-            <Icon name="bag-outline" size={25} color={color.white} />
-            {cartCount > 0 && (
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>{cartCount}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        </View>
-      </View>
-    </LinearGradient>
+        {/* Search & Icons Row */}
+        <Animated.View style={[styles.headerRow, headerRowAnimatedStyle]}>
+          <AnimatedTouchableOpacity
+            style={[styles.searchWrapper, searchWrapperAnimatedStyle]}
+            onPress={handleSearchPress}
+            activeOpacity={0.9}
+          >
+            <Icon name="search-outline" size={18} color={color.textMedium} />
+            <Text style={styles.searchText}>Search </Text>
+          </AnimatedTouchableOpacity>
+
+          <Animated.View style={[styles.rightIcons, rightIconsAnimatedStyle]}>
+            {/* Wishlist */}
+            <TouchableOpacity onPress={handleWishlistPress} style={styles.iconItem} activeOpacity={0.7}>
+              <Icon name="heart-outline" size={25} color={color.white} />
+              {wishlistCount > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{wishlistCount}</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+
+            {/* Cart */}
+            <TouchableOpacity onPress={handleCartPress} style={styles.iconItem} activeOpacity={0.7}>
+              <Icon name="bag-outline" size={25} color={color.white} />
+              {cartCount > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{cartCount}</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          </Animated.View>
+        </Animated.View>
+      </LinearGradient>
+    </Animated.View>
   );
 };
 
