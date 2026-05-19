@@ -66,7 +66,7 @@ export const navigationRef: any = React.createRef();
 
 
 
-export const navigateToScreen = (screenName: any, props: any) => {
+export const navigateToScreen = (screenName: any, props?: any) => {
   navigationRef?.current?.navigate(screenName, props);
 };
 

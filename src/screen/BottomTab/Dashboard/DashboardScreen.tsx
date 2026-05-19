@@ -289,60 +289,60 @@ const DashboardScreen = () => {
           contentContainerStyle={{ paddingBottom: 120 }}
         >
           <HeroSlider sections={sections} />
-        <Animated.View entering={FadeInUp.delay(200).duration(800)} style={styles.flashSection}>
-          <FlashSaleHeader title="FLASH" subtitle="SALE" />
-          <FlatList
-            data={sections.find(s => s.sectionType === 'TOP_PICKS')?.data?.products || []}
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={false}
-            numColumns={2}
-            columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
-            renderItem={({ item }) => (
-              <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
-            )}
-            keyExtractor={(item) => item.id || item._id}
-          />
-        </Animated.View>
+          <Animated.View entering={FadeInUp.delay(200).duration(800)} style={styles.flashSection}>
+            <FlashSaleHeader title="FLASH" subtitle="SALE" />
+            <FlatList
+              data={sections.find(s => s.sectionType === 'TOP_PICKS')?.data?.products || []}
+              showsHorizontalScrollIndicator={false}
+              scrollEnabled={false}
+              numColumns={2}
+              columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
+              renderItem={({ item }) => (
+                <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
+              )}
+              keyExtractor={(item) => item.id || item._id}
+            />
+          </Animated.View>
 
-        <HotCategories categories={categories} />
+          <HotCategories categories={categories} />
 
-        {sections.map((section: any, index: number) => {
-          if (['SEARCH_BANNER', 'TOP_PICKS',].includes(section.sectionType)) return null;
-          if (section.sectionType === 'PRODUCT_GRID') {
-            return (
-              <View key={index} style={styles.dynamicSection}>
-                <View style={styles.dynamicHeader}>
-                  <Text style={styles.sectionTitleCenter}>{section.title}</Text>
-                  <LinearGradient colors={color.primaryGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.titleUnderline} />
+          {sections.map((section: any, index: number) => {
+            if (['SEARCH_BANNER', 'TOP_PICKS',].includes(section.sectionType)) return null;
+            if (section.sectionType === 'PRODUCT_GRID') {
+              return (
+                <View key={index} style={styles.dynamicSection}>
+                  <View style={styles.dynamicHeader}>
+                    <Text style={styles.sectionTitleCenter}>{section.title}</Text>
+                    <LinearGradient colors={color.primaryGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.titleUnderline} />
+                  </View>
+                  <FlatList
+                    data={section.data?.products || []}
+                    numColumns={2}
+                    scrollEnabled={false}
+                    columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
+                    renderItem={({ item }) => (
+                      <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
+                    )}
+                    keyExtractor={(item) => item.id || item._id}
+                  />
                 </View>
-                <FlatList
-                  data={section.data?.products || []}
-                  numColumns={2}
-                  scrollEnabled={false}
-                  columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
-                  renderItem={({ item }) => (
-                    <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
-                  )}
-                  keyExtractor={(item) => item.id || item._id}
-                />
-              </View>
-            );
-          }
-          return null;
-        })}
-        {sections.find(s => s.sectionType === "SEARCH_BANNER")?.data?.background?.videoUrl && (
-          <VideoAd
-            videoUrl={
-              sections.find(s => s.sectionType === "SEARCH_BANNER")?.data?.background?.videoUrl
+              );
             }
-          />
-        )}
-      </ScrollView>
+            return null;
+          })}
+          {sections.find(s => s.sectionType === "SEARCH_BANNER")?.data?.background?.videoUrl && (
+            <VideoAd
+              videoUrl={
+                sections.find(s => s.sectionType === "SEARCH_BANNER")?.data?.background?.videoUrl
+              }
+            />
+          )}
+        </ScrollView>
 
-      <TouchableOpacity style={styles.backToTop}>
-        <Ionicons name="arrow-up" size={18} color={color.textDark} />
-        <Text style={styles.backToTopText}>Back to top</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.backToTop}>
+          <Ionicons name="arrow-up" size={18} color={color.textDark} />
+          <Text style={styles.backToTopText}>Back to top</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

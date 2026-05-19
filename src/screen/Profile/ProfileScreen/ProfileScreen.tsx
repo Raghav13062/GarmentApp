@@ -4,8 +4,9 @@ import {
   Text,
   TouchableOpacity,
   Image,
-
   ScrollView,
+  Platform,
+  StatusBar,
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
@@ -18,6 +19,8 @@ import ScreenNameEnum from "../../../routes/screenName.enum";
 import LogoutModal from "../../../component/LogoutModal";
 import useProfile from "./useProfile";
 
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
+
 const UserProfileScreen = () => {
   const { loading,
     userData,
@@ -28,8 +31,8 @@ const UserProfileScreen = () => {
 
   if (!userData?.isLogin) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: '#F9F9F9' }]}>
-        <StatusBarComponent barStyle={"dark-content"} />
+      <SafeAreaView style={[styles.container, { backgroundColor: '#F9F9F9' }]} edges={['left', 'right', 'bottom']}>
+        <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}
 
@@ -37,15 +40,16 @@ const UserProfileScreen = () => {
         >
           {/* Modern Header Section */}
           <LinearGradient
-            colors={color.buttLinearGradient}
+            colors={color.primaryGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={{
-              height: 280,
+              height: 280 + STATUSBAR_HEIGHT,
               borderBottomLeftRadius: 40,
               borderBottomRightRadius: 40,
               alignItems: 'center',
               justifyContent: 'center',
+              paddingTop: STATUSBAR_HEIGHT,
               paddingBottom: 40,
             }}
           >
@@ -109,7 +113,7 @@ const UserProfileScreen = () => {
               activeOpacity={0.8}
             >
               <LinearGradient
-                colors={color.buttLinearGradient}
+                colors={color.primaryGradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={{
@@ -189,14 +193,14 @@ const UserProfileScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBarComponent />
+    <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
+      <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
       <LinearGradient
-        colors={color.buttLinearGradient}
+        colors={color.primaryGradient}
 
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        style={styles.headerGradient}
+        style={[styles.headerGradient, { paddingTop: STATUSBAR_HEIGHT + 10 }]}
       >
         <View style={styles.header}>
           <Text style={styles.headerTitle}>My Profile</Text>
@@ -219,7 +223,7 @@ const UserProfileScreen = () => {
               style={styles.profileImage}
             />
             {/* <LinearGradient
-                      colors={color.buttLinearGradient}
+                      colors={color.primaryGradient}
 
               style={styles.editIconGradient}
             >
@@ -244,7 +248,7 @@ const UserProfileScreen = () => {
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <LinearGradient
-              colors={color.buttLinearGradient}
+              colors={color.primaryGradient}
 
               style={styles.cardIconGradient}
             >
@@ -282,7 +286,7 @@ const UserProfileScreen = () => {
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <LinearGradient
-              colors={color.buttLinearGradient}
+              colors={color.primaryGradient}
 
               style={styles.cardIconGradient}
             >
@@ -308,7 +312,7 @@ const UserProfileScreen = () => {
               >
                 <View style={styles.menuLeft}>
                   <LinearGradient
-                    colors={color.buttLinearGradient}
+                    colors={color.primaryGradient}
 
                     style={styles.menuIconGradient}
                   >
@@ -327,7 +331,7 @@ const UserProfileScreen = () => {
           onPress={() => setshowLogoutModal(true)}
         >
           <LinearGradient
-            colors={color.buttLinearGradient}
+            colors={color.primaryGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.logoutTouchable}

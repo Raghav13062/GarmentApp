@@ -136,7 +136,11 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ scrollY }) => {
 
           <Animated.View style={[styles.rightIcons, rightIconsAnimatedStyle]}>
             {/* Wishlist */}
-            <TouchableOpacity onPress={handleWishlistPress} style={styles.iconItem} activeOpacity={0.7}>
+            <TouchableOpacity
+
+              // onPress={handleWishlistPress} 
+
+              style={styles.iconItem} activeOpacity={0.7}>
               <Icon name="heart-outline" size={25} color={color.white} />
               {wishlistCount > 0 && (
                 <View style={styles.badge}>
