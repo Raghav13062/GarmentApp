@@ -11,8 +11,9 @@ import {
   Dimensions,
   Animated,
   Platform,
-
+  StatusBar,
 } from 'react-native';
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -91,12 +92,12 @@ const B2BBulkScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <StatusBarComponent translucent backgroundColor="transparent" barStyle="light-content" />
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Modern Header */}
         <LinearGradient colors={BRAND_COLORS.primaryGradient} style={styles.header}>
-          <View style={[styles.headerTop, { paddingTop: Platform.OS === 'ios' ? 20 : 10 }]}>
+          <View style={styles.headerTop}>
             <View style={styles.headerIconContainer}>
               <MaterialIcons name="business" size={28} color={BRAND_COLORS.white} />
             </View>
@@ -305,7 +306,7 @@ const styles = StyleSheet.create({
     backgroundColor: BRAND_COLORS.background,
   },
   header: {
-    paddingTop: 20,
+    paddingTop: STATUSBAR_HEIGHT + 20,
     paddingBottom: 40,
     paddingHorizontal: 20,
     borderBottomLeftRadius: 35,

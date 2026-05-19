@@ -4,7 +4,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Platform,
+  StatusBar,
 } from 'react-native';
+
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 import { color, fonts } from '../constant';
 import { useNavigation } from '@react-navigation/native';
 import ScreenNameEnum from '../routes/screenName.enum';
@@ -39,18 +43,23 @@ const HeaderBar: React.FC = () => {
   }, [navigator]);
 
   return (
-    <View style={styles.mainContainer}>
+    <LinearGradient
+      colors={color.primaryGradient}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      style={styles.mainContainer}
+    >
       {/* Address Bar */}
       <TouchableOpacity
         style={styles.addressBar}
         onPress={handleAddressPress}
         activeOpacity={0.8}
       >
-        <Icon name="location-sharp" size={15} color={color.primary} />
+        <Icon name="location-sharp" size={15} color={color.white} />
         <Text style={styles.addressText} numberOfLines={1}>
           Deliver to <Text style={styles.boldText}>{displayName} - {displayAddress}</Text>
         </Text>
-        <Icon name="chevron-down" size={14} color={color.textMedium} style={{ marginLeft: 2 }} />
+        <Icon name="chevron-down" size={14} color={color.white} style={{ marginLeft: 2 }} />
       </TouchableOpacity>
 
       {/* Search & Icons Row */}
@@ -67,51 +76,33 @@ const HeaderBar: React.FC = () => {
         <View style={styles.rightIcons}>
           {/* Wishlist */}
           <TouchableOpacity onPress={handleWishlistPress} style={styles.iconItem} activeOpacity={0.7}>
-            <Icon name="heart-outline" size={25} color={color.textDark} />
+            <Icon name="heart-outline" size={25} color={color.white} />
             {wishlistCount > 0 && (
-              <LinearGradient
-                colors={color.primaryGradient}
-                style={styles.badge}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              >
+              <View style={styles.badge}>
                 <Text style={styles.badgeText}>{wishlistCount}</Text>
-              </LinearGradient>
+              </View>
             )}
           </TouchableOpacity>
 
           {/* Cart */}
           <TouchableOpacity onPress={handleCartPress} style={styles.iconItem} activeOpacity={0.7}>
-            <Icon name="bag-outline" size={25} color={color.textDark} />
+            <Icon name="bag-outline" size={25} color={color.white} />
             {cartCount > 0 && (
-              <LinearGradient
-                colors={color.primaryGradient}
-                style={styles.badge}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              >
+              <View style={styles.badge}>
                 <Text style={styles.badgeText}>{cartCount}</Text>
-              </LinearGradient>
+              </View>
             )}
           </TouchableOpacity>
         </View>
       </View>
-
-      {/* Themed Bottom Line Separator */}
-      <LinearGradient
-        colors={color.primaryGradient}
-        style={styles.bottomLine}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-      />
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: '#FFF9F6', // Light warm orange matching primary
-    paddingTop: 5,
+    paddingTop: STATUSBAR_HEIGHT + 5,
+    paddingBottom: 8,
   },
   addressBar: {
     flexDirection: 'row',
@@ -121,14 +112,14 @@ const styles = StyleSheet.create({
   },
   addressText: {
     fontSize: 12,
-    color: color.textDark,
+    color: 'rgba(255, 255, 255, 0.9)',
     marginHorizontal: 5,
     fontFamily: fonts.regular,
     flex: 1,
   },
   boldText: {
     fontFamily: fonts.bold,
-    color: color.black,
+    color: color.white,
   },
   headerRow: {
     flexDirection: 'row',
@@ -145,8 +136,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 8,
     paddingHorizontal: 12,
-    borderWidth: 1,
-    borderColor: color.borderLight,
     marginRight: 12,
   },
   searchText: {
@@ -169,25 +158,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -2,
     right: -2,
+    backgroundColor: color.white,
     minWidth: 16,
     height: 16,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1.2,
-    borderColor: color.white,
     paddingHorizontal: 3,
   },
   badgeText: {
-    color: color.white,
-    fontSize: 8.5,
+    color: '#862E92', // purple contrast color
+    fontSize: 9,
     fontFamily: fonts.bold,
     textAlign: 'center',
-  },
-  bottomLine: {
-    height: 2,
-    width: '100%',
-    marginTop: 4,
   },
 });
 

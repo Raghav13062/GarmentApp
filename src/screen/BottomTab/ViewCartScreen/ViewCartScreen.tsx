@@ -1,5 +1,5 @@
-import { color } from "../../../constant";
 import React, { useState, useEffect, useRef } from 'react';
+import { color } from "../../../constant";
 import {
   StyleSheet,
   View,
@@ -11,7 +11,11 @@ import {
   Image,
   Animated,
   Easing,
+  Platform,
+  StatusBar,
 } from 'react-native';
+import StatusBarComponent from '../../../component/StatusBarCompoent';
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -537,7 +541,8 @@ const ViewCartScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
+      <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
       {loading && <Loading />}
       {renderHeader()}
 
@@ -572,7 +577,8 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingTop: STATUSBAR_HEIGHT + 12,
+    paddingBottom: 12,
     elevation: 5,
     shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },

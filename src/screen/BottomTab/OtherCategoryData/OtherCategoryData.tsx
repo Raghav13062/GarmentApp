@@ -10,7 +10,11 @@ import {
   Easing,
   FlatList,
   ScrollView,
+  Platform,
+  StatusBar,
 } from 'react-native';
+import StatusBarComponent from '../../../component/StatusBarCompoent';
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 import ProductCard from '../../../component/cart/ProductCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -19,11 +23,12 @@ import { getProductsByCategory } from '../../../Api/auth/productService';
 import Loading from '../../../utils/Loader';
 import { navigateToScreen } from "../../../constant";
 import LinearGradient from "react-native-linear-gradient";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import { getAllCategories } from '../../../Api/auth/categoryService';
-import { AddToCartApi } from '../../../Api/auth/cartService';
+import { AddToCartApi, GetCartApi } from '../../../Api/auth/cartService';
 import { useProtectedAction } from '../../../utils/useProtectedAction';
+import { setCart } from '../../../redux/feature/cartSlice';
 
 const { width } = Dimensions.get('window');
 
@@ -46,8 +51,31 @@ const OtherCategoryData = () => {
   const route = useRoute<any>();
   const { categoryId, categoryName } = route.params || {};
 
-  const cartCount = useSelector((state: any) => state.cart.totalItems);
+  const dispatch = useDispatch();
+  const cartCount = useSelector((state: any) => state.cart?.totalItems || 0);
   const executeProtected = useProtectedAction();
+
+  const fetchCart = async () => {
+    try {
+      const data = await GetCartApi();
+      if (data) {
+        const mappedItems = data.items.map((item: any) => ({
+          id: item._id,
+          title: item.product?.title || 'Product',
+          price: item.product?.pricing?.sellingPrice || 0,
+          quantity: item.quantity,
+          image: item.product?.images?.[0] || '',
+        }));
+        dispatch(setCart({
+          items: mappedItems,
+          totalItems: data.totalItems,
+          totalPrice: data.totalPrice
+        }));
+      }
+    } catch (e) {
+      console.log('Cart API Error', e);
+    }
+  };
 
   const [categories, setCategories] = useState([]);
   const [selectedCategory] = useState(categoryId || '1');
@@ -83,6 +111,7 @@ const OtherCategoryData = () => {
       }
     };
     fetchCategories();
+    fetchCart();
   }, [fadeAnim, slideAnim]);
 
   // Filter products based on selected category and subcategory
@@ -113,7 +142,10 @@ const OtherCategoryData = () => {
   const addToCart = async (product: any) => {
     executeProtected(async () => {
       try {
-        await AddToCartApi(product._id || product.id, setLoading);
+        const res = await AddToCartApi(product._id || product.id, setLoading);
+        if (res) {
+          await fetchCart();
+        }
       } catch (error) {
         console.error('Add to cart error:', error);
       }
@@ -194,7 +226,8 @@ const OtherCategoryData = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
+      <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
       {renderHeader()}
 
       {/* Products Section */}
@@ -270,7 +303,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingTop: STATUSBAR_HEIGHT + 12,
+    paddingBottom: 12,
     elevation: 8,
     shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },

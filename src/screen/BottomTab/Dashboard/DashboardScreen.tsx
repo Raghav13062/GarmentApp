@@ -275,16 +275,17 @@ const DashboardScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBarComponent />
-      <HeaderBar />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        onScroll={(e) => { scrollY.value = e.nativeEvent.contentOffset.y; }}
-        scrollEventThrottle={16}
-        contentContainerStyle={{ paddingBottom: 120 }}
-      >
-        <HeroSlider sections={sections} />
+    <SafeAreaView style={styles.container} edges={[]}>
+      <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
+      <View style={{ flex: 1, backgroundColor: color.white }}>
+        <HeaderBar />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          onScroll={(e) => { scrollY.value = e.nativeEvent.contentOffset.y; }}
+          scrollEventThrottle={16}
+          contentContainerStyle={{ paddingBottom: 120 }}
+        >
+          <HeroSlider sections={sections} />
         <Animated.View entering={FadeInUp.delay(200).duration(800)} style={styles.flashSection}>
           <FlashSaleHeader title="FLASH" subtitle="SALE" />
           <FlatList
@@ -339,6 +340,7 @@ const DashboardScreen = () => {
         <Ionicons name="arrow-up" size={18} color={color.textDark} />
         <Text style={styles.backToTopText}>Back to top</Text>
       </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
