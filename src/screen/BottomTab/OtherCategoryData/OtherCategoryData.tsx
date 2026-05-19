@@ -258,19 +258,27 @@ const OtherCategoryData = () => {
                         key={sub}
                         style={[
                           styles.subcategoryTab,
-                          selectedSubcategory === sub && styles.subcategoryTabSelected
+                          selectedSubcategory === sub && { borderWidth: 0, paddingHorizontal: 0, paddingVertical: 0 }
                         ]}
                         onPress={() => setSelectedSubcategory(sub)}
                         activeOpacity={0.8}
                       >
-                        <Text
-                          style={[
-                            styles.subcategoryText,
-                            selectedSubcategory === sub && styles.subcategoryTextSelected
-                          ]}
-                        >
-                          {sub}
-                        </Text>
+                        {selectedSubcategory === sub ? (
+                          <LinearGradient
+                            colors={BRAND_COLORS.primaryGradient}
+                            style={styles.subcategoryTabGradient}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                          >
+                            <Text style={styles.subcategoryTextSelected}>
+                              {sub}
+                            </Text>
+                          </LinearGradient>
+                        ) : (
+                          <Text style={styles.subcategoryText}>
+                            {sub}
+                          </Text>
+                        )}
                       </TouchableOpacity>
                     ))}
                   </ScrollView>
@@ -429,9 +437,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: color.borderLight,
   },
-  subcategoryTabSelected: {
-    backgroundColor: color.black,
-    borderColor: color.black,
+  subcategoryTabGradient: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   subcategoryText: {
     fontSize: 13,
