@@ -447,13 +447,13 @@ const ViewCartScreen = () => {
         end={{ x: 1, y: 0 }}
       />
       <View style={styles.headerContent}>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
           activeOpacity={0.7}
         >
           <Icon name="arrow-back" size={24} color={color.white} />
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Shopping Cart</Text>

@@ -17,12 +17,13 @@ import { color, navigateToScreen, navigationBack } from "../../../constant";
 import ScreenNameEnum from "../../../routes/screenName.enum";
 import Loading from "../../../utils/Loader";
 import { TopProductDetail } from "../../../Api/auth/ApiGetCategories";
-import { AddToCartApi } from "../../../Api/auth/cartService";
+import { AddToCartApi, GetCartApi } from "../../../Api/auth/cartService";
 import { styles } from "./style";
 import { useProtectedAction } from "../../../utils/useProtectedAction";
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleWishlist } from "../../../redux/feature/wishlistSlice";
+import { setCart } from "../../../redux/feature/cartSlice";
 
 const { width } = Dimensions.get("window");
 export default function ProductDetails() {
@@ -50,6 +51,32 @@ export default function ProductDetails() {
       }
     });
   };
+
+  const fetchCart = async () => {
+    try {
+      const data = await GetCartApi();
+      if (data) {
+        const mappedItems = data.items.map((item: any) => ({
+          id: item._id,
+          title: item.product?.title || 'Product',
+          price: item.product?.pricing?.sellingPrice || 0,
+          quantity: item.quantity,
+          image: item.product?.images?.[0] || '',
+        }));
+        dispatch(setCart({
+          items: mappedItems,
+          totalItems: data.totalItems,
+          totalPrice: data.totalPrice
+        }));
+      }
+    } catch (e) {
+      console.log('Error fetching cart: ', e);
+    }
+  };
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   // Animation values
   const fadeAnim = useState(new Animated.Value(0))[0];
@@ -328,7 +355,10 @@ export default function ProductDetails() {
           onPress={() => executeProtected(async () => {
             const id = product?._id || product?.id || productId;
             if (id) {
-              await AddToCartApi(id);
+              const res = await AddToCartApi(id);
+              if (res) {
+                await fetchCart();
+              }
             }
           })}
         >

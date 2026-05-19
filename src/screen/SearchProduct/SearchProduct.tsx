@@ -15,7 +15,9 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useProtectedAction } from "../../utils/useProtectedAction";
-import { AddToCartApi } from "../../Api/auth/cartService";
+import { AddToCartApi, GetCartApi } from "../../Api/auth/cartService";
+import { useDispatch } from "react-redux";
+import { setCart } from "../../redux/feature/cartSlice";
 
 const { width } = Dimensions.get("window");
 
@@ -88,6 +90,30 @@ const categories = [
 ];
 
 export default function SearchProduct() {
+  const dispatch = useDispatch();
+
+  const fetchCart = async () => {
+    try {
+      const data = await GetCartApi();
+      if (data) {
+        const mappedItems = data.items.map((item: any) => ({
+          id: item._id,
+          title: item.product?.title || 'Product',
+          price: item.product?.pricing?.sellingPrice || 0,
+          quantity: item.quantity,
+          image: item.product?.images?.[0] || '',
+        }));
+        dispatch(setCart({
+          items: mappedItems,
+          totalItems: data.totalItems,
+          totalPrice: data.totalPrice
+        }));
+      }
+    } catch (e) {
+      console.log('Error fetching cart: ', e);
+    }
+  };
+
   const [search, setSearch] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(productsData);
   const [suggestions, setSuggestions] = useState([]);
@@ -141,7 +167,10 @@ export default function SearchProduct() {
       try {
         const id = product._id || product.id;
         if (id) {
-          await AddToCartApi(id);
+          const res = await AddToCartApi(id);
+          if (res) {
+            await fetchCart();
+          }
         }
       } catch (error) {
         console.error('Search add to cart error:', error);

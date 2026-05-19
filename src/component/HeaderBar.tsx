@@ -127,7 +127,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ scrollY }) => {
         <Animated.View style={[styles.headerRow, headerRowAnimatedStyle]}>
           <AnimatedTouchableOpacity
             style={[styles.searchWrapper, searchWrapperAnimatedStyle]}
-            onPress={handleSearchPress}
+            // onPress={handleSearchPress}
             activeOpacity={0.9}
           >
             <Icon name="search-outline" size={18} color={color.textMedium} />
