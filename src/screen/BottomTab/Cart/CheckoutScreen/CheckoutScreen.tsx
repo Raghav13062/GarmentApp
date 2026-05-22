@@ -45,9 +45,12 @@ const CheckoutScreen = () => {
   const product = route.params?.product;
   const cartItems = route.params?.cartItems;
   const totalAmountFromCart = route.params?.totalAmount || 0;
+  const subtotalFromCart = route.params?.subtotal || totalAmountFromCart;
+  const discountFromCart = route.params?.discount || 0;
 
   const [orderItems, setOrderItems] = useState<any[]>([]);
   const [subTotal, setSubTotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
   const [shippingFee, setShippingFee] = useState(0);
   const [tax, setTax] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
@@ -86,27 +89,27 @@ const CheckoutScreen = () => {
   const prepareOrderItems = () => {
     if (cartItems && cartItems.length > 0) {
       setOrderItems(cartItems);
-      setSubTotal(totalAmountFromCart);
-      const t = calculateTax(totalAmountFromCart);
-      setTax(t);
-      setGrandTotal(calculateGrandTotal(totalAmountFromCart, shippingFee));
+      setSubTotal(subtotalFromCart);
+      setDiscount(discountFromCart);
+      setGrandTotal(totalAmountFromCart);
     } else if (product) {
+      const price = parseFloat(product.price || 0);
+      const discountPrice = parseFloat(product.discountPrice || product.price || 0);
+
       const formattedProduct = {
         _id: product._id,
-        name: product.name,
-        price: product.discountPrice || product.price,
+        name: product.name || product.title,
+        price: discountPrice,
+        originalPrice: price,
         quantity: 1,
-        image: product.images?.[0],
-        brand: product.categoryId?.name || '',
+        image: product.images?.[0] || product.baseImages?.[0],
+        brand: product.brand || product.categoryId?.name || '',
       };
 
       setOrderItems([formattedProduct]);
-      setSubTotal(formattedProduct.price);
-      const t = calculateTax(formattedProduct.price);
-      setTax(t);
-      setGrandTotal(formattedProduct.price);
-
-      // setGrandTotal(calculateGrandTotal(formattedProduct.price, shippingFee));
+      setSubTotal(price);
+      setDiscount(price - discountPrice);
+      setGrandTotal(discountPrice);
     }
   };
 
@@ -120,7 +123,7 @@ const CheckoutScreen = () => {
 
     Alert.alert(
       'Confirm Order',
-      `Pay ₹${subTotal}?`,
+      `Pay ₹${grandTotal}?`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -132,7 +135,7 @@ const CheckoutScreen = () => {
             navigation.navigate(ScreenNameEnum.OrderConfirmationScreen, {
               orderId,
               orderItems,
-              totalAmount: subTotal,
+              totalAmount: grandTotal,
               paymentMethod,
             });
           },
@@ -243,13 +246,15 @@ const CheckoutScreen = () => {
           <View style={styles.card}>
             <Text style={styles.sectionTitle}>Order Summary</Text>
 
-            <SummaryRow label="Price" value={product?.price} />
-
-            {/* <SummaryRow label="Discount Price" value={subTotal} /> */}
+            <SummaryRow label="Subtotal (MRP)" value={subTotal} />
+            {discount > 0 && (
+              <SummaryRow label="Discount" value={discount} isDiscount />
+            )}
+            <SummaryRow label="Delivery Charges" value="FREE" isText />
 
             <View style={styles.divider} />
 
-            <SummaryRow label="Grand Total" value={subTotal} bold />
+            <SummaryRow label="Total Amount" value={grandTotal} bold />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -258,7 +263,7 @@ const CheckoutScreen = () => {
       <View style={styles.footer}>
         <View>
           <Text style={styles.footerLabel}>Total Amount</Text>
-          <Text style={styles.footerAmount}>₹{subTotal}</Text>
+          <Text style={styles.footerAmount}>₹{grandTotal}</Text>
         </View>
         <TouchableOpacity
           style={styles.orderBtn}
@@ -283,10 +288,16 @@ const CheckoutScreen = () => {
 
 /** ---------------- SMALL COMPONENT ---------------- */
 
-const SummaryRow = ({ label, value, bold }: any) => (
+const SummaryRow = ({ label, value, bold, isDiscount, isText }: any) => (
   <View style={styles.row}>
     <Text style={[styles.label, bold && styles.bold]}>{label}</Text>
-    <Text style={[styles.value, bold && styles.bold]}>₹{value}</Text>
+    <Text style={[
+      styles.value,
+      bold && styles.bold,
+      isDiscount && { color: color.success }
+    ]}>
+      {isText ? value : `${isDiscount ? '-' : ''}₹${value}`}
+    </Text>
   </View>
 );
 

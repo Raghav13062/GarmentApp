@@ -193,13 +193,76 @@ const ViewCartScreen = () => {
 
     if (newQty === currentQty) return;
 
+    // Optimistically update local cart state
+    const previousCart = [...cart];
+    const updatedCart = cart.map((cartItem: any) => {
+      if (cartItem.id === item.id) {
+        const lineTotal = cartItem.unitPrice * newQty;
+        const lineMrp = cartItem.unitMrp * newQty;
+        return {
+          ...cartItem,
+          quantity: newQty,
+          price: lineTotal,
+          originalPrice: lineMrp
+        };
+      }
+      return cartItem;
+    });
+
+    setCart(updatedCart);
+
     try {
       if (item.productId) {
-        await UpdateCartQuantityApi(item.productId, newQty, setLoading);
-        fetchCart(); // Refresh cart data
+        // Sync with API in background (without full-screen loading spinner)
+        const response = await UpdateCartQuantityApi(item.productId, newQty);
+        
+        if (response && response.success) {
+          // Silently refresh the full cart from API to sync all totals
+          const data = await GetCartApi();
+          if (data) {
+            setCartData(data);
+            const mappedItems = data.items.map((item: any) => {
+              const qty = item.quantity || 1;
+              const unitPrice = item.price || 0;
+              const lineTotal = item.lineTotal || (unitPrice * qty);
+              const unitMrp = item.mrp || item.product?.mrp || unitPrice;
+
+              return {
+                id: item._id,
+                productId: item.product?._id,
+                title: item.product?.title || 'Product',
+                image: item.product?.baseImages?.[0]?.replace(/\.avif$/i, '.webp') || 'https://via.placeholder.com/150',
+                price: lineTotal,
+                unitPrice: unitPrice,
+                quantity: qty,
+                brand: item.product?.brand || 'Garment',
+                category: item.product?.categoryId?.name || 'Apparel',
+                originalPrice: unitMrp * qty,
+                unitMrp: unitMrp
+              };
+            });
+            setCart(mappedItems);
+            setTotalPrice(data.totalPrice);
+            setTotalItems(data.totalItems);
+
+            // Update Redux state
+            dispatchRedux(setCartRedux({
+              items: mappedItems,
+              totalItems: data.totalItems,
+              totalPrice: data.totalPrice
+            }));
+          }
+        } else {
+          // Rollback on API failure
+          setCart(previousCart);
+          errorToast(response?.message || 'Failed to update quantity');
+        }
       }
     } catch (error) {
       console.error('Update quantity error:', error);
+      // Rollback on network error
+      setCart(previousCart);
+      errorToast('Failed to update quantity due to network error');
     }
   };
 
@@ -437,6 +500,49 @@ const ViewCartScreen = () => {
     </Animated.View>
   );
 
+  // Render detailed order summary
+  const renderSummary = () => {
+    if (cart.length === 0) return null;
+
+    const metrics = getSelectedMetrics();
+
+    return (
+      <View style={styles.summaryContainer}>
+        <Text style={styles.summaryTitle}>Order Summary</Text>
+
+        <View style={styles.summaryRow}>
+          <Text style={styles.summaryLabel}>Subtotal</Text>
+          <Text style={styles.summaryValue}>₹{metrics.subtotal}</Text>
+        </View>
+
+        <View style={styles.summaryRow}>
+          <Text style={styles.summaryLabel}>Discount</Text>
+          <Text style={[styles.summaryValue, { color: color.success }]}>-₹{metrics.discount}</Text>
+        </View>
+
+        <View style={styles.summaryRow}>
+          <Text style={styles.summaryLabel}>Delivery Charges</Text>
+          <Text style={[styles.summaryValue, { color: color.success, fontWeight: 'bold' }]}>FREE</Text>
+        </View>
+
+        <View style={styles.dividerSmall} />
+
+        <View style={[styles.summaryRow, { marginTop: 8 }]}>
+          <Text style={styles.grandTotalLabel}>Grand Total</Text>
+          <Text style={styles.grandTotalValue}>₹{metrics.total}</Text>
+        </View>
+
+        {metrics.discount > 0 && (
+          <View style={styles.savingsContainer}>
+            <Text style={styles.savingsText}>
+              You save ₹{metrics.discount} on this order!
+            </Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
   // Render header
   const renderHeader = () => (
     <Animated.View style={[styles.header, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
@@ -561,8 +667,9 @@ const ViewCartScreen = () => {
                 <Text style={styles.listHeaderTitle}>Your Cart Items</Text>
               </View>
             }
-            ListFooterComponent={renderFooter()}
+            ListFooterComponent={renderSummary()}
           />
+          {renderFooter()}
         </View>
       )}
 
@@ -776,10 +883,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 16,
-    borderRadius: 22,
     paddingTop: 16,
-    paddingBottom: 20, // Extra padding for better touch area
-
+    paddingBottom: Platform.OS === 'ios' ? 34 : 20, // safe area padding for iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 10,
   },
   footerContent: {
     flexDirection: 'row',
