@@ -52,11 +52,12 @@ export const styles = StyleSheet.create({
   },
 
   appName: {
-    fontSize: 32,
+    fontSize: 34,
     fontWeight: '900',
     color: color.white,
     letterSpacing: 2,
     textAlign: 'center',
+    marginTop: 15,
   },
 
   appTagline: {
@@ -76,10 +77,10 @@ export const styles = StyleSheet.create({
     paddingTop: 12,
     shadowColor: color.black,
     shadowOffset: { width: 0, height: -15 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.15,
     shadowRadius: 20,
     elevation: 25,
-    minHeight: height * 0.6,
+    minHeight: height * 0.55,
   },
 
   handleBar: {
@@ -104,12 +105,15 @@ export const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '800',
     color: color.textDark,
+    textAlign: 'center',
   },
 
   subHeaderText: {
     fontSize: 16,
     color: color.textMedium,
     marginTop: 5,
+    fontWeight: '500',
+    textAlign: 'center',
   },
 
   inputSection: {
@@ -121,8 +125,8 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: '#E9ECEF',
-    height: 55,
-    paddingHorizontal: 15,
+    height: 60,
+    paddingHorizontal: 20,
   },
 
   inputField: {
@@ -172,8 +176,10 @@ export const styles = StyleSheet.create({
   },
 
   termsText: {
-    fontSize: 14,
+    fontSize: 13,
     color: color.textMedium,
+    textAlign: 'center',
+    lineHeight: 20,
   },
 
   termsLink: {
@@ -182,7 +188,8 @@ export const styles = StyleSheet.create({
   },
 
   buttonSection: {
-    marginBottom: 25,
+    marginBottom: 20,
+    marginTop: 10,
   },
 
   loginButtonBase: {

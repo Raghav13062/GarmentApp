@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { successToast, errorToast } from '../../../utils/customToast';
-import { LoginApi, ResendOtpApi } from '../../../Api/auth/authservice';
+import { LoginApi, ResendOtpApi, VerifyOtpApi } from '../../../Api/auth/authservice';
 import { useDispatch } from 'react-redux';
 import {
   useBlurOnFulfill,
@@ -15,9 +15,11 @@ export default function useOtpVerification() {
   const route: any = useRoute();
   const dispatch = useDispatch();
   const phone = route?.params?.phone ?? '';
-    const otp2 = route?.params?.otp ?? '';
+  const otp2 = route?.params?.otp ?? '';
+  const isNewUser = route?.params?.isNewUser ?? false;
 
   const [code, setCode] = useState(otp2);
+  const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(30);
   const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
@@ -72,14 +74,24 @@ const handleResendOtp = async () => {
       errorToast(`Please enter a valid ${CELL_COUNT}-digit OTP`);
       return;
     }
+    
+    if (isNewUser && !fullName.trim()) {
+      errorToast('Please enter your full name');
+      return;
+    }
 
     setLoading(true);
     try {
-      const payload = {
+      const payload: any = {
         phone,
-        otp2,
+        otp2: code,
       };
-        const response = await LoginApi(
+      
+      if (isNewUser) {
+        payload.fullName = fullName.trim();
+      }
+      
+        const response = await VerifyOtpApi(
         payload,
         setLoading,
         dispatch,
@@ -109,6 +121,9 @@ const handleResendOtp = async () => {
     phone,
     code,
     setCode,
+    isNewUser,
+    fullName,
+    setFullName,
     loading,
     resendTimer,
     ref,

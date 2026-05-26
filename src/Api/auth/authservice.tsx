@@ -26,8 +26,8 @@ const SetOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
       successToast(res.message);
       navigateToScreen(ScreenNameEnum.OtpScreen, {
         phone: data?.phone,
-
-        otp: res?.otp
+        otp: res?.otp,
+        isNewUser: res?.isNewUser
       });
     } else {
       setLoading(false);
@@ -189,6 +189,78 @@ const RegisterApi = async (
 
 
 
+const VerifyOtpApi = async (
+  data: any,
+  setLoading: (loading: boolean) => void,
+  dispatch: any,
+  navigation: any
+) => {
+  console.log('VerifyOtpApi data 👉', data);
+
+  try {
+    setLoading(true);
+
+    const bodyData: any = {
+      mobileNo: data?.phone,
+      otp: data?.otp2,
+    };
+
+    if (data?.fullName) {
+      bodyData.fullName = data?.fullName;
+    }
+
+    const response = await fetch(
+      `${base_url}${endpointApi.loginotp}`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bodyData),
+      }
+    );
+
+    const res = await response.json();
+    console.log('VerifyOtp Response 👉', res);
+
+    if (res?.success === true || response.status === 200) {
+      successToast(res?.message || 'Login successful');
+
+      // 🔐 Save token properly
+      if (res?.token) {
+        await AsyncStorage.setItem('token', res.token);
+        console.log('Saved Token 👉', res.token);
+      }
+
+      // 🧠 Redux store
+      dispatch(
+        loginSuccess({
+          userData: res?.user ?? res?.data ?? res,
+          token: res?.token,
+        })
+      );
+
+      // 🔁 Reset navigation
+      navigation.reset({
+        index: 0,
+        routes: [{ name: ScreenNameEnum.BottomTabs }],
+      });
+      return { status: true, ...res };
+    } else {
+      console.log('VerifyOtp error response 👉', res);
+      errorToast(res?.message || 'Verification failed');
+      return { status: false, ...res };
+    }
+  } catch (error) {
+    console.error('VerifyOtpApi Error 👉', error);
+    errorToast('Network error');
+    return { status: false };
+  } finally {
+    setLoading(false);
+  }
+};
+
 const UpdateProfileApi = async (
   data: any,
   setLoading: (loading: boolean) => void
@@ -282,4 +354,4 @@ const GetProfile = async (
 
 
 
-export { SetOtpApi, GetProfile, UpdateProfileApi, LoginApi, ResendOtpApi, RegisterApi }
+export { SetOtpApi, GetProfile, UpdateProfileApi, LoginApi, ResendOtpApi, RegisterApi, VerifyOtpApi }

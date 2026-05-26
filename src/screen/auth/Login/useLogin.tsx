@@ -3,47 +3,38 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { RegistrationStackParamList } from '../../../navigators/RegistrationRoutes';
-import { validateEmail, validatePassword } from '../../../utils/validation';
 import { errorToast } from '../../../utils/customToast';
-import { LoginApi } from '../../../Api/auth/authservice';
+import { SetOtpApi } from '../../../Api/auth/authservice';
 
 export default function useLogin() {
-  const [email, setEmail] = useState('yasoni715@gmail.com');
-  const [password, setPassword] = useState('password123');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [mobileNo, setMobileNo] = useState('');
+  const [mobileNoError, setMobileNoError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RegistrationStackParamList>>();
   const dispatch = useDispatch();
 
-  const handleEmailChange = (value: string) => {
-    setEmail(value.trim());
-    setEmailError(validateEmail(value.trim()));
-  };
-
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
-    setPasswordError(validatePassword(value));
+  const handleMobileNoChange = (value: string) => {
+    // Only allow numbers
+    const numericValue = value.replace(/[^0-9]/g, '');
+    setMobileNo(numericValue);
+    if (numericValue.length > 0 && numericValue.length < 10) {
+      setMobileNoError('Mobile number must be 10 digits');
+    } else {
+      setMobileNoError('');
+    }
   };
 
   const handleLogin = async () => {
-    // const emailErr = validateEmail(email);
-    // const passErr = validatePassword(password);
-
-    // setEmailError(emailErr);
-    // setPasswordError(passErr);
-
-    // if (emailErr || passErr) {
-    //   errorToast("Please check your email and password");
-    //   return;
-    // }
+    if (mobileNo.length !== 10) {
+      setMobileNoError('Please enter a valid 10-digit mobile number');
+      return;
+    }
 
     try {
       const params = {
-        email,
-        password,
+        phone: mobileNo,
       };
-      await LoginApi(params, setLoading, dispatch, navigation);
+      await SetOtpApi(params, setLoading);
     } catch (error) {
       setLoading(false);
       errorToast("Login error occurred");
@@ -52,13 +43,10 @@ export default function useLogin() {
   };
 
   return {
-    email,
-    password,
-    emailError,
-    passwordError,
+    mobileNo,
+    mobileNoError,
     loading,
-    handleEmailChange,
-    handlePasswordChange,
+    handleMobileNoChange,
     handleLogin,
     navigation,
   };

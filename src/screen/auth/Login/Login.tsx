@@ -7,10 +7,11 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  TouchableOpacity,
   ImageBackground,
+  Animated,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Loading from '../../../utils/Loader';
 import imageIndex from '../../../assets/imageIndex';
@@ -19,21 +20,35 @@ import useLogin from './useLogin';
 import { styles } from './style';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import ErrorText from '../../../component/ErrorText';
-import LinearGradient from 'react-native-linear-gradient';
 import { color } from '../../../constant';
+import CustomButton from '../../../component/CustomButton';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 
 export default function Login() {
-  const [agreed, setAgreed] = React.useState(true);
+  const slideAnim = useRef(new Animated.Value(100)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        tension: 20,
+        friction: 7,
+        useNativeDriver: true,
+      })
+    ]).start();
+  }, [fadeAnim, slideAnim]);
 
   const {
-    email,
-    password,
-    emailError,
-    passwordError,
+    mobileNo,
+    mobileNoError,
     loading,
-    handleEmailChange,
-    handlePasswordChange,
+    handleMobileNoChange,
     handleLogin,
     navigation,
   } = useLogin();
@@ -45,13 +60,16 @@ export default function Login() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.main}>
-          <StatusBarComponent translucent={true} backgroundColor="transparent" />
+          <StatusBarComponent translucent={true} backgroundColor="transparent" barStyle="light-content" />
           <ImageBackground
             source={imageIndex.loginBg}
             style={styles.backgroundOverlay}
             resizeMode="cover"
           >
-            <View style={styles.darkOverlay} />
+            <LinearGradient
+              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.9)']}
+              style={styles.darkOverlay}
+            />
           </ImageBackground>
 
           <ScrollView
@@ -59,15 +77,15 @@ export default function Login() {
             contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="handled"
           >
-            <View style={styles.contentContainer}>
-              <View style={styles.topSection}>
+            <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
+              <Animated.View style={[styles.topSection, { transform: [{ translateY: slideAnim }] }]}>
+
 
                 <Text style={styles.appName}>SFS GARMENT</Text>
                 <Text style={styles.appTagline}>Fashion Hub at Your Fingertips</Text>
-              </View>
+              </Animated.View>
 
-              <View style={styles.bottomSheet}>
-                <View style={styles.handleBar} />
+              <Animated.View style={[styles.bottomSheet, { transform: [{ translateY: slideAnim }] }]}>
 
                 <View style={styles.bottomSheetContent}>
                   {loading && <Loading />}
@@ -81,91 +99,42 @@ export default function Login() {
 
                   <View style={styles.inputSection}>
                     <CustomInput
-                      placeholder="Email Address"
+                      placeholder="Mobile Number"
                       placeholderTextColor={color.textLight}
-                      leftIcon={<MaterialIcon name="mail-outline" size={20} color={color.primary} />}
-                      value={email}
-                      onChangeText={handleEmailChange}
-                      keyboardType="email-address"
+                      leftIcon={<MaterialIcon name="phone" size={20} color={color.primary} />}
+                      value={mobileNo}
+                      onChangeText={handleMobileNoChange}
+                      keyboardType="phone-pad"
                       autoCapitalize="none"
                       containerStyle={styles.inputContainer}
                       inputStyle={styles.inputField}
+                      maxLength={10}
                     />
-                    <ErrorText error={emailError} />
-
-                    <View style={{ height: 15 }} />
-
-                    <CustomInput
-                      placeholder="Password"
-                      placeholderTextColor={color.textLight}
-                      leftIcon={<MaterialIcon name="lock-outline" size={20} color={color.primary} />}
-                      value={password}
-                      onChangeText={handlePasswordChange}
-                      secureTextEntryToggle
-                      containerStyle={styles.inputContainer}
-                      inputStyle={styles.inputField}
-                    />
-                    <ErrorText error={passwordError} />
+                    <ErrorText error={mobileNoError} />
                   </View>
 
-                  <View style={styles.forgotPasswordContainer}>
-                    <TouchableOpacity>
-                      <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-                    </TouchableOpacity>
-                  </View>
 
-                  <View style={styles.termsRow}>
-                    <TouchableOpacity
-                      style={[styles.checkbox, agreed && styles.checkboxActive]}
-                      onPress={() => setAgreed(!agreed)}
-                      activeOpacity={0.8}
-                    >
-                      {agreed && <View style={styles.checkboxInner} />}
-                    </TouchableOpacity>
-                    <Text allowFontScaling={false} style={styles.termsText}>
-                      I agree to the <Text style={styles.termsLink}>Terms</Text> & <Text style={styles.termsLink}>Privacy Policy</Text>
-                    </Text>
-                  </View>
+
 
                   <View style={styles.buttonSection}>
-                    <TouchableOpacity
-                      style={[
-                        styles.loginButtonBase,
-                        (!agreed || email.length === 0 || password.length === 0) && styles.loginButtonDisabled
-                      ]}
+                    <CustomButton
+                      title="Send OTP"
                       onPress={handleLogin}
-                      disabled={!agreed || email.length === 0 || password.length === 0}
-                      activeOpacity={0.8}
-                    >
-                      <LinearGradient
-                        colors={agreed && email.length > 0 && password.length > 0 ? color.buttLinearGradient : ['#D3D3D3', '#D3D3D3']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 0 }}
-                        style={styles.loginButtonGradient}
-                      >
-                        <Text allowFontScaling={false} style={styles.loginButtonText}>Login</Text>
-                      </LinearGradient>
-                    </TouchableOpacity>
+                      disabled={mobileNo.length !== 10}
+                    />
                   </View>
 
                   <View style={styles.footerContainer}>
-                    <Text allowFontScaling={false} style={styles.footerText}>
-                      Don't have an account?{' '}
-                      <Text
-                        style={styles.footerLink}
-                        onPress={() => navigation.navigate(ScreenNameEnum.SignUpScreen)}
-                      >
-                        Sign Up
-                      </Text>
+                    <Text allowFontScaling={false} style={styles.termsText}>
+                      By continuing, you agree to our{' '}
+                      <Text style={styles.termsLink}>Terms</Text> &{' '}
+                      <Text style={styles.termsLink}>Privacy Policy</Text>
                     </Text>
                   </View>
 
-
-
-
                 </View>
-              </View>
-            </View>
+              </Animated.View>
+            </Animated.View>
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
