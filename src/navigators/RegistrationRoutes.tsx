@@ -15,7 +15,6 @@ export type RegistrationStackParamList = {
   [ScreenNameEnum.SPLASH_SCREEN]: undefined;
   [ScreenNameEnum.OnboardingScreen]: undefined;
   [ScreenNameEnum.ChooseRoleScreen]: undefined;
-  [ScreenNameEnum.ReadyScreen]: undefined;
   [ScreenNameEnum.LoginScreen]: undefined;
   [ScreenNameEnum.SignUpScreen]: undefined;
   [ScreenNameEnum.OtpScreen]: undefined;
@@ -26,8 +25,8 @@ export type RegistrationStackParamList = {
   [ScreenNameEnum.personalInfo]: undefined;
   [ScreenNameEnum.changePassword]: undefined;
 
-  "DrawerNavDriver":undefined;
-  "DrawerNav":undefined;
+  "DrawerNavDriver": undefined;
+  "DrawerNav": undefined;
 
 };
 

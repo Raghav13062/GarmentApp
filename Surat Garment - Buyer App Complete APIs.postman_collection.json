@@ -1,0 +1,527 @@
+{
+	"info": {
+		"_postman_id": "b9a2d86d-d99e-43eb-901b-841c882b9c25",
+		"name": "Surat Garment - Buyer App Complete APIs",
+		"description": "Complete collection of APIs exposed by the Buyer App Backend, including sample responses for easy frontend integration.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "1. Send OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mobileNo\": \"9876543210\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/send-otp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"send-otp"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"mobileNo\": \"9876543210\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/send-otp",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"send-otp"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"OTP sent successfully\",\n    \"isNewUser\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "2. Verify OTP (Login/Signup)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mobileNo\": \"9876543210\",\n  \"otp\": \"123456\",\n  \"fullName\": \"John Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/verify-otp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify-otp"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"mobileNo\": \"9876543210\",\n  \"otp\": \"123456\",\n  \"fullName\": \"John Doe\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/verify-otp",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"verify-otp"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"token\": \"eyJhbGciOiJIUzI1...\",\n    \"user\": {\n        \"_id\": \"661bd7f8...\",\n        \"mobileNo\": \"9876543210\",\n        \"fullName\": \"John Doe\",\n        \"isActive\": true\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "2. Home Page",
+			"item": [
+				{
+					"name": "Get Home Page Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/home?gender=all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"home"
+							],
+							"query": [
+								{
+									"key": "gender",
+									"value": "all",
+									"description": "Optional filter: 'all', 'men', 'women', 'kids'"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/home?gender=all",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"home"
+									],
+									"query": [
+										{
+											"key": "gender",
+											"value": "all"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"storeId\": \"STORE_12345\",\n        \"sections\": [\n            {\n                \"id\": \"sec1\",\n                \"sectionType\": \"SEARCH_BANNER\",\n                \"data\": []\n            },\n            {\n                \"id\": \"sec2\",\n                \"sectionType\": \"CATEGORY_GRID\",\n                \"data\": {\n                    \"categories\": [\n                        {\n                            \"id\": \"cat1\",\n                            \"name\": \"Men\",\n                            \"image\": \"https://link-to-image.jpg\",\n                            \"subcategories\": [\n                                {\n                                    \"name\": \"Shirts\"\n                                }\n                            ]\n                        }\n                    ]\n                }\n            },\n            {\n                \"id\": \"sec3\",\n                \"sectionType\": \"BEST_OFFERS\",\n                \"data\": {\n                    \"title\": \"Best Offers\",\n                    \"products\": [\n                        {\n                            \"id\": \"prod1\",\n                            \"title\": \"Premium Men Shirts 1\",\n                            \"mrp\": 900,\n                            \"sellingPrice\": 600,\n                            \"discountPercentage\": 33,\n                            \"images\": [\"https://link.jpg\"],\n                            \"category\": { \"id\": \"cat1\", \"name\": \"Men\" },\n                            \"subcategory\": \"Shirts\"\n                        }\n                    ]\n                }\n            }\n        ]\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "3. Products",
+			"item": [
+				{
+					"name": "Get Products (View All / Filtered)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products?isTopSelling=true&limit=12&page=1&categoryId=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "isTopSelling",
+									"value": "true",
+									"description": "Fetch top selling products"
+								},
+								{
+									"key": "limit",
+									"value": "12",
+									"description": "Items per page"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "categoryId",
+									"value": "",
+									"description": "Filter by category ID"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/products?limit=12&page=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"products"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "12"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"products\": [\n            {\n                \"_id\": \"prod1\",\n                \"title\": \"Premium Shirt\",\n                \"pricing\": {\n                    \"mrp\": 1000,\n                    \"sellingPrice\": 800,\n                    \"discountPercentage\": 20\n                },\n                \"categoryId\": {\n                    \"_id\": \"cat1\",\n                    \"name\": \"Men\"\n                },\n                \"subcategory\": \"Shirts\",\n                \"baseImages\": [\"https://...\"]\n            }\n        ],\n        \"pagination\": {\n            \"total\": 50,\n            \"page\": 1,\n            \"limit\": 12,\n            \"totalPages\": 5\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Single Product Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/products/{{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"products",
+										"{{product_id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"prod1\",\n        \"title\": \"Premium Shirt\",\n        \"description\": \"Great shirt...\",\n        \"categoryId\": { \"_id\": \"cat1\", \"name\": \"Men\" },\n        \"subcategory\": \"Shirts\",\n        \"pricing\": { \"mrp\": 1000, \"sellingPrice\": 800, \"discountPercentage\": 20 },\n        \"variants\": {\n            \"sizes\": [\"M\", \"L\"],\n            \"colors\": [\"Red\", \"Blue\"]\n        },\n        \"variantImages\": [\n            { \"color\": \"Red\", \"urls\": [\"https://...\"] }\n        ],\n        \"baseImages\": [\"https://...\"]\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "4. Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/categories",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"categories"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"_id\": \"cat1\",\n            \"name\": \"Men\",\n            \"image\": \"https://...\",\n            \"subcategories\": [\n                { \"name\": \"Shirts\" },\n                { \"name\": \"Jeans\" }\n            ]\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Favourites",
+			"item": [
+				{
+					"name": "My Favourites List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/favourites?page=1&limit=20&cursor=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"favourites"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "cursor",
+									"value": "",
+									"description": "Last favourite _id for infinite scroll"
+								}
+							]
+						},
+						"description": "Returns all favourited products for the logged-in user. Products deactivated after favouriting are automatically filtered out."
+					},
+					"response": []
+				},
+				{
+					"name": "Check Favourite Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/favourites/{{productId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"favourites",
+								"{{productId}}",
+								"status"
+							]
+						},
+						"description": "Returns { isFavourited: bool, favouriteCount: number }. Call this on product list and detail screens to set the initial heart icon state."
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Favourite (Heart Tap)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/favourites/{{productId}}/toggle",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"favourites",
+								"{{productId}}",
+								"toggle"
+							]
+						},
+						"description": "Single call for the heart icon tap. If product is already favourited it removes it; otherwise it adds it. Returns { isFavourited: bool, favouriteCount: number }. Recommended for mobile."
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Favourites (Explicit)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/favourites/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"favourites",
+								"{{productId}}"
+							]
+						},
+						"description": "Explicitly adds to favourites. Returns 409 if product is already favourited."
+					},
+					"response": []
+				},
+				{
+					"name": "Remove from Favourites (Explicit)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/favourites/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"favourites",
+								"{{productId}}"
+							]
+						},
+						"description": "Explicitly removes from favourites. Returns 404 if product was not in favourites."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "product_id",
+			"value": "YOUR_PRODUCT_ID_HERE",
+			"type": "string"
+		}
+	]
+}

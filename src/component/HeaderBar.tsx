@@ -138,7 +138,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ scrollY }) => {
             {/* Wishlist */}
             <TouchableOpacity
 
-              // onPress={handleWishlistPress} 
+              onPress={handleWishlistPress}
 
               style={styles.iconItem} activeOpacity={0.7}>
               <Icon name="heart-outline" size={25} color={color.white} />

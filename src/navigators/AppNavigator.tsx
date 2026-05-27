@@ -13,7 +13,7 @@ import { navigationRef } from '../constant';
 import StatusBarComponent from '../component/StatusBarCompoent';
 
 const AppNavigator: React.FC = () => {
- 
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -21,14 +21,14 @@ const AppNavigator: React.FC = () => {
           <StatusBarComponent />
           <NavigationContainer ref={navigationRef}>
             {/* <NetworkStatusModal
-              modalVisible={modalVisible}
-              offlineText="No Internet! Please check your connection."
-            /> */}
+                modalVisible={modalVisible}
+                offlineText="No Internet! Please check your connection."
+              /> */}
             <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
               <RegistrationRoutes />
             </SafeAreaView>
-            <Toast config={toastConfig} />
           </NavigationContainer>
+          <Toast config={toastConfig} />
         </GestureHandlerRootView>
       </PersistGate>
     </Provider>

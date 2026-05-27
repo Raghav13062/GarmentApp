@@ -1,425 +1,198 @@
-import { color } from "../constant";
 import React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Ionicons';
-import TextCompoent, { Size } from './Text';
+import { color, fonts } from '../constant';
+
+const TOAST_OFFSET = Platform.OS === 'ios' ? 58 : 42;
+
+const toastTheme = {
+  success: {
+    icon: 'checkmark-circle',
+    title: 'Success',
+    accent: '#16A34A',
+    bg: '#F0FDF4',
+  },
+  error: {
+    icon: 'close-circle',
+    title: 'Error',
+    accent: '#DC2626',
+    bg: '#FEF2F2',
+  },
+  info: {
+    icon: 'information-circle',
+    title: 'Info',
+    accent: '#2563EB',
+    bg: '#EFF6FF',
+  },
+  warning: {
+    icon: 'warning',
+    title: 'Warning',
+    accent: '#D97706',
+    bg: '#FFFBEB',
+  },
+};
+
+const AppToast = ({ text1, text2, variant }: any) => {
+  const theme = toastTheme[variant] || toastTheme.info;
+
+  return (
+    <View style={styles.shadowWrap}>
+      <View style={styles.card}>
+        <View style={[styles.accent, { backgroundColor: theme.accent }]} />
+
+        <View style={[styles.iconBox, { backgroundColor: theme.bg }]}>
+          <Icon name={theme.icon} size={24} color={theme.accent} />
+        </View>
+
+        <View style={styles.textWrap}>
+          <Text allowFontScaling={false} numberOfLines={2} style={styles.title}>
+            {text1 || theme.title}
+          </Text>
+          {!!text2 && (
+            <Text allowFontScaling={false} numberOfLines={2} style={styles.message}>
+              {text2}
+            </Text>
+          )}
+        </View>
+
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.closeButton}
+          onPress={() => Toast.hide()}
+        >
+          <Icon name="close" size={18} color={color.textMedium} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 const toastConfig = {
-  successResponse: ({ text1, text2, props }) => (
-    <View style={styles.successContainer}>
-      <View style={styles.iconWrapper}>
-        <Icon 
-          name="checkmark-circle" 
-          size={28} 
-          color={color.white} 
-          style={styles.icon} 
-        />
-      </View>
-      <View style={styles.contentContainer}>
-        <TextCompoent
-          size={Size.Small}
-          color={color.white}
-          fontWeight="600"
-          style={styles.title}
-          numberOfLines={2}>
-          {text1}
-        </TextCompoent>
-        {text2 && (
-          <TextCompoent
-            size={Size.ExtraSmall}
-            color={'rgba(255,255,255,0.85)'}
-            fontWeight="400"
-            style={styles.subtitle}
-            numberOfLines={2}>
-            {text2}
-          </TextCompoent>
-        )}
-      </View>
-      <Icon 
-        name="close" 
-        size={18} 
-        color="rgba(255,255,255,0.7)" 
-        style={styles.closeIcon}
-        onPress={() => Toast.hide()}
-      />
-    </View>
-  ),
-  
-  errorResponse: ({ text1, text2, props }) => (
-    <View style={styles.errorContainer}>
-      <View style={styles.iconWrapper}>
-        <Icon 
-          name="close-circle" 
-          size={28} 
-          color={color.white} 
-          style={styles.icon} 
-        />
-      </View>
-      <View style={styles.contentContainer}>
-        <TextCompoent
-          size={Size.Small}
-          color={color.white}
-          fontWeight="600"
-          style={styles.title}
-          numberOfLines={2}>
-          {text1}
-        </TextCompoent>
-        {text2 && (
-          <TextCompoent
-            size={Size.ExtraSmall}
-            color={'rgba(255,255,255,0.85)'}
-            fontWeight="400"
-            style={styles.subtitle}
-            numberOfLines={2}>
-            {text2}
-          </TextCompoent>
-        )}
-      </View>
-      <Icon 
-        name="close" 
-        size={18} 
-        color="rgba(255,255,255,0.7)" 
-        style={styles.closeIcon}
-        onPress={() => Toast.hide()}
-      />
-    </View>
-  ),
-  
-  infoResponse: ({ text1, text2, props }) => (
-    <View style={styles.infoContainer}>
-      <View style={styles.iconWrapper}>
-        <Icon 
-          name="information-circle" 
-          size={28} 
-          color={color.white} 
-          style={styles.icon} 
-        />
-      </View>
-      <View style={styles.contentContainer}>
-        <TextCompoent
-          size={Size.Small}
-          color={color.white}
-          fontWeight="600"
-          style={styles.title}
-          numberOfLines={2}>
-          {text1}
-        </TextCompoent>
-        {text2 && (
-          <TextCompoent
-            size={Size.ExtraSmall}
-            color={'rgba(255,255,255,0.85)'}
-            fontWeight="400"
-            style={styles.subtitle}
-            numberOfLines={2}>
-            {text2}
-          </TextCompoent>
-        )}
-      </View>
-      <Icon 
-        name="close" 
-        size={18} 
-        color="rgba(255,255,255,0.7)" 
-        style={styles.closeIcon}
-        onPress={() => Toast.hide()}
-      />
-    </View>
-  ),
-  
-  warningResponse: ({ text1, text2, props }) => (
-    <View style={styles.warningContainer}>
-      <View style={styles.iconWrapper}>
-        <Icon 
-          name="warning" 
-          size={28} 
-          color={color.white} 
-          style={styles.icon} 
-        />
-      </View>
-      <View style={styles.contentContainer}>
-        <TextCompoent
-          size={Size.Small}
-          color={color.white}
-          fontWeight="600"
-          style={styles.title}
-          numberOfLines={2}>
-          {text1}
-        </TextCompoent>
-        {text2 && (
-          <TextCompoent
-            size={Size.ExtraSmall}
-            color={'rgba(255,255,255,0.85)'}
-            fontWeight="400"
-            style={styles.subtitle}
-            numberOfLines={2}>
-            {text2}
-          </TextCompoent>
-        )}
-      </View>
-      <Icon 
-        name="close" 
-        size={18} 
-        color="rgba(255,255,255,0.7)" 
-        style={styles.closeIcon}
-        onPress={() => Toast.hide()}
-      />
-    </View>
-  ),
+  success: (props: any) => <AppToast {...props} variant="success" />,
+  error: (props: any) => <AppToast {...props} variant="error" />,
+  info: (props: any) => <AppToast {...props} variant="info" />,
+  warning: (props: any) => <AppToast {...props} variant="warning" />,
+  successResponse: (props: any) => <AppToast {...props} variant="success" />,
+  errorResponse: (props: any) => <AppToast {...props} variant="error" />,
+  infoResponse: (props: any) => <AppToast {...props} variant="info" />,
+  warningResponse: (props: any) => <AppToast {...props} variant="warning" />,
 };
 
-// Success Toast - Shows at top with modern UI
-export const successToast = (message, subtitle = '', time = 4000) => {
+const showToast = (
+  type: 'success' | 'error' | 'info' | 'warning',
+  message: string,
+  subtitle = '',
+  time = 3500,
+  position: 'top' | 'bottom' = 'top',
+) => {
   Toast.show({
-    type: 'successResponse',
+    type,
     text1: message,
     text2: subtitle,
-    position: 'top',
+    position,
     visibilityTime: time,
-    topOffset: Platform.OS === 'ios' ? 60 : 40,
     autoHide: true,
-    props: {
-      hasSubtitle: !!subtitle,
-    }
+    topOffset: TOAST_OFFSET,
+    bottomOffset: 92,
   });
 };
 
-// Error Toast - Shows at top with modern UI
-export const errorToast = (message, subtitle = '', time = 5000) => {
-  Toast.show({
-    type: 'errorResponse',
-    text1: message,
-    text2: subtitle,
-    position: 'top',
-    visibilityTime: time,
-    topOffset: Platform.OS === 'ios' ? 60 : 40,
-    autoHide: true,
-    props: {
-      hasSubtitle: !!subtitle,
-    }
-  });
+export const successToast = (message: string, subtitle = '', time = 3500) => {
+  showToast('success', message, subtitle, time);
 };
 
-// Info Toast - Shows at top
-export const infoToast = (message, subtitle = '', time = 4000) => {
-  Toast.show({
-    type: 'infoResponse',
-    text1: message,
-    text2: subtitle,
-    position: 'top',
-    visibilityTime: time,
-    topOffset: Platform.OS === 'ios' ? 60 : 40,
-    autoHide: true,
-    props: {
-      hasSubtitle: !!subtitle,
-    }
-  });
+export const errorToast = (message: string, subtitle = '', time = 4200) => {
+  showToast('error', message, subtitle, time);
 };
 
-// Warning Toast - Shows at top
-export const warningToast = (message, subtitle = '', time = 4000) => {
-  Toast.show({
-    type: 'warningResponse',
-    text1: message,
-    text2: subtitle,
-    position: 'top',
-    visibilityTime: time,
-    topOffset: Platform.OS === 'ios' ? 60 : 40,
-    autoHide: true,
-    props: {
-      hasSubtitle: !!subtitle,
-    }
-  });
+export const infoToast = (message: string, subtitle = '', time = 3500) => {
+  showToast('info', message, subtitle, time);
 };
 
-// Bottom Toast Variants
-export const bottomSuccessToast = (message, subtitle = '', time = 3000) => {
-  Toast.show({
-    type: 'successResponse',
-    text1: message,
-    text2: subtitle,
-    position: 'bottom',
-    visibilityTime: time,
-    bottomOffset: 80,
-    autoHide: true,
-  });
+export const warningToast = (message: string, subtitle = '', time = 3800) => {
+  showToast('warning', message, subtitle, time);
 };
 
-export const bottomErrorToast = (message, subtitle = '', time = 4000) => {
-  Toast.show({
-    type: 'errorResponse',
-    text1: message,
-    text2: subtitle,
-    position: 'bottom',
-    visibilityTime: time,
-    bottomOffset: 80,
-    autoHide: true,
-  });
+export const bottomSuccessToast = (message: string, subtitle = '', time = 3000) => {
+  showToast('success', message, subtitle, time, 'bottom');
 };
 
-// Quick Toast Functions (for simple messages)
-export const showSuccess = (message) => successToast(message);
-export const showError = (message) => errorToast(message);
-export const showInfo = (message) => infoToast(message);
-export const showWarning = (message) => warningToast(message);
+export const bottomErrorToast = (message: string, subtitle = '', time = 3800) => {
+  showToast('error', message, subtitle, time, 'bottom');
+};
+
+export const showSuccess = (message: string) => successToast(message);
+export const showError = (message: string) => errorToast(message);
+export const showInfo = (message: string) => infoToast(message);
+export const showWarning = (message: string) => warningToast(message);
+
+export const ToastConfig = toastConfig;
 
 export default toastConfig;
 
 const styles = StyleSheet.create({
-  // Common Styles
-  iconWrapper: {
+  shadowWrap: {
+    width: '92%',
+    alignSelf: 'center',
+  },
+  card: {
+    minHeight: 64,
+    backgroundColor: color.white,
+    borderRadius: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.06)',
+    shadowColor: color.black,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.16,
+    shadowRadius: 14,
+    elevation: 10,
+  },
+  accent: {
+    width: 5,
+    alignSelf: 'stretch',
+  },
+  iconBox: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
-    marginLeft: 4,
+    justifyContent: 'center',
+    marginLeft: 12,
+    marginRight: 10,
   },
-  icon: {
-    marginLeft: 1, // Center adjustment for some icons
-  },
-  contentContainer: {
+  textWrap: {
     flex: 1,
-    paddingRight: 8,
+    paddingVertical: 12,
+    paddingRight: 6,
   },
   title: {
-    lineHeight: 20,
+    fontSize: 14,
+    fontFamily: fonts.bold,
+    color: color.textDark,
+    lineHeight: 19,
   },
-  subtitle: {
-    marginTop: 4,
-    lineHeight: 16,
+  message: {
+    fontSize: 12,
+    fontFamily: fonts.regular,
+    color: color.textMedium,
+    lineHeight: 17,
+    marginTop: 2,
   },
-  closeIcon: {
-    padding: 4,
-    marginRight: 4,
-  },
-  
-  // Success Toast - Green gradient
-  successContainer: {
-    minHeight: 70,
-    width: '92%',
-    backgroundColor: '#10B981', // Emerald-500
-    borderRadius: 14,
-    flexDirection: 'row',
+  closeButton: {
+    width: 38,
+    height: 38,
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    shadowColor: '#10B981',
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    ...Platform.select({
-      ios: {
-        marginTop: 10,
-      },
-      android: {
-        marginTop: 8,
-      },
-    }),
-  },
-  
-  // Error Toast - Red gradient
-  errorContainer: {
-    minHeight: 70,
-    width: '92%',
-    backgroundColor: '#EF4444', // Red-500
-    borderRadius: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    shadowColor: '#EF4444',
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    ...Platform.select({
-      ios: {
-        marginTop: 10,
-      },
-      android: {
-        marginTop: 8,
-      },
-    }),
-  },
-  
-  // Info Toast - Blue gradient
-  infoContainer: {
-    minHeight: 70,
-    width: '92%',
-    backgroundColor: '#3B82F6', // Blue-500
-    borderRadius: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    shadowColor: '#3B82F6',
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    ...Platform.select({
-      ios: {
-        marginTop: 10,
-      },
-      android: {
-        marginTop: 8,
-      },
-    }),
-  },
-  
-  // Warning Toast - Amber gradient
-  warningContainer: {
-    minHeight: 70,
-    width: '92%',
-    backgroundColor: '#F59E0B', // Amber-500
-    borderRadius: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    shadowColor: '#F59E0B',
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    ...Platform.select({
-      ios: {
-        marginTop: 10,
-      },
-      android: {
-        marginTop: 8,
-      },
-    }),
+    justifyContent: 'center',
+    marginRight: 6,
   },
 });
-
-// Optional: If you want to customize the Toast component globally
-export const ToastConfig = {
-  success: (internalState) => toastConfig.successResponse(internalState),
-  error: (internalState) => toastConfig.errorResponse(internalState),
-  info: (internalState) => toastConfig.infoResponse(internalState),
-  warning: (internalState) => toastConfig.warningResponse(internalState),
-};

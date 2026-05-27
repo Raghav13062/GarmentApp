@@ -41,8 +41,8 @@ export default function ProductCard({
     ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100)
     : item?.pricing?.discountPercentage || item?.discountPercentage || 0;
 
-  const rating = item?.ratings?.average || 4.2;
-  const ratingCount = item?.ratings?.count || 120;
+  const rating = item?.ratings?.average || 0.0;
+  const ratingCount = item?.ratings?.count || 0.0;
 
   // Animation values
   const scale = useSharedValue(1);
@@ -76,10 +76,7 @@ export default function ProductCard({
             imageStyle={styles.imageRadius}
             resizeMode="cover"
           >
-            {/* Wishlist Icon */}
-            <TouchableOpacity style={styles.wishlistBtn}>
-              <Ionicons name="heart-outline" size={18} color="#555" />
-            </TouchableOpacity>
+
 
             {/* Rating Badge Overlay */}
             <View style={styles.ratingBadge}>

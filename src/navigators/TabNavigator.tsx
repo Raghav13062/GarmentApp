@@ -37,7 +37,7 @@ const BottomTabs = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
 
       <Tab.Screen name="Cart" component={Under} listeners={protectedTabListener} />
-      <Tab.Screen name="ViewCart" component={ViewCartScreen} listeners={protectedTabListener} />
+      {/* <Tab.Screen name="ViewCart" component={ViewCartScreen} listeners={protectedTabListener} /> */}
 
       {/* <Tab.Screen name="Under" component={B2BBulkScreen} /> */}
 

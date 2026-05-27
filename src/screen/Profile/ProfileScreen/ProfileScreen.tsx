@@ -283,48 +283,7 @@ const UserProfileScreen = () => {
         </View>
 
         {/* -------------------- SETTINGS CARD -------------------- */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <LinearGradient
-              colors={color.primaryGradient}
 
-              style={styles.cardIconGradient}
-            >
-              <Icon name="settings" size={18} color={color.white} />
-            </LinearGradient>
-            <Text allowFontScaling={false} style={styles.cardTitle}>Account Settings</Text>
-          </View>
-
-          {[
-            { icon: "edit-2", text: "Edit Profile", screen: ScreenNameEnum.EditProfile },
-            // { icon: "map-pin", text: "Saved Addresses",screen: ScreenNameEnum.EditProfile },
-            // { icon: "bell", text: "Notifications",screen: ScreenNameEnum.EditProfile },
-            { icon: "shield", text: "Privacy & Security", screen: ScreenNameEnum.Privacy },
-          ].map((item, index) => {
-            return (
-              <TouchableOpacity key={index} style={styles.menuItem}
-
-                onPress={() => {
-                  navigateToScreen(item.screen);
-
-
-                }}
-              >
-                <View style={styles.menuLeft}>
-                  <LinearGradient
-                    colors={color.primaryGradient}
-
-                    style={styles.menuIconGradient}
-                  >
-                    <Icon name={item.icon} size={16} color={color.white} />
-                  </LinearGradient>
-                  <Text allowFontScaling={false} style={styles.menuText}>{item.text}</Text>
-                </View>
-                <Icon name="chevron-right" size={20} color={color.textLight} />
-              </TouchableOpacity>
-            )
-          })}
-        </View>
 
         <TouchableOpacity
           style={styles.logoutBtn}

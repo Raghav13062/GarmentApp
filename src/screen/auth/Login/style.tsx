@@ -52,12 +52,11 @@ export const styles = StyleSheet.create({
   },
 
   appName: {
-    fontSize: 34,
+    fontSize: 32,
     fontWeight: '900',
     color: color.white,
     letterSpacing: 2,
     textAlign: 'center',
-    marginTop: 15,
   },
 
   appTagline: {
@@ -77,10 +76,10 @@ export const styles = StyleSheet.create({
     paddingTop: 12,
     shadowColor: color.black,
     shadowOffset: { width: 0, height: -15 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.2,
     shadowRadius: 20,
     elevation: 25,
-    minHeight: height * 0.55,
+    minHeight: height * 0.6,
   },
 
   handleBar: {
@@ -105,15 +104,12 @@ export const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '800',
     color: color.textDark,
-    textAlign: 'center',
   },
 
   subHeaderText: {
     fontSize: 16,
     color: color.textMedium,
     marginTop: 5,
-    fontWeight: '500',
-    textAlign: 'center',
   },
 
   inputSection: {
@@ -125,8 +121,8 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: '#E9ECEF',
-    height: 60,
-    paddingHorizontal: 20,
+    height: 55,
+    paddingHorizontal: 15,
   },
 
   inputField: {
@@ -149,47 +145,51 @@ export const styles = StyleSheet.create({
 
   termsRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 30,
+    alignItems: 'flex-start',
+    marginBottom: 28,
+    paddingHorizontal: 2,
   },
 
   checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 1.5,
-    borderColor: color.primary,
-    borderRadius: 6,
-    marginRight: 10,
+    width: 22,
+    height: 22,
+    borderWidth: 1.6,
+    borderColor: color.borderLight,
+    borderRadius: 7,
+    marginRight: 11,
+    marginTop: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: color.white,
   },
 
   checkboxActive: {
     backgroundColor: color.primary,
+    borderColor: color.primary,
   },
 
   checkboxInner: {
-    width: 10,
-    height: 10,
-    backgroundColor: color.white,
-    borderRadius: 2,
+    width: 12,
+    height: 12,
+    borderRadius: 3,
   },
 
   termsText: {
-    fontSize: 13,
+    flex: 1,
+    fontSize: 14,
     color: color.textMedium,
-    textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 21,
+    fontFamily: fonts.regular,
   },
 
   termsLink: {
     color: color.primary,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
+    textDecorationLine: 'underline',
   },
 
   buttonSection: {
-    marginBottom: 20,
-    marginTop: 10,
+    marginBottom: 25,
   },
 
   loginButtonBase: {
@@ -198,9 +198,7 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     shadowColor: color.primary,
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 8,
+
   },
 
   loginButtonGradient: {

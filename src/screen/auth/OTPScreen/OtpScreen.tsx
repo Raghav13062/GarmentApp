@@ -12,8 +12,6 @@ import {
 import React from 'react';
  import imageIndex from '../../../assets/imageIndex';
 import CustomButton from '../../../component/CustomButton';
-import CustomInput from '../../../component/CustomInput';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from './style';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -37,10 +35,7 @@ export default function OtpVerification() {
     handleResendOtp,
     handleChangePhone,
     loading ,
-    props,
-    isNewUser,
-    fullName,
-    setFullName
+    props
    } = useOtpVerification();
 
   return (
@@ -143,36 +138,6 @@ export default function OtpVerification() {
                   </View>
 
                   <View style={styles.buttonSection}>
-                    {isNewUser && (
-                      <View style={{ marginBottom: 20 }}>
-                        <Text style={[styles.otpLabel, { marginTop: 0, marginBottom: 10 }]}>Enter your Full Name</Text>
-                        <CustomInput
-                          placeholder="Full Name"
-                          placeholderTextColor={color.textLight}
-                          leftIcon={<MaterialIcon name="person" size={20} color={color.primary} />}
-                          value={fullName}
-                          onChangeText={setFullName}
-                          autoCapitalize="words"
-                          containerStyle={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            backgroundColor: color.white,
-                            borderRadius: 12,
-                            paddingHorizontal: 15,
-                            height: 55,
-                            borderWidth: 1,
-                            borderColor: color.borderLight,
-                          }}
-                          inputStyle={{
-                            flex: 1,
-                            color: color.textDark,
-                            fontSize: 16,
-                            marginLeft: 10,
-                          }}
-                        />
-                      </View>
-                    )}
-                  
                     <CustomButton 
                       title="Verify & Continue" 
                       onPress={handleVerifyOtp}

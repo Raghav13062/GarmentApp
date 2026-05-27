@@ -10,6 +10,7 @@ import {
   Image,
   ScrollView,
   Platform,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,6 +20,7 @@ import { color, fonts } from '../../../../constant';
 import StatusBarComponent from '../../../../component/StatusBarCompoent';
 
 const { width } = Dimensions.get('window');
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 const SIDEBAR_WIDTH = 100;
 
 // --- Expanded Mock Data with "Under 999" Theme ---
@@ -168,11 +170,35 @@ const Under = () => {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <StatusBarComponent barStyle="dark-content" backgroundColor="#fff" />
+    <SafeAreaView style={styles.safeArea} edges={[]}>
+      <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
 
       {/* Top Search Bar */}
-      <View style={styles.header}>
+      <LinearGradient
+        colors={color.primaryGradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={[styles.headerGradient, { paddingTop: STATUSBAR_HEIGHT + 10 }]}
+      >
+        <View style={styles.headerTop}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.headerIcon}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={22} color={color.white} />
+          </TouchableOpacity>
+
+          <View style={styles.headerTitleWrap}>
+            <Text style={styles.headerTitle}>Under 999</Text>
+            <Text style={styles.headerSubtitle}>Budget fashion deals</Text>
+          </View>
+
+          <View style={styles.headerIcon}>
+            <Ionicons name="pricetag" size={21} color={color.white} />
+          </View>
+        </View>
+
         <View style={styles.searchBar}>
           <TextInput
             placeholder="Search budget fashion..."
@@ -187,7 +213,7 @@ const Under = () => {
             <Ionicons name="search" size={24} color={color.white} />
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
 
       <View style={styles.mainContainer}>
         {/* Left Sidebar */}
@@ -236,14 +262,54 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: color.lightGray,
   },
+  headerGradient: {
+    paddingHorizontal: 16,
+    paddingBottom: 14,
+    elevation: 5,
+    shadowColor: color.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 4,
+  },
+  headerTop: {
+    minHeight: 42,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  headerIcon: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitleWrap: {
+    flex: 1,
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  headerTitle: {
+    color: color.white,
+    fontSize: 20,
+    fontFamily: fonts.bold,
+  },
+  headerSubtitle: {
+    color: 'rgba(255,255,255,0.86)',
+    fontSize: 12,
+    fontFamily: fonts.medium,
+    marginTop: 2,
+  },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: color.borderLight,
+    backgroundColor: color.white,
     borderRadius: 4,
     height: 48,
     paddingLeft: 12,
+    overflow: 'hidden',
   },
   searchInput: {
     flex: 1,

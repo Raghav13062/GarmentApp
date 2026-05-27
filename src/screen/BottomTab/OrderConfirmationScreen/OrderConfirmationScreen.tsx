@@ -16,13 +16,17 @@ import {
   Modal,
   ActivityIndicator,
   Linking,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import RazorpayCheckout from 'react-native-razorpay';
+import StatusBarComponent from '../../../component/StatusBarCompoent';
 
 const { width, height } = Dimensions.get('window');
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 
 // Brand Colors
 const BRAND_COLORS = {
@@ -45,9 +49,9 @@ const BRAND_COLORS = {
 };
 
 const OrderConfirmationScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+
   // Get order data from route params
   const orderData = route.params || {
     orderId: 'ORD' + Math.floor(100000 + Math.random() * 900000),
@@ -58,29 +62,29 @@ const OrderConfirmationScreen = () => {
     orderDate: new Date().toISOString(),
     estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
   };
-  
+
   // Sample order items if none provided
-  const sampleItems = orderData.orderItems && orderData.orderItems.length > 0 
-    ? orderData.orderItems 
+  const sampleItems = orderData.orderItems && orderData.orderItems.length > 0
+    ? orderData.orderItems
     : [
-        {
-          id: 1,
-          title: "Wireless Bluetooth Headphones",
-          brand: "AudioTech",
-          price: 2999,
-          quantity: 1,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop"
-        },
-        {
-          id: 2,
-          title: "Sports Running Shoes",
-          brand: "SportFlex",
-          price: 2499,
-          quantity: 2,
-          image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop"
-        }
-      ];
-  
+      {
+        id: 1,
+        title: "Wireless Bluetooth Headphones",
+        brand: "AudioTech",
+        price: 2999,
+        quantity: 1,
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop"
+      },
+      {
+        id: 2,
+        title: "Sports Running Shoes",
+        brand: "SportFlex",
+        price: 2499,
+        quantity: 2,
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop"
+      }
+    ];
+
   const [order, setOrder] = useState({
     id: orderData.orderId || 'ORD' + Math.floor(100000 + Math.random() * 900000),
     items: sampleItems,
@@ -95,8 +99,10 @@ const OrderConfirmationScreen = () => {
     },
     payment: {
       method: orderData.paymentMethod || 'credit_card',
-      status: 'Paid',
-      transactionId: 'TXN' + Math.floor(100000000 + Math.random() * 900000000),
+      status: orderData.paymentStatus || (orderData.paymentMethod === 'cod' ? 'Pending' : 'Paid'),
+      transactionId: orderData.transactionId || orderData.razorpayPaymentId || '',
+      razorpayOrderId: orderData.razorpayOrderId || '',
+      razorpaySignature: orderData.razorpaySignature || '',
     },
     status: 'Processing',
     date: new Date().toLocaleDateString('en-IN', {
@@ -117,11 +123,12 @@ const OrderConfirmationScreen = () => {
       trackingNumber: 'TRK' + Math.floor(1000000000 + Math.random() * 9000000000),
     },
   });
-  
+
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [showSuccess, setShowSuccess] = useState(true);
-  
+
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
@@ -226,14 +233,14 @@ const OrderConfirmationScreen = () => {
         ]),
       ])
     );
-    
+
     Animated.stagger(50, animations).start();
   };
 
   // Download invoice
   const downloadInvoice = async () => {
     setIsDownloading(true);
-    
+
     // Simulate download process
     setTimeout(() => {
       setIsDownloading(false);
@@ -245,19 +252,99 @@ const OrderConfirmationScreen = () => {
     }, 1500);
   };
 
+  const getPaymentMethodLabel = (method: string) => {
+    switch (method) {
+      case 'credit_card':
+      case 'card':
+        return 'Credit / Debit Card';
+      case 'upi':
+        return 'UPI';
+      case 'cod':
+        return 'Cash on Delivery';
+      default:
+        return method || 'Payment';
+    }
+  };
+
+  const getPaymentIcon = (method: string) => {
+    if (method === 'credit_card' || method === 'card') {
+      return 'credit-card';
+    }
+
+    if (method === 'upi') {
+      return 'account-balance-wallet';
+    }
+
+    return 'money';
+  };
+
+  const payWithRazorpay = async () => {
+    // if (!RAZORPAY_KEY_ID) {
+    //   Alert.alert(
+    //     'Razorpay Key Missing',
+    //     'Please add RAZORPAY_KEY_ID in .env before accepting online payments.',
+    //   );
+    //   return;
+    // }
+
+    setIsProcessingPayment(true);
+
+    const options = {
+      key: "ss",
+      amount: Math.round(order.total * 100),
+      currency: 'INR',
+      name: 'Kimbo',
+      description: `Payment for Order #${order.id}`,
+      prefill: {
+        email: orderData.deliveryAddress?.email || '',
+        contact: order.address.phone || '',
+        name: order.address.fullName || '',
+      },
+      notes: {
+        order_id: order.id,
+      },
+      theme: {
+        color: color.primary,
+      },
+      method: order.payment.method === 'upi' ? { upi: true } : { card: true },
+    };
+
+    try {
+      const paymentDetails: any = await RazorpayCheckout.open(options);
+
+      setOrder(prev => ({
+        ...prev,
+        payment: {
+          ...prev.payment,
+          status: 'Paid',
+          transactionId: paymentDetails?.razorpay_payment_id || prev.payment.transactionId,
+          razorpayOrderId: paymentDetails?.razorpay_order_id || prev.payment.razorpayOrderId,
+          razorpaySignature: paymentDetails?.razorpay_signature || prev.payment.razorpaySignature,
+        },
+      }));
+
+      Alert.alert('Payment Successful', 'Your Razorpay payment has been completed.');
+    } catch (error: any) {
+      const message = error?.description || error?.error?.description || 'Payment was cancelled or failed';
+      Alert.alert('Payment Failed', message);
+    } finally {
+      setIsProcessingPayment(false);
+    }
+  };
+
   // Share order details
   const shareOrder = async () => {
     setIsSharing(true);
-    
+
     try {
       const shareContent = {
         title: `Order Confirmation - ${order.id}`,
         message: `🎉 Order Confirmed!\n\nOrder ID: ${order.id}\nTotal Amount: ₹${order.total}\nStatus: ${order.status}\nEstimated Delivery: ${order.estimatedDelivery}\n\nThank you for your purchase!`,
         url: 'https://yourwebsite.com/order-tracking',
       };
-      
+
       const result = await Share.share(shareContent);
-      
+
       if (result.action === Share.sharedAction) {
         console.log('Order shared successfully');
       }
@@ -313,16 +400,17 @@ const OrderConfirmationScreen = () => {
             styles.confettiPiece,
             {
               backgroundColor: [
-                color.star, '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', 
+                color.star, '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4',
                 '#FFEAA7', '#DDA0DD', '#98D8C8'
               ][index % 8],
               transform: [
                 { translateX: piece.x },
                 { translateY: piece.y },
-                { rotate: piece.rotation.interpolate({
+                {
+                  rotate: piece.rotation.interpolate({
                     inputRange: [0, 360],
                     outputRange: ['0deg', '360deg']
-                  }) 
+                  })
                 },
                 { scale: piece.scale },
               ],
@@ -330,7 +418,7 @@ const OrderConfirmationScreen = () => {
           ]}
         />
       ))}
-      
+
       {/* Success Icon */}
       <Animated.View style={[styles.successIconContainer, { transform: [{ scale: checkmarkScale }] }]}>
         <LinearGradient
@@ -371,10 +459,10 @@ const OrderConfirmationScreen = () => {
             style={styles.orderItemImage}
             defaultSource={{ uri: 'https://via.placeholder.com/100' }}
           />
-          
+
           <View style={styles.orderItemDetails}>
             <Text style={styles.orderItemTitle} numberOfLines={2}>
-              {item.title}
+              {item.title || item.name}
             </Text>
             <Text style={styles.orderItemBrand}>{item.brand}</Text>
             <View style={styles.orderItemMeta}>
@@ -391,39 +479,40 @@ const OrderConfirmationScreen = () => {
   const renderHeader = () => (
     <Animated.View style={[styles.header, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
       <LinearGradient
-        colors={BRAND_COLORS.primaryGradient}
-        style={StyleSheet.absoluteFill}
+        colors={color.primaryGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-      />
-      <View style={styles.headerContent}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-          activeOpacity={0.7}
-        >
-          <Icon name="arrow-back" size={24} color={color.white} />
-        </TouchableOpacity>
-        
-        <View style={styles.headerTitleContainer}>
-          <Text style={styles.headerTitle}>Order Confirmed!</Text>
-          <Text style={styles.headerSubtitle}>Thank you for your purchase</Text>
-        </View>
-        
-        {/* <View style={styles.headerIcons}>
+        style={[styles.headerGradient, { paddingTop: STATUSBAR_HEIGHT + 10 }]}
+      >
+        <View style={styles.headerContent}>
           <TouchableOpacity
-            style={styles.headerIconButton}
-            onPress={shareOrder}
-            disabled={isSharing}
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+            activeOpacity={0.7}
           >
-            {isSharing ? (
-              <ActivityIndicator size="small" color={color.white} />
-            ) : (
-              <Icon name="share" size={22} color={color.white} />
-            )}
+            <Icon name="arrow-back" size={24} color={color.white} />
           </TouchableOpacity>
-        </View> */}
-      </View>
+
+          <View style={styles.headerTitleContainer}>
+            <Text style={styles.headerTitle}>Order Confirmed!</Text>
+            <Text style={styles.headerSubtitle}>Thank you for your purchase</Text>
+          </View>
+
+          {/* <View style={styles.headerIcons}>
+            <TouchableOpacity
+              style={styles.headerIconButton}
+              onPress={shareOrder}
+              disabled={isSharing}
+            >
+              {isSharing ? (
+                <ActivityIndicator size="small" color={color.white} />
+              ) : (
+                <Icon name="share" size={22} color={color.white} />
+              )}
+            </TouchableOpacity>
+          </View> */}
+        </View>
+      </LinearGradient>
     </Animated.View>
   );
 
@@ -441,9 +530,9 @@ const OrderConfirmationScreen = () => {
             <Icon name="local-shipping" size={28} color={color.white} />
             <Text style={styles.statusTitle}>Order Status</Text>
           </View>
-          
+
           <Text style={styles.orderId}>Order #: {order.id}</Text>
-          
+
           <View style={styles.statusIndicator}>
             <Animated.View style={[styles.statusProgress, {
               width: progressAnim.interpolate({
@@ -452,7 +541,7 @@ const OrderConfirmationScreen = () => {
               }),
             }]} />
           </View>
-          
+
           <View style={styles.statusSteps}>
             <View style={[styles.statusStep, styles.statusStepActive]}>
               <View style={styles.statusStepIcon}>
@@ -460,21 +549,21 @@ const OrderConfirmationScreen = () => {
               </View>
               <Text style={styles.statusStepText}>Ordered</Text>
             </View>
-            
+
             <View style={[styles.statusStep, order.status === 'Confirmed' || order.status === 'Processing' || order.status === 'Shipped' ? styles.statusStepActive : {}]}>
               <View style={[styles.statusStepIcon, (order.status === 'Confirmed' || order.status === 'Processing' || order.status === 'Shipped') && styles.statusStepIconActive]}>
                 <Icon name="check-circle" size={16} color={color.white} />
               </View>
               <Text style={styles.statusStepText}>Confirmed</Text>
             </View>
-            
+
             <View style={[styles.statusStep, order.status === 'Processing' || order.status === 'Shipped' ? styles.statusStepActive : {}]}>
               <View style={[styles.statusStepIcon, (order.status === 'Processing' || order.status === 'Shipped') && styles.statusStepIconActive]}>
                 <Icon name="build" size={16} color={color.white} />
               </View>
               <Text style={styles.statusStepText}>Processing</Text>
             </View>
-            
+
             <View style={[styles.statusStep, order.status === 'Shipped' ? styles.statusStepActive : {}]}>
               <View style={[styles.statusStepIcon, order.status === 'Shipped' && styles.statusStepIconActive]}>
                 <Icon name="local-shipping" size={16} color={color.white} />
@@ -482,7 +571,7 @@ const OrderConfirmationScreen = () => {
               <Text style={styles.statusStepText}>Shipped</Text>
             </View>
           </View>
-          
+
           <Text style={styles.currentStatus}>Current Status: {order.status}</Text>
           <Text style={styles.estimatedDelivery}>Estimated Delivery: {order.estimatedDelivery}</Text>
         </View>
@@ -497,10 +586,10 @@ const OrderConfirmationScreen = () => {
         <Icon name="receipt" size={24} color={BRAND_COLORS.primaryDark} />
         <Text style={styles.sectionTitle}>Order Summary</Text>
       </View>
-      
+
       <View style={styles.orderItemsList}>
         {order.items.slice(0, 2).map((item, index) => renderOrderItem({ item, index }))}
-        
+
         {order.items.length > 2 && (
           <View style={styles.moreItems}>
             <Text style={styles.moreItemsText}>
@@ -509,42 +598,64 @@ const OrderConfirmationScreen = () => {
           </View>
         )}
       </View>
-      
+
       <View style={styles.summaryDetails}>
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Subtotal</Text>
           <Text style={styles.summaryValue}>₹{order.total - order.shipping.cost}</Text>
         </View>
-        
+
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Shipping</Text>
           <Text style={styles.summaryValue}>₹{order.shipping.cost}</Text>
         </View>
-        
+
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Tax (18%)</Text>
           <Text style={styles.summaryValue}>₹{Math.round((order.total - order.shipping.cost) * 0.18)}</Text>
         </View>
-        
+
         <View style={styles.divider} />
-        
+
         <View style={[styles.summaryRow, styles.grandTotalRow]}>
           <Text style={styles.grandTotalLabel}>Grand Total</Text>
           <Text style={styles.grandTotalValue}>₹{order.total}</Text>
         </View>
-        
+
         <View style={styles.paymentMethod}>
-          <Icon 
-            name={order.payment.method === 'credit_card' ? 'credit-card' : 
-                  order.payment.method === 'upi' ? 'account-balance-wallet' : 'money'} 
-            size={20} 
-            color={BRAND_COLORS.primaryDark} 
+          <Icon
+            name={getPaymentIcon(order.payment.method)}
+            size={20}
+            color={BRAND_COLORS.primaryDark}
           />
           <Text style={styles.paymentText}>
-            Paid via {order.payment.method === 'credit_card' ? 'Credit Card' : 
-                     order.payment.method === 'upi' ? 'UPI' : 'Cash on Delivery'}
+            {order.payment.status} via {getPaymentMethodLabel(order.payment.method)}
           </Text>
         </View>
+
+        {!!order.payment.transactionId && (
+          <Text style={styles.transactionText}>
+            Transaction ID: {order.payment.transactionId}
+          </Text>
+        )}
+
+        {order.payment.status !== 'Paid' && order.payment.method !== 'cod' && (
+          <TouchableOpacity
+            style={styles.payNowButton}
+            onPress={payWithRazorpay}
+            disabled={isProcessingPayment}
+            activeOpacity={0.8}
+          >
+            {isProcessingPayment ? (
+              <ActivityIndicator size="small" color={color.white} />
+            ) : (
+              <>
+                <Icon name="payment" size={20} color={color.white} />
+                <Text style={styles.payNowButtonText}>Pay Now</Text>
+              </>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
     </Animated.View>
   );
@@ -556,16 +667,16 @@ const OrderConfirmationScreen = () => {
         <Icon name="location-on" size={24} color={BRAND_COLORS.primaryDark} />
         <Text style={styles.sectionTitle}>Delivery Address</Text>
       </View>
-      
+
       <View style={styles.addressCard}>
         <View style={styles.addressHeader}>
           <Text style={styles.addressName}>{order.address.fullName}</Text>
           <Text style={styles.addressPhone}>{order.address.phone}</Text>
         </View>
-        
+
         <Text style={styles.addressText}>{order.address.address}</Text>
         {order.address.city && <Text style={styles.addressText}>{order.address.city}, {order.address.state} - {order.address.pincode}</Text>}
-        
+
         <TouchableOpacity style={styles.editAddressButton}>
           <Text style={styles.editAddressText}>Edit Address</Text>
         </TouchableOpacity>
@@ -585,7 +696,7 @@ const OrderConfirmationScreen = () => {
           <Icon name="my-location" size={20} color={BRAND_COLORS.primaryDark} />
           <Text style={styles.trackButtonText}>Track Order</Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity
           style={[styles.actionButton, styles.downloadButton]}
           onPress={downloadInvoice}
@@ -602,7 +713,7 @@ const OrderConfirmationScreen = () => {
           )}
         </TouchableOpacity>
       </View>
-      
+
       <TouchableOpacity
         style={[styles.actionButton, styles.detailsButton]}
         onPress={viewOrderDetails}
@@ -615,11 +726,11 @@ const OrderConfirmationScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={BRAND_COLORS.primaryDark} barStyle="light-content" />
-      
+    <SafeAreaView style={styles.container} edges={[]}>
+      <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
+
       {renderHeader()}
-      
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -627,21 +738,21 @@ const OrderConfirmationScreen = () => {
       >
         {/* Success Animation */}
         {showSuccess && renderSuccessAnimation()}
-        
+
         {/* Order Status */}
         {/* {renderOrderStatus()} */}
-        
+
         {/* Order Summary */}
         {renderOrderSummary()}
-        
+
         {/* Delivery Address */}
         {renderDeliveryAddress()}
-        
+
         {/* Action Buttons */}
         {/* {renderActionButtons()} */}
-        
+
         {/* Continue Shopping Button */}
-    
+
         {/* Footer Spacer */}
         {/* <View style={styles.footerSpacer} /> */}
       </ScrollView>
@@ -661,8 +772,17 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   header: {
+    elevation: 5,
+    shadowColor: color.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    zIndex: 10,
+    overflow: 'hidden',
+  },
+  headerGradient: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingBottom: 12,
     elevation: 5,
     shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
@@ -727,7 +847,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-     shadowColor: color.black,
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -949,6 +1069,27 @@ const styles = StyleSheet.create({
     color: BRAND_COLORS.primaryDark,
     marginLeft: 8,
     fontWeight: '600',
+  },
+  transactionText: {
+    fontSize: 12,
+    color: BRAND_COLORS.gray,
+    textAlign: 'center',
+    marginTop: 8,
+  },
+  payNowButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: BRAND_COLORS.primaryDark,
+    borderRadius: 12,
+    marginTop: 14,
+    paddingVertical: 12,
+  },
+  payNowButtonText: {
+    color: color.white,
+    fontSize: 14,
+    fontWeight: '700',
+    marginLeft: 8,
   },
   addressContainer: {
     backgroundColor: BRAND_COLORS.cardBg,

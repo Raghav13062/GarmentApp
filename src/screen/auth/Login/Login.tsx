@@ -7,11 +7,10 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
   ImageBackground,
-  Animated,
 } from 'react-native';
-import React, { useEffect, useRef } from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import React from 'react';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Loading from '../../../utils/Loader';
 import imageIndex from '../../../assets/imageIndex';
@@ -20,35 +19,21 @@ import useLogin from './useLogin';
 import { styles } from './style';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import ErrorText from '../../../component/ErrorText';
+import LinearGradient from 'react-native-linear-gradient';
 import { color } from '../../../constant';
-import CustomButton from '../../../component/CustomButton';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 
 export default function Login() {
-  const slideAnim = useRef(new Animated.Value(100)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 800,
-        useNativeDriver: true,
-      }),
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        tension: 20,
-        friction: 7,
-        useNativeDriver: true,
-      })
-    ]).start();
-  }, [fadeAnim, slideAnim]);
+  const [agreed, setAgreed] = React.useState(false);
 
   const {
-    mobileNo,
-    mobileNoError,
+    email,
+    password,
+    emailError,
+    passwordError,
     loading,
-    handleMobileNoChange,
+    handleEmailChange,
+    handlePasswordChange,
     handleLogin,
     navigation,
   } = useLogin();
@@ -60,16 +45,13 @@ export default function Login() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.main}>
-          <StatusBarComponent translucent={true} backgroundColor="transparent" barStyle="light-content" />
+          <StatusBarComponent translucent={true} backgroundColor="transparent" />
           <ImageBackground
             source={imageIndex.loginBg}
             style={styles.backgroundOverlay}
             resizeMode="cover"
           >
-            <LinearGradient
-              colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.9)']}
-              style={styles.darkOverlay}
-            />
+            <View style={styles.darkOverlay} />
           </ImageBackground>
 
           <ScrollView
@@ -77,15 +59,15 @@ export default function Login() {
             contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="handled"
           >
-            <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
-              <Animated.View style={[styles.topSection, { transform: [{ translateY: slideAnim }] }]}>
-
+            <View style={styles.contentContainer}>
+              <View style={styles.topSection}>
 
                 <Text style={styles.appName}>SFS GARMENT</Text>
                 <Text style={styles.appTagline}>Fashion Hub at Your Fingertips</Text>
-              </Animated.View>
+              </View>
 
-              <Animated.View style={[styles.bottomSheet, { transform: [{ translateY: slideAnim }] }]}>
+              <View style={styles.bottomSheet}>
+                <View style={styles.handleBar} />
 
                 <View style={styles.bottomSheetContent}>
                   {loading && <Loading />}
@@ -99,42 +81,88 @@ export default function Login() {
 
                   <View style={styles.inputSection}>
                     <CustomInput
-                      placeholder="Mobile Number"
+                      placeholder="Email Address"
                       placeholderTextColor={color.textLight}
-                      leftIcon={<MaterialIcon name="phone" size={20} color={color.primary} />}
-                      value={mobileNo}
-                      onChangeText={handleMobileNoChange}
-                      keyboardType="phone-pad"
+                      leftIcon={<MaterialIcon name="mail-outline" size={20} color={color.primary} />}
+                      value={email}
+                      onChangeText={handleEmailChange}
+                      keyboardType="email-address"
                       autoCapitalize="none"
                       containerStyle={styles.inputContainer}
                       inputStyle={styles.inputField}
-                      maxLength={10}
                     />
-                    <ErrorText error={mobileNoError} />
+                    <ErrorText error={emailError} />
+
+                    <View style={{ height: 15 }} />
+
+                    <CustomInput
+                      placeholder="Password"
+                      placeholderTextColor={color.textLight}
+                      leftIcon={<MaterialIcon name="lock-outline" size={20} color={color.primary} />}
+                      value={password}
+                      onChangeText={handlePasswordChange}
+                      secureTextEntryToggle
+                      containerStyle={styles.inputContainer}
+                      inputStyle={styles.inputField}
+                    />
+                    <ErrorText error={passwordError} />
                   </View>
 
 
 
-
-                  <View style={styles.buttonSection}>
-                    <CustomButton
-                      title="Send OTP"
-                      onPress={handleLogin}
-                      disabled={mobileNo.length !== 10}
-                    />
-                  </View>
-
-                  <View style={styles.footerContainer}>
+                  <View style={styles.termsRow}>
+                    <TouchableOpacity
+                      style={[styles.checkbox, agreed && styles.checkboxActive]}
+                      onPress={() => setAgreed(!agreed)}
+                      activeOpacity={0.8}
+                    >
+                      {agreed && <MaterialIcon name="check" size={16} color={color.white} />}
+                    </TouchableOpacity>
                     <Text allowFontScaling={false} style={styles.termsText}>
-                      By continuing, you agree to our{' '}
-                      <Text style={styles.termsLink}>Terms</Text> &{' '}
-                      <Text style={styles.termsLink}>Privacy Policy</Text>
+                      I agree to the{' '}
+                      <Text
+                        style={styles.termsLink}
+                        onPress={() => navigation.navigate(ScreenNameEnum.Privacy)}
+                      >
+                        Terms & Conditions
+                      </Text>
+                      {' '}and{' '}
+                      <Text
+                        style={styles.termsLink}
+                        onPress={() => navigation.navigate(ScreenNameEnum.Privacy)}
+                      >
+                        Privacy Policy
+                      </Text>
                     </Text>
                   </View>
 
+                  <View style={styles.buttonSection}>
+                    <TouchableOpacity
+                      style={[
+                        styles.loginButtonBase,
+                        (!agreed || email.length === 0 || password.length === 0) && styles.loginButtonDisabled
+                      ]}
+                      onPress={handleLogin}
+                      disabled={!agreed || email.length === 0 || password.length === 0}
+                      activeOpacity={0.8}
+                    >
+                      <LinearGradient
+                        colors={agreed && email.length > 0 && password.length > 0 ? color.buttLinearGradient : ['#D3D3D3', '#D3D3D3']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={styles.loginButtonGradient}
+                      >
+                        <Text allowFontScaling={false} style={styles.loginButtonText}>Login</Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </View>
+
+
+
+
                 </View>
-              </Animated.View>
-            </Animated.View>
+              </View>
+            </View>
           </ScrollView>
         </View>
       </KeyboardAvoidingView>

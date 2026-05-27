@@ -183,11 +183,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 16,
     padding: 1,
     borderRadius: 15,
-    elevation: 6,
-    shadowColor: color.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+
   },
   logoutTouchable: {
     flexDirection: 'row',

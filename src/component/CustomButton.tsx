@@ -25,7 +25,6 @@ interface CustomButtonProps {
   onPress?: (event: GestureResponderEvent) => void;
   disabled?: boolean;
   gradientStyle?: StyleProp<ViewStyle>;
-  customColors?: string[];
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -39,7 +38,6 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   onPress,
   disabled = false,
   gradientStyle,
-  customColors,
 }) => {
   return (
     <TouchableOpacity
@@ -52,9 +50,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         colors={
           disabled
             ? [color.gray, color.gray]
-            : customColors
-              ? customColors
-              : color.buttLinearGradient
+            : color.buttLinearGradient
         }
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
@@ -67,9 +63,9 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         <View style={styles.content}>
           {leftIcon && <View style={styles.icon}>{leftIcon}</View>}
 
-          <Text
-            allowFontScaling={false}
-            style={[
+          <Text 
+          allowFontScaling={false} 
+             style={[
               styles.text,
               { color: txtcolor },
               textStyle,
@@ -85,12 +81,12 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-  },
+   },
 
   gradient: {
-
+ 
     justifyContent: 'center',
-  },
+   },
 
   content: {
     height: '100%',

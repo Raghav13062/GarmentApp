@@ -6,13 +6,10 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   useSharedValue,
-  withTiming,
-  interpolateColor
+
 } from "react-native-reanimated";
 import { color, fonts } from "../constant";
-import imageIndex from "../assets/imageIndex";
 const { width } = Dimensions.get("window");
-const TAB_WIDTH = width / 4;
 
 const TabItem = ({ route, isFocused, onPress }: any) => {
   const icons: any = {
@@ -35,7 +32,7 @@ const TabItem = ({ route, isFocused, onPress }: any) => {
 
   const animatedIconStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
-    color: isFocused ? '#F58021' : '#555',
+    color: isFocused ? 'black' : '#555',
   }));
 
   return (
@@ -58,7 +55,7 @@ const TabItem = ({ route, isFocused, onPress }: any) => {
         style={[
           styles.label,
           {
-            color: isFocused ? '#FF3F6C' : '#555',
+            color: isFocused ? 'black' : '#555',
             fontFamily: isFocused ? fonts.bold : fonts.semiBold
           }
         ]}
@@ -88,9 +85,7 @@ const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
     <View style={styles.outerContainer}>
       <View style={styles.tabBar}>
         {/* Sliding Pill Background */}
-        <Animated.View style={[styles.pillContainer, { width: tabWidth }, pillStyle]}>
-          <View style={styles.pill} />
-        </Animated.View>
+
 
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;

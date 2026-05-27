@@ -16,9 +16,9 @@ export const styles = StyleSheet.create({
 
   container: { flex: 1, backgroundColor: BRAND_COLORS.background },
 
-  header: {
+  headerGradient: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingBottom: 12,
     elevation: 5,
     shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },

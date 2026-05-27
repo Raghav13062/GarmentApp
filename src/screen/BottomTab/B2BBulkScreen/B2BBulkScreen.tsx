@@ -196,7 +196,7 @@ const B2BBulkScreen = () => {
               </TouchableOpacity>
             </View>
 
-            {selectedQuantity < currentProduct.minBulkQty && (
+            {selectedQuantity < currentProduct?.minBulkQty && (
               <View style={styles.progressContainer}>
                 <View style={styles.progressBarBg}>
                   <View

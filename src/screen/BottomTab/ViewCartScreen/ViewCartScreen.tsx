@@ -215,7 +215,7 @@ const ViewCartScreen = () => {
       if (item.productId) {
         // Sync with API in background (without full-screen loading spinner)
         const response = await UpdateCartQuantityApi(item.productId, newQty);
-        
+
         if (response && response.success) {
           // Silently refresh the full cart from API to sync all totals
           const data = await GetCartApi();
@@ -494,7 +494,7 @@ const ViewCartScreen = () => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
-          <Text style={styles.shopNowText}>START SHOPPING</Text>
+          <Text style={styles.shopNowText}>Startup Shopping</Text>
         </LinearGradient>
       </TouchableOpacity>
     </Animated.View>
@@ -760,6 +760,7 @@ const styles = StyleSheet.create({
     color: BRAND_COLORS.textLight,
     fontSize: 16,
     fontWeight: 'bold',
+    textTransform: "capitalize"
   },
   cartList: {
     paddingHorizontal: 16,

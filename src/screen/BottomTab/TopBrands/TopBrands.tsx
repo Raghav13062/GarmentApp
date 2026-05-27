@@ -1,5 +1,4 @@
 import { color } from "../../../constant";
-import React from "react";
 import {
   View,
   Text,

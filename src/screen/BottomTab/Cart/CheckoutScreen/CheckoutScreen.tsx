@@ -13,6 +13,7 @@ import {
   Easing,
   KeyboardAvoidingView,
   Platform,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -21,8 +22,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import ScreenNameEnum from '../../../../routes/screenName.enum';
 import { errorToast, successToast } from '../../../../utils/customToast';
 import { styles } from './style';
+import RazorpayCheckout from 'react-native-razorpay';
+// import { RAZORPAY_KEY_ID } from '@env';
+import StatusBarComponent from '../../../../component/StatusBarCompoent';
 
 const { width } = Dimensions.get('window');
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 
 const BRAND_COLORS = {
   primaryGradient: [color.primary, color.secondary],
@@ -37,6 +42,13 @@ const BRAND_COLORS = {
 };
 
 const TAX_PERCENT = 0.18;
+const ONLINE_PAYMENT_METHODS = ['upi', 'card'];
+
+const paymentMethodLabels: Record<string, string> = {
+  cod: 'Cash on Delivery',
+  upi: 'UPI',
+  card: 'Credit / Debit Card',
+};
 
 const CheckoutScreen = () => {
   const navigation = useNavigation<any>();
@@ -115,6 +127,71 @@ const CheckoutScreen = () => {
 
   /** ---------------- ORDER ---------------- */
 
+  const getRazorpayKey = () => {
+    // if (typeof RAZORPAY_KEY_ID === 'string' && RAZORPAY_KEY_ID.trim()) {
+    //   return RAZORPAY_KEY_ID.trim();
+    // }
+
+    return '';
+  };
+
+  const navigateToConfirmation = (paymentDetails?: any) => {
+    const orderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
+
+    navigation.navigate(ScreenNameEnum.OrderConfirmationScreen, {
+      orderId,
+      orderItems,
+      totalAmount: grandTotal,
+      paymentMethod,
+      paymentStatus: paymentDetails ? 'Paid' : paymentMethod === 'cod' ? 'Pending' : 'Paid',
+      transactionId: paymentDetails?.razorpay_payment_id,
+      razorpayPaymentId: paymentDetails?.razorpay_payment_id,
+      razorpayOrderId: paymentDetails?.razorpay_order_id,
+      razorpaySignature: paymentDetails?.razorpay_signature,
+    });
+  };
+
+  const openRazorpayCheckout = async () => {
+    const razorpayKey = getRazorpayKey();
+
+    if (!razorpayKey) {
+      Alert.alert(
+        'Razorpay Key Missing',
+        'Please add RAZORPAY_KEY_ID in .env before accepting online payments.',
+      );
+      return;
+    }
+
+    const options = {
+      key: razorpayKey,
+      amount: Math.round(grandTotal * 100),
+      currency: 'INR',
+      name: 'Kimbo',
+      description: `Payment for ${orderItems.length} item${orderItems.length > 1 ? 's' : ''}`,
+      prefill: {
+        email: route.params?.deliveryAddress?.email || '',
+        contact: route.params?.deliveryAddress?.phone || '',
+        name: route.params?.deliveryAddress?.fullName || '',
+      },
+      notes: {
+        payment_method: paymentMethodLabels[paymentMethod],
+      },
+      theme: {
+        color: color.primary,
+      },
+      method: paymentMethod === 'upi' ? { upi: true } : { card: true },
+    };
+
+    try {
+      const paymentDetails = await RazorpayCheckout.open(options);
+      successToast('Payment successful');
+      navigateToConfirmation(paymentDetails);
+    } catch (error: any) {
+      const message = error?.description || error?.error?.description || 'Payment was cancelled or failed';
+      Alert.alert('Payment Failed', message);
+    }
+  };
+
   const placeOrder = () => {
     if (!orderItems.length) {
       errorToast('No items found');
@@ -128,16 +205,14 @@ const CheckoutScreen = () => {
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Confirm',
-          onPress: () => {
-            const orderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
-            successToast('Order placed successfully');
+          onPress: async () => {
+            if (ONLINE_PAYMENT_METHODS.includes(paymentMethod)) {
+              await openRazorpayCheckout();
+              return;
+            }
 
-            navigation.navigate(ScreenNameEnum.OrderConfirmationScreen, {
-              orderId,
-              orderItems,
-              totalAmount: grandTotal,
-              paymentMethod,
-            });
+            successToast('Order placed successfully');
+            navigateToConfirmation();
           },
         },
       ],
@@ -176,15 +251,15 @@ const CheckoutScreen = () => {
   //           right: 5
   //         }]}>{discountPercent}% OFF</Text>
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
+      <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
       {/* HEADER */}
-      <View style={styles.header}>
-        <LinearGradient
-          colors={BRAND_COLORS.primaryGradient}
-          style={StyleSheet.absoluteFill}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        />
+      <LinearGradient
+        colors={color.primaryGradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={[styles.headerGradient, { paddingTop: STATUSBAR_HEIGHT + 10 }]}
+      >
         <View style={styles.headerContent}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Icon name="arrow-back" size={24} color={color.white} />
@@ -192,7 +267,7 @@ const CheckoutScreen = () => {
           <Text style={styles.headerTitle}>Checkout</Text>
           <View style={{ width: 40 }} />
         </View>
-      </View>
+      </LinearGradient>
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}
