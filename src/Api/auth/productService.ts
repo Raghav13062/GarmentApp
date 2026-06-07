@@ -57,7 +57,7 @@ export const getProductDetails = async (productId: string) => {
 
 export const getProductsByCategory = async (categoryId: string, gender: string = 'all') => {
   try {
-    const response = await apiClient.get(`categories/${categoryId}/products`, {
+    const response = await apiClient.get(`${endpointApi.categories}/${categoryId}/products`, {
       params: { gender }
     });
     if (response.data.success) {
@@ -66,8 +66,21 @@ export const getProductsByCategory = async (categoryId: string, gender: string =
       // errorToast(response.data.message || 'Failed to fetch category products');
       return null;
     }
-  } catch (error) {
-    errorToast('Network error while fetching category products');
-    return null;
+  } catch (error: any) {
+    try {
+      const fallbackResponse = await apiClient.get(endpointApi.products, {
+        params: { categoryId, gender },
+      });
+
+      if (fallbackResponse.data.success) {
+        return fallbackResponse.data;
+      }
+
+      return null;
+    } catch (fallbackError: any) {
+      console.log('getProductsByCategory Error:', fallbackError?.response?.data || fallbackError?.message || fallbackError);
+      errorToast('Network error while fetching category products');
+      return null;
+    }
   }
 };

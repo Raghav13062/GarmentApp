@@ -3,62 +3,48 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { RegistrationStackParamList } from '../../../navigators/RegistrationRoutes';
-import { validateEmail, validatePassword } from '../../../utils/validation';
-import { errorToast } from '../../../utils/customToast';
-import { LoginApi } from '../../../Api/auth/authservice';
+import { SetOtpApi } from '../../../Api/auth/authservice';
 
 export default function useLogin() {
-  const [email, setEmail] = useState('yasoni715@gmail.com');
-  const [password, setPassword] = useState('password123');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [phone, setPhone] = useState('9345683953');
+  const [phoneError, setPhoneError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RegistrationStackParamList>>();
-  const dispatch = useDispatch();
 
-  const handleEmailChange = (value: string) => {
-    setEmail(value.trim());
-    setEmailError(validateEmail(value.trim()));
-  };
-
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
-    setPasswordError(validatePassword(value));
+  const handlePhoneChange = (value: string) => {
+    const cleanedPhone = value.replace(/\D/g, '').slice(0, 10);
+    setPhone(cleanedPhone);
+    if (cleanedPhone.length < 10) {
+      setPhoneError('Please enter a valid phone number');
+    } else {
+      setPhoneError('');
+    }
   };
 
   const handleLogin = async () => {
-    // const emailErr = validateEmail(email);
-    // const passErr = validatePassword(password);
+    const mobileNo = phone.replace(/\D/g, '').slice(0, 10);
 
-    // setEmailError(emailErr);
-    // setPasswordError(passErr);
-
-    // if (emailErr || passErr) {
-    //   errorToast("Please check your email and password");
-    //   return;
-    // }
+    if (mobileNo.length !== 10) {
+      setPhoneError('Please enter a valid phone number');
+      return;
+    }
 
     try {
       const params = {
-        email,
-        password,
+        phone: mobileNo,
       };
-      await LoginApi(params, setLoading, dispatch, navigation);
+      await SetOtpApi(params, setLoading);
     } catch (error) {
       setLoading(false);
-      errorToast("Login error occurred");
       console.error("Login error:", error);
     }
   };
 
   return {
-    email,
-    password,
-    emailError,
-    passwordError,
+    phone,
+    phoneError,
     loading,
-    handleEmailChange,
-    handlePasswordChange,
+    handlePhoneChange,
     handleLogin,
     navigation,
   };

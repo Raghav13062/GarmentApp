@@ -151,12 +151,12 @@ export const styles = StyleSheet.create({
   },
 
   checkbox: {
-    width: 22,
-    height: 22,
+    width: 24,
+    height: 24,
     borderWidth: 1.6,
     borderColor: color.borderLight,
     borderRadius: 7,
-    marginRight: 11,
+    marginRight: 12,
     marginTop: 1,
     justifyContent: 'center',
     alignItems: 'center',

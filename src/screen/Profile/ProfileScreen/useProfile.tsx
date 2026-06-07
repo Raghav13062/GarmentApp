@@ -28,22 +28,16 @@ export default function useProfile() {
       await AsyncStorage.clear(); // Comprehensive clear
 
       // 3. Reset Navigation to Login (Prevents going back)
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: ScreenNameEnum.BottomTabs }],
-        })
-      );
 
       successToast('Logged out successfully');
+      navigation.goBack();
+
     } catch (error) {
       console.error('Logout error:', error);
     }
   };
   const [loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   GetProfile(setLoading,dispatch);
-  // }, []);
+
 
   return {
     loading,

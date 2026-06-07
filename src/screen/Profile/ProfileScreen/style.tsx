@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 12,
     borderBottomLeftRadius: 18,
-    borderBottomRightRadius: 10,
-    elevation: 7,
+    borderBottomRightRadius: 18,
+
     shadowColor: color.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginBottom: 10,
   },
   headerTitle: {
     fontSize: 20,
@@ -40,7 +39,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 15,
-    marginBottom: 20
   },
   profileImgWrapper: {
     position: "relative",
@@ -114,7 +112,6 @@ export const styles = StyleSheet.create({
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
   },
   cardIconGradient: {
     width: 36,

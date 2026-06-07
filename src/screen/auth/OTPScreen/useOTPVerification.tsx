@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { successToast, errorToast } from '../../../utils/customToast';
-import { LoginApi, ResendOtpApi } from '../../../Api/auth/authservice';
+import { errorToast } from '../../../utils/customToast';
+import { VerifyOtpApi, ResendOtpApi } from '../../../Api/auth/authservice';
 import { useDispatch } from 'react-redux';
 import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-const CELL_COUNT = 6;
+const CELL_COUNT = 5;
 
 export default function useOtpVerification() {
   const navigation = useNavigation<any>();
   const route: any = useRoute();
   const dispatch = useDispatch();
-  const phone = route?.params?.phone ?? '';
-    const otp2 = route?.params?.otp ?? '';
+  const phone = String(route?.params?.phone ?? '').replace(/\D/g, '').slice(0, 10);
+  const staticOtp = '12345';
 
-  const [code, setCode] = useState(otp2);
+  const [code, setCode] = useState(staticOtp);
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(30);
   const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
@@ -26,34 +26,34 @@ export default function useOtpVerification() {
     setValue: setCode,
   });
 
-const handleResendOtp = async () => {
-  // Prevent resend if timer is active
-  if (resendTimer > 0 || loading) return;
+  const handleResendOtp = async () => {
+    // Prevent resend if timer is active
+    if (resendTimer > 0 || loading) return;
 
-  if (!phone) {
-    errorToast('Phone number is required');
-    return;
-  }
+    if (!phone) {
+      errorToast('Phone number is required');
+      return;
+    }
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const params = {
-      phone,
-      navigation,
-    };
+      const params = {
+        phone,
+        navigation,
+      };
 
-    await ResendOtpApi(params, setLoading);
+      await ResendOtpApi(params, setLoading);
 
-    setResendTimer(30); // reset timer
-    setCode('');        // clear OTP input
-  } catch (error: any) {
-    console.error('Resend OTP error:', error);
-    errorToast(error?.message || 'Failed to resend OTP');
-  } finally {
-    setLoading(false);
-  }
-};
+      setResendTimer(30); // reset timer
+      setCode(staticOtp);        // clear OTP input to static
+    } catch (error: any) {
+      console.error('Resend OTP error:', error);
+      errorToast(error?.message || 'Failed to resend OTP');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   /* -------------------- RESEND TIMER -------------------- */
   useEffect(() => {
@@ -68,27 +68,26 @@ const handleResendOtp = async () => {
 
   /* -------------------- VERIFY OTP -------------------- */
   const handleVerifyOtp = async () => {
-    if (code.length !== CELL_COUNT) {
-      errorToast(`Please enter a valid ${CELL_COUNT}-digit OTP`);
+    const otp = staticOtp;
+    const mobileNo = String(phone || '').replace(/\D/g, '').slice(0, 10);
+
+    if (mobileNo.length !== 10) {
+      errorToast('Phone number is required');
       return;
     }
 
     setLoading(true);
     try {
       const payload = {
-        phone,
-        otp2,
+        mobileNo,
+        otp,
       };
-        const response = await LoginApi(
+      await VerifyOtpApi(
         payload,
         setLoading,
         dispatch,
         navigation
       );
-
-      if (response?.status) {
-        successToast('OTP verified successfully 🎉');
-      } 
     } catch (error: any) {
       errorToast(
         error?.response?.data?.message || 'Something went wrong. Try again.'
@@ -98,7 +97,7 @@ const handleResendOtp = async () => {
     }
   };
 
- 
+
 
   /* -------------------- CHANGE PHONE -------------------- */
   const handleChangePhone = () => {
@@ -117,6 +116,6 @@ const handleResendOtp = async () => {
     handleVerifyOtp,
     handleResendOtp,
     handleChangePhone,
-    
+
   };
 }

@@ -1,8 +1,7 @@
- import BottomTabs from "../navigators/TabNavigator";
- import Login from "../screen/auth/Login/Login";
+import BottomTabs from "../navigators/TabNavigator";
+import Login from "../screen/auth/Login/Login";
 import OnboardingScreen from "../screen/auth/Onboarding";
 import OtpScreen from "../screen/auth/OTPScreen/OtpScreen";
- import SignUp from "../screen/auth/Signup/SignUp";
 import Splash from "../screen/auth/Splash";
 import CheckoutScreen from "../screen/BottomTab/Cart/CheckoutScreen/CheckoutScreen";
 import OrderConfirmationScreen from "../screen/BottomTab/OrderConfirmationScreen/OrderConfirmationScreen";
@@ -14,9 +13,9 @@ import MyOrders from "../screen/Profile/MyOrders/MyOrders";
 import PaymentHistoryScreen from "../screen/Profile/PaymentHistory/PaymentHistory";
 import Privacy from "../screen/Profile/Privacy/Privacy";
 import SearchProduct from "../screen/SearchProduct/SearchProduct";
- 
- 
- import WishlistScreen from "../screen/BottomTab/Wishlist/WishlistScreen";
+
+
+import WishlistScreen from "../screen/BottomTab/Wishlist/WishlistScreen";
 import ScreenNameEnum from "./screenName.enum";
 
 const _routes: any = {
@@ -50,10 +49,6 @@ const _routes: any = {
       Component: EditProfile,
     },
 
-    {
-      name: ScreenNameEnum.SignUpScreen,
-      Component: SignUp,
-    },
 
     {
       name: ScreenNameEnum.LoginScreen,
@@ -65,20 +60,20 @@ const _routes: any = {
       Component: OnboardingScreen,
     },
 
-   
- 
-   
+
+
+
     {
       name: ScreenNameEnum.OtpScreen,
       Component: OtpScreen,
     },
-   
-   
+
+
     {
       name: ScreenNameEnum.OrderConfirmationScreen,
       Component: OrderConfirmationScreen,
     },
-   
+
     {
       name: ScreenNameEnum.ViewCartScreen,
       Component: ViewCartScreen,
@@ -92,17 +87,17 @@ const _routes: any = {
       Component: OtherCategoryData,
     },
 
- {
+    {
       name: ScreenNameEnum.BottomTabs,
       Component: BottomTabs,
     },
- {
+    {
       name: ScreenNameEnum.ProductDetails,
       Component: ProductDetails,
     },
-  
- 
- 
+
+
+
 
   ],
 

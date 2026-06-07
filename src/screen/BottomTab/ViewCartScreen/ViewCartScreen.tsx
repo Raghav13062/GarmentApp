@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { color } from "../../../constant";
 import {
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   Text,
   FlatList,
   Alert,
-  Dimensions,
   TouchableOpacity,
   Image,
   Animated,
@@ -18,16 +17,17 @@ import StatusBarComponent from '../../../component/StatusBarCompoent';
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch } from 'react-redux';
 import { setCart as setCartRedux } from '../../../redux/feature/cartSlice';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import { errorToast } from '../../../utils/customToast';
 import { ClearCartApi, GetCartApi, RemoveFromCartApi, UpdateCartQuantityApi } from '../../../Api/auth/cartService';
+import { getHomePageData } from '../../../Api/auth/homeService';
 import Loading from '../../../utils/Loader';
+import ProductCard from '../../../component/cart/ProductCard';
 
-const { width, height } = Dimensions.get('window');
 
 // Brand Colors
 const BRAND_COLORS = {
@@ -46,9 +46,84 @@ const BRAND_COLORS = {
   lightGray: color.borderLight,
 };
 
+const toNumber = (value: any, fallback = 0) => {
+  const parsed = Number(value);
+  return Number?.isFinite(parsed) ? parsed : fallback;
+};
+
+const safeImageUrl = (url?: string) =>
+  typeof url === 'string' && url.length > 0
+    ? url.replace(/\.avif$/i, '.webp')
+    : 'https://via.placeholder.com/150';
+
+const mapCartItem = (item: any) => {
+  const product = item?.product && typeof item.product === 'object' ? item.product : {};
+  const productId =
+    product?._id ||
+    product?.id ||
+    item?.productId ||
+    item?.product?._id ||
+    item?.product?.id;
+  const qty = toNumber(item?.quantity, 1);
+  const unitPrice = toNumber(
+    item?.unitPrice ??
+    item?.price ??
+    product?.pricing?.sellingPrice ??
+    product?.sellingPrice ??
+    product?.discountPrice ??
+    product?.price,
+    0
+  );
+  const lineTotal = toNumber(
+    item?.lineTotal ??
+    item?.totalPrice ??
+    item?.sellingPrice ??
+    unitPrice * qty,
+    unitPrice * qty
+  );
+  const unitMrp = toNumber(
+    item?.unitMrp ??
+    item?.mrp ??
+    product?.pricing?.mrp ??
+    product?.mrp ??
+    product?.price,
+    unitPrice
+  );
+  const originalPrice = toNumber(
+    item?.originalPrice ??
+    item?.mrpTotal ??
+    unitMrp * qty,
+    unitMrp * qty
+  );
+  const image =
+    item?.image ||
+    item?.images?.[0] ||
+    item?.baseImages?.[0] ||
+    product?.baseImages?.[0] ||
+    product?.images?.[0] ||
+    product?.thumbnail;
+
+  return {
+    id: item?._id || item?.id || productId,
+    productId,
+    product,
+    title: product?.title || product?.name || item?.title || item?.name || 'Product',
+    image: safeImageUrl(image),
+    price: lineTotal,
+    unitPrice,
+    quantity: qty,
+    brand: product?.brand || item?.brand || 'Garment',
+    category: product?.categoryId?.name || product?.category?.name || item?.category || 'One-Size',
+    originalPrice,
+    unitMrp,
+    selectedSize: item?.size || item?.selectedSize || item?.variant?.size,
+    selectedColor: item?.color || item?.selectedColor || item?.variant?.color,
+  };
+};
+
 const ViewCartScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
   const dispatchRedux = useDispatch();
 
   // Get cart data from route params or initialize empty
@@ -62,61 +137,80 @@ const ViewCartScreen = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [loading, setLoading] = useState(false);
   const [cartData, setCartData] = useState<any>(null);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
 
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
   const cartItemAnim = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    fetchCart();
-  }, []);
-
   const fetchCart = async () => {
     try {
       const data = await GetCartApi(setLoading);
       if (data) {
         setCartData(data);
-        const mappedItems = data.items.map((item: any) => {
-          const qty = item.quantity || 1;
-          const unitPrice = item.price || 0;
-          const lineTotal = item.lineTotal || (unitPrice * qty);
-          const unitMrp = item.mrp || item.product?.mrp || unitPrice;
-
-          return {
-            id: item._id,
-            productId: item.product?._id,
-            title: item.product?.title || 'Product',
-            image: item.product?.baseImages?.[0]?.replace(/\.avif$/i, '.webp') || 'https://via.placeholder.com/150',
-            price: lineTotal,
-            unitPrice: unitPrice,
-            quantity: qty,
-            brand: item.product?.brand || 'Garment',
-            category: item.product?.categoryId?.name || 'Apparel',
-            originalPrice: unitMrp * qty,
-            unitMrp: unitMrp
-          };
-        });
+        const mappedItems = Array.isArray(data.items) ? data.items.map(mapCartItem) : [];
         setCart(mappedItems);
-        setTotalPrice(data.totalPrice);
-        setTotalItems(data.totalItems);
+        setTotalPrice(toNumber(data.totalPrice, mappedItems.reduce((sum: number, item: any) => sum + item.price, 0)));
+        setTotalItems(toNumber(data.totalItems, mappedItems.reduce((sum: number, item: any) => sum + item.quantity, 0)));
 
         // Update Redux state
         dispatchRedux(setCartRedux({
           items: mappedItems,
-          totalItems: data.totalItems,
-          totalPrice: data.totalPrice
+          totalItems: toNumber(data.totalItems, mappedItems.length),
+          totalPrice: toNumber(data.totalPrice, 0)
         }));
 
         // Auto-select all items by default
         const allItemIds = mappedItems.map((item: any) => item.id);
         setSelectedItems(new Set(allItemIds));
-        setSelectAll(true);
+        setSelectAll(mappedItems.length > 0);
       }
     } catch (error) {
       console.error('Fetch cart error:', error);
     }
   };
+
+  const fetchAllProducts = async () => {
+    const routeProducts =
+      route.params?.products ||
+      route.params?.relatedProducts ||
+      route.params?.allProducts;
+
+    if (Array.isArray(routeProducts) && routeProducts.length > 0) {
+      setAllProducts(routeProducts);
+      return;
+    }
+
+    try {
+      const response = await getHomePageData(route.params?.gender || 'women');
+      const sections = response?.data?.sections;
+
+      if (!Array.isArray(sections)) return;
+
+      const productMap = new Map<string, any>();
+      sections.forEach((section: any) => {
+        const products = Array.isArray(section?.data?.products) ? section.data.products : [];
+        products.forEach((product: any) => {
+          const key = String(product?._id || product?.id || product?.productId || '');
+          if (key && !productMap.has(key)) {
+            productMap.set(key, product);
+          }
+        });
+      });
+
+      setAllProducts(Array.from(productMap.values()));
+    } catch (error) {
+      console.log('Fetch all products error:', error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchCart();
+      fetchAllProducts();
+    }, [])
+  );
 
   useEffect(() => {
     // Start animations
@@ -148,36 +242,25 @@ const ViewCartScreen = () => {
 
   // Calculate totals
   const calculateTotals = () => {
-    const items = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-    const price = cart.reduce((sum, item) => sum + item.price, 0);
+    const items = cart.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
+    const price = cart.reduce((sum: number, item: any) => sum + item.price, 0);
     setTotalItems(items);
     setTotalPrice(price);
   };
 
   // Remove item from cart
-  const removeItem = (item: any) => {
-    Alert.alert(
-      'Remove Item',
-      'Are you sure you want to remove this item from cart?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Remove',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const productId = item.productId;
-              if (productId) {
-                await RemoveFromCartApi(productId, setLoading);
-                fetchCart(); // Refresh cart data
-              }
-            } catch (error) {
-              console.error('Remove error:', error);
-            }
-          }
-        }
-      ]
-    );
+  const removeItem = async (item: any) => {
+
+    try {
+      const productId = item.productId;
+      if (productId) {
+        await RemoveFromCartApi(productId, setLoading);
+        fetchCart(); // Refresh cart data
+      }
+    } catch (error) {
+      console.error('Remove error:', error);
+    }
+
   };
 
   // Update quantity
@@ -221,35 +304,16 @@ const ViewCartScreen = () => {
           const data = await GetCartApi();
           if (data) {
             setCartData(data);
-            const mappedItems = data.items.map((item: any) => {
-              const qty = item.quantity || 1;
-              const unitPrice = item.price || 0;
-              const lineTotal = item.lineTotal || (unitPrice * qty);
-              const unitMrp = item.mrp || item.product?.mrp || unitPrice;
-
-              return {
-                id: item._id,
-                productId: item.product?._id,
-                title: item.product?.title || 'Product',
-                image: item.product?.baseImages?.[0]?.replace(/\.avif$/i, '.webp') || 'https://via.placeholder.com/150',
-                price: lineTotal,
-                unitPrice: unitPrice,
-                quantity: qty,
-                brand: item.product?.brand || 'Garment',
-                category: item.product?.categoryId?.name || 'Apparel',
-                originalPrice: unitMrp * qty,
-                unitMrp: unitMrp
-              };
-            });
+            const mappedItems = Array.isArray(data.items) ? data.items.map(mapCartItem) : [];
             setCart(mappedItems);
-            setTotalPrice(data.totalPrice);
-            setTotalItems(data.totalItems);
+            setTotalPrice(toNumber(data.totalPrice, mappedItems.reduce((sum: number, item: any) => sum + item.price, 0)));
+            setTotalItems(toNumber(data.totalItems, mappedItems.reduce((sum: number, item: any) => sum + item.quantity, 0)));
 
             // Update Redux state
             dispatchRedux(setCartRedux({
               items: mappedItems,
-              totalItems: data.totalItems,
-              totalPrice: data.totalPrice
+              totalItems: toNumber(data.totalItems, mappedItems.length),
+              totalPrice: toNumber(data.totalPrice, 0)
             }));
           }
         } else {
@@ -267,7 +331,7 @@ const ViewCartScreen = () => {
   };
 
   // Toggle item selection
-  const toggleItemSelection = (itemId) => {
+  const toggleItemSelection = (itemId: any) => {
     const updatedSelected = new Set(selectedItems);
 
     if (updatedSelected.has(itemId)) {
@@ -291,7 +355,7 @@ const ViewCartScreen = () => {
     if (selectAll) {
       setSelectedItems(new Set());
     } else {
-      const allItemIds = cart.map(item => item.id);
+      const allItemIds = cart.map((item: any) => item.id);
       setSelectedItems(new Set(allItemIds));
     }
     setSelectAll(!selectAll);
@@ -304,7 +368,7 @@ const ViewCartScreen = () => {
     let itemCount = 0;
 
     selectedItems.forEach(itemId => {
-      const item = cart.find(cartItem => cartItem.id === itemId);
+      const item = cart.find((cartItem: any) => cartItem.id === itemId);
       if (item) {
         const qty = item.quantity || 1;
         const lineMrp = item.originalPrice || (item.unitMrp ? item.unitMrp * qty : item.price);
@@ -361,7 +425,7 @@ const ViewCartScreen = () => {
       return;
     }
 
-    const selectedCartItems = cart.filter(item => selectedItems.has(item.id));
+    const selectedCartItems = cart?.filter((item: any) => selectedItems?.has(item?.id));
     const metrics = getSelectedMetrics();
 
     // Navigate to checkout screen with full details
@@ -377,7 +441,7 @@ const ViewCartScreen = () => {
 
 
   // Render cart item
-  const renderCartItem = ({ item, index }) => {
+  const renderCartItem = ({ item, index }: any) => {
     const animationDelay = index * 100;
     const itemAnimation = {
       opacity: cartItemAnim.interpolate({
@@ -396,80 +460,150 @@ const ViewCartScreen = () => {
 
     const isSelected = selectedItems.has(item.id);
     const quantity = item.quantity || 1;
+    const discountPercent = item.originalPrice > item.price
+      ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
+      : 0;
+    const variantText = item.selectedSize || item.selectedColor
+      ? `${item.selectedColor ? `${item.selectedColor} / ` : ''}${item.selectedSize || item.category}`
+      : item.category || 'One-Size';
 
     return (
-      <Animated.View style={[styles.cartItemContainer, { animationDelay }, itemAnimation]}>
+      <Animated.View style={[styles.bagItemContainer, itemAnimation]}>
+        <TouchableOpacity
+          style={[styles.bagCheckbox, isSelected && styles.bagCheckboxSelected]}
+          onPress={() => toggleItemSelection(item.id)}
+          activeOpacity={0.8}
+        >
+          {isSelected && <Icon name="check" size={15} color={color.white} />}
+        </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.cartItem}
-          onPress={() => toggleItemSelection(item.id)}
+          style={styles.bagProductBlock}
           activeOpacity={0.9}
+          onPress={() =>
+            navigation.navigate(ScreenNameEnum.ProductDetails, {
+              item: item.product && Object.keys(item.product).length ? item.product : item,
+              productId: item.productId,
+              relatedProducts: cart.map((cartItem: any) => cartItem.product && Object.keys(cartItem.product).length ? cartItem.product : cartItem),
+            })
+          }
         >
-          {/* Selection Checkbox */}
-          <View style={styles.checkboxContainer}>
-            <TouchableOpacity
-              style={[styles.checkbox, isSelected && styles.checkboxSelected]}
-              onPress={() => toggleItemSelection(item.id)}
-              activeOpacity={0.8}
-            >
-              {isSelected && <Icon name="check" size={16} color={color.white} />}
-            </TouchableOpacity>
-          </View>
-
-          {/* Product Image */}
           <Image
             source={{ uri: item.image }}
-            style={styles.productImage}
+            style={styles.bagProductImage}
           />
 
-          {/* Product Details */}
-          <View style={styles.productDetails}>
-            <Text style={styles.productTitle} numberOfLines={2}>
-              {item.title || item.name}
-            </Text>
-            <Text style={styles.productBrand}>{item.brand}</Text>
-            <Text style={styles.productCategory}>{item.category}</Text>
-
-            {/* Quantity Controls */}
-            <View style={styles.quantityContainer}>
+          <View style={styles.bagProductDetails}>
+            <View style={styles.bagTitleRow}>
+              <Text style={styles.bagProductTitle} numberOfLines={1}>
+                {item.title || item.name}
+              </Text>
               <TouchableOpacity
-                style={styles.quantityButton}
+                style={styles.bagDeleteButton}
+                onPress={() => removeItem(item)}
+                activeOpacity={0.7}
+              >
+                <Icon name="delete-outline" size={20} color={BRAND_COLORS.error} />
+              </TouchableOpacity>
+            </View>
+
+
+            <View style={styles.bagPriceRow}>
+              <Text style={styles.bagPrice}>₹{item.price}</Text>
+              {item.originalPrice > item.price && (
+                <Text style={styles.bagMrp}>₹{item.originalPrice}</Text>
+              )}
+              {discountPercent > 0 && (
+                <Text style={styles.bagDiscount}>{discountPercent}%OFF</Text>
+              )}
+            </View>
+
+            <View style={styles.bagTagsRow}>
+              <Text style={styles.bagTag}>Best selling</Text>
+              <Text style={styles.bagTag}>Trendy</Text>
+            </View>
+
+            <View style={styles.bagQtyRow}>
+              <TouchableOpacity
+                style={styles.bagQtyButton}
                 onPress={() => updateQuantity(item, 'decrease')}
                 disabled={quantity <= 1}
               >
-                <Icon name="remove" size={18} color={quantity <= 1 ? BRAND_COLORS.gray : BRAND_COLORS.primaryLight} />
+                <Icon name="remove" size={16} color={quantity <= 1 ? BRAND_COLORS.gray : color.black} />
               </TouchableOpacity>
-
-              <Text style={styles.quantityText}>{quantity}</Text>
-
+              <Text style={styles.bagQtyText}>{quantity}</Text>
               <TouchableOpacity
-                style={styles.quantityButton}
+                style={styles.bagQtyButton}
                 onPress={() => updateQuantity(item, 'increase')}
               >
-                <Icon name="add" size={18} color={BRAND_COLORS.primaryLight} />
+                <Icon name="add" size={16} color={color.black} />
               </TouchableOpacity>
             </View>
           </View>
-
-          {/* Price and Actions */}
-          <View style={styles.priceSection}>
-            <Text style={styles.productPrice}>₹{item.price}</Text>
-            {item.originalPrice && (
-              <Text style={styles.originalPrice}>₹{item.originalPrice}</Text>
-            )}
-
-            <TouchableOpacity
-              style={styles.removeButton}
-              onPress={() => removeItem(item)}
-              activeOpacity={0.7}
-            >
-              <Icon name="delete-outline" size={20} color={BRAND_COLORS.error} />
-            </TouchableOpacity>
-          </View>
         </TouchableOpacity>
-        {/* Divider */}
-        {index < cart.length - 1 && <View style={styles.divider} />}
       </Animated.View>
+    );
+  };
+
+
+
+  const getCardProducts = () =>
+    cart
+      .map((cartItem: any) => {
+        if (cartItem.product && Object.keys(cartItem.product).length > 0) {
+          return cartItem.product;
+        }
+
+        return {
+          _id: cartItem.productId || cartItem.id,
+          id: cartItem.productId || cartItem.id,
+          title: cartItem.title,
+          name: cartItem.title,
+          baseImages: [cartItem.image],
+          images: [cartItem.image],
+          brand: cartItem.brand,
+          category: cartItem.category,
+          pricing: {
+            sellingPrice: cartItem.unitPrice || cartItem.price,
+            mrp: cartItem.unitMrp || cartItem.originalPrice,
+            discountPercentage:
+              cartItem.originalPrice > cartItem.price
+                ? Math.round(((cartItem.originalPrice - cartItem.price) / cartItem.originalPrice) * 100)
+                : 0,
+          },
+        };
+      })
+      .filter((item: any) => item?._id || item?.id);
+
+  const renderProductCardList = () => {
+    const products = allProducts.length > 0 ? allProducts : getCardProducts();
+    if (products.length === 0) return null;
+
+    return (
+      <View style={styles.productCardSection}>
+        <Text style={styles.productCardSectionTitle}>More products for you</Text>
+        <FlatList
+          data={products}
+          numColumns={2}
+          scrollEnabled={false}
+          columnWrapperStyle={styles.productCardRow}
+          renderItem={({ item }) => (
+            <ProductCard
+              item={item}
+              onPress1={() =>
+                navigation.navigate(ScreenNameEnum.ProductDetails, {
+                  item,
+                  productId: item?._id || item?.id,
+                  relatedProducts: products,
+                })
+              }
+            />
+          )}
+          keyExtractor={(item, productIndex) =>
+            String(item?._id || item?.id || item?.productId || `bag-product-${productIndex}`)
+          }
+        />
+      </View>
     );
   };
 
@@ -501,88 +635,52 @@ const ViewCartScreen = () => {
   );
 
   // Render detailed order summary
-  const renderSummary = () => {
-    if (cart.length === 0) return null;
 
-    const metrics = getSelectedMetrics();
-
-    return (
-      <View style={styles.summaryContainer}>
-        <Text style={styles.summaryTitle}>Order Summary</Text>
-
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Subtotal</Text>
-          <Text style={styles.summaryValue}>₹{metrics.subtotal}</Text>
-        </View>
-
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Discount</Text>
-          <Text style={[styles.summaryValue, { color: color.success }]}>-₹{metrics.discount}</Text>
-        </View>
-
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Delivery Charges</Text>
-          <Text style={[styles.summaryValue, { color: color.success, fontWeight: 'bold' }]}>FREE</Text>
-        </View>
-
-        <View style={styles.dividerSmall} />
-
-        <View style={[styles.summaryRow, { marginTop: 8 }]}>
-          <Text style={styles.grandTotalLabel}>Grand Total</Text>
-          <Text style={styles.grandTotalValue}>₹{metrics.total}</Text>
-        </View>
-
-        {metrics.discount > 0 && (
-          <View style={styles.savingsContainer}>
-            <Text style={styles.savingsText}>
-              You save ₹{metrics.discount} on this order!
-            </Text>
-          </View>
-        )}
-      </View>
-    );
-  };
 
   // Render header
-  const renderHeader = () => (
-    <Animated.View style={[styles.header, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-      <LinearGradient
-        colors={BRAND_COLORS.primaryGradient}
-        style={StyleSheet.absoluteFill}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-      />
-      <View style={styles.headerContent}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-          activeOpacity={0.7}
-        >
-          <Icon name="arrow-back" size={24} color={color.white} />
-        </TouchableOpacity>
+  const renderHeader = () => {
+    const selectedCount = selectedItems.size;
+    const headerStatus = cart.length === 0
+      ? 'Your bag is waiting'
+      : `${selectedCount} selected • ₹${getSelectedTotal()}`;
 
-        <View style={styles.headerTitleContainer}>
-          <Text style={styles.headerTitle}>Shopping Cart</Text>
-          <Text style={styles.headerSubtitle}>
-            {totalItems} item{totalItems !== 1 ? 's' : ''}
-          </Text>
+    return (
+      <Animated.View style={[styles.bagHeader, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+        <View style={styles.bagHeaderContent}>
+          <TouchableOpacity
+            style={styles.bagHeaderIcon}
+            onPress={() => navigation.goBack()}
+            activeOpacity={0.7}
+          >
+            <Icon name="arrow-back" size={23} color={color.black} />
+          </TouchableOpacity>
+
+          <View style={styles.bagHeaderTitleWrap}>
+            <Text style={styles.bagHeaderTitle}>My Bag ({totalItems})</Text>
+            <Text style={styles.bagHeaderStatus} numberOfLines={1}>{headerStatus}</Text>
+          </View>
+
+          <View style={styles.bagHeaderActions}>
+            <TouchableOpacity
+              style={[styles.bagHeaderIcon, cart.length === 0 && styles.bagHeaderIconDisabled]}
+              onPress={clearCart}
+              disabled={cart.length === 0}
+              activeOpacity={0.7}
+            >
+              <Icon name="delete-outline" size={23} color={cart.length === 0 ? '#B8B8B8' : color.black} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.bagHeaderIcon}
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate(ScreenNameEnum.WishList)}
+            >
+              <Icon name="favorite-border" size={23} color={color.black} />
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <TouchableOpacity
-          style={styles.clearCartButton}
-          onPress={clearCart}
-          disabled={cart.length === 0}
-          activeOpacity={0.7}
-        >
-          <Icon
-            name="delete-sweep"
-            size={24}
-            color={cart.length === 0 ? 'rgba(255, 255, 255, 0.5)' : color.white}
-          />
-        </TouchableOpacity>
-      </View>
-    </Animated.View>
-  );
+      </Animated.View>
+    );
+  };
 
   // Render footer
   const renderFooter = () => {
@@ -592,38 +690,23 @@ const ViewCartScreen = () => {
     const selectedCount = selectedItems.size;
 
     return (
-      <Animated.View style={[styles.footer, { opacity: fadeAnim }]}>
-        <LinearGradient
-          colors={[color.white, BRAND_COLORS.background]}
-          style={StyleSheet.absoluteFill}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        />
-
-        <View style={styles.footerContent}>
-          {/* Select All */}
+      <Animated.View style={[styles.bagFooter, { opacity: fadeAnim }]}>
+        <View style={styles.bagFooterContent}>
           <TouchableOpacity
-            style={styles.selectAllContainer}
+            style={styles.bagSelectAll}
             onPress={toggleSelectAll}
             activeOpacity={0.7}
           >
-            <View style={[styles.selectAllCheckbox, selectAll && styles.selectAllCheckboxSelected]}>
-              {selectAll && <Icon name="check" size={16} color={color.white} />}
+            <View style={[styles.bagFooterCheckbox, selectAll && styles.bagCheckboxSelected]}>
+              {selectAll && <Icon name="check" size={14} color={color.white} />}
             </View>
-            <View>
-              <Text style={styles.selectAllText}>Select All</Text>
-
-              <Text style={styles.totalAmount}>₹{selectedTotal}</Text>
-
-            </View>
-
+            <Text style={styles.bagAllText}>All</Text>
           </TouchableOpacity>
 
-          {/* Totals */}
+          <Text style={styles.bagFooterTotal}>₹{selectedTotal}</Text>
 
-          {/* Checkout Button */}
           <TouchableOpacity
-            style={[styles.checkoutButton, selectedCount === 0 && styles.checkoutButtonDisabled]}
+            style={[styles.bagCheckoutButton, selectedCount === 0 && styles.checkoutButtonDisabled]}
             onPress={proceedToCheckout}
             disabled={selectedCount === 0}
             activeOpacity={0.8}
@@ -634,12 +717,9 @@ const ViewCartScreen = () => {
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             />
-            <View style={styles.checkoutButtonContent}>
-              <Text style={[styles.checkoutText, selectedCount === 0 && styles.checkoutTextDisabled]}>
-                Chekout
-              </Text>
-
-            </View>
+            <Text style={[styles.bagCheckoutText, selectedCount === 0 && styles.checkoutTextDisabled]}>
+              CHECKOUT ({selectedCount})
+            </Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -647,32 +727,31 @@ const ViewCartScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={[]}>
-      <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
-      {loading && <Loading />}
+    <SafeAreaView style={styles.container}>
+      <StatusBarComponent barStyle="dark-content" backgroundColor="#FFFFFF" translucent={false} />
+
       {renderHeader()}
+      {loading ? <Loading fullScreen={false} size="large" color={BRAND_COLORS.primaryLight} containerStyle={styles.loaderContainer} /> : (
+        cart.length === 0 ? (
+          renderEmptyCart()
+        ) : (
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={cart}
+              renderItem={renderCartItem}
+              keyExtractor={(item, index) => String(item?.id || item?.productId || index)}
+              contentContainerStyle={styles.bagList}
+              showsVerticalScrollIndicator={false}
+              ListFooterComponent={
 
-      {cart.length === 0 ? (
-        renderEmptyCart()
-      ) : (
-        <View style={{ flex: 1 }}>
-          <FlatList
-            data={cart}
-            renderItem={renderCartItem}
-            keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={styles.cartList}
-            showsVerticalScrollIndicator={false}
-            ListHeaderComponent={
-              <View style={styles.listHeader}>
-                <Text style={styles.listHeaderTitle}>Your Cart Items</Text>
-              </View>
-            }
-            ListFooterComponent={renderSummary()}
-          />
-          {renderFooter()}
-        </View>
+                renderProductCardList()
+
+              }
+            />
+          </View>
+        )
       )}
-
+      {renderFooter()}
     </SafeAreaView>
   );
 };
@@ -680,7 +759,276 @@ const ViewCartScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BRAND_COLORS.background,
+    backgroundColor: color.white,
+  },
+  loaderContainer: {
+    flex: 1,
+  },
+  bagHeader: {
+    paddingTop: Platform.OS === 'ios' ? 10 : 8,
+    paddingHorizontal: 12,
+    paddingBottom: 12,
+    backgroundColor: color.white,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
+    zIndex: 10,
+  },
+  bagHeaderContent: {
+    minHeight: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  bagHeaderTitleWrap: {
+    position: 'absolute',
+    left: 58,
+    right: 92,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bagHeaderTitle: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '800',
+    color: color.black,
+  },
+  bagHeaderStatus: {
+    marginTop: 2,
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#777',
+    textAlign: 'center',
+  },
+  bagHeaderActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bagHeaderIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 2,
+  },
+  bagHeaderIconDisabled: {
+    opacity: 0.7,
+  },
+  shippingBanner: {
+    backgroundColor: '#F4F4F4',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 14,
+  },
+  shippingText: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: '#222',
+  },
+  shippingBold: {
+    fontWeight: '800',
+    color: color.black,
+  },
+  bagList: {
+    paddingBottom: 112,
+    backgroundColor: color.white,
+  },
+  productCardSection: {
+    paddingTop: 18,
+    paddingBottom: 12,
+    backgroundColor: color.white,
+  },
+  productCardSectionTitle: {
+    fontSize: 17,
+    fontWeight: '800',
+    color: color.black,
+    marginBottom: 12,
+    paddingHorizontal: 16,
+  },
+  productCardRow: {
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    marginBottom: 12,
+  },
+  bagItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    backgroundColor: color.white,
+  },
+  bagCheckbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 5,
+    borderWidth: 1.4,
+    borderColor: '#1F1F1F',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  bagCheckboxSelected: {
+    backgroundColor: color.primary,
+    borderColor: color.primary,
+  },
+  bagProductBlock: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  bagProductImage: {
+    width: 122,
+    height: 164,
+    backgroundColor: '#F0F0F0',
+    resizeMode: 'cover',
+  },
+  bagProductDetails: {
+    flex: 1,
+    paddingLeft: 12,
+    minHeight: 164,
+  },
+  bagTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bagProductTitle: {
+    flex: 1,
+    fontSize: 15,
+    color: '#111',
+    fontWeight: '500',
+  },
+  bagDeleteButton: {
+    width: 28,
+    height: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bagVariantText: {
+    marginTop: 8,
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111',
+  },
+  bagPriceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    marginTop: 14,
+  },
+  bagPrice: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: color.primary,
+    marginRight: 4,
+  },
+  bagMrp: {
+    fontSize: 13,
+    color: '#999',
+    textDecorationLine: 'line-through',
+    marginRight: 4,
+  },
+  bagDiscount: {
+    fontSize: 13,
+    color: color.white,
+    backgroundColor: color.primary,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  bagTagsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 7,
+  },
+  bagTag: {
+    fontSize: 10,
+    color: '#8A5A00',
+    backgroundColor: '#FFF4D8',
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    marginRight: 5,
+  },
+  bagQtyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    marginTop: 'auto',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 7,
+    overflow: 'hidden',
+  },
+  bagQtyButton: {
+    width: 28,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FAFAFA',
+  },
+  bagQtyText: {
+    minWidth: 34,
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: '600',
+    color: color.black,
+  },
+  bagFooter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: color.white,
+    borderTopWidth: 1,
+    borderTopColor: '#E8E8E8',
+    paddingHorizontal: 12,
+    paddingTop: 10,
+    paddingBottom: Platform.OS === 'ios' ? 28 : 12,
+  },
+  bagFooterContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bagSelectAll: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minWidth: 70,
+  },
+  bagFooterCheckbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 5,
+    borderWidth: 1.4,
+    borderColor: '#1F1F1F',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+  },
+  bagAllText: {
+    fontSize: 15,
+    color: '#111',
+  },
+  bagFooterTotal: {
+    flex: 1,
+    textAlign: 'right',
+    marginRight: 14,
+    fontSize: 17,
+    fontWeight: '800',
+    color: color.black,
+  },
+  bagCheckoutButton: {
+    width: 140,
+    height: 50,
+    borderRadius: 14,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bagCheckoutText: {
+    color: color.white,
+    fontSize: 13,
+    fontWeight: '800',
+    letterSpacing: 0.2,
   },
   header: {
     paddingHorizontal: 16,

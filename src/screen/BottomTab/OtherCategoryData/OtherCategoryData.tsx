@@ -78,7 +78,7 @@ const OtherCategoryData = () => {
   };
 
   const [categories, setCategories] = useState([]);
-  const [selectedCategory] = useState(categoryId || '1');
+  const [selectedCategory] = useState(categoryId || '');
   const [selectedSubcategory, setSelectedSubcategory] = useState('All');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -118,14 +118,19 @@ const OtherCategoryData = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-      const res = await getProductsByCategory(categoryId, 'all');
+      const res = await getProductsByCategory(selectedCategory, 'all');
       if (res && res.data) {
-        const productList = res.data.products || [];
+        const productList = Array.isArray(res.data)
+          ? res.data
+          : res.data.products || res.data.data || [];
         setProducts(productList);
 
         // Derive subcategories from products if they exist
         const uniqueSubcats = ['All', ...new Set(productList.map((p: any) => p.subcategory).filter(Boolean))];
         setSubcategories(uniqueSubcats as string[]);
+      } else {
+        setProducts([]);
+        setSubcategories(['All']);
       }
       setLoading(false);
     };
@@ -133,7 +138,7 @@ const OtherCategoryData = () => {
     if (selectedCategory) {
       fetchProducts();
     }
-  }, [selectedCategory, categoryId]);
+  }, [selectedCategory]);
 
   const filteredProducts = selectedSubcategory === 'All'
     ? products
@@ -154,7 +159,7 @@ const OtherCategoryData = () => {
 
   // Render header
   const renderHeader = () => {
-    const selectedCat: any = categories.find((cat: any) => cat._id === selectedCategory);
+    const selectedCat: any = categories.find((cat: any) => cat._id === selectedCategory || cat.id === selectedCategory);
 
     return (
       <View style={styles.header}>
@@ -199,15 +204,23 @@ const OtherCategoryData = () => {
   };
 
   const renderProductCard = ({ item }) => {
+    const stockQuantity = item?.inventory?.stockQuantity ?? item?.stock ?? 0;
+
     return (
       <View style={styles.productCardWrapper}>
         <ProductCard
           item={item}
           onPress={() => addToCart(item)}
           buttShow={true}
-          title={item.inventory?.stockQuantity > 0 ? `Add to Cart` : 'Out of Stock'}
-          disabled={!(item.inventory?.stockQuantity > 0)}
-          onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item })}
+          title={stockQuantity > 0 ? `Add to Cart` : 'Out of Stock'}
+          disabled={!(stockQuantity > 0)}
+          onPress1={() =>
+            navigateToScreen(ScreenNameEnum.ProductDetails, {
+              item,
+              productId: item?._id || item?.id,
+              relatedProducts: filteredProducts,
+            })
+          }
         />
         {item.isTopSelling && (
           <View style={styles.topSellingBadge}>
@@ -239,7 +252,7 @@ const OtherCategoryData = () => {
         <FlatList
           data={filteredProducts}
           renderItem={renderProductCard}
-          keyExtractor={item => item._id}
+          keyExtractor={(item: any, index: number) => item._id || item.id || `${selectedCategory}-${index}`}
           numColumns={2}
           contentContainerStyle={styles.productList}
           showsVerticalScrollIndicator={false}

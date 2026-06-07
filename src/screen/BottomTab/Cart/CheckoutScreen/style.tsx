@@ -1,7 +1,7 @@
 import { color } from "../../../../constant";
 import { Dimensions, Platform, StyleSheet } from "react-native";
-  const { width } = Dimensions.get("window");
- const BRAND_COLORS = {
+const { width } = Dimensions.get("window");
+const BRAND_COLORS = {
   primaryGradient: [color.primary, color.secondary],
   primaryDark: color.secondary,
   primaryLight: color.primary,
@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
   iconContainerSelected: {
     backgroundColor: color.white,
   },
-  paymentText: { 
+  paymentText: {
     fontSize: 15,
     fontWeight: '600',
     color: BRAND_COLORS.textDark,
@@ -158,8 +158,8 @@ export const styles = StyleSheet.create({
     color: BRAND_COLORS.gray,
     marginBottom: 4,
   },
-  footerAmount: { 
-    fontSize: 22, 
+  footerAmount: {
+    fontSize: 22,
     fontWeight: 'bold',
     color: BRAND_COLORS.textDark,
   },
@@ -168,11 +168,7 @@ export const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     overflow: 'hidden',
-    elevation: 5,
-    shadowColor: BRAND_COLORS.primaryLight,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
+
   },
   orderBtnContent: {
     flex: 1,
@@ -180,9 +176,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  orderText: { 
-    color: color.white, 
+  orderText: {
+    color: color.white,
     fontSize: 15,
-    fontWeight: 'bold' 
+    fontWeight: 'bold'
   },
 });

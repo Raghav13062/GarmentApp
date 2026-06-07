@@ -10,7 +10,7 @@ export const GetCategories = async (
   try {
     setLoading(true);
     const response = await fetch(
-      `${base_url}home?gender=${gender}`,
+      `${base_url}${endpointApi.home}?gender=${gender}`,
       // `${base_url}${endpointApi.categories}`,
       {
         method: "GET",
@@ -109,7 +109,7 @@ export const TopProductDetail = async (
 ) => {
   try {
     const response = await fetch(
-      `${base_url}products/${categoryId}`,
+      `${base_url}${endpointApi.productDetails}/${categoryId}`,
       {
         method: "GET",
         headers: {

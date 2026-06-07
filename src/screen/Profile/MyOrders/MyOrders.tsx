@@ -7,7 +7,6 @@ import {
   StyleSheet,
   FlatList,
   RefreshControl,
-  ActivityIndicator,
   Alert,
   StatusBar,
   ScrollView
@@ -16,6 +15,7 @@ import Icon from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { color } from "../../../constant";
+import Loading from "../../../utils/Loader";
 
 const MyOrders = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState("all");
@@ -488,7 +488,7 @@ const MyOrders = ({ navigation }) => {
       {/* Orders List */}
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={color.primary} />
+          <Loading fullScreen={false} size="large" color={color.primary} />
           <Text style={styles.loadingText}>Loading your orders...</Text>
         </View>
       ) : (

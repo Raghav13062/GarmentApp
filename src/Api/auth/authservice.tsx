@@ -9,6 +9,7 @@ import { endpointApi, Params } from "../endpoints";
 const SetOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
   try {
     setLoading(true);
+    const mobileNo = "9876543210";
 
     const response = await fetch(`${base_url}${endpointApi.sendotpApi}`, {
       method: "POST",
@@ -17,17 +18,17 @@ const SetOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        mobileNo: data?.phone,
+        mobileNo,
       }),
     });
     const res = await response.json();
+    console.log("res login ", res)
     setLoading(false);
     if (res.success == true) {
       successToast(res.message);
       navigateToScreen(ScreenNameEnum.OtpScreen, {
-        phone: data?.phone,
-
-        otp: res?.otp
+        phone: "9876543210",
+        otp: res?.otp || '',
       });
     } else {
       setLoading(false);
@@ -47,6 +48,7 @@ const SetOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
 const ResendOtpApi = async (data: any, setLoading: (loading: boolean) => void) => {
   try {
     setLoading(true);
+    const mobileNo = String(data?.phone || data?.mobileNo || '').replace(/\D/g, '').slice(0, 10);
 
     const response = await fetch(`${base_url}${endpointApi.sendotpApi}`, {
       method: "POST",
@@ -55,7 +57,7 @@ const ResendOtpApi = async (data: any, setLoading: (loading: boolean) => void) =
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        mobileNo: data?.phone,
+        mobileNo,
       }),
     });
     const res = await response.json();
@@ -134,6 +136,97 @@ const LoginApi = async (
     return res;
   } catch (error) {
     console.error('LoginApi Error 👉', error);
+    errorToast('Network error');
+  } finally {
+    setLoading(false);
+  }
+};
+
+const VerifyOtpApi = async (
+  data: any,
+  setLoading: (loading: boolean) => void,
+  dispatch: any,
+  navigation: any
+) => {
+  try {
+    setLoading(true);
+
+    const mobileNo = String(data?.mobileNo || '').replace(/\D/g, '').slice(0, 10);
+    const otp = String(data?.otp || '').trim();
+    const verifyOtpUrl = `${base_url}${endpointApi.loginotp}`;
+    const payload = { mobileNo, otp };
+
+    console.log('Verify OTP Request 👉', verifyOtpUrl, payload);
+
+    const response = await fetch(verifyOtpUrl, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    console.log("payload", payload)
+    const rawResponse = await response.text();
+    const res = rawResponse ? JSON.parse(rawResponse) : {};
+    console.log('Verify OTP Response 👉', response.status, res);
+
+    if (response.ok && res?.success === true) {
+      const requiresRegistration = !!res?.requiresRegistration;
+      const token = res?.token || '';
+      const userData = res?.user ?? res?.data ?? null;
+      const isNewUser = !!res?.isNewUser || requiresRegistration;
+
+      if (requiresRegistration) {
+        successToast(res?.message || 'Please complete registration');
+
+        await AsyncStorage.multiSet([
+          ['pendingMobileNo', mobileNo],
+          ['isNewUser', JSON.stringify(true)],
+        ]);
+
+        navigation.reset({
+          index: 0,
+          routes: [{ name: ScreenNameEnum.SignUpScreen, params: { mobileNo } }],
+        });
+
+        return res;
+      }
+
+      if (!token || !userData) {
+        errorToast('Login token missing. Please try again.');
+        return res;
+      }
+
+      successToast(res?.message || 'OTP verified successfully');
+
+      await AsyncStorage.multiSet([
+        ['token', token],
+        ['userData', JSON.stringify(userData || {})],
+        ['isNewUser', JSON.stringify(isNewUser)],
+      ]);
+      console.log('OTP auth data saved ✅');
+
+      dispatch(
+        loginSuccess({
+          userData,
+          token,
+          isNewUser,
+        })
+      );
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: ScreenNameEnum.BottomTabs }],
+      });
+    } else {
+      console.log('Verify OTP error response 👉', res);
+      errorToast(res?.message || 'Invalid OTP. Please try again.');
+    }
+
+    return res;
+  } catch (error) {
+    console.error('VerifyOtpApi Error 👉', error);
     errorToast('Network error');
   } finally {
     setLoading(false);
@@ -282,4 +375,4 @@ const GetProfile = async (
 
 
 
-export { SetOtpApi, GetProfile, UpdateProfileApi, LoginApi, ResendOtpApi, RegisterApi }
+export { SetOtpApi, GetProfile, UpdateProfileApi, LoginApi, VerifyOtpApi, ResendOtpApi, RegisterApi }

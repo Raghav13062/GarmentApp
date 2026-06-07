@@ -7,7 +7,8 @@ import {
   Animated,
   Easing,
   Dimensions,
-  Image
+  Image,
+  ActivityIndicator
 } from 'react-native';
  import { color, fonts } from '../../constant';
 import imageIndex from '../../assets/imageIndex';
@@ -17,7 +18,27 @@ const { width, height } = Dimensions.get('window');
 // Your theme color
 const THEME_COLOR = color.primary;
 
-const Loading = ({ visible= true, message = "Loading..." }) => {
+type LoadingProps = {
+  visible?: boolean;
+  message?: string;
+  fullScreen?: boolean;
+  size?: 'small' | 'large' | number;
+  color?: string;
+  containerStyle?: any;
+  overlayStyle?: any;
+  showMessage?: boolean;
+};
+
+const Loading = ({
+  visible = true,
+  message = "Loading...",
+  fullScreen = true,
+  size = "small",
+  color: loaderColor = THEME_COLOR,
+  containerStyle,
+  overlayStyle,
+  showMessage = false,
+}: LoadingProps) => {
   // Animation values
   const spinValue = useRef(new Animated.Value(0)).current;
   const fadeValue = useRef(new Animated.Value(0)).current;
@@ -92,7 +113,7 @@ const Loading = ({ visible= true, message = "Loading..." }) => {
     }
   }, [visible]);
 
-  const createPulseAnimation = (animatedValue, delay) => {
+  const createPulseAnimation = (animatedValue: Animated.Value, delay: number) => {
     return Animated.sequence([
       Animated.delay(delay),
       Animated.timing(animatedValue, {
@@ -143,9 +164,18 @@ const Loading = ({ visible= true, message = "Loading..." }) => {
 
   if (!visible) return null;
 
+  if (!fullScreen) {
+    return (
+      <View style={[styles.inlineContainer, containerStyle]}>
+        <ActivityIndicator size={size} color={loaderColor} />
+        {showMessage ? <Text style={styles.inlineMessage}>{message}</Text> : null}
+      </View>
+    );
+  }
+
   return (
     <Modal transparent animationType="fade" visible={visible}>
-      <View style={styles.overlay}>
+      <View style={[styles.overlay, overlayStyle]}>
         <Animated.View 
           style={[
             styles.modalContainer, 
@@ -199,6 +229,16 @@ borderRadius:20,
 };
 
 const styles = StyleSheet.create({
+  inlineContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inlineMessage: {
+    marginTop: 8,
+    fontSize: 14,
+    color: color.textMedium,
+    textAlign: 'center',
+  },
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.6)',

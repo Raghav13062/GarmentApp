@@ -1,100 +1,142 @@
-import React, { useEffect } from "react";
-import { View, Image, TouchableOpacity, StyleSheet, Text, Dimensions, Platform } from "react-native";
+import React from "react";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import LinearGradient from "react-native-linear-gradient";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import Animated, {
-  useAnimatedStyle,
-  withSpring,
-  useSharedValue,
-
-} from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSelector } from "react-redux";
 import { color, fonts } from "../constant";
-const { width } = Dimensions.get("window");
 
-const TabItem = ({ route, isFocused, onPress }: any) => {
-  const icons: any = {
-    Home: isFocused ? "home" : "home-outline",
-    Cart: isFocused ? "grid" : "grid-outline",
-    ViewCart: isFocused ? "cart" : "cart-outline",
-    Under: isFocused ? "business" : "business-outline",
-    Profile: isFocused ? "person" : "person-outline",
+const TAB_CONFIG: Record<string, { label: string; icon: string; activeIcon: string }> = {
+  Home: {
+    label: "Home",
+    icon: "home-outline",
+    activeIcon: "home",
+  },
+  Cart: {
+    label: "Category",
+    icon: "grid-outline",
+    activeIcon: "grid",
+  },
+  ViewCart: {
+    label: "Cart",
+    icon: "bag-outline",
+    activeIcon: "bag",
+  },
+  Under: {
+    label: "B2B",
+    icon: "business-outline",
+    activeIcon: "business",
+  },
+  Profile: {
+    label: "Profile",
+    icon: "person-outline",
+    activeIcon: "person",
+  },
+};
+
+const TabItem = ({
+  route,
+  isFocused,
+  onPress,
+  onLongPress,
+  badgeCount,
+}: any) => {
+  const tab = TAB_CONFIG[route.name] || {
+    label: route.name,
+    icon: "ellipse-outline",
+    activeIcon: "ellipse",
   };
-
-  const scale = useSharedValue(1);
-
-  useEffect(() => {
-    if (isFocused) {
-      scale.value = withSpring(1.1, { damping: 12, stiffness: 100 });
-    } else {
-      scale.value = withSpring(1);
-    }
-  }, [isFocused]);
-
-  const animatedIconStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-    color: isFocused ? 'black' : '#555',
-  }));
 
   return (
     <TouchableOpacity
-      activeOpacity={0.8}
+      activeOpacity={0.82}
+      accessibilityRole="button"
+      accessibilityState={isFocused ? { selected: true } : {}}
       onPress={onPress}
+      onLongPress={onLongPress}
       style={styles.tab}
     >
-      <View style={styles.iconContainer}>
-        <Animated.View style={animatedIconStyle}>
-          <Ionicons
-            name={icons[route.name] || "ellipse"}
-            size={24}
-            color={isFocused ? '#F58021' : '#555'}
-          />
-        </Animated.View>
+      <View style={styles.iconSlot}>
+        {isFocused ? (
+
+          <Ionicons name={tab.activeIcon} size={22} color={color.primary} />
+
+        ) : (
+          <View style={styles.inactiveIconBox}>
+            <Ionicons name={tab.icon} size={23} color={color.textMedium} />
+          </View>
+        )}
+
+        {route.name === "ViewCart" && badgeCount > 0 ? (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>
+              {badgeCount > 99 ? "99+" : badgeCount}
+            </Text>
+          </View>
+        ) : null}
       </View>
 
       <Text
+        numberOfLines={1}
         style={[
           styles.label,
-          {
-            color: isFocused ? 'black' : '#555',
-            fontFamily: isFocused ? fonts.bold : fonts.semiBold
-          }
+          isFocused ? styles.activeLabel : styles.inactiveLabel,
         ]}
       >
-        {route.name === "Under" ? "B2B" : route.name === "Cart" ? "Category" : route.name === "ViewCart" ? "Cart" : route.name}
+        {tab.label}
       </Text>
     </TouchableOpacity>
   );
 };
 
-const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
-  const tabWidth = width / state.routes.length;
-  const translateX = useSharedValue(state.index * tabWidth);
-
-  useEffect(() => {
-    translateX.value = withSpring(state.index * tabWidth, {
-      damping: 18,
-      stiffness: 150,
-    });
-  }, [state.index, tabWidth]);
-
-  const pillStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }));
+const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
+  const insets = useSafeAreaInsets();
+  const cartCount = useSelector((reduxState: any) => reduxState.cart?.totalItems || 0);
 
   return (
-    <View style={styles.outerContainer}>
+    <View style={[styles.outerContainer, { paddingBottom: Math.max(insets.bottom, 10) }]}>
+
+
+
       <View style={styles.tabBar}>
-        {/* Sliding Pill Background */}
-
-
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
+          const options = descriptors[route.key]?.options;
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name, route.params);
+            }
+          };
+
+          const onLongPress = () => {
+            navigation.emit({
+              type: "tabLongPress",
+              target: route.key,
+            });
+          };
+
           return (
             <TabItem
               key={route.key}
               route={route}
               isFocused={isFocused}
-              onPress={() => navigation.navigate(route.name)}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              badgeCount={cartCount}
+              accessibilityLabel={options?.tabBarAccessibilityLabel}
             />
           );
         })}
@@ -107,64 +149,80 @@ export default BottomTabBar;
 
 const styles = StyleSheet.create({
   outerContainer: {
-    backgroundColor: color.white,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    borderTopWidth: 0.5,
-    borderTopColor: '#eee',
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: -4 },
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 10,
-      },
-    }),
+    top: 11,
   },
   tabBar: {
+    minHeight: 68,
     flexDirection: "row",
-    height: 65,
+    alignItems: "center",
+    justifyContent: "space-around",
     backgroundColor: color.white,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
-    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderWidth: 1,
+    borderColor: "rgba(0,0,0,0.05)",
+
+
   },
   tab: {
     flex: 1,
+    minHeight: 54,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 8,
-    zIndex: 1,
   },
-  iconContainer: {
-    width: 45,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
+  iconSlot: {
+    width: 42,
+    height: 34,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  pillContainer: {
-    position: 'absolute',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 8, // Align with icons
+  activeIconBox: {
+    width: 40,
+    height: 34,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+
   },
-  pill: {
-    width: 45,
-    height: 32,
-    backgroundColor: '#FFF0F3',
-    borderRadius: 16,
-    position: 'absolute',
-    top: 8, // Match iconContainer position
+  inactiveIconBox: {
+    width: 33,
+    height: 33,
+    alignItems: "center",
+    justifyContent: "center",
   },
   label: {
+    maxWidth: "100%",
     fontSize: 10,
+    marginTop: 3,
+    textAlign: "center",
+  },
+  activeLabel: {
+    color: color.primary,
+    fontFamily: fonts.bold,
+  },
+  inactiveLabel: {
+    color: color.textMedium,
     fontFamily: fonts.semiBold,
-    marginTop: 4,
-    letterSpacing: 0.2,
+  },
+  badge: {
+    position: "absolute",
+    top: -2,
+    right: 0,
+    minWidth: 17,
+    height: 17,
+    borderRadius: 9,
+    paddingHorizontal: 4,
+    backgroundColor: color.error,
+    borderWidth: 1.5,
+    borderColor: color.white,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  badgeText: {
+    color: color.white,
+    fontSize: 8,
+    fontFamily: fonts.bold,
+    includeFontPadding: false,
   },
 });

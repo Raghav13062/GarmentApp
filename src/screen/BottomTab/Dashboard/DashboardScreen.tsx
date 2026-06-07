@@ -7,11 +7,8 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
-  TextInput,
   Image,
   ScrollView,
-  Platform,
-  ActivityIndicator,
 
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,11 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Animated, {
   FadeInUp,
   FadeInDown,
-  useAnimatedStyle,
   useSharedValue,
-  interpolate,
-  Extrapolate,
-  useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import { color, fonts, navigateToScreen } from '../../../constant';
@@ -33,6 +26,7 @@ import ProductCard from '../../../component/cart/ProductCard';
 import useDashboard from './useDashboard';
 import VideoAd from './VideoAd';
 import HeaderBar from '../../../component/HeaderBar';
+import Loading from '../../../utils/Loader';
 
 const { width } = Dimensions.get('window');
 
@@ -137,104 +131,6 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
   );
 };
 
-// --- Other Components ---
-
-const HomeHeader = ({ scrollY }: { scrollY: any }) => {
-  const isLogin = useSelector((state: any) => state.auth.isLogin);
-  const userData = useSelector((state: any) => state.auth.userData);
-  const cartCount = useSelector((state: any) => state.cart.totalItems || 0);
-  const wishlistCount = useSelector((state: any) => state.wishlist.items?.length || 0);
-
-  const addressText = isLogin && userData?.address
-    ? `Deliver to ${userData.fullName}, ${userData.address}`
-    : "Deliver to ashish mahant, Plot no. 114, lin...";
-
-  const animatedHeaderStyle = useAnimatedStyle(() => {
-    const translateY = interpolate(scrollY.value, [0, 50], [0, -5], Extrapolate.CLAMP);
-    return { transform: [{ translateY }] };
-  });
-
-  return (
-    <Animated.View style={[styles.headerContainer, animatedHeaderStyle]}>
-      {/* Location / Delivery Bar */}
-      <TouchableOpacity
-        style={styles.deliveryContainer}
-        onPress={() => navigateToScreen(ScreenNameEnum.Address, {})}
-        activeOpacity={0.8}
-      >
-        <Ionicons name="location" size={18} color={color.primary} />
-        <Text style={styles.deliveryText} numberOfLines={1}>
-          {addressText}
-        </Text>
-        <Ionicons name="chevron-down" size={14} color={color.textMedium} style={{ marginLeft: 4 }} />
-      </TouchableOpacity>
-
-      {/* Search & Actions Bar */}
-      <View style={styles.searchRow}>
-        <TouchableOpacity
-          style={styles.searchBarWrapper}
-          activeOpacity={0.9}
-          onPress={() => navigateToScreen(ScreenNameEnum.SearchProduct, {})}
-        >
-          <Ionicons name="search" size={20} color={color.textMedium} />
-          <TextInput
-            placeholder="Search for products, brands and more..."
-            style={styles.searchInputInputField}
-            placeholderTextColor="#999"
-            editable={false}
-            pointerEvents="none"
-          />
-        </TouchableOpacity>
-
-        {/* Wishlist */}
-        <TouchableOpacity
-          style={styles.iconButton}
-          onPress={() => navigateToScreen(ScreenNameEnum.WishList, {})}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="heart-outline" size={26} color={color.textDark} />
-          {wishlistCount > 0 && (
-            <View style={styles.badgeContainer}>
-              <Text style={styles.badgeText}>{wishlistCount}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
-
-        {/* Cart */}
-        <TouchableOpacity
-          style={styles.iconButton}
-          onPress={() => navigateToScreen(ScreenNameEnum.ViewCartScreen, {})}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="bag-outline" size={26} color={color.textDark} />
-          {cartCount > 0 && (
-            <View style={styles.badgeContainer}>
-              <Text style={styles.badgeText}>{cartCount}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
-      </View>
-    </Animated.View>
-  );
-};
-
-const FlashSaleHeader = ({ title, subtitle }: any) => (
-  <View style={styles.flashHeader}>
-    <View style={{ flex: 1 }}>
-      <View style={styles.shopTheSaleRow}>
-        <Text style={styles.shopTheSaleText}>SHOP THE SALE</Text>
-        <LinearGradient colors={color.primaryGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.headerLine} />
-      </View>
-      <Text style={styles.flashTitle}>{title || 'FLASH SALE'}</Text>
-      <Text style={styles.flashSubtitle}>{subtitle || 'UP TO 70% OFF'}</Text>
-    </View>
-    <TouchableOpacity style={styles.dontMissRow}>
-      <Text style={styles.dontMissText}>DON'T MISS OUT</Text>
-      <Ionicons name="arrow-forward" size={16} color={color.textDark} />
-    </TouchableOpacity>
-  </View>
-);
-
 
 
 const HotCategories = ({ categories }: any) => (
@@ -253,26 +149,69 @@ const HotCategories = ({ categories }: any) => (
   </View>
 );
 
+const formatSectionTitle = (title: string = '') => {
+  const normalizedTitle = title.replace(/_/g, ' ').trim().toLowerCase();
+
+  const sectionNames: Record<string, string> = {
+    'top picks': 'Top Picks For Women',
+    'new arrivals': 'New Arrivals For Women',
+    'top products': 'Trending Women’s Collection',
+    'shop by category': 'Shop Women By Category',
+  };
+
+  if (sectionNames[normalizedTitle]) {
+    return sectionNames[normalizedTitle];
+  }
+
+  return normalizedTitle
+    .split(' ')
+    .filter(Boolean)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+const getSectionRenderKey = (section: any) => {
+  const title = formatSectionTitle(section?.data?.title || section?.title || '');
+  return `${section?.sectionType || 'section'}-${title}`.toLowerCase();
+};
+
+const getSectionProducts = (section: any) => {
+  return Array.isArray(section?.data?.products) ? section.data.products : [];
+};
+
 
 
 const DashboardScreen = () => {
   const {
     gender,
-    setGender,
-    genderOptions,
     loading,
     sections = [],
-    categories = [],
+    navigation,
   } = useDashboard();
 
   const scrollY = useSharedValue(0);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const isLogin = useSelector((reduxState: any) => reduxState.auth?.isLogin);
+  const showGuestBanner = showBackToTop && !isLogin;
+  const renderedSectionKeys = new Set<string>();
 
+  const handleBackToTop = () => {
+    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+    scrollY.value = 0;
+    setShowBackToTop(false);
+  };
 
+  const handleMainScroll = (e: any) => {
+    const offsetY = e.nativeEvent.contentOffset.y;
+    scrollY.value = offsetY;
+    setShowBackToTop(offsetY > 350);
+  };
 
   if (loading && sections.length === 0) {
     return (
       <SafeAreaView style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color={color.primary} />
+        <Loading fullScreen={false} size="large" color={color.primary} />
       </SafeAreaView>
     );
   }
@@ -283,47 +222,58 @@ const DashboardScreen = () => {
       <View style={{ flex: 1, backgroundColor: color.white }}>
         <HeaderBar scrollY={scrollY} />
         <ScrollView
+          ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
-          onScroll={(e) => { scrollY.value = e.nativeEvent.contentOffset.y; }}
+          onScroll={handleMainScroll}
           scrollEventThrottle={16}
-          contentContainerStyle={{ paddingBottom: 120 }}
+          contentContainerStyle={{ paddingBottom: showGuestBanner ? 210 : 120 }}
         >
           <HeroSlider sections={sections} />
-          <Animated.View entering={FadeInUp.delay(200).duration(800)} style={styles.flashSection}>
-            <FlashSaleHeader title="FLASH" subtitle="SALE" />
-            <FlatList
-              data={sections.find(s => s.sectionType === 'TOP_PICKS')?.data?.products || []}
-              showsHorizontalScrollIndicator={false}
-              scrollEnabled={false}
-              numColumns={2}
-              columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
-              renderItem={({ item }) => (
-                <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
-              )}
-              keyExtractor={(item) => item.id || item._id}
-            />
-          </Animated.View>
-
-          <HotCategories categories={categories} />
 
           {sections.map((section: any, index: number) => {
-            if (['SEARCH_BANNER', 'TOP_PICKS',].includes(section.sectionType)) return null;
-            if (section.sectionType === 'PRODUCT_GRID') {
+            if (section.sectionType === 'SEARCH_BANNER') return null;
+
+            if (section.sectionType === 'CATEGORY_GRID') {
+              const categoryList = section.data?.categories || [];
+              return <HotCategories key={section.id || index} categories={categoryList} />;
+            }
+
+            const products = getSectionProducts(section);
+
+            if (products.length > 0) {
+              const renderKey = getSectionRenderKey(section);
+              if (renderedSectionKeys.has(renderKey)) return null;
+              renderedSectionKeys.add(renderKey);
+
+              const sectionTitle = formatSectionTitle(section.data?.title || section.title || 'Products');
+
               return (
-                <View key={index} style={styles.dynamicSection}>
+                <View key={section.id || index} style={styles.dynamicSection}>
                   <View style={styles.dynamicHeader}>
-                    <Text style={styles.sectionTitleCenter}>{section.title}</Text>
+                    <Text style={styles.sectionTitleCenter}>{sectionTitle}</Text>
                     <LinearGradient colors={color.primaryGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.titleUnderline} />
                   </View>
                   <FlatList
-                    data={section.data?.products || []}
+                    data={products}
                     numColumns={2}
                     scrollEnabled={false}
                     columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
                     renderItem={({ item }) => (
-                      <ProductCard item={item} onPress1={() => navigateToScreen(ScreenNameEnum.ProductDetails, { item, gender })} />
+                      <ProductCard
+                        item={item}
+                        onPress1={() =>
+                          navigation.navigate(ScreenNameEnum.ProductDetails, {
+                            item,
+                            productId: item?._id || item?.id,
+                            gender,
+                            relatedProducts: products,
+                          })
+                        }
+                      />
                     )}
-                    keyExtractor={(item) => item.id || item._id}
+                    keyExtractor={(item, productIndex) =>
+                      String(item?._id || item?.id || item?.productId || `${section.id}-${productIndex}`)
+                    }
                   />
                 </View>
               );
@@ -339,10 +289,52 @@ const DashboardScreen = () => {
           )}
         </ScrollView>
 
-        <TouchableOpacity style={styles.backToTop}>
-          <Ionicons name="arrow-up" size={18} color={color.textDark} />
-          <Text style={styles.backToTopText}>Back to top</Text>
-        </TouchableOpacity>
+        {showBackToTop && (
+          <TouchableOpacity
+            style={[styles.backToTop, showGuestBanner && styles.backToTopWithGuestBanner]}
+            onPress={handleBackToTop}
+            activeOpacity={0.85}
+          >
+            <Ionicons name="arrow-up" size={18} color={color.textDark} />
+            <Text style={styles.backToTopText}>Back to top</Text>
+          </TouchableOpacity>
+        )}
+        {showGuestBanner && (
+          <View style={styles.guestBanner}>
+            <LinearGradient
+              colors={color.primaryGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={styles.guestAccent}
+            />
+            <View style={styles.guestContent}>
+              <View style={styles.guestIconBox}>
+                <Ionicons name="person-add" size={18} color={color.primary} />
+              </View>
+              <View style={styles.guestTextWrap}>
+                <Text style={styles.guestTitle}>Login to unlock DAIN</Text>
+                <Text style={styles.guestMessage} numberOfLines={2}>
+                  Track orders, save your cart, get offers and manage your account.
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.85}
+              style={styles.loginButton}
+              onPress={() => navigateToScreen(ScreenNameEnum.LoginScreen)}
+            >
+              <LinearGradient
+                colors={color.primaryGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.loginGradient}
+              >
+                <Text style={styles.loginText}>Login</Text>
+                <Ionicons name="arrow-forward" size={13} color={color.white} style={styles.loginArrow} />
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -395,6 +387,85 @@ const styles = StyleSheet.create({
     color: color.textDark,
     marginLeft: 8,
     paddingVertical: 0,
+  },
+  guestBanner: {
+    position: "absolute",
+    left: 12,
+    right: 12,
+    bottom: 22,
+    minHeight: 78,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: color.white,
+    borderRadius: 20,
+    paddingLeft: 0,
+    paddingRight: 10,
+    paddingVertical: 9,
+    borderWidth: 1,
+    borderColor: "#F3E7F7",
+    shadowColor: color.black,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 14,
+    elevation: 10,
+    overflow: "hidden",
+  },
+  guestAccent: {
+    width: 5,
+    alignSelf: "stretch",
+    marginRight: 10,
+  },
+  guestContent: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    minWidth: 0,
+  },
+  guestIconBox: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: "#FFF4EC",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10,
+  },
+  guestTextWrap: {
+    flex: 1,
+    minWidth: 0,
+    paddingRight: 8,
+  },
+  guestTitle: {
+    fontSize: 14,
+    fontFamily: fonts.bold,
+    color: color.textDark,
+  },
+  guestMessage: {
+    fontSize: 11.5,
+    fontFamily: fonts.medium,
+    color: color.textMedium,
+    lineHeight: 16,
+    marginTop: 3,
+  },
+  loginButton: {
+    width: 84,
+    height: 38,
+    borderRadius: 19,
+    overflow: "hidden",
+  },
+  loginGradient: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loginText: {
+    color: color.white,
+    fontSize: 12,
+    fontFamily: fonts.bold,
+  },
+  loginArrow: {
+    marginLeft: 4,
   },
   iconButton: {
     marginLeft: 16,
@@ -482,6 +553,7 @@ const styles = StyleSheet.create({
   hotCatImage: { width: '100%', height: '100%', resizeMode: 'contain' },
   hotCatText: { marginTop: 10, fontSize: 12, fontFamily: fonts.semiBold, color: color.textDark },
   backToTop: { position: 'absolute', bottom: 25, left: 20, backgroundColor: color.white, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 25, flexDirection: 'row', alignItems: 'center', elevation: 8 },
+  backToTopWithGuestBanner: { bottom: 108 },
   backToTopText: { fontSize: 12, fontFamily: fonts.bold, color: color.textDark, marginLeft: 6 },
   dynamicSection: { paddingVertical: 30 },
   dynamicHeader: { alignItems: 'center', marginBottom: 25 },

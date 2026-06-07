@@ -7,17 +7,12 @@ import {
   StyleSheet,
   Dimensions,
   Platform,
-  StatusBar,
-  SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
-import { color } from "../constant";
-import CustomButton from "./CustomButton";
-import { logout } from "../redux/feature/authSlice";
-import { useDispatch } from "react-redux";
+import { color, fonts } from "../constant";
 
-const { width, height } = Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
 type LogoutModalProps = {
   visible: boolean;
@@ -27,11 +22,10 @@ type LogoutModalProps = {
   message?: string;
   confirmText?: string;
   cancelText?: string;
-  showIcon?: boolean;
   type?: "default" | "danger" | "warning" | "success";
 };
 
-const LogoutModal  = ({
+const LogoutModal = ({
   visible,
   onClose,
   onConfirm,
@@ -39,44 +33,14 @@ const LogoutModal  = ({
   message = "Are you sure you want to log out?",
   confirmText = "Logout",
   cancelText = "Cancel",
-  showIcon = true,
   type = "danger",
-}: any) => {
-  
-  const getTypeStyles = () => {
-    switch(type) {
-      case "danger":
-        return {
-          gradient: color.buttLinearGradient,
-          iconColor: '#FF4B4B',
-          iconName: 'log-out',
-          iconBg: '#FFE5E5'
-        };
-      case "warning":
-        return {
-          gradient: ['#FFA726', '#FFB74D'],
-          iconColor: '#FFA726',
-          iconName: 'alert-triangle',
-          iconBg: '#FFF3E0'
-        };
-      case "success":
-        return {
-          gradient: [color.success, '#66BB6A'],
-          iconColor: color.success,
-          iconName: 'check-circle',
-          iconBg: '#E8F5E9'
-        };
-      default:
-        return {
-          gradient: [color.primary, color.secondary || color.secondary],
-          iconColor: color.primary,
-          iconName: 'log-out',
-          iconBg: '#F0F0FF'
-        };
-    }
-  };
-const dispatch = useDispatch();
-  const typeStyles = getTypeStyles();
+}: LogoutModalProps) => {
+  const isDanger = type === "danger";
+  const accentColor = color.primary;
+  const softAccent = "#FFF5EE";
+  const noteText = isDanger
+    ? "You will need to login again to access your account."
+    : "Please confirm before continuing.";
 
   return (
     <Modal
@@ -87,45 +51,66 @@ const dispatch = useDispatch();
       statusBarTranslucent
     >
       <View style={styles.overlay}>
-        <TouchableOpacity 
-          style={styles.backdrop} 
-          activeOpacity={1} 
+        <TouchableOpacity
+          style={styles.backdrop}
+          activeOpacity={1}
           onPress={onClose}
         />
-        
+
         <View style={styles.modalContainer}>
-          {/* Handle Bar */}
           <View style={styles.handleBarContainer}>
             <View style={styles.handleBar} />
-            
           </View>
 
           <View style={styles.content}>
-  
-            {/* Title */}
+            <View style={[styles.iconOuter, { backgroundColor: softAccent }]}>
+              <LinearGradient
+                colors={color.primaryGradient}
+                style={styles.iconGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+              >
+                <Icon name="log-out" size={30} color={color.white} />
+              </LinearGradient>
+            </View>
+
             <Text style={styles.title}>{title}</Text>
-             <Text style={styles.message}>{message}</Text>
-            {/* Warning Note (for logout) */}
-            {type === "danger" && (
-              <View style={styles.warningNote}>
-                <Icon name="alert-circle" size={16} color="#FFA726" />
-                <Text style={styles.warningText}>
-                  You will need to login again to access your account
-                </Text>
-              </View>
-            )}
- 
-             
-  <CustomButton 
-                      title={confirmText}
-                      onPress={onConfirm}
-                       />
-                    
- 
-            
-        
+            <Text style={styles.message}>{message}</Text>
+
+            <View style={[styles.warningNote, { backgroundColor: softAccent }]}>
+              <Icon name="alert-circle" size={17} color={accentColor} />
+              <Text style={[styles.warningText, { color: accentColor }]}>
+                {noteText}
+              </Text>
+            </View>
+
+            <View style={styles.actions}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={onClose}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.cancelText}>{cancelText}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={onConfirm}
+                activeOpacity={0.85}
+              >
+                <LinearGradient
+                  colors={color.primaryGradient}
+                  style={styles.confirmGradient}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  <Icon name="log-out" size={17} color={color.white} />
+                  <Text style={styles.confirmText}>{confirmText}</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
           </View>
-          </View>
+        </View>
       </View>
     </Modal>
   );
@@ -134,157 +119,130 @@ const dispatch = useDispatch();
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: "rgba(0, 0, 0, 0.48)",
   },
   backdrop: {
     flex: 1,
   },
   modalContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: color.white,
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-    paddingBottom: Platform.OS === 'ios' ? 34 : 20,
+    borderTopLeftRadius: 26,
+    borderTopRightRadius: 26,
+    paddingBottom: Platform.OS === "ios" ? 34 : 22,
     shadowColor: color.black,
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 16,
-    elevation: 20,
-    maxHeight: height * 0.7,
+    shadowOffset: { width: 0, height: -8 },
+    shadowOpacity: 0.14,
+    shadowRadius: 20,
+    elevation: 24,
+    maxHeight: height * 0.72,
   },
   handleBarContainer: {
-    alignItems: 'center',
-    paddingVertical: 12,
+    alignItems: "center",
+    paddingTop: 12,
+    paddingBottom: 6,
   },
   handleBar: {
-    width: 40,
+    width: 44,
     height: 5,
-    backgroundColor: color.borderLight,
-    borderRadius: 3,
+    backgroundColor: "#D9D9D9",
+    borderRadius: 10,
   },
   content: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 22,
     paddingTop: 8,
-    paddingBottom: 16,
   },
-  iconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+  iconOuter: {
+    width: 86,
+    height: 86,
+    borderRadius: 43,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 18,
+  },
+  iconGradient: {
+    width: 62,
+    height: 62,
+    borderRadius: 31,
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
-    fontSize: 26,
-    fontWeight: '700',
+    fontSize: 24,
+    fontFamily: fonts.bold,
     color: color.textDark,
-    textAlign: 'center',
-    marginBottom: 12,
-    letterSpacing: -0.3,
+    textAlign: "center",
+    marginBottom: 8,
   },
   message: {
-    fontSize: 16,
+    fontSize: 15,
     color: color.textMedium,
-    textAlign: 'center',
-    lineHeight: 24,
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    textAlign: "center",
+    lineHeight: 22,
+    marginBottom: 18,
+    paddingHorizontal: 12,
   },
   warningNote: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF9E6',
-    padding: 14,
-    borderRadius: 12,
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#FFE58F',
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: 14,
+    marginBottom: 22,
   },
   warningText: {
-    fontSize: 14,
-    color: '#856404',
-    marginLeft: 10,
     flex: 1,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 19,
+    marginLeft: 9,
+    fontFamily: fonts.medium,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  button: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 16,
-    borderRadius: 14,
-    marginHorizontal: 6,
-    borderWidth: 1.5,
+  actions: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   cancelButton: {
-    backgroundColor: color.white,
-    borderColor: color.borderLight,
-  },
-  gradientButton: {
     flex: 1,
-    borderRadius: 14,
-    marginHorizontal: 6,
-    overflow: 'hidden',
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-   },
-  gradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-  },
-  buttonIcon: {
-    marginRight: 8,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '600',
+    height: 52,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: color.primary,
+    backgroundColor: color.white,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10,
   },
   cancelText: {
-    color: color.textMedium,
+    fontSize: 15,
+    fontFamily: fonts.semiBold,
+    color: color.primary,
+  },
+  confirmButton: {
+    flex: 1,
+    height: 52,
+    borderRadius: 16,
+    overflow: "hidden",
+    shadowColor: color.primary,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.22,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  confirmGradient: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   confirmText: {
+    fontSize: 15,
+    fontFamily: fonts.bold,
     color: color.white,
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  extraOptions: {
-    alignItems: 'center',
-  },
-  optionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  optionText: {
-    fontSize: 14,
-    color: color.textMedium,
-    marginLeft: 8,
-    fontWeight: '500',
-  },
-  safeArea: {
-    backgroundColor: color.white,
+    marginLeft: 7,
   },
 });
 

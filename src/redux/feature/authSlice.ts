@@ -7,12 +7,13 @@ interface AuthState {
   isSuccess: boolean;
   isLogin: boolean;
   isLogOut: boolean;
-  userData: any;  // यहां पर आप specific userData type दे सकते हैं
+  userData: any;
   token: string | null;
-  forgotData: any;  // अगर structure पता हो तो type बना सकते हैं
+  forgotData: any;
   betOption: any;
   gameResult: any;
   newbetOption: any;
+  isNewUser: boolean;
 }
 
 // Initial state
@@ -28,12 +29,14 @@ const initialState: AuthState = {
   betOption: null,
   gameResult: null,
   newbetOption: null,
+  isNewUser: false,
 };
 
 // Login payload type
 interface LoginPayload {
-  userData: any;  // इसको भी टाइप कर सकते हैं
+  userData: any;
   token: string;
+  isNewUser?: boolean;
 }
 
 // Slice
@@ -49,6 +52,9 @@ const AuthSlice = createSlice({
       state.isLogOut = false;
       state.userData = action.payload.userData;
       state.token = action.payload.token;
+      if (action.payload.isNewUser !== undefined) {
+        state.isNewUser = action.payload.isNewUser;
+      }
     },
     logout(state) {
       state.isLoading = false;

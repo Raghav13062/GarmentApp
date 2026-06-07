@@ -5,7 +5,6 @@ import {
   ImageBackground,
   TouchableOpacity,
   StyleSheet,
-  Platform,
   Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -19,7 +18,7 @@ import { color } from "../../constant";
 import CustomButton from "../CustomButton";
 
 const { width } = Dimensions.get("window");
-const CARD_WIDTH = width / 2 - 12;
+const CARD_WIDTH = width / 2 - 20;
 
 export default function ProductCard({
   onPress1,
@@ -30,19 +29,16 @@ export default function ProductCard({
   disabled,
 }: any) {
   // Robust data mapping for different API responses
-  const brandName = item?.brand?.name || "";
   const titleText = item?.title || item?.name || "Product";
   const displayMrp = item?.pricing?.mrp || item?.mrp || item?.price || 0;
-  const displaySellingPrice = item?.pricing?.sellingPrice || item?.sellingPrice || item?.discountPrice || 0;
+  const displaySellingPrice = item?.pricing?.sellingPrice || item?.sellingPrice || item?.discountPrice || item?.price || displayMrp;
   const rawImage = item?.images?.[0] || item?.baseImages?.[0] || 'https://via.placeholder.com/150';
   const productImage = typeof rawImage === 'string' ? rawImage.replace(/\.avif$/i, '.webp') : rawImage;
+  const swatches = item?.colors?.filter(Boolean) || [];
 
   const discountPercent = displayMrp > displaySellingPrice
     ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100)
     : item?.pricing?.discountPercentage || item?.discountPercentage || 0;
-
-  const rating = item?.ratings?.average || 0.0;
-  const ratingCount = item?.ratings?.count || 0.0;
 
   // Animation values
   const scale = useSharedValue(1);
@@ -76,20 +72,24 @@ export default function ProductCard({
             imageStyle={styles.imageRadius}
             resizeMode="cover"
           >
+            {!!discountPercent && (
+              <View style={styles.discountBadge}>
+                <Text style={styles.discountBadgeText}>{discountPercent}%OFF</Text>
+              </View>
+            )}
 
-
-            {/* Rating Badge Overlay */}
-            <View style={styles.ratingBadge}>
-              <Text style={styles.ratingText}>{rating}</Text>
-              <Ionicons name="star" size={10} color="#1A9C4A" style={{ marginLeft: 2 }} />
-              <View style={styles.ratingDivider} />
-              <Text style={styles.ratingCountText}>{ratingCount}</Text>
+            <View style={styles.wishlistBtn}>
+              <Ionicons name="heart-outline" size={23} color="black" />
             </View>
           </ImageBackground>
         </View>
 
         {/* CONTENT SECTION */}
         <View style={styles.content}>
+          <View style={styles.deliveryRow}>
+            <Ionicons name="flash" size={11} color="#1A1A1A" />
+            <Text style={styles.deliveryText}>Fast delivery</Text>
+          </View>
 
           <Text numberOfLines={1} style={styles.title}>
             {titleText}
@@ -98,12 +98,23 @@ export default function ProductCard({
           <View style={styles.priceRow}>
             <Text style={styles.sellingPrice}>₹{displaySellingPrice}</Text>
             {displayMrp > displaySellingPrice && (
-              <>
-                <Text style={styles.mrp}>₹{displayMrp}</Text>
-                <Text style={styles.discount}>({discountPercent}% OFF)</Text>
-              </>
+              <Text style={styles.mrp}>₹{displayMrp}</Text>
             )}
           </View>
+
+          {swatches.length > 0 && (
+            <View style={styles.swatchRow}>
+              {swatches.slice(0, 3).map((swatch: any, index: number) => (
+                <View
+                  key={`${swatch}-${index}`}
+                  style={[
+                    styles.swatch,
+                    { backgroundColor: typeof swatch === "string" ? swatch : swatch?.hex || swatch?.code || color.lightGray },
+                  ]}
+                />
+              ))}
+            </View>
+          )}
         </View>
 
         {/* OPTIONAL ACTION BUTTON */}
@@ -124,99 +135,123 @@ export default function ProductCard({
 const styles = StyleSheet.create({
   cardContainer: {
     width: CARD_WIDTH,
-    marginBottom: 10,
+    marginBottom: 12,
   },
   card: {
-    backgroundColor: color.white,
+    backgroundColor: '#FFFFFF',
     borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: '#eee',
+    borderWidth: 1,
+    borderColor: '#ECECEC',
+
+    // Android Shadow
+    elevation: 5,
+
+    // iOS Shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+
+    // Android shadow ko cut hone se bachane ke liye
+    overflow: 'visible',
+
   },
   imageContainer: {
     width: "100%",
-    aspectRatio: 1, // Changed to square for reduced height
-    backgroundColor: "#f9f9f9",
+    aspectRatio: 0.86,
+    backgroundColor: "#F4F4F4",
   },
   image: {
     width: "100%",
     height: "100%",
   },
   imageRadius: {
-    // No radius here as it's handled by card overflow
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+  },
+  discountBadge: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    backgroundColor: color.primary,
+    paddingHorizontal: 5,
+    paddingVertical: 3,
+    borderRadius: 2,
+  },
+  discountBadgeText: {
+    color: color.white,
+    fontSize: 9,
+    fontWeight: '800',
   },
   wishlistBtn: {
     position: 'absolute',
-    top: 6,
+    bottom: 7,
     right: 6,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    width: 26,
-    height: 26,
-    borderRadius: 13,
+    backgroundColor: color.white,
+    width: 38,
+    height: 38,
+    borderRadius: 44,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  ratingBadge: {
-    position: 'absolute',
-    bottom: 6,
-    left: 6,
-    backgroundColor: 'rgba(255,255,255,0.9)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 4,
-    paddingVertical: 1,
-    borderRadius: 3,
-  },
-  ratingText: {
-    fontSize: 9,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  ratingDivider: {
-    width: 1,
-    height: 8,
-    backgroundColor: '#ccc',
-    marginHorizontal: 3,
-  },
-  ratingCountText: {
-    fontSize: 9,
-    color: '#666',
+    elevation: 2,
+    shadowColor: color.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.14,
+    shadowRadius: 2,
   },
   content: {
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingTop: 5,
+    paddingBottom: 8,
   },
-  brand: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: "#222",
+  deliveryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  deliveryText: {
+    fontSize: 11,
+    color: '#1F1F1F',
+    fontWeight: '700',
+    marginLeft: 2,
   },
   title: {
-    fontSize: 10,
-    color: "#777",
-    marginTop: 1,
+    fontSize: 12,
+    color: "#555",
+    lineHeight: 16,
   },
   priceRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 4,
+    marginTop: 3,
     flexWrap: 'wrap',
   },
   sellingPrice: {
     fontSize: 13,
-    fontWeight: "bold",
-    color: "#222",
+    fontWeight: "800",
+    color: "#F15A24",
   },
   mrp: {
-    fontSize: 10,
+    fontSize: 11,
     color: "#888",
     textDecorationLine: "line-through",
     marginLeft: 4,
   },
-  discount: {
-    fontSize: 10,
-    fontWeight: "bold",
-    color: "#FF7A00",
-    marginLeft: 4,
+  swatchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 7,
+  },
+  swatch: {
+    width: 9,
+    height: 9,
+    borderRadius: 2,
+    marginRight: 5,
+    borderWidth: 0.5,
+    borderColor: '#D8D8D8',
   },
   buttonWrap: {
     paddingHorizontal: 8,

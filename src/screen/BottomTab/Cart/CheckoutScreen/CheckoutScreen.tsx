@@ -1,3 +1,4 @@
+
 import { color } from "../../../../constant";
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -23,7 +24,6 @@ import ScreenNameEnum from '../../../../routes/screenName.enum';
 import { errorToast, successToast } from '../../../../utils/customToast';
 import { styles } from './style';
 import RazorpayCheckout from 'react-native-razorpay';
-// import { RAZORPAY_KEY_ID } from '@env';
 import StatusBarComponent from '../../../../component/StatusBarCompoent';
 
 const { width } = Dimensions.get('window');
@@ -127,13 +127,8 @@ const CheckoutScreen = () => {
 
   /** ---------------- ORDER ---------------- */
 
-  const getRazorpayKey = () => {
-    // if (typeof RAZORPAY_KEY_ID === 'string' && RAZORPAY_KEY_ID.trim()) {
-    //   return RAZORPAY_KEY_ID.trim();
-    // }
-
-    return '';
-  };
+  // Razorpay Test Key – Govind Singh
+  const RAZORPAY_KEY = 'rzp_test_SvVqvXhLv2LPB8';
 
   const navigateToConfirmation = (paymentDetails?: any) => {
     const orderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
@@ -152,22 +147,14 @@ const CheckoutScreen = () => {
   };
 
   const openRazorpayCheckout = async () => {
-    const razorpayKey = getRazorpayKey();
-
-    if (!razorpayKey) {
-      Alert.alert(
-        'Razorpay Key Missing',
-        'Please add RAZORPAY_KEY_ID in .env before accepting online payments.',
-      );
-      return;
-    }
-
     const options = {
-      key: razorpayKey,
-      amount: Math.round(grandTotal * 100),
+      key: RAZORPAY_KEY,
+      amount: Math.round(grandTotal * 100), // amount in paise
       currency: 'INR',
       name: 'Kimbo',
-      description: `Payment for ${orderItems.length} item${orderItems.length > 1 ? 's' : ''}`,
+      description: `Payment for ${orderItems.length} item${
+        orderItems.length > 1 ? 's' : ''
+      }`,
       prefill: {
         email: route.params?.deliveryAddress?.email || '',
         contact: route.params?.deliveryAddress?.phone || '',
@@ -179,16 +166,21 @@ const CheckoutScreen = () => {
       theme: {
         color: color.primary,
       },
-      method: paymentMethod === 'upi' ? { upi: true } : { card: true },
     };
 
     try {
-      const paymentDetails = await RazorpayCheckout.open(options);
-      successToast('Payment successful');
+      const paymentDetails: any = await RazorpayCheckout.open(options);
+      successToast('Payment successful!');
       navigateToConfirmation(paymentDetails);
     } catch (error: any) {
-      const message = error?.description || error?.error?.description || 'Payment was cancelled or failed';
-      Alert.alert('Payment Failed', message);
+      const message =
+        error?.description ||
+        error?.error?.description ||
+        'Payment was cancelled or failed. Please try again.';
+      Alert.alert('\u274c Payment Failed', message, [
+        { text: 'Retry', onPress: openRazorpayCheckout },
+        { text: 'Cancel', style: 'cancel' },
+      ]);
     }
   };
 
@@ -200,18 +192,20 @@ const CheckoutScreen = () => {
 
     Alert.alert(
       'Confirm Order',
-      `Pay ₹${grandTotal}?`,
+      `Pay \u20b9${grandTotal} via ${paymentMethodLabels[paymentMethod]}?`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Confirm',
           onPress: async () => {
+            // Online payments (UPI / Card) → Razorpay
             if (ONLINE_PAYMENT_METHODS.includes(paymentMethod)) {
               await openRazorpayCheckout();
               return;
             }
 
-            successToast('Order placed successfully');
+            // COD → go directly to confirmation
+            successToast('Order placed successfully!');
             navigateToConfirmation();
           },
         },

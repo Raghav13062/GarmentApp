@@ -1,6 +1,7 @@
 import apiClient from '../apiClient';
 import { endpointApi } from '../endpoints';
 import { errorToast, successToast } from '../../utils/customToast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * Adds a product to the user's cart
@@ -47,16 +48,27 @@ export const GetCartApi = async (
   try {
     if (setLoading) setLoading(true);
 
-    const response = await apiClient.get('cart');
+    const token = await AsyncStorage.getItem('token');
+
+    if (!token) {
+      return null;
+    }
+
+    const response = await apiClient.get(endpointApi.cart, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (response.data.success) {
       return response.data.data;
     } else {
-      console.warn('GetCartApi: Success false in response');
+      errorToast(response.data.message || 'Failed to fetch cart');
       return null;
     }
   } catch (error: any) {
     console.error('GetCartApi Error:', error);
+    errorToast(error.response?.data?.message || 'Failed to fetch cart');
     throw error;
   } finally {
     if (setLoading) setLoading(false);

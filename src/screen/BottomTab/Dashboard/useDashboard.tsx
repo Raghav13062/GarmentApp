@@ -18,7 +18,7 @@ export default function useDashboard() {
 
   const [loading, setLoading] = useState(false);
   const [homeData, setHomeData] = useState<any>(null);
-  const [gender, setGender] = useState<GenderType>('all');
+  const [gender, setGender] = useState<GenderType>('women');
   const [BrandsProduct, setBrandsProduct] = useState<any>(null);
 
   const isFirstLoad = useRef(true);
@@ -64,16 +64,17 @@ export default function useDashboard() {
   }, [dispatch]);
 
   /* ---------------- Fetch Home ---------------- */
-  const fetchHome = useCallback(async (selectedGender: GenderType) => {
+  const fetchHome = useCallback(async (selectedGender: GenderType = 'women') => {
     const requestId = ++activeRequest.current;
     setLoading(true);
 
     try {
-      const response = await getHomePageData("Women");
+      const normalizedGender = String(selectedGender || 'women').toLowerCase() as GenderType;
+      const response = await getHomePageData(normalizedGender);
 
       // ignore old API responses
       if (requestId !== activeRequest.current) return;
-      console.log('response', response)
+
       if (!response || !response.success || !Array.isArray(response.data?.sections)) {
         setHomeData(null);
         return;
@@ -82,15 +83,7 @@ export default function useDashboard() {
       setHomeData(response.data);
 
       if (isFirstLoad.current) {
-        // Find if there's any implicit gender filter in sections (though current API seems to use query param)
-        const genderSection = response.data.sections.find(
-          (s: any) => s?.sectionType === 'GENDER_FILTER'
-        );
-        const apiGender = "Women";
-
-        if (apiGender && apiGender !== gender) {
-          setGender(apiGender as GenderType);
-        }
+        setGender(normalizedGender);
         isFirstLoad.current = false;
       }
     } catch (e) {
@@ -110,8 +103,8 @@ export default function useDashboard() {
 
   /* ---------------- Home Data ---------------- */
   useEffect(() => {
-    fetchHome("Women");
-  }, [fetchHome]);
+    fetchHome(gender);
+  }, [fetchHome, gender]);
 
   /* ---------------- Sections (safe + sorted) ---------------- */
   const sections = useMemo(() => {

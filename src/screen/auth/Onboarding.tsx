@@ -13,8 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../component/CustomButton';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import { color, fonts } from '../../constant';
-import FastImage from 'react-native-fast-image';
-
+ 
 const { width, height } = Dimensions.get('window');
 
 interface Slide {
@@ -86,7 +85,7 @@ const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         </TouchableOpacity>
       )}
 
-      <FlatList
+      {/* <FlatList
         ref={flatListRef}
         data={slides}
         horizontal
@@ -115,7 +114,7 @@ const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Text allowFontScaling={false} style={styles.description}>{item.description}</Text>
           </View>
         )}
-      />
+      /> */}
 
       <View style={styles.footer}>
         <View style={styles.dotsContainer}>

@@ -7,12 +7,12 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  ActivityIndicator,
 } from "react-native";
 import imageIndex from "../../assets/imageIndex";
 import ScreenNameEnum from "../../routes/screenName.enum";
 import { useNavigation } from "@react-navigation/native";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import Loading from "../../utils/Loader";
 
 interface Category {
   _id?: string;
@@ -39,7 +39,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
         contentContainerStyle={styles.container}
       >
         {categories?.length === 0 ? (
-          <ActivityIndicator size="small" color="#FF3F6C" />
+          <Loading fullScreen={false} size="small" color="#FF3F6C" />
         ) : (
           categories?.map((item: any, index: number) => {
             return (

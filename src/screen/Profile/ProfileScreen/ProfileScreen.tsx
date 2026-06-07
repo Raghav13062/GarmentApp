@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
-import imageIndex from "../../../assets/imageIndex";
 import { color, fonts, navigateToScreen } from "../../../constant";
 import { styles } from "./style";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -24,7 +23,7 @@ const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight ||
 const UserProfileScreen = () => {
   const { loading,
     userData,
-    profileImg, setProfileImg,
+    profileImg,
     showLogoutModal, setshowLogoutModal,
     navigation,
     handleLogout } = useProfile()
@@ -200,16 +199,9 @@ const UserProfileScreen = () => {
 
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        style={[styles.headerGradient, { paddingTop: STATUSBAR_HEIGHT + 10 }]}
+        style={[styles.headerGradient, { paddingTop: STATUSBAR_HEIGHT + 5 }]}
       >
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>My Profile</Text>
-          <TouchableOpacity
-            onPress={() => setshowLogoutModal(true)}
-            style={styles.headerIcon}>
-            <Icon name="log-out" size={24} color={color.white} />
-          </TouchableOpacity>
-        </View>
+
 
         {/* -------------------- PROFILE SECTION IN HEADER -------------------- */}
         <View style={styles.profileHeaderContainer}>
@@ -222,85 +214,79 @@ const UserProfileScreen = () => {
               }
               style={styles.profileImage}
             />
-            {/* <LinearGradient
-                      colors={color.primaryGradient}
 
-              style={styles.editIconGradient}
-            >
-              <TouchableOpacity onPress={openPicker}>
-                <Icon name="camera" size={18} color={color.white} />
-              </TouchableOpacity>
-            </LinearGradient> */}
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>{userData?.userData?.fullName || ""}</Text>
-            <Text style={styles.userEmail}> {userData?.userData?.email || "Email"}</Text>
+            <Text style={styles.userName}>{userData?.userData?.fullName || "Ram"}</Text>
             <View style={styles.verifiedBadge}>
               <Icon name="check-circle" size={14} color={color.success} />
               <Text style={styles.verifiedText}>Verified</Text>
             </View>
           </View>
+          <TouchableOpacity
+            onPress={() => setshowLogoutModal(true)}
+            style={styles.headerIcon}>
+            <Icon name="log-out" size={24} color={color.white} />
+          </TouchableOpacity>
         </View>
       </LinearGradient>
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* -------------------- USER INFO CARD -------------------- */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <LinearGradient
-              colors={color.primaryGradient}
 
-              style={styles.cardIconGradient}
-            >
-              <Icon name="user" size={18} color={color.white} />
-            </LinearGradient>
-            <Text style={styles.cardTitle}>Personal Information</Text>
-          </View>
 
-          <View style={styles.row}>
-            <View style={styles.rowLeft}>
-              <Icon name="user" size={16} color={color.primary} style={styles.rowIcon} />
-              <Text style={styles.label}>Full Name</Text>
-            </View>
-            <Text style={styles.value}>{userData?.userData?.fullName}</Text>
-          </View>
+        {/* Premium Benefits Grid */}
+        <View style={{ padding: 24, marginTop: 10 }}>
+          <Text style={{
+            fontSize: 18,
+            fontFamily: fonts.bold,
+            color: '#111',
+            marginBottom: 20,
+            marginLeft: 5
+          }}>
+            Membership Perks
+          </Text>
 
-          <View style={styles.row}>
-            <View style={styles.rowLeft}>
-              <Icon name="phone" size={16} color={color.primary} style={styles.rowIcon} />
-              <Text style={styles.label}>Phone</Text>
-            </View>
-            <Text style={styles.value}>{userData?.userData?.mobileNo}</Text>
-          </View>
-
-          <View style={styles.row}>
-            <View style={styles.rowLeft}>
-              <Icon name="mail" size={16} color={color.primary} style={styles.rowIcon} />
-              <Text allowFontScaling={false} style={styles.label}>Email</Text>
-            </View>
-            <Text style={styles.value}>{userData?.userData?.email}</Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+            {[
+              { icon: 'shopping-bag', title: 'Orders', desc: 'Fast Tracking' },
+              { icon: 'heart', title: 'Wishlist', desc: 'Save Styles' },
+              { icon: 'tag', title: 'Offers', desc: 'Member Price' },
+              { icon: 'award', title: 'Points', desc: 'Earn Rewards' },
+            ].map((item, index) => (
+              <View key={index} style={{
+                width: '48%',
+                backgroundColor: color.white,
+                borderRadius: 20,
+                padding: 20,
+                marginBottom: 16,
+                borderWidth: 1,
+                borderColor: color.lightGray,
+                alignItems: 'center'
+              }}>
+                <View style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 22,
+                  backgroundColor: '#FFF5EE',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 12
+                }}>
+                  <Icon name={item.icon} size={20} color={color.primary} />
+                </View>
+                <Text style={{ fontSize: 14, fontFamily: fonts.bold, color: '#111' }}>{item.title}</Text>
+                <Text style={{ fontSize: 11, color: '#888', marginTop: 2 }}>{item.desc}</Text>
+              </View>
+            ))}
           </View>
         </View>
 
+        <View style={{ height: 40 }} />
         {/* -------------------- SETTINGS CARD -------------------- */}
 
 
-        <TouchableOpacity
-          style={styles.logoutBtn}
-          onPress={() => setshowLogoutModal(true)}
-        >
-          <LinearGradient
-            colors={color.primaryGradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.logoutTouchable}
-          >
-            <Icon name="log-out" size={20} color={color.white} />
-            <Text style={styles.logoutText}>Logout</Text>
-          </LinearGradient>
-        </TouchableOpacity>
 
-        <View style={{ height: 30 }} />
 
         <LogoutModal
           visible={showLogoutModal}

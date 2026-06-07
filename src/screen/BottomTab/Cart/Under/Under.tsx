@@ -93,6 +93,74 @@ const CONTENT_DATA: any = {
       ],
     },
   ],
+  bottoms: [
+    {
+      id: 'b1',
+      title: 'STYLISH BOTTOMS',
+      items: [
+        { id: 'b1_1', name: 'Pants @ ₹799', image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=500&auto=format&fit=crop' },
+        { id: 'b1_2', name: 'Shorts @ ₹499', image: 'https://images.unsplash.com/photo-1591369822095-fc2a42ce89a8?q=80&w=500&auto=format&fit=crop' },
+      ]
+    }
+  ],
+  denim: [
+    {
+      id: 'denim1',
+      title: 'DENIM WEAR',
+      items: [
+        { id: 'denim_1', name: 'Jeans @ ₹999', image: 'https://images.unsplash.com/photo-1542272604-780c40fb05f6?q=80&w=500&auto=format&fit=crop' },
+        { id: 'denim_2', name: 'Jackets @ ₹899', image: 'https://images.unsplash.com/photo-1495105787522-5334e3ffa0ef?q=80&w=500&auto=format&fit=crop' },
+      ]
+    }
+  ],
+  lingerie: [
+    {
+      id: 'l1',
+      title: 'LINGERIE',
+      items: [
+        { id: 'l1_1', name: 'Sets @ ₹599', image: 'https://images.unsplash.com/photo-1568251188392-ae32f898cb3b?q=80&w=500&auto=format&fit=crop' },
+      ]
+    }
+  ],
+  activewear: [
+    {
+      id: 'aw1',
+      title: 'ACTIVEWEAR',
+      items: [
+        { id: 'aw1_1', name: 'Sports Bra @ ₹399', image: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=500&auto=format&fit=crop' },
+        { id: 'aw1_2', name: 'Leggings @ ₹699', image: 'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=500&auto=format&fit=crop' },
+      ]
+    }
+  ],
+  knitwear: [
+    {
+      id: 'kw1',
+      title: 'KNITWEAR',
+      items: [
+        { id: 'kw1_1', name: 'Sweaters @ ₹899', image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=500&auto=format&fit=crop' },
+      ]
+    }
+  ],
+  bags: [
+    {
+      id: 'bag1',
+      title: 'TRENDY BAGS',
+      items: [
+        { id: 'bag1_1', name: 'Handbags @ ₹799', image: 'https://images.unsplash.com/photo-1584917033904-493bb3c3c155?q=80&w=500&auto=format&fit=crop' },
+        { id: 'bag1_2', name: 'Totes @ ₹599', image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=500&auto=format&fit=crop' },
+      ]
+    }
+  ],
+  accessories: [
+    {
+      id: 'acc1',
+      title: 'ACCESSORIES',
+      items: [
+        { id: 'acc1_1', name: 'Jewelry @ ₹299', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=500&auto=format&fit=crop' },
+        { id: 'acc1_2', name: 'Sunglasses @ ₹399', image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=500&auto=format&fit=crop' },
+      ]
+    }
+  ],
 };
 
 const Under = () => {
@@ -100,31 +168,83 @@ const Under = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const scrollRef = useRef<ScrollView>(null);
+  const sidebarRef = useRef<FlatList>(null);
+  const sectionLayouts = useRef<{ [key: string]: number }>({});
+  const isScrollingFromSidebar = useRef(false);
 
-  const filteredSections = useMemo(() => {
-    const data = CONTENT_DATA[activeCategory] || [];
-    if (!searchQuery.trim()) return data;
+  const allCategoriesData = useMemo(() => {
+    return CATEGORIES.map(cat => {
+      const data = CONTENT_DATA[cat.id] || [];
+      
+      let filteredData = data;
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase();
+        filteredData = data.map((section: any) => ({
+          ...section,
+          items: section.items.filter((item: any) =>
+            item.name.toLowerCase().includes(query)
+          ),
+        })).filter((section: any) => section.items.length > 0);
+      }
+      
+      return {
+        ...cat,
+        sections: filteredData,
+      };
+    }).filter(cat => cat.sections.length > 0);
+  }, [searchQuery]);
 
-    const query = searchQuery.toLowerCase();
-    return data.map((section: any) => ({
-      ...section,
-      items: section.items.filter((item: any) =>
-        item.name.toLowerCase().includes(query)
-      ),
-    })).filter((section: any) => section.items.length > 0);
-  }, [activeCategory, searchQuery]);
-
-  const handleCategoryPress = (id: string) => {
+  const handleCategoryPress = (id: string, index: number) => {
     setActiveCategory(id);
     setSearchQuery('');
-    scrollRef.current?.scrollTo({ y: 0, animated: false });
+    isScrollingFromSidebar.current = true;
+    
+    // Scroll sidebar
+    sidebarRef.current?.scrollToIndex({ index, animated: true, viewPosition: 0.5 });
+    
+    // Scroll content
+    const yPos = sectionLayouts.current[id];
+    if (yPos !== undefined) {
+      scrollRef.current?.scrollTo({ y: yPos, animated: true });
+    }
+    
+    // Reset flag after animation
+    setTimeout(() => {
+      isScrollingFromSidebar.current = false;
+    }, 500);
   };
 
-  const renderSidebarItem = ({ item }: any) => {
+  const handleScroll = (event: any) => {
+    if (isScrollingFromSidebar.current) return;
+    
+    const scrollY = event.nativeEvent.contentOffset.y;
+    let currentCat = activeCategory;
+    
+    for (const cat of allCategoriesData) {
+      const yPos = sectionLayouts.current[cat.id];
+      if (yPos !== undefined && scrollY >= yPos - 100) {
+        currentCat = cat.id;
+      }
+    }
+    
+    if (currentCat !== activeCategory) {
+      setActiveCategory(currentCat);
+      const catIndex = CATEGORIES.findIndex(c => c.id === currentCat);
+      if (catIndex !== -1) {
+        try {
+          sidebarRef.current?.scrollToIndex({ index: catIndex, animated: true, viewPosition: 0.5 });
+        } catch (e) {
+          // Ignore scroll errors if items are not rendered
+        }
+      }
+    }
+  };
+
+  const renderSidebarItem = ({ item, index }: any) => {
     const isActive = activeCategory === item.id;
     return (
       <TouchableOpacity
-        onPress={() => handleCategoryPress(item.id)}
+        onPress={() => handleCategoryPress(item.id, index)}
         style={[styles.sidebarItem, isActive && styles.sidebarItemActive]}
       >
         {isActive && <LinearGradient colors={color.primaryGradient} style={styles.activeIndicator} />}
@@ -173,37 +293,18 @@ const Under = () => {
     <SafeAreaView style={styles.safeArea} edges={[]}>
       <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
 
-      {/* Top Search Bar */}
       <LinearGradient
         colors={color.primaryGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={[styles.headerGradient, { paddingTop: STATUSBAR_HEIGHT + 10 }]}
       >
-        <View style={styles.headerTop}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.headerIcon}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="arrow-back" size={22} color={color.white} />
-          </TouchableOpacity>
-
-          <View style={styles.headerTitleWrap}>
-            <Text style={styles.headerTitle}>Under 999</Text>
-            <Text style={styles.headerSubtitle}>Budget fashion deals</Text>
-          </View>
-
-          <View style={styles.headerIcon}>
-            <Ionicons name="pricetag" size={21} color={color.white} />
-          </View>
-        </View>
 
         <View style={styles.searchBar}>
           <TextInput
             placeholder="Search budget fashion..."
             style={styles.searchInput}
-            placeholderTextColor={color.textLight}
+            placeholderTextColor={color.textMedium}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
@@ -219,6 +320,7 @@ const Under = () => {
         {/* Left Sidebar */}
         <View style={styles.sidebar}>
           <FlatList
+            ref={sidebarRef}
             data={CATEGORIES}
             renderItem={renderSidebarItem}
             keyExtractor={(item) => item.id}
@@ -231,9 +333,25 @@ const Under = () => {
           ref={scrollRef}
           style={styles.contentArea}
           showsVerticalScrollIndicator={false}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
         >
-          {filteredSections.length > 0 ? (
-            filteredSections.map((section: any) => renderSection(section))
+          {allCategoriesData.length > 0 ? (
+            allCategoriesData.map((category) => (
+              <View 
+                key={category.id} 
+                onLayout={(event) => {
+                  sectionLayouts.current[category.id] = event.nativeEvent.layout.y;
+                }}
+              >
+                {/* Category Header */}
+                <View style={styles.categoryTitleContainer}>
+                  <Text style={styles.categoryTitleText}>{category.title}</Text>
+                </View>
+                
+                {category.sections.map((section: any) => renderSection(section))}
+              </View>
+            ))
           ) : (
             <View style={styles.placeholderContent}>
               <Ionicons name="pricetag-outline" size={60} color={color.borderLight} />
@@ -313,9 +431,8 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
     color: color.textDark,
-    fontFamily: fonts.regular,
   },
   headerIconButton: {
     paddingHorizontal: 10,
@@ -386,8 +503,18 @@ const styles = StyleSheet.create({
   },
   viewAll: {
     fontSize: 12,
-    color: color.textMedium,
-    fontFamily: fonts.regular,
+    color: '#F48220',
+    fontFamily: fonts.semiBold,
+  },
+  categoryTitleContainer: {
+    paddingHorizontal: 10,
+    paddingTop: 16,
+    paddingBottom: 8,
+  },
+  categoryTitleText: {
+    fontSize: 18,
+    fontFamily: fonts.bold,
+    color: color.textDark,
   },
   gridRow: {
     flexDirection: 'row',

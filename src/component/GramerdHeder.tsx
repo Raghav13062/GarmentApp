@@ -106,7 +106,7 @@ const GramerdHeder = ({
     >
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.header}>
-           <Animated.View
+          <Animated.View
             style={[
               styles.logoWrapper,
               { transform: [{ scale: scaleAnim }, { rotate }] },
@@ -116,7 +116,7 @@ const GramerdHeder = ({
             {/* <Text style={styles.appName}>Gramerd</Text> */}
           </Animated.View>
 
-           {showIcons && (
+          {showIcons && (
             <View style={styles.headerIcons}>
               {rightIcons.includes('notifications') &&
                 renderIconButton('notifications', onNotificationPress)}

@@ -8,18 +8,18 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
-import FastImage from 'react-native-fast-image';
-import { color, fonts } from '../../../constant';
+ import { color, fonts } from '../../../constant';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import { toggleWishlist } from '../../../redux/feature/wishlistSlice';
-
+ 
 const { width } = Dimensions.get('window');
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 const CARD_GAP = 12;
@@ -64,9 +64,13 @@ const WishlistScreen = () => {
 
   const handleProductPress = React.useCallback(
     (item: any) => {
-      navigation.navigate(ScreenNameEnum.ProductDetails, { item });
+      navigation.navigate(ScreenNameEnum.ProductDetails, {
+        item,
+        productId: item?._id || item?.id || item?.productId,
+        relatedProducts: wishlistItems,
+      });
     },
-    [navigation],
+    [navigation, wishlistItems],
   );
 
   const handleToggleFavorite = React.useCallback(
@@ -86,10 +90,16 @@ const WishlistScreen = () => {
         onPress={() => handleProductPress(item)}
       >
         <View style={styles.imageWrap}>
-          <FastImage
+          {/* <FastImage
             source={{ uri: product.image, priority: FastImage.priority.normal }}
             style={styles.productImage}
             resizeMode={FastImage.resizeMode.cover}
+          /> */}
+
+          <Image
+            source={{ uri: product.image }}
+            style={styles.productImage}
+            resizeMode="cover"
           />
 
           <TouchableOpacity

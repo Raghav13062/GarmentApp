@@ -27,13 +27,10 @@ export default function Login() {
   const [agreed, setAgreed] = React.useState(false);
 
   const {
-    email,
-    password,
-    emailError,
-    passwordError,
+    phone,
+    phoneError,
     loading,
-    handleEmailChange,
-    handlePasswordChange,
+    handlePhoneChange,
     handleLogin,
     navigation,
   } = useLogin();
@@ -81,31 +78,18 @@ export default function Login() {
 
                   <View style={styles.inputSection}>
                     <CustomInput
-                      placeholder="Email Address"
+                      placeholder="Phone Number"
                       placeholderTextColor={color.textLight}
-                      leftIcon={<MaterialIcon name="mail-outline" size={20} color={color.primary} />}
-                      value={email}
-                      onChangeText={handleEmailChange}
-                      keyboardType="email-address"
+                      leftIcon={<MaterialIcon name="phone-iphone" size={20} color={color.primary} />}
+                      value={phone}
+                      onChangeText={handlePhoneChange}
+                      keyboardType="phone-pad"
+                      maxLength={10}
                       autoCapitalize="none"
                       containerStyle={styles.inputContainer}
                       inputStyle={styles.inputField}
                     />
-                    <ErrorText error={emailError} />
-
-                    <View style={{ height: 15 }} />
-
-                    <CustomInput
-                      placeholder="Password"
-                      placeholderTextColor={color.textLight}
-                      leftIcon={<MaterialIcon name="lock-outline" size={20} color={color.primary} />}
-                      value={password}
-                      onChangeText={handlePasswordChange}
-                      secureTextEntryToggle
-                      containerStyle={styles.inputContainer}
-                      inputStyle={styles.inputField}
-                    />
-                    <ErrorText error={passwordError} />
+                    <ErrorText error={phoneError} />
                   </View>
 
 
@@ -116,7 +100,7 @@ export default function Login() {
                       onPress={() => setAgreed(!agreed)}
                       activeOpacity={0.8}
                     >
-                      {agreed && <MaterialIcon name="check" size={16} color={color.white} />}
+                      {agreed && <MaterialIcon name="check" size={22} color={color.white} />}
                     </TouchableOpacity>
                     <Text allowFontScaling={false} style={styles.termsText}>
                       I agree to the{' '}
@@ -140,14 +124,14 @@ export default function Login() {
                     <TouchableOpacity
                       style={[
                         styles.loginButtonBase,
-                        (!agreed || email.length === 0 || password.length === 0) && styles.loginButtonDisabled
+                        (!agreed || phone.length !== 10) && styles.loginButtonDisabled
                       ]}
                       onPress={handleLogin}
-                      disabled={!agreed || email.length === 0 || password.length === 0}
+                      disabled={!agreed || phone.length !== 10}
                       activeOpacity={0.8}
                     >
                       <LinearGradient
-                        colors={agreed && email.length > 0 && password.length > 0 ? color.buttLinearGradient : ['#D3D3D3', '#D3D3D3']}
+                        colors={agreed && phone.length === 10 ? color.buttLinearGradient : ['#D3D3D3', '#D3D3D3']}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 0 }}
                         style={styles.loginButtonGradient}
