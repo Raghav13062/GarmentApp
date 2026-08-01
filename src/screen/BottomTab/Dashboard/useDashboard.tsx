@@ -44,12 +44,12 @@ export default function useDashboard() {
         const mappedItems = data.items.map((item: any) => ({
           id: item._id,
           productId: item.product?._id,
-          title: item.product?.title || 'Product',
-          image: item.product?.baseImages?.[0]?.replace(/\.avif$/i, '.webp') || 'https://via.placeholder.com/150',
+          title: item.product?.title || '',
+          image: item.product?.baseImages?.[0]?.replace(/\.avif$/i, '.webp') || '',
           price: item.lineTotal || item.price,
           quantity: item.quantity,
-          brand: item.product?.brand || 'Garment',
-          category: item.product?.categoryId?.name || 'Apparel',
+          brand: item.product?.brand || '',
+          category: item.product?.categoryId?.name || '',
           originalPrice: item.mrp
         }));
         dispatch(setCart({
@@ -124,7 +124,7 @@ export default function useDashboard() {
     const options = genderSection?.data?.options;
     return Array.isArray(options)
       ? options.filter(Boolean)
-      : ['all', 'men', 'women', 'kids'];
+      : [];
   }, [genderSection]);
 
   /* ---------------- Categories ---------------- */

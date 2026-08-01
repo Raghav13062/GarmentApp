@@ -5,8 +5,7 @@ export const pathImage: { pathImage: string } = {
 
 };
 export const color = {
-  // Brand Colors
-  primary: '#F58021', // Note: Updating to standard app primary (orange) based on usage
+   primary: '#F58021', 
   secondary: '#862E92',
   primaryGradient: ['#F58021', '#862E92'],
 
@@ -24,14 +23,12 @@ export const color = {
   backgroundLight: '#F5F5F5',
   borderLight: '#E0E0E0',
 
-  // Semantic / Utility
-  success: '#4CAF50',
+   success: '#4CAF50',
   error: '#FF0000',
   warning: '#FF9800',
   star: '#FFD700',
 
-  // Existing legacy colors (kept for compatibility)
-  buttLinearGradient: ['#F58021', '#862E92'],
+   buttLinearGradient: ['#F58021', '#862E92'],
   baground: 'white',
   StatusBar: "#F58021",
   buttonColor: '#1F8695',

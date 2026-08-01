@@ -132,8 +132,9 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
 };
 
 
-
 const HotCategories = ({ categories }: any) => (
+  console.log('HeroSlider rendered with sections:', categories),
+
   <View style={styles.hotCategoriesSection}>
     <Text style={styles.sectionTitleCenter}>HOT CATEGORIES</Text>
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hotCatList}>
@@ -148,6 +149,66 @@ const HotCategories = ({ categories }: any) => (
     </ScrollView>
   </View>
 );
+
+const OfferSection = ({ section, navigation, gender }: any) => {
+  const title = section?.title || section?.data?.title || 'Flash Sale';
+  const subtitle = section?.data?.subtitle || 'Grab the best deals';
+  const products = Array.isArray(section?.data?.products) ? section.data.products : [];
+
+  return (
+    <View style={styles.flashSection}>
+      <View style={styles.timerBanner}>
+        <Text style={styles.timerLabel}>FLASH SALE</Text>
+        <View style={styles.timerLine} />
+        <View style={styles.timerRight}>
+          <Text style={styles.timerEndsText}>ENDS IN</Text>
+          <View style={styles.timerValueContainer}>
+            <Text style={styles.timerValue}>12:00:00</Text>
+          </View>
+        </View>
+        <View style={styles.couponBadge}>
+          <Text style={styles.couponSub}>EXTRA</Text>
+          <Text style={styles.couponValue}>20% OFF</Text>
+        </View>
+      </View>
+      
+      <View style={[styles.flashHeader, { marginTop: 20 }]}>
+        <View style={{ flex: 1 }}>
+          <View style={styles.shopTheSaleRow}>
+            <Text style={styles.shopTheSaleText}>SHOP THE SALE</Text>
+            <View style={[styles.headerLine, { backgroundColor: color.primary }]} />
+          </View>
+          <Text style={styles.flashTitle}>{title}</Text>
+          <Text style={styles.flashSubtitle}>{subtitle}</Text>
+        </View>
+        <View style={styles.dontMissRow}>
+          <Text style={styles.dontMissText}>DON'T MISS OUT</Text>
+        </View>
+      </View>
+
+      {products.length > 0 && (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalList}>
+          {products.map((item: any, index: number) => (
+            <View key={item?._id || item?.id || index} style={styles.horizontalCardWrapper}>
+              <ProductCard
+                item={item}
+                onPress1={() =>
+                  navigation.navigate(ScreenNameEnum.ProductDetails, {
+                    item,
+                    productId: item?._id || item?.id,
+                    gender,
+                    relatedProducts: products,
+                  })
+                }
+              />
+            </View>
+          ))}
+        </ScrollView>
+      )}
+    </View>
+  );
+};
+
 
 const formatSectionTitle = (title: string = '') => {
   const normalizedTitle = title.replace(/_/g, ' ').trim().toLowerCase();
@@ -236,6 +297,10 @@ const DashboardScreen = () => {
             if (section.sectionType === 'CATEGORY_GRID') {
               const categoryList = section.data?.categories || [];
               return <HotCategories key={section.id || index} categories={categoryList} />;
+            }
+
+            if (section.sectionType === 'OFFER' || section.sectionType === 'FLASH_SALE' || section.sectionType === 'BEST_OFFERS') {
+              return <OfferSection key={section.id || index} section={section} navigation={navigation} gender={gender} />;
             }
 
             const products = getSectionProducts(section);

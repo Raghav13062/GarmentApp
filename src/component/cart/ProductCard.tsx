@@ -29,10 +29,10 @@ export default function ProductCard({
   disabled,
 }: any) {
   // Robust data mapping for different API responses
-  const titleText = item?.title || item?.name || "Product";
+  const titleText = item?.title || item?.name || "";
   const displayMrp = item?.pricing?.mrp || item?.mrp || item?.price || 0;
   const displaySellingPrice = item?.pricing?.sellingPrice || item?.sellingPrice || item?.discountPrice || item?.price || displayMrp;
-  const rawImage = item?.images?.[0] || item?.baseImages?.[0] || 'https://via.placeholder.com/150';
+  const rawImage = item?.images?.[0] || item?.baseImages?.[0] || "";
   const productImage = typeof rawImage === 'string' ? rawImage.replace(/\.avif$/i, '.webp') : rawImage;
   const swatches = item?.colors?.filter(Boolean) || [];
 
@@ -54,6 +54,7 @@ export default function ProductCard({
   const handlePressOut = () => {
     scale.value = withSpring(1);
   };
+  console.log('ProductCard Rendered:', titleText, 'Image:', productImage, 'Discount:', discountPercent, 'Swatches:', swatches);
 
   return (
     <TouchableOpacity
@@ -88,12 +89,10 @@ export default function ProductCard({
         <View style={styles.content}>
           <View style={styles.deliveryRow}>
             <Ionicons name="flash" size={11} color="#1A1A1A" />
-            <Text style={styles.deliveryText}>Fast delivery</Text>
+            <Text style={styles.deliveryText}>  {titleText}</Text>
           </View>
 
-          <Text numberOfLines={1} style={styles.title}>
-            {titleText}
-          </Text>
+          
 
           <View style={styles.priceRow}>
             <Text style={styles.sellingPrice}>₹{displaySellingPrice}</Text>
