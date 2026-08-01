@@ -1,4 +1,4 @@
-import { color } from "../../../constant";
+import { color, fonts, spacing } from "../../../constant";
 import {
   View,
   Text,
@@ -12,10 +12,10 @@ import ScreenNameEnum from "../../../routes/screenName.enum";
 import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
-const cardSize = width * 0.22; // slightly smaller for better spacing
-export default function TopBrands({ brands, onBrandPress }: any) {
-  console.log("brands", brands)
-  const navigation = useNavigation()
+const cardSize = width * 0.22;
+
+export default function TopBrands({ brands }: any) {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <FlatList
@@ -23,7 +23,10 @@ export default function TopBrands({ brands, onBrandPress }: any) {
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingLeft: 16, paddingRight: 8 }}
+        contentContainerStyle={{
+          paddingLeft: spacing.lg,
+          paddingRight: spacing.sm,
+        }}
         renderItem={({ item }) => (
           <TouchableOpacity
             activeOpacity={0.8}
@@ -31,12 +34,13 @@ export default function TopBrands({ brands, onBrandPress }: any) {
             onPress={() => {
               navigation.navigate(ScreenNameEnum.OtherCategoryData, {
                 categoryId: item.id,
-                categoryName: item.title
+                categoryName: item.title,
               });
             }}
-          // onPress={() => onBrandPress && onBrandPress(item)}
           >
-            <Image source={{ uri: item.image?.replace(/\.avif$/i, '.webp') }} style={styles.brandImage}
+            <Image
+              source={{ uri: item.image?.replace(/\.avif$/i, ".webp") }}
+              style={styles.brandImage}
               resizeMode="stretch"
             />
             <Text numberOfLines={1} style={styles.brandName}>
@@ -51,36 +55,33 @@ export default function TopBrands({ brands, onBrandPress }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: spacing.sm,
   },
   title: {
     fontSize: 18,
-    fontWeight: "700",
-    marginLeft: 16,
-    marginBottom: 10,
-    color: "#111",
+    fontFamily: fonts.bold,
+    marginLeft: spacing.lg,
+    marginBottom: spacing.sm,
+    color: color.primary,
   },
   card: {
     width: cardSize,
-    marginRight: 16,
+    marginRight: spacing.lg,
     alignItems: "center",
   },
   brandImage: {
     width: cardSize,
     height: cardSize,
-    borderRadius: cardSize / 2, // makes it circular
+    borderRadius: cardSize / 2,
     borderWidth: 1,
     borderColor: color.borderLight,
-    marginBottom: 8,
+    marginBottom: spacing.sm,
+    backgroundColor: color.lightGray,
   },
   brandName: {
-    fontSize: 14,
-    fontWeight: "600",
+    fontSize: 12,
+    fontFamily: fonts.semiBold,
     color: color.textDark,
     textAlign: "center",
-    width: cardSize + 10,
-    marginBottom: 5,
-    marginTop: 2
-
   },
 });

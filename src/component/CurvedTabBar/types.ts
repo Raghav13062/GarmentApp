@@ -27,9 +27,9 @@ export interface CurvedTabBarProps {
   floatingButtonSize?: number;
   /** Active tab icon tint color (default: white) */
   activeIconColor?: string;
-  /** Inactive tab icon tint color (default: #ccc) */
+  /** Inactive tab icon tint color (default: color.borderLight) */
   inactiveIconColor?: string;
-  /** Inactive tab text color (default: #ccc) */
+  /** Inactive tab text color (default: color.borderLight) */
   inactiveTextColor?: string;
   /** Tab label font size (default: 12) */
   fontSize?: number;

@@ -1,4 +1,4 @@
-import { color } from "../../constant";
+import { color, fonts, radius } from "../../constant";
 import React from 'react';
 import { 
   View, 
@@ -43,7 +43,7 @@ const CategoryItem = ({ item }: any) => {
         
         {/* Gradient overlay for better text visibility */}
         <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.1)']}
+          colors={[color.transparent, color.overlay]}
           style={styles.gradient}
         />
       </View>
@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: ITEM_WIDTH - 20,
     height: ITEM_WIDTH - 20,
-    borderRadius: 12,
-    backgroundColor: '#f8f9fa',
+    borderRadius: radius.lg,
+    backgroundColor: color.imagePlaceholder,
     overflow: 'hidden',
     marginBottom: 10,
     shadowColor: color.black,
@@ -85,11 +85,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
      position: 'relative',
+    borderWidth: 1,
+    borderColor: color.borderLight,
   },
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: 12,
+    borderRadius: radius.lg,
   },
   gradient: {
     position: 'absolute',
@@ -97,13 +99,13 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: '30%',
-    borderRadius: 12,
+    borderRadius: radius.lg,
   },
   badge: {
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: '#FF3B30',
+    backgroundColor: color.primary,
     borderRadius: 10,
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -112,21 +114,21 @@ const styles = StyleSheet.create({
   badgeText: {
     color: color.white,
     fontSize: 10,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     letterSpacing: 0.5,
   },
   title: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#1D1D1F',
+    fontFamily: fonts.semiBold,
+    color: color.textDark,
     textAlign: 'center',
     marginBottom: 4,
     maxWidth: '100%',
   },
   count: {
     fontSize: 12,
-    color: '#8E8E93',
-    fontWeight: '500',
+    color: color.textLight,
+    fontFamily: fonts.medium,
   },
 });
 
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     width: 85,
     height: 85,
     borderRadius: 42.5,
-    backgroundColor: '#f5f5f7',
+    backgroundColor: color.lightGray,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,

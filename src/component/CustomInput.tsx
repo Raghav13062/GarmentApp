@@ -73,9 +73,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: '#F7F8F8',
+    backgroundColor: color.lightGray,
+    borderWidth: 1,
+    borderColor: color.borderLight,
     paddingHorizontal: 15,
-    height: 65,
+    height: 56,
     marginTop: 15,
   },
   leftIcon: {
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    color: color.black,
+    color: color.textDark,
     fontSize: 14,
     fontFamily: fonts.semiBold,
   },

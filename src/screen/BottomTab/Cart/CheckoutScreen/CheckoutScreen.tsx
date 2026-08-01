@@ -30,14 +30,14 @@ const { width } = Dimensions.get('window');
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 
 const BRAND_COLORS = {
-  primaryGradient: [color.primary, color.secondary],
-  primaryDark: color.secondary,
+  primaryGradient: color.primaryGradient,
+  primaryDark: color.primaryDark,
   primaryLight: color.primary,
-  background: color.backgroundLight,
-  textDark: '#2D3436',
+  background: color.background,
+  textDark: color.textDark,
   textLight: color.white,
   cardBg: color.white,
-  gray: '#757575',
+  gray: color.textMedium,
   lightGray: color.borderLight,
 };
 

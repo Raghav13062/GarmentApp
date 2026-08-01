@@ -149,7 +149,7 @@ export default function OtpVerification() {
                       ]}
                     >
                       <LinearGradient
-                        colors={code.length === 5 && !loading ? color.buttLinearGradient || ['#FF6B6B', '#FF8E53'] : ['#D3D3D3', '#D3D3D3']}
+                        colors={code.length === 5 && !loading ? [...color.buttLinearGradient] : [color.borderLight, color.borderLight]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 0 }}
                         style={styles.verifyButtonGradient}

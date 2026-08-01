@@ -1,4 +1,4 @@
-import { color } from "../../constant";
+import { color, fonts, radius, spacing } from "../../constant";
 import React, { useState } from 'react';
 import {
   View,
@@ -101,7 +101,7 @@ export default function CartScreen({ navigation }) {
 
       {cartItems.length === 0 ? (
         <View style={styles.emptyCart}>
-          <Icon name="shopping-cart" size={100} color="#ddd" />
+          <Icon name="shopping-cart" size={100} color={color.borderLight} />
           <Text style={styles.emptyText}>Your cart is empty</Text>
           <TouchableOpacity
             style={styles.shopButton}
@@ -141,7 +141,7 @@ export default function CartScreen({ navigation }) {
                     style={styles.removeButton}
                     onPress={() => removeItem(item.id)}
                   >
-                    <Icon name="delete" size={24} color="#D32F2F" />
+                    <Icon name="delete" size={24} color={color.error} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -217,7 +217,7 @@ export default function CartScreen({ navigation }) {
 
           {/* Loyalty Points */}
           <View style={styles.loyaltyCard}>
-            <Icon name="card-giftcard" size={30} color="#D32F2F" />
+            <Icon name="card-giftcard" size={30} color={color.primary} />
             <View style={styles.loyaltyInfo}>
               <Text style={styles.loyaltyTitle}>Earn Loyalty Points</Text>
               <Text style={styles.loyaltyPoints}>
@@ -261,8 +261,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 15,
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     elevation: 3,
+    borderBottomWidth: 1,
+    borderBottomColor: color.borderLight,
   },
   headerTitle: {
     fontSize: 20,
@@ -282,7 +284,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   shopButton: {
-    backgroundColor: '#D32F2F',
+    backgroundColor: color.primary,
     paddingHorizontal: 40,
     paddingVertical: 15,
     borderRadius: 8,
@@ -294,9 +296,11 @@ const styles = StyleSheet.create({
   },
   cartItem: {
     flexDirection: 'row',
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     marginHorizontal: 10,
     marginTop: 10,
+    borderWidth: 1,
+    borderColor: color.borderLight,
     borderRadius: 10,
     padding: 15,
     elevation: 2,
@@ -319,7 +323,7 @@ const styles = StyleSheet.create({
   itemPrice: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#D32F2F',
+    color: color.primary,
     marginBottom: 10,
   },
   itemDetails: {
@@ -341,7 +345,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: color.borderLight,
     borderRadius: 4,
   },
   quantityText: {
@@ -373,7 +377,7 @@ const styles = StyleSheet.create({
   couponInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: color.borderLight,
     borderRadius: 8,
     paddingHorizontal: 15,
     paddingVertical: 12,
@@ -381,14 +385,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   applyButton: {
-    backgroundColor: '#D32F2F',
+    backgroundColor: color.primary,
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,
     justifyContent: 'center',
   },
   applyButtonDisabled: {
-    backgroundColor: '#90A4AE',
+    backgroundColor: color.gray,
   },
   applyButtonText: {
     color: color.white,
@@ -398,23 +402,25 @@ const styles = StyleSheet.create({
   couponApplied: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E8F5E9',
+    backgroundColor: color.successSoft,
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
   },
   couponAppliedText: {
     marginLeft: 10,
-    color: '#388E3C',
+    color: color.success,
     fontSize: 14,
   },
   priceDetails: {
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     marginHorizontal: 10,
     marginTop: 15,
     padding: 15,
-    borderRadius: 10,
+    borderRadius: radius.lg,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: color.borderLight,
   },
   priceRow: {
     flexDirection: 'row',
@@ -455,17 +461,19 @@ const styles = StyleSheet.create({
   totalValue: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#D32F2F',
+    color: color.primary,
   },
   savingsInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     marginHorizontal: 10,
     marginTop: 15,
     padding: 15,
-    borderRadius: 10,
+    borderRadius: radius.lg,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: color.borderLight,
   },
   savingsText: {
     marginLeft: 10,
@@ -476,13 +484,15 @@ const styles = StyleSheet.create({
   loyaltyCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     marginHorizontal: 10,
     marginTop: 15,
     marginBottom: 100,
     padding: 15,
-    borderRadius: 10,
+    borderRadius: radius.lg,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: color.borderLight,
   },
   loyaltyInfo: {
     flex: 1,
@@ -496,7 +506,7 @@ const styles = StyleSheet.create({
   },
   loyaltyPoints: {
     fontSize: 12,
-    color: '#D32F2F',
+    color: color.primary,
     marginBottom: 3,
   },
   loyaltyNote: {
@@ -509,12 +519,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: 'row',
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     paddingHorizontal: 15,
     paddingVertical: 15,
     elevation: 8,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: color.borderLight,
   },
   totalContainer: {
     flex: 1,
@@ -523,7 +533,7 @@ const styles = StyleSheet.create({
   totalText: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#D32F2F',
+    color: color.primary,
   },
   totalLabel: {
     fontSize: 12,
@@ -531,9 +541,9 @@ const styles = StyleSheet.create({
   },
   checkoutButton: {
     flex: 1,
-    backgroundColor: '#D32F2F',
+    backgroundColor: color.primary,
     paddingVertical: 15,
-    borderRadius: 8,
+    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },

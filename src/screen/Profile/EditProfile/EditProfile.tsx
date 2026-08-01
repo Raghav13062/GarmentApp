@@ -176,10 +176,8 @@ const genderOptions = [
           </View>
 
           {/* Submit */}
-          <View style={{ marginHorizontal: 25, marginTop:18,
-            marginBottom:25
-           }}>
-            <CustomButton title="Save Changes" onPress={handleSubmit}   />
+          <View style={{ marginHorizontal: 20, marginTop: 16, marginBottom: 24 }}>
+            <CustomButton title="Save Changes" onPress={handleSubmit} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

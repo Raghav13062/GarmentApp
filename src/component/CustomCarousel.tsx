@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 15,
     overflow: "hidden",
-    backgroundColor: "#eaeaea",
+    backgroundColor: color.borderLight,
     marginTop: 10,
     marginBottom: 10,
     ...Platform.select({
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
 
   titleBackground: {
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backgroundColor: color.overlayDark,
     padding: 10,
     borderRadius: 8,
   },
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   },
 
   descriptionText: {
-    color: "rgba(255, 255, 255, 0.85)",
+    color: color.whiteAlpha85,
     fontSize: 13,
     marginTop: 3,
     fontFamily: Platform.OS === "ios" ? "Helvetica" : "Roboto",
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: color.overlayLight,
     marginHorizontal: 4,
   },
 

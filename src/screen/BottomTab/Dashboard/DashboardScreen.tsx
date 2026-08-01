@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
   StyleSheet,
@@ -19,10 +19,11 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
-import { color, fonts, navigateToScreen } from '../../../constant';
+import { color, fonts, navigateToScreen, radius, spacing } from '../../../constant';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import ProductCard from '../../../component/cart/ProductCard';
+import { CategoryPill, SectionHeader } from '../../../component/common';
 import useDashboard from './useDashboard';
 import VideoAd from './VideoAd';
 import HeaderBar from '../../../component/HeaderBar';
@@ -68,34 +69,28 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
 
         {/* Slide-specific Overlay */}
         <View style={styles.heroOverlay}>
-
           <Animated.Text
             entering={FadeInUp.delay(500).duration(800)}
-            style={styles.heroLoved}
+            style={styles.heroGrandSale}
           >
-            Garment most loved
+            GRAND SALE
           </Animated.Text>
-          <Animated.View
+          <Animated.Text
             entering={FadeInUp.delay(700).duration(800)}
-            style={styles.heroPriceRow}
+            style={styles.heroTitle}
           >
-            <Text style={[styles.heroFrom, {
-              color: color.primary
-            }]}>From</Text>
-            <Text style={[styles.heroPrice, {
-              color: "black"
-            }]}>₹190</Text>
-          </Animated.View>
+            Festive Sale: 40% Off{'\n'}Kanjivaram
+          </Animated.Text>
           <Animated.View entering={FadeInDown.delay(900).duration(800)}>
             <TouchableOpacity style={styles.heroBtn}>
-              <Text style={styles.heroBtnText}>SHOP THE EDIT</Text>
+              <Text style={styles.heroBtnText}>Shop Now</Text>
             </TouchableOpacity>
           </Animated.View>
         </View>
 
         {/* Bottom Gradient for readability */}
         <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.6)']}
+          colors={[color.transparent, color.overlayDark]}
           style={[StyleSheet.absoluteFill, { top: '60%' }]}
         />
       </View>
@@ -132,21 +127,58 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
 };
 
 
-const HotCategories = ({ categories }: any) => (
-  console.log('HeroSlider rendered with sections:', categories),
+const PILL_FILTERS = ['All Heritage', 'Banarasi', 'Kanjivaram'];
 
+const PillFilters = () => {
+  const [active, setActive] = useState(PILL_FILTERS[0]);
+  return (
+    <View style={styles.pillContainer}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.pillScroll}
+      >
+        {PILL_FILTERS.map(label => (
+          <CategoryPill
+            key={label}
+            label={label}
+            active={active === label}
+            onPress={() => setActive(label)}
+          />
+        ))}
+      </ScrollView>
+    </View>
+  );
+};
+
+const HotCategories = ({ categories }: any) => (
   <View style={styles.hotCategoriesSection}>
-    <Text style={styles.sectionTitleCenter}>HOT CATEGORIES</Text>
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hotCatList}>
+    <SectionHeader title="Shop by Occasion" />
+    <View style={styles.hotCatGrid}>
       {categories.map((cat: any, index: number) => (
-        <Animated.View key={index} entering={FadeInDown.delay(index * 100).duration(600)} style={styles.hotCatItem}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => navigateToScreen(ScreenNameEnum.OtherCategoryData, { categoryId: cat.id, categoryName: cat.name })} style={styles.circularBg}>
-            <Image source={{ uri: cat.image }} style={styles.hotCatImage} />
+        <Animated.View
+          key={index}
+          entering={FadeInDown.delay(index * 100).duration(600)}
+          style={styles.hotCatGridItem}
+        >
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() =>
+              navigateToScreen(ScreenNameEnum.OtherCategoryData, {
+                categoryId: cat.id,
+                categoryName: cat.name,
+              })
+            }
+            style={styles.hotCatImageContainer}
+          >
+            <Image source={{ uri: cat.image }} style={styles.hotCatGridImage} />
+            <View style={styles.hotCatOverlay}>
+              <Text style={styles.hotCatGridText}>{cat.name}</Text>
+            </View>
           </TouchableOpacity>
-          <Text style={styles.hotCatText}>{cat.name}</Text>
         </Animated.View>
       ))}
-    </ScrollView>
+    </View>
   </View>
 );
 
@@ -279,8 +311,8 @@ const DashboardScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={[]}>
-      <StatusBarComponent barStyle="light-content" backgroundColor="transparent" translucent={true} />
-      <View style={{ flex: 1, backgroundColor: color.white }}>
+      <StatusBarComponent barStyle="dark-content" backgroundColor={color.background} translucent={true} />
+      <View style={{ flex: 1, backgroundColor: color.background }}>
         <HeaderBar scrollY={scrollY} />
         <ScrollView
           ref={scrollViewRef}
@@ -290,6 +322,7 @@ const DashboardScreen = () => {
           contentContainerStyle={{ paddingBottom: showGuestBanner ? 210 : 120 }}
         >
           <HeroSlider sections={sections} />
+          <PillFilters />
 
           {sections.map((section: any, index: number) => {
             if (section.sectionType === 'SEARCH_BANNER') return null;
@@ -314,10 +347,7 @@ const DashboardScreen = () => {
 
               return (
                 <View key={section.id || index} style={styles.dynamicSection}>
-                  <View style={styles.dynamicHeader}>
-                    <Text style={styles.sectionTitleCenter}>{sectionTitle}</Text>
-                    <LinearGradient colors={color.primaryGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.titleUnderline} />
-                  </View>
+                  <SectionHeader title={sectionTitle} onActionPress={() => {}} />
                   <FlatList
                     data={products}
                     numColumns={2}
@@ -377,7 +407,7 @@ const DashboardScreen = () => {
                 <Ionicons name="person-add" size={18} color={color.primary} />
               </View>
               <View style={styles.guestTextWrap}>
-                <Text style={styles.guestTitle}>Login to unlock DAIN</Text>
+                <Text style={styles.guestTitle}>Login to unlock SareeLoom</Text>
                 <Text style={styles.guestMessage} numberOfLines={2}>
                   Track orders, save your cart, get offers and manage your account.
                 </Text>
@@ -408,91 +438,53 @@ const DashboardScreen = () => {
 export default DashboardScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: color.white },
-  loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  headerContainer: { backgroundColor: color.white, paddingBottom: 8, zIndex: 10 },
-  deliveryContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF8F4',
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    marginHorizontal: 16,
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: '#FFE0CC',
-  },
-  deliveryText: {
-    fontSize: 13,
-    color: color.textDark,
-    fontFamily: fonts.medium,
-    marginLeft: 6,
+  container: { flex: 1, backgroundColor: color.background },
+  loaderContainer: {
     flex: 1,
-  },
-  searchRow: {
-    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  searchBarWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: color.lightGray,
-    borderRadius: 8,
-    height: 44,
-    paddingHorizontal: 12,
-  },
-  searchInputInputField: {
-    flex: 1,
-    fontSize: 14,
-    fontFamily: fonts.regular,
-    color: color.textDark,
-    marginLeft: 8,
-    paddingVertical: 0,
+    backgroundColor: color.background,
   },
   guestBanner: {
-    position: "absolute",
+    position: 'absolute',
     left: 12,
     right: 12,
     bottom: 22,
     minHeight: 78,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: color.white,
-    borderRadius: 20,
+    borderRadius: radius.xxl,
     paddingLeft: 0,
     paddingRight: 10,
     paddingVertical: 9,
     borderWidth: 1,
-    borderColor: "#F3E7F7",
+    borderColor: color.primarySoft,
     shadowColor: color.black,
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
+    shadowOpacity: 0.1,
     shadowRadius: 14,
     elevation: 10,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   guestAccent: {
     width: 5,
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
     marginRight: 10,
   },
   guestContent: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     minWidth: 0,
   },
   guestIconBox: {
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: "#FFF4EC",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: color.primarySoft,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: 10,
   },
   guestTextWrap: {
@@ -516,13 +508,13 @@ const styles = StyleSheet.create({
     width: 84,
     height: 38,
     borderRadius: 19,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   loginGradient: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   loginText: {
     color: color.white,
@@ -532,95 +524,200 @@ const styles = StyleSheet.create({
   loginArrow: {
     marginLeft: 4,
   },
-  iconButton: {
-    marginLeft: 16,
-    padding: 4,
-    position: 'relative',
-  },
-  badgeContainer: {
+
+  heroContainer: { width, height: 450, position: 'relative' },
+  heroSlide: { width, height: 450, position: 'relative' },
+  heroImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  heroOverlay: {
     position: 'absolute',
-    top: 0,
-    right: 0,
+    top: 120,
+    left: 20,
+    right: 20,
+    alignItems: 'flex-start',
+    zIndex: 5,
+  },
+  heroGrandSale: {
+    color: color.accent,
+    fontSize: 11,
+    fontFamily: fonts.bold,
+    letterSpacing: 1.5,
+    marginBottom: 8,
+    textShadowColor: color.blackAlpha50,
+    textShadowRadius: 4,
+  },
+  heroTitle: {
+    color: color.white,
+    fontSize: 26,
+    fontFamily: fonts.bold,
+    lineHeight: 34,
+    textShadowColor: color.blackAlpha55,
+    textShadowRadius: 5,
+  },
+  heroBtn: {
     backgroundColor: color.primary,
-    borderRadius: 8,
-    minWidth: 16,
-    height: 16,
+    paddingHorizontal: 24,
+    paddingVertical: 11,
+    borderRadius: radius.sm,
+    marginTop: 20,
+  },
+  heroBtnText: {
+    color: color.white,
+    fontSize: 12,
+    fontFamily: fonts.bold,
+  },
+  pagination: {
+    position: 'absolute',
+    bottom: 20,
+    width: '100%',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 3,
   },
-  badgeText: {
-    color: color.white,
-    fontSize: 9,
-    fontFamily: fonts.bold,
-    textAlign: 'center',
+  dot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: color.overlayLight,
+    marginHorizontal: 4,
   },
-  infoBar: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, backgroundColor: color.backgroundLight },
-  infoItem: { flexDirection: 'row', alignItems: 'center' },
-  infoTextContainer: { marginLeft: 6 },
-  infoTitle: { fontSize: 10, fontFamily: fonts.bold, color: color.textDark },
-  infoSub: { fontSize: 8.5, fontFamily: fonts.regular, color: color.textMedium },
-
-  // Hero Slider Styles
-  heroContainer: { width: width, height: 450, position: 'relative' },
-  heroSlide: { width: width, height: 450, position: 'relative' },
-  heroImage: { width: '100%', height: '100%', resizeMode: 'cover' },
-  heroOverlay: { position: 'absolute', top: 50, left: 0, right: 0, alignItems: 'center', zIndex: 5 },
-  heroNewUsers: { fontSize: 22, fontFamily: fonts.bold, letterSpacing: 4, textShadowColor: 'rgba(0, 0, 0, 0.4)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
-  heroLoved: { color: color.white, fontSize: 15, fontFamily: fonts.medium, marginTop: 60, textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowRadius: 4 },
-  heroPriceRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: 10 },
-  heroFrom: { color: color.white, fontSize: 34, fontFamily: fonts.bold, marginRight: 10 },
-  heroPrice: { color: color.white, fontSize: 70, fontFamily: fonts.bold },
-  heroBtn: { backgroundColor: color.white, paddingHorizontal: 30, paddingVertical: 12, borderRadius: 2, marginTop: 30 },
-  heroBtnText: { color: color.primary, fontSize: 14, fontFamily: fonts.bold, letterSpacing: 1 },
-  pagination: { position: 'absolute', bottom: 20, width: '100%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' },
-  dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.4)', marginHorizontal: 4 },
   activeDot: { width: 20, backgroundColor: color.white },
 
-  timerBanner: { backgroundColor: color.secondary, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 15 },
-  timerLabel: { color: color.white, fontSize: 12, fontFamily: fonts.bold, letterSpacing: 1.5 },
-  timerLine: { width: 1, height: 18, backgroundColor: 'rgba(255,255,255,0.2)', marginHorizontal: 12 },
+  pillContainer: {
+    paddingVertical: spacing.lg,
+    backgroundColor: color.background,
+  },
+  pillScroll: { paddingHorizontal: spacing.lg },
+
+  timerBanner: {
+    backgroundColor: color.primaryDark,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: 15,
+  },
+  timerLabel: {
+    color: color.white,
+    fontSize: 12,
+    fontFamily: fonts.bold,
+    letterSpacing: 1.5,
+  },
+  timerLine: {
+    width: 1,
+    height: 18,
+    backgroundColor: color.whiteAlpha20,
+    marginHorizontal: 12,
+  },
   timerRight: { flex: 1, flexDirection: 'row', alignItems: 'center' },
-  timerEndsText: { color: 'rgba(255,255,255,0.6)', fontSize: 10, marginRight: 8 },
-  timerValueContainer: { backgroundColor: 'rgba(255,255,255,0.1)', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
+  timerEndsText: { color: color.whiteAlpha60, fontSize: 10, marginRight: 8 },
+  timerValueContainer: {
+    backgroundColor: color.whiteAlpha10,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
   timerValue: { color: color.white, fontSize: 13, fontFamily: fonts.bold },
-  couponBadge: { position: 'absolute', right: 15, top: -20, backgroundColor: color.primary, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6, alignItems: 'center', transform: [{ rotate: '4deg' }], elevation: 8 },
+  couponBadge: {
+    position: 'absolute',
+    right: 15,
+    top: -20,
+    backgroundColor: color.accent,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: radius.sm,
+    alignItems: 'center',
+    transform: [{ rotate: '4deg' }],
+    elevation: 8,
+  },
   couponSub: { color: color.white, fontSize: 8, fontFamily: fonts.bold },
   couponValue: { color: color.white, fontSize: 14, fontFamily: fonts.bold },
-  flashSection: { paddingTop: 25, backgroundColor: color.backgroundLight, paddingBottom: 30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 },
-  flashHeader: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, marginBottom: 20 },
+  flashSection: {
+    paddingTop: 25,
+    backgroundColor: color.background,
+    paddingBottom: 30,
+  },
+  flashHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
   shopTheSaleRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
   shopTheSaleText: { fontSize: 10, fontFamily: fonts.bold, color: color.primary },
   headerLine: { height: 1, flex: 1, opacity: 0.3, marginLeft: 10 },
-  flashTitle: { fontSize: 32, fontFamily: fonts.bold, color: color.secondary, lineHeight: 34 },
-  flashSubtitle: { fontSize: 26, fontFamily: fonts.bold, color: color.secondary },
+  flashTitle: {
+    fontSize: 28,
+    fontFamily: fonts.bold,
+    color: color.primary,
+    lineHeight: 32,
+  },
+  flashSubtitle: {
+    fontSize: 22,
+    fontFamily: fonts.bold,
+    color: color.secondary,
+  },
   dontMissRow: { alignItems: 'flex-end', justifyContent: 'center' },
   dontMissText: { fontSize: 10, fontFamily: fonts.bold, color: color.textDark },
   horizontalList: { paddingLeft: 20 },
   horizontalCardWrapper: { marginRight: 12, width: width * 0.42 },
-  priceDropSection: { paddingVertical: 40 },
-  sectionTitleCenter: { fontSize: 22, fontFamily: fonts.bold, color: color.textDark, textAlign: 'center', marginBottom: 25, textTransform: 'uppercase' },
-  priceDropRow: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16 },
-  priceDropCard: { width: (width - 48) / 2, aspectRatio: 0.85, borderRadius: 12, overflow: 'hidden' },
-  cardGradient: { flex: 1, padding: 15, justifyContent: 'center', alignItems: 'center' },
-  cardSubtitle: { fontSize: 12, fontFamily: fonts.bold, color: color.secondary },
-  cardPrice: { fontSize: 38, fontFamily: fonts.bold, color: color.primary },
-  cardPriceLarge: { fontSize: 28, fontFamily: fonts.bold, color: color.primary },
-  cardSmallText: { fontSize: 10, color: color.textMedium, marginTop: 2, marginBottom: 15 },
-  shopNowBtn: { backgroundColor: color.primary, paddingHorizontal: 18, paddingVertical: 8, borderRadius: 20 },
-  shopNowText: { color: color.white, fontSize: 12, fontFamily: fonts.bold },
-  freeBadge: { position: 'absolute', top: -15, right: -15, backgroundColor: color.success, width: 54, height: 54, borderRadius: 27, justifyContent: 'center', transform: [{ rotate: '12deg' }], borderWidth: 2, borderColor: color.white },
-  freeText: { color: color.white, fontSize: 11, fontFamily: fonts.bold },
-  hotCategoriesSection: { paddingVertical: 30 },
-  hotCatList: { paddingLeft: 20 },
-  hotCatItem: { marginRight: 20, alignItems: 'center' },
-  circularBg: { width: 85, height: 85, borderRadius: 42.5, backgroundColor: color.backgroundLight, justifyContent: 'center', alignItems: 'center', overflow: 'hidden', borderWidth: 1, borderColor: color.borderLight },
-  hotCatImage: { width: '100%', height: '100%', resizeMode: 'contain' },
-  hotCatText: { marginTop: 10, fontSize: 12, fontFamily: fonts.semiBold, color: color.textDark },
-  backToTop: { position: 'absolute', bottom: 25, left: 20, backgroundColor: color.white, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 25, flexDirection: 'row', alignItems: 'center', elevation: 8 },
+
+  hotCategoriesSection: {
+    paddingVertical: spacing.xl,
+    backgroundColor: color.background,
+  },
+  hotCatGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+  },
+  hotCatGridItem: { width: '48%', marginBottom: spacing.md },
+  hotCatImageContainer: {
+    width: '100%',
+    aspectRatio: 1,
+    borderRadius: radius.lg,
+    overflow: 'hidden',
+    backgroundColor: color.white,
+  },
+  hotCatGridImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  hotCatOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: color.overlay,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  hotCatGridText: {
+    color: color.white,
+    fontSize: 16,
+    fontFamily: fonts.bold,
+    letterSpacing: 0.5,
+  },
+  backToTop: {
+    position: 'absolute',
+    bottom: 25,
+    left: 20,
+    backgroundColor: color.white,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: color.borderLight,
+  },
   backToTopWithGuestBanner: { bottom: 108 },
-  backToTopText: { fontSize: 12, fontFamily: fonts.bold, color: color.textDark, marginLeft: 6 },
-  dynamicSection: { paddingVertical: 30 },
-  dynamicHeader: { alignItems: 'center', marginBottom: 25 },
-  titleUnderline: { width: 40, height: 3, marginTop: 8, borderRadius: 2 },
+  backToTopText: {
+    fontSize: 12,
+    fontFamily: fonts.bold,
+    color: color.textDark,
+    marginLeft: 6,
+  },
+  dynamicSection: {
+    paddingVertical: spacing.xl,
+    backgroundColor: color.background,
+  },
 });

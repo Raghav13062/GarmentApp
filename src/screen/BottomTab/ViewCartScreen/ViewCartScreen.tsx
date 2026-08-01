@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { color } from "../../../constant";
+import { color, fonts, spacing, radius } from "../../../constant";
 import {
   StyleSheet,
   View,
@@ -31,18 +31,18 @@ import ProductCard from '../../../component/cart/ProductCard';
 
 // Brand Colors
 const BRAND_COLORS = {
-  primaryGradient: [color.primary, color.secondary],
-  primaryDark: color.secondary,
+  primaryGradient: color.primaryGradient,
+  primaryDark: color.primaryDark,
   primaryLight: color.primary,
-  accent: color.star,
-  background: color.backgroundLight,
-  textDark: '#2D3436',
+  accent: color.accent,
+  background: color.background,
+  textDark: color.textDark,
   textLight: color.white,
   cardBg: color.white,
   success: color.success,
   warning: color.warning,
-  error: '#F44336',
-  gray: '#757575',
+  error: color.error,
+  gray: color.textMedium,
   lightGray: color.borderLight,
 };
 
@@ -667,7 +667,7 @@ const ViewCartScreen = () => {
               disabled={cart.length === 0}
               activeOpacity={0.7}
             >
-              <Icon name="delete-outline" size={23} color={cart.length === 0 ? '#B8B8B8' : color.black} />
+              <Icon name="delete-outline" size={23} color={cart.length === 0 ? color.textLight : color.black} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.bagHeaderIcon}
@@ -712,7 +712,7 @@ const ViewCartScreen = () => {
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={selectedCount > 0 ? BRAND_COLORS.primaryGradient : ['#CCCCCC', '#DDDDDD']}
+              colors={selectedCount > 0 ? BRAND_COLORS.primaryGradient : [color.borderLight, color.borderLight]}
               style={StyleSheet.absoluteFill}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
@@ -728,7 +728,7 @@ const ViewCartScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBarComponent barStyle="dark-content" backgroundColor="#FFFFFF" translucent={false} />
+      <StatusBarComponent barStyle="dark-content" backgroundColor={color.background} translucent={false} />
 
       {renderHeader()}
       {loading ? <Loading fullScreen={false} size="large" color={BRAND_COLORS.primaryLight} containerStyle={styles.loaderContainer} /> : (
@@ -759,18 +759,18 @@ const ViewCartScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.white,
+    backgroundColor: color.background,
   },
   loaderContainer: {
     flex: 1,
   },
   bagHeader: {
     paddingTop: Platform.OS === 'ios' ? 10 : 8,
-    paddingHorizontal: 12,
-    paddingBottom: 12,
-    backgroundColor: color.white,
+    paddingHorizontal: spacing.md,
+    paddingBottom: spacing.md,
+    backgroundColor: color.card,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: color.borderLight,
     zIndex: 10,
   },
   bagHeaderContent: {
@@ -789,14 +789,14 @@ const styles = StyleSheet.create({
   bagHeaderTitle: {
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: '800',
-    color: color.black,
+    fontFamily: fonts.bold,
+    color: color.textDark,
   },
   bagHeaderStatus: {
     marginTop: 2,
     fontSize: 12,
-    fontWeight: '500',
-    color: '#777',
+    fontFamily: fonts.medium,
+    color: color.textMedium,
     textAlign: 'center',
   },
   bagHeaderActions: {
@@ -815,7 +815,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   shippingBanner: {
-    backgroundColor: '#F4F4F4',
+    backgroundColor: color.lightGray,
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginBottom: 14,
@@ -823,7 +823,7 @@ const styles = StyleSheet.create({
   shippingText: {
     fontSize: 13,
     lineHeight: 18,
-    color: '#222',
+    color: color.textDark,
   },
   shippingBold: {
     fontWeight: '800',
@@ -831,38 +831,40 @@ const styles = StyleSheet.create({
   },
   bagList: {
     paddingBottom: 112,
-    backgroundColor: color.white,
+    backgroundColor: color.background,
   },
   productCardSection: {
     paddingTop: 18,
     paddingBottom: 12,
-    backgroundColor: color.white,
+    backgroundColor: color.background,
   },
   productCardSectionTitle: {
     fontSize: 17,
-    fontWeight: '800',
-    color: color.black,
+    fontFamily: fonts.bold,
+    color: color.textDark,
     marginBottom: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.lg,
   },
   productCardRow: {
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.lg,
     marginBottom: 12,
   },
   bagItemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    backgroundColor: color.white,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    backgroundColor: color.card,
+    borderBottomWidth: 1,
+    borderBottomColor: color.borderLight,
   },
   bagCheckbox: {
     width: 22,
     height: 22,
     borderRadius: 5,
     borderWidth: 1.4,
-    borderColor: '#1F1F1F',
+    borderColor: color.textDark,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -879,7 +881,7 @@ const styles = StyleSheet.create({
   bagProductImage: {
     width: 122,
     height: 164,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: color.lightGray,
     resizeMode: 'cover',
   },
   bagProductDetails: {
@@ -894,8 +896,8 @@ const styles = StyleSheet.create({
   bagProductTitle: {
     flex: 1,
     fontSize: 15,
-    color: '#111',
-    fontWeight: '500',
+    color: color.textDark,
+    fontFamily: fonts.medium,
   },
   bagDeleteButton: {
     width: 28,
@@ -907,7 +909,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 14,
     fontWeight: '600',
-    color: '#111',
+    color: color.textDark,
   },
   bagPriceRow: {
     flexDirection: 'row',
@@ -917,13 +919,13 @@ const styles = StyleSheet.create({
   },
   bagPrice: {
     fontSize: 16,
-    fontWeight: '800',
+    fontFamily: fonts.bold,
     color: color.primary,
     marginRight: 4,
   },
   bagMrp: {
     fontSize: 13,
-    color: '#999',
+    color: color.textLight,
     textDecorationLine: 'line-through',
     marginRight: 4,
   },
@@ -933,8 +935,9 @@ const styles = StyleSheet.create({
     backgroundColor: color.primary,
     paddingHorizontal: 4,
     paddingVertical: 2,
-    borderRadius: 2,
+    borderRadius: radius.sm,
     overflow: 'hidden',
+    fontFamily: fonts.semiBold,
   },
   bagTagsRow: {
     flexDirection: 'row',
@@ -943,8 +946,8 @@ const styles = StyleSheet.create({
   },
   bagTag: {
     fontSize: 10,
-    color: '#8A5A00',
-    backgroundColor: '#FFF4D8',
+    color: color.warning,
+    backgroundColor: color.warningSoft,
     paddingHorizontal: 5,
     paddingVertical: 2,
     marginRight: 5,
@@ -955,7 +958,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: 'auto',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: color.borderLight,
     borderRadius: 7,
     overflow: 'hidden',
   },
@@ -964,7 +967,7 @@ const styles = StyleSheet.create({
     height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: color.lightGray,
   },
   bagQtyText: {
     minWidth: 34,
@@ -978,10 +981,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     borderTopWidth: 1,
-    borderTopColor: '#E8E8E8',
-    paddingHorizontal: 12,
+    borderTopColor: color.borderLight,
+    paddingHorizontal: spacing.md,
     paddingTop: 10,
     paddingBottom: Platform.OS === 'ios' ? 28 : 12,
   },
@@ -999,27 +1002,27 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 5,
     borderWidth: 1.4,
-    borderColor: '#1F1F1F',
+    borderColor: color.textDark,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 8,
   },
   bagAllText: {
     fontSize: 15,
-    color: '#111',
+    color: color.textDark,
   },
   bagFooterTotal: {
     flex: 1,
     textAlign: 'right',
     marginRight: 14,
     fontSize: 17,
-    fontWeight: '800',
-    color: color.black,
+    fontFamily: fonts.bold,
+    color: color.textDark,
   },
   bagCheckoutButton: {
     width: 140,
     height: 50,
-    borderRadius: 14,
+    borderRadius: radius.lg,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
@@ -1027,7 +1030,7 @@ const styles = StyleSheet.create({
   bagCheckoutText: {
     color: color.white,
     fontSize: 13,
-    fontWeight: '800',
+    fontFamily: fonts.bold,
     letterSpacing: 0.2,
   },
   header: {
@@ -1049,7 +1052,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     borderRadius: 20,
   },
   headerTitleContainer: {
@@ -1058,17 +1061,17 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: BRAND_COLORS.textLight,
   },
   headerSubtitle: {
     fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: color.whiteAlpha90,
     marginTop: 2,
   },
   clearCartButton: {
     padding: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     borderRadius: 20,
   },
   emptyCartContainer: {
@@ -1219,7 +1222,7 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     padding: 6,
-    backgroundColor: 'rgba(244, 67, 54, 0.1)',
+    backgroundColor: color.errorSoft,
     borderRadius: 8,
   },
   divider: {
@@ -1228,13 +1231,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
   },
   footer: {
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: Platform.OS === 'ios' ? 34 : 20, // safe area padding for iOS
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
@@ -1303,10 +1306,10 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   checkoutTextDisabled: {
-    color: 'rgba(255, 255, 255, 0.6)',
+    color: color.whiteAlpha60,
   },
   summaryContainer: {
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     marginTop: 16,
     padding: 16,
     borderRadius: 12,
@@ -1327,7 +1330,7 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     fontSize: 14,
-    color: '#666',
+    color: color.textMedium,
   },
   summaryValue: {
     fontSize: 14,
@@ -1336,7 +1339,7 @@ const styles = StyleSheet.create({
   },
   dividerSmall: {
     height: 1,
-    backgroundColor: '#EEE',
+    backgroundColor: color.borderLight,
     marginVertical: 4,
   },
   grandTotalLabel: {
@@ -1350,7 +1353,7 @@ const styles = StyleSheet.create({
     color: color.black,
   },
   savingsContainer: {
-    backgroundColor: 'rgba(26, 156, 74, 0.1)',
+    backgroundColor: color.successSoft,
     padding: 10,
     borderRadius: 8,
     marginTop: 16,

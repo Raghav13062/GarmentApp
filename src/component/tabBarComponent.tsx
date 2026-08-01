@@ -6,11 +6,10 @@ import {
   Text,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import LinearGradient from "react-native-linear-gradient";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
-import { color, fonts } from "../constant";
+import { color, fonts, radius } from "../constant";
 
 const TAB_CONFIG: Record<string, { label: string; icon: string; activeIcon: string }> = {
   Home: {
@@ -19,7 +18,7 @@ const TAB_CONFIG: Record<string, { label: string; icon: string; activeIcon: stri
     activeIcon: "home",
   },
   Cart: {
-    label: "Category",
+    label: "Categories",
     icon: "grid-outline",
     activeIcon: "grid",
   },
@@ -64,12 +63,12 @@ const TabItem = ({
     >
       <View style={styles.iconSlot}>
         {isFocused ? (
-
-          <Ionicons name={tab.activeIcon} size={22} color={color.primary} />
-
+          <View style={styles.activeIconBox}>
+            <Ionicons name={tab.activeIcon} size={20} color={color.white} />
+          </View>
         ) : (
           <View style={styles.inactiveIconBox}>
-            <Ionicons name={tab.icon} size={23} color={color.textMedium} />
+            <Ionicons name={tab.icon} size={22} color={color.textMedium} />
           </View>
         )}
 
@@ -100,10 +99,7 @@ const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
   const cartCount = useSelector((reduxState: any) => reduxState.cart?.totalItems || 0);
 
   return (
-    <View style={[styles.outerContainer, { paddingBottom: Math.max(insets.bottom, 10) }]}>
-
-
-
+    <View style={[styles.outerContainer, { paddingBottom: Math.max(insets.bottom, 8) }]}>
       <View style={styles.tabBar}>
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
@@ -149,21 +145,18 @@ export default BottomTabBar;
 
 const styles = StyleSheet.create({
   outerContainer: {
-    top: 11,
+    backgroundColor: color.white,
+    borderTopWidth: 1,
+    borderTopColor: color.borderLight,
   },
   tabBar: {
-    minHeight: 68,
+    minHeight: 62,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: color.white,
-    paddingHorizontal: 8,
-    paddingTop: 8,
-    paddingBottom: 8,
-    borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.05)",
-
-
+    paddingHorizontal: 6,
+    paddingTop: 6,
   },
   tab: {
     flex: 1,
@@ -178,12 +171,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   activeIconBox: {
-    width: 40,
-    height: 34,
-    borderRadius: 18,
+    width: 36,
+    height: 36,
+    borderRadius: radius.full,
+    backgroundColor: color.primary,
     alignItems: "center",
     justifyContent: "center",
-
   },
   inactiveIconBox: {
     width: 33,
@@ -194,7 +187,7 @@ const styles = StyleSheet.create({
   label: {
     maxWidth: "100%",
     fontSize: 10,
-    marginTop: 3,
+    marginTop: 4,
     textAlign: "center",
   },
   activeLabel: {
@@ -203,7 +196,7 @@ const styles = StyleSheet.create({
   },
   inactiveLabel: {
     color: color.textMedium,
-    fontFamily: fonts.semiBold,
+    fontFamily: fonts.medium,
   },
   badge: {
     position: "absolute",
@@ -213,7 +206,7 @@ const styles = StyleSheet.create({
     height: 17,
     borderRadius: 9,
     paddingHorizontal: 4,
-    backgroundColor: color.error,
+    backgroundColor: color.primary,
     borderWidth: 1.5,
     borderColor: color.white,
     alignItems: "center",

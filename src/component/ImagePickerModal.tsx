@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import { color } from '../constant';
+import { color, fonts, radius, spacing } from '../constant';
 
 interface ImagePickerModalProps {
   modalVisible: boolean;
@@ -56,14 +56,14 @@ const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: color.overlay,
   },
   modalContainer: {
-    backgroundColor: color.white,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: color.card,
+    paddingVertical: spacing.xl,
+    paddingHorizontal: spacing.xl,
+    borderTopLeftRadius: radius.xxl,
+    borderTopRightRadius: radius.xxl,
     width: '100%',
     alignItems: 'center',
     gap: 10,
@@ -82,34 +82,36 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '800',
-    color: color.black,
+    fontFamily: fonts.bold,
+    color: color.textDark,
     marginBottom: 10,
   },
   optionButton: {
     width: '100%',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: color.lightGray,
     paddingVertical: 15,
-    borderRadius: 10,
+    borderRadius: radius.md,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: color.borderLight,
   },
   optionText: {
     fontSize: 16,
     color: color.textDark,
-    fontWeight: '500',
+    fontFamily: fonts.medium,
   },
   cancelButton: {
     width: '100%',
-    backgroundColor: color.black,
+    backgroundColor: color.primary,
     paddingVertical: 15,
-    borderRadius: 15,
+    borderRadius: radius.lg,
     alignItems: 'center',
     marginTop: 10,
   },
   cancelText: {
     fontSize: 16,
     color: color.white,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
   },
 });
 

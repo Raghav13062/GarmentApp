@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   container1: {
     padding: 12,
-    backgroundColor: "#F6F6F6",
+    backgroundColor: color.lightGray,
     flex: 1,
   },
   emptyContainer: {
@@ -20,17 +20,17 @@ export const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   emptyText: {
-    color: '#9f9f9fff',
+    color: color.textLight,
     fontSize: 14,
   },
   loaderContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   bannerWrapper: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     marginTop: 0,
     width: width,
     alignSelf: 'center',
@@ -42,9 +42,9 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 3,
@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
   gridSection: {
     paddingHorizontal: 16,
     paddingVertical: 15,
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
   },
   gridContainer: {
     flexDirection: 'row',
@@ -72,13 +72,13 @@ export const styles = StyleSheet.create({
     width: width * 0.28,
     height: width * 0.32,
     borderRadius: 12,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: color.lightGray,
     overflow: 'hidden',
     marginBottom: 6,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: color.borderLight,
     elevation: 1,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -89,12 +89,12 @@ export const styles = StyleSheet.create({
   },
   gridText: {
     fontSize: 11,
-    color: '#333',
+    color: color.textDark,
     fontFamily: fonts.semiBold,
     textAlign: 'center',
   },
   productSection: {
-    backgroundColor: '#fff',
+    backgroundColor: color.white,
     paddingBottom: 15,
     marginTop: 5,
   },
@@ -111,25 +111,25 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    color: '#111',
+    color: color.textDark,
     fontSize: 15,
     fontFamily: fonts.bold,
     letterSpacing: 0.3,
   },
   offerBadge: {
-    backgroundColor: '#FF3F6C',
+    backgroundColor: color.error,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 3,
     marginLeft: 8,
   },
   offerText: {
-    color: '#fff',
+    color: color.white,
     fontSize: 9,
     fontFamily: fonts.bold,
   },
   viewAll: {
-    color: '#FF3F6C',
+    color: color.error,
     fontSize: 12,
     fontFamily: fonts.bold,
   },
@@ -145,7 +145,7 @@ export const styles = StyleSheet.create({
     padding: 0
   },
   searchInputContainer: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: color.lightGray,
     borderRadius: 10,
   },
   listContainer: {

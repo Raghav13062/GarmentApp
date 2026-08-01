@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     color: color.white,
     fontWeight: "bold",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: color.blackAlpha50,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 5,

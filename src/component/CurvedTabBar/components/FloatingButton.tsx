@@ -7,6 +7,7 @@ import Svg, {
   Stop,
 } from 'react-native-svg';
 import { vh } from '../utils';
+import { color } from '../../../constant';
 
 interface FloatingButtonProps {
   icon: any;
@@ -84,7 +85,7 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
             position: 'absolute',
             top: -5,
             right: -10,
-            backgroundColor: '#ff4444',
+            backgroundColor: color.error,
             borderRadius: 10,
             minWidth: 20,
             height: 20,

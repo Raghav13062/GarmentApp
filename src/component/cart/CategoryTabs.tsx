@@ -1,4 +1,4 @@
-import { color, fonts } from "../../constant";
+import { color, fonts, radius, spacing } from "../../constant";
 import React from "react";
 import {
   View,
@@ -39,7 +39,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
         contentContainerStyle={styles.container}
       >
         {categories?.length === 0 ? (
-          <Loading fullScreen={false} size="small" color="#FF3F6C" />
+          <Loading fullScreen={false} size="small" color={color.primary} />
         ) : (
           categories?.map((item: any, index: number) => {
             return (
@@ -81,13 +81,13 @@ export default CategoryTabs;
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#f0f0f0',
+    backgroundColor: color.background,
+    paddingVertical: spacing.sm + 2,
+    borderBottomWidth: 1,
+    borderBottomColor: color.borderLight,
   },
   container: {
-    paddingHorizontal: 12,
+    paddingHorizontal: spacing.md,
   },
   tab: {
     alignItems: "center",
@@ -97,14 +97,14 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: 66,
     height: 66,
-    borderRadius: 33, // Perfect circle
-    backgroundColor: '#FFF0F3',
+    borderRadius: 33,
+    backgroundColor: color.primarySoft,
     overflow: "hidden",
     marginBottom: 6,
-    borderWidth: 1,
-    borderColor: '#FFF0F3',
+    borderWidth: 1.5,
+    borderColor: color.borderLight,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 10,
-    color: '#333',
+    color: color.textDark,
     fontFamily: fonts.semiBold,
     textAlign: "center",
     marginTop: 2,

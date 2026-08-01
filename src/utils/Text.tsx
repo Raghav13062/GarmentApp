@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, PixelRatio } from 'react-native';
+import { color, fonts } from '../constant';
 
 export const Size = {
   XXXSmall: 12,
@@ -21,7 +22,7 @@ const TextCompoent = ({
   style,
   size = 14,
   fontWeight = '400',
-  color = '#0B040F',
+  color: textColor = color.textDark,
   ellipsizeMode,
   adjustsFontSizeToFit = false,
   lineHeight,
@@ -39,7 +40,7 @@ const TextCompoent = ({
         style,
         {
           fontSize: size / fs,
-          color: color,
+          color: textColor,
           fontWeight: fontWeight,
           lineHeight: lineHeight
             ? lineHeight
@@ -57,6 +58,6 @@ export default TextCompoent;
 
 const styles = StyleSheet.create({
   text: {
-    fontFamily: 'opensans',
+    fontFamily: fonts.regular,
   },
 });

@@ -131,7 +131,7 @@ export default function Login() {
                       activeOpacity={0.8}
                     >
                       <LinearGradient
-                        colors={agreed && phone.length === 10 ? color.buttLinearGradient : ['#D3D3D3', '#D3D3D3']}
+                        colors={agreed && phone.length === 10 ? [...color.buttLinearGradient] : [color.borderLight, color.borderLight]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 0 }}
                         style={styles.loginButtonGradient}

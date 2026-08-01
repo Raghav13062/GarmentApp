@@ -1,12 +1,12 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { color } from '../../../../constant';
+import { color, fonts } from '../../../../constant';
 
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.baground, 
+    backgroundColor: color.background, 
     marginTop:15
   },
 
@@ -43,22 +43,20 @@ export const styles = StyleSheet.create({
   backButtonText: {
     fontSize: 24,
     color: color.white,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
   headerCenter: {
     alignItems: 'center',
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.white,
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
+    
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: color.whiteAlpha90,
     marginTop: 2,
   },
   menuButton: {
@@ -76,7 +74,7 @@ export const styles = StyleSheet.create({
   menuButtonText: {
     fontSize: 20,
     color: color.white,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
 
   // Scroll View
@@ -113,7 +111,7 @@ export const styles = StyleSheet.create({
   },
   emptyTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.textDark,
     marginBottom: 10,
     textAlign: 'center',
@@ -143,7 +141,7 @@ export const styles = StyleSheet.create({
   },
   shopButtonText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.white,
   },
 
@@ -154,7 +152,7 @@ export const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.textDark,
     marginBottom: 15,
   },
@@ -192,7 +190,7 @@ export const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.textDark,
     flex: 1,
   },
@@ -211,7 +209,7 @@ export const styles = StyleSheet.create({
   deleteButtonText: {
     color: color.white,
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
   itemSubtitle: {
     fontSize: 14,
@@ -239,7 +237,7 @@ export const styles = StyleSheet.create({
   },
   detailValue: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
     color: color.textDark,
   },
   bottomRow: {
@@ -250,7 +248,7 @@ export const styles = StyleSheet.create({
   },
   itemPrice: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.primary,
   },
   qtyControl: {
@@ -275,7 +273,7 @@ export const styles = StyleSheet.create({
   qtyButtonText: {
     color: color.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
   qtyDisplay: {
     width: 40,
@@ -284,7 +282,7 @@ export const styles = StyleSheet.create({
   },
   qtyText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
     color: color.textDark,
   },
   itemTotalContainer: {
@@ -293,7 +291,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: '#EEE',
+    borderTopColor: color.borderLight,
   },
   itemTotalLabel: {
     fontSize: 14,
@@ -301,7 +299,7 @@ export const styles = StyleSheet.create({
   },
   itemTotal: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.secondary,
   },
 
@@ -325,13 +323,13 @@ export const styles = StyleSheet.create({
   },
   summaryTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.textDark,
   },
   clearAllText: {
     fontSize: 14,
-    color: '#FF6B6B',
-    fontWeight: '600',
+    color: color.error,
+    fontFamily: fonts.semiBold,
   },
   summaryContent: {
     marginTop: 10,
@@ -348,7 +346,7 @@ export const styles = StyleSheet.create({
   },
   summaryValue: {
     fontSize: 15,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
     color: color.textDark,
   },
   discountLabel: {
@@ -356,11 +354,11 @@ export const styles = StyleSheet.create({
   },
   discountValue: {
     color: color.success,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
   divider: {
     height: 1,
-    backgroundColor: '#EEE',
+    backgroundColor: color.borderLight,
     marginVertical: 15,
   },
   totalRow: {
@@ -368,12 +366,12 @@ export const styles = StyleSheet.create({
   },
   totalLabel: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.textDark,
   },
   totalValue: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.secondary,
   },
 
@@ -397,13 +395,13 @@ export const styles = StyleSheet.create({
   },
   promoTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.textDark,
   },
   removePromoText: {
     fontSize: 14,
-    color: '#FF6B6B',
-    fontWeight: '600',
+    color: color.error,
+    fontFamily: fonts.semiBold,
   },
   promoInputContainer: {
     flexDirection: 'row',
@@ -412,12 +410,12 @@ export const styles = StyleSheet.create({
   promoInput: {
     flex: 1,
     height: 50,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: color.lightGray,
     borderRadius: 25,
     paddingHorizontal: 20,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#EEE',
+    borderColor: color.borderLight,
     marginRight: 10,
   },
   applyButton: {
@@ -434,7 +432,7 @@ export const styles = StyleSheet.create({
   applyButtonText: {
     color: color.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
   appliedButton: {
     opacity: 0.9,
@@ -451,13 +449,15 @@ export const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 20,
     padding: 20,
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     borderRadius: 15,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: color.borderLight,
   },
   savedTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.textDark,
     marginBottom: 10,
   },
@@ -494,12 +494,12 @@ export const styles = StyleSheet.create({
   },
   footerTotalLabel: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: color.whiteAlpha90,
     marginBottom: 2,
   },
   footerTotal: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.white,
   },
   checkoutButton: {
@@ -520,7 +520,7 @@ export const styles = StyleSheet.create({
   },
   checkoutButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.secondary,
   },
   checkoutSubtext: {

@@ -86,11 +86,11 @@ const styles = StyleSheet.create({
     overlay: {
         flex: 1,
         justifyContent: 'flex-end',
-        backgroundColor: 'rgba(0,0,0,0.4)',
+        backgroundColor: color.overlay,
     },
     modalContainer: {
         height: 'auto',
-        backgroundColor: color.white,
+        backgroundColor: color.card,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         padding: 20,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 5,
         borderRadius: 3,
-        backgroundColor: '#ccc',
+        backgroundColor: color.borderLight,
         marginBottom: 15,
     },
     progressWrapper: {
@@ -109,15 +109,16 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 14,
-        color: '#555',
+        color: color.textMedium,
     },
     amount: {
         fontSize: 20,
-        fontFamily:fonts.bold
+        fontFamily:fonts.bold,
+        color: color.textDark,
     },
     card: {
         width: width - 40,
-        backgroundColor: color.white,
+        backgroundColor: color.card,
         borderRadius: 12,
         padding: 15,
         shadowColor: color.black,
@@ -125,13 +126,13 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         marginBottom: 15,
         marginTop: 20,
-        borderColor: "#f2f2f2",
+        borderColor: color.borderLight,
         borderWidth: 1
     },
     progressText: {
         fontSize: 14,
         marginBottom: 6,
-        color: color.black,
+        color: color.textDark,
         fontFamily:fonts.bold
     },
     progressBarBackground: {
@@ -161,10 +162,14 @@ const styles = StyleSheet.create({
         fontFamily:fonts.bold
     },
     input: {
-        backgroundColor: color.backgroundLight,
+        backgroundColor: color.lightGray,
         borderRadius: 8,
         padding: 10,
         marginTop: 6,
-        height:50
+        height:50,
+        borderWidth: 1,
+        borderColor: color.borderLight,
+        color: color.textDark,
+        fontFamily: fonts.regular,
     },
 });

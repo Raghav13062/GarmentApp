@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     justifyContent: 'center',
     borderWidth: 1.5,
-    borderColor: '#F7F8F8',
+    borderColor: color.lightGray,
   },
   focusedDropdown: {},
   dropdownContainer: {

@@ -1,33 +1,28 @@
- import React from 'react';
+import React from 'react';
 import { View, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
- import imageIndex from '../assets/imageIndex';
-import { color, navigateToScreen } from '../constant';
+import imageIndex from '../assets/imageIndex';
+import { color, fonts, radius, spacing, shadows } from '../constant';
 import ScreenNameEnum from '../routes/screenName.enum';
 import { useNavigation } from '@react-navigation/native';
 
 const SearchBar = () => {
   const navigator = useNavigation();
   return (
-    <TouchableOpacity 
-    // onPress={()=>navigator.navigate(ScreenNameEnum.SearchProduct)}
-    
-    style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+    >
       <Image
         source={imageIndex.search}
         style={{ width: 18, height: 18 }}
         resizeMode='contain'
       />
 
-      <TextInput 
-      editable={false}
+      <TextInput
+        editable={false}
         placeholder='Search "Jeans"'
-        style={styles.input} 
-        placeholderTextColor= {color.black}
+        style={styles.input}
+        placeholderTextColor={color.placeholder}
       />
-
-      {/* <Icon name="notifications-outline" size={20} color={color.primary} /> */}
-      {/* <Icon name="heart-outline" size={20} color={color.primary} style={{ marginLeft: 10 }} />
-      <Icon name="grid-outline" size={20} color={color.primary} style={{ marginLeft: 10 }} /> */}
     </TouchableOpacity>
   );
 };
@@ -36,26 +31,24 @@ export default SearchBar;
 
 const styles = StyleSheet.create({
   container: {
-  flexDirection: 'row',
-    padding: 10,
+    flexDirection: 'row',
+    padding: spacing.sm + 2,
     alignItems: 'center',
-    borderRadius: 10,
-     marginHorizontal:9,
-     marginTop:11,
-     marginBottom:15,
-     elevation: 8,
-    
-     shadowColor: color.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-     
-  
-    backgroundColor: color.white, // important for shadows
+    borderRadius: radius.md,
+    marginHorizontal: 9,
+    marginTop: 11,
+    marginBottom: 15,
+    backgroundColor: color.card,
+    borderWidth: 1,
+    borderColor: color.borderLight,
+    ...shadows.sm,
   },
   input: {
     flex: 1,
     marginLeft: 10,
     paddingVertical: 5,
+    color: color.textDark,
+    fontFamily: fonts.regular,
+    fontSize: 14,
   },
 });

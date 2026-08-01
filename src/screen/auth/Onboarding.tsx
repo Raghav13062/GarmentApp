@@ -7,12 +7,11 @@ import {
   Dimensions,
   TouchableOpacity,
   StatusBar,
-  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../component/CustomButton';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import { color, fonts } from '../../constant';
+import { color, fonts, spacing, radius } from '../../constant';
  
 const { width, height } = Dimensions.get('window');
 
@@ -74,7 +73,7 @@ const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={color.white} />
+      <StatusBar barStyle="dark-content" backgroundColor={color.background} />
 
       {currentIndex < slides.length - 1 && (
         <TouchableOpacity
@@ -148,35 +147,35 @@ export default OnboardingScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: color.background,
   },
   skipButton: {
     position: 'absolute',
     top: 50,
-    right: 20,
+    right: spacing.xl,
     zIndex: 10,
   },
   skipText: {
     fontSize: 17,
     fontFamily: fonts.medium,
-    color: '#0f0f0fff',
+    color: color.textDark,
   },
   slide: {
     width,
     alignItems: 'center',
     paddingTop: height * 0.1,
-    paddingHorizontal: 30,
+    paddingHorizontal: spacing.xxxl,
   },
   image: {
     width: width * 0.70,
     height: height * 0.45,
-    borderRadius: 10,
-    marginBottom: 30,
+    borderRadius: radius.md,
+    marginBottom: spacing.xxxl,
   },
   title: {
     fontSize: 25,
     fontFamily: fonts.bold,
-    color: '#111827',
+    color: color.textDark,
     textAlign: 'center',
   },
   highlight: {
@@ -185,27 +184,27 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 15,
     fontFamily: fonts.regular,
-    color: '#6B7280',
+    color: color.textMedium,
     textAlign: 'center',
-    marginTop: 14,
+    marginTop: spacing.md,
     lineHeight: 22,
   },
   footer: {
     position: 'absolute',
-    bottom: 40,
+    bottom: spacing.xxxl + 8,
     width: '100%',
     alignItems: 'center',
   },
   dotsContainer: {
     flexDirection: 'row',
-    marginBottom: 24,
+    marginBottom: spacing.xxl,
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#D1D5DB',
-    marginHorizontal: 4,
+    width: spacing.sm,
+    height: spacing.sm,
+    borderRadius: radius.sm,
+    backgroundColor: color.borderLight,
+    marginHorizontal: spacing.xs,
   },
   activeDot: {
     width: 22,
@@ -213,8 +212,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: width * 0.85,
-    height: 54,
-    borderRadius: 28,
+    height: 48,
+    borderRadius: radius.md,
   },
   buttonText: {
     fontSize: 17,

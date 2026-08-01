@@ -13,7 +13,7 @@ import CustomButton from '../../../../component/CustomButton';
 import imageIndex from '../../../../assets/imageIndex'; // Use actual icon for location if available
 import CustomBackHeader from '../../../../component/CustomBackHeader';
 
-import { color, fonts } from '../../../../constant';
+import { color, fonts, spacing, radius } from '../../../../constant';
 
 
 const AddressFormScreen = () => {
@@ -99,51 +99,52 @@ export default AddressFormScreen;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    backgroundColor: color.white,
-
+    paddingHorizontal: spacing.lg,
+    backgroundColor: color.background,
   },
   tabRow: {
     flexDirection: 'row',
-    marginTop: 16,
-    marginBottom: 20,
-    backgroundColor: '#E5E5E566',
-    borderRadius: 10,
+    marginTop: spacing.lg,
+    marginBottom: spacing.xl,
+    backgroundColor: color.lightGray,
+    borderRadius: radius.md,
     overflow: 'hidden',
-    padding:10
-    
+    padding: 10,
+    borderWidth: 1,
+    borderColor: color.borderLight,
   },
   tabButton: {
     paddingVertical: 10,
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center'
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   activeTabButton: {
     backgroundColor: color.primary,
-    borderRadius: 10,
+    borderRadius: radius.md,
   },
   tabText: {
     fontSize: 14,
     color: color.primary,
-    fontFamily:fonts.semiBold
+    fontFamily: fonts.semiBold,
   },
   activeTabText: {
     color: color.white,
-    fontFamily:fonts.bold
-    
+    fontFamily: fonts.bold,
   },
   input: {
-    backgroundColor: '#F7F8F8',
-    borderRadius: 10,
-    paddingHorizontal: 16,
+    backgroundColor: color.card,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.lg,
     paddingVertical: 14,
     fontSize: 14,
     color: color.textDark,
-    marginBottom: 12,
-    fontFamily:fonts.regular,
-    height:55
-},
+    marginBottom: spacing.md,
+    fontFamily: fonts.regular,
+    height: 55,
+    borderWidth: 1,
+    borderColor: color.borderLight,
+  },
   locationBtn: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -151,18 +152,15 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   locationText: {
-    color:color.primary,
-    fontFamily:fonts.semiBold,
+    color: color.primary,
+    fontFamily: fonts.semiBold,
     fontSize: 15,
     marginRight: 6,
   },
   locationIcon: {
     width: 20,
     height: 20,
-    tintColor: '#FF9900',
-    color:color.primary,
-    fontFamily:fonts.semiBold,
-    fontSize: 15,
+    tintColor: color.primary,
     marginRight: 6,
   },
 });

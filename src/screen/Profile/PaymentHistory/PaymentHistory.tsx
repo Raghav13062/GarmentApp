@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import imageIndex from '../../../assets/imageIndex';
 import CustomHeader from '../../../component/CustomHeader';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
-import { color } from '../../../constant';
+import { color, fonts, spacing, radius, shadows } from '../../../constant';
 
 const { width } = Dimensions.get('window');
 
@@ -54,9 +54,9 @@ const PaymentRow = ({ item, index }) => {
     item.status === 'Failed' ? 'x-circle' :
     item.status === 'Pending' ? 'clock' : 'refresh-ccw';
 
-  const statusColor = item.status === 'Paid' ? '#28A745' :
-    item.status === 'Failed' ? '#E53E3E' :
-    item.status === 'Pending' ? '#FFA500' : '#9C27B0';
+  const statusColor = item.status === 'Paid' ? color.success :
+    item.status === 'Failed' ? color.error :
+    item.status === 'Pending' ? color.warning : color.primary;
 
   return (
     <TouchableOpacity 
@@ -646,45 +646,42 @@ export default function PaymentHistoryScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F7F7FB' },
+  container: { flex: 1, backgroundColor: color.background },
   
   // Search Bar
   searchContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: color.white,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    backgroundColor: color.card,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: color.backgroundLight,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    backgroundColor: color.lightGray,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
   },
   searchInput: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: spacing.md,
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: color.textDark,
   },
   
   // Stats Cards
   statsContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
   },
   statsCard: {
     flexDirection: 'row',
-    borderRadius: 10,
-     elevation: 8,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    height:60,
-    alignItems:"center" ,
-    justifyContent:"center"
+    borderRadius: radius.md,
+    ...shadows.lg,
+    height: 60,
+    alignItems: "center",
+    justifyContent: "center",
   },
   statItem: {
     flex: 1,
@@ -692,19 +689,19 @@ const styles = StyleSheet.create({
   },
   statNumber: {
     fontSize: 22,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.white,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   statLabel: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.9)',
-    fontWeight: '500',
+    color: color.whiteAlpha90,
+    fontFamily: fonts.medium,
   },
   statDivider: {
     width: 1,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    marginHorizontal: 10,
+    backgroundColor: color.whiteAlpha20,
+    marginHorizontal: spacing.sm + 2,
   },
   
   // Filter Bar
@@ -712,11 +709,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: color.white,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    backgroundColor: color.card,
     borderBottomWidth: 1,
-    borderBottomColor: color.lightGray,
+    borderBottomColor: color.borderLight,
   },
   sortButtons: {
     flexDirection: 'row',
@@ -724,11 +721,11 @@ const styles = StyleSheet.create({
   sortButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-    backgroundColor: color.backgroundLight,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.md,
+    marginRight: spacing.sm + 2,
+    backgroundColor: color.lightGray,
   },
   activeSortButton: {
     backgroundColor: color.primary,
@@ -736,8 +733,8 @@ const styles = StyleSheet.create({
   sortButtonText: {
     fontSize: 14,
     color: color.textMedium,
-    marginLeft: 6,
-    fontWeight: '600',
+    marginLeft: spacing.sm - 2,
+    fontFamily: fonts.semiBold,
   },
   activeSortButtonText: {
     color: color.white,
@@ -748,25 +745,25 @@ const styles = StyleSheet.create({
   filterButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    backgroundColor: color.backgroundLight,
-    marginLeft: 10,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.md,
+    backgroundColor: color.lightGray,
+    marginLeft: spacing.sm + 2,
     position: 'relative',
   },
   filterButtonText: {
     fontSize: 14,
     color: color.textMedium,
-    marginLeft: 6,
-    fontWeight: '600',
+    marginLeft: spacing.sm - 2,
+    fontFamily: fonts.semiBold,
   },
   filterBadge: {
     position: 'absolute',
     top: -6,
     right: -6,
-    backgroundColor: '#E53E3E',
-    borderRadius: 10,
+    backgroundColor: color.error,
+    borderRadius: radius.md,
     minWidth: 18,
     height: 18,
     alignItems: 'center',
@@ -775,47 +772,47 @@ const styles = StyleSheet.create({
   filterBadgeText: {
     fontSize: 10,
     color: color.white,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
   },
   
   // Active Filters
   activeFilters: {
-    backgroundColor: color.white,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    backgroundColor: color.card,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm + 2,
     borderBottomWidth: 1,
-    borderBottomColor: color.lightGray,
+    borderBottomColor: color.borderLight,
   },
   activeFilterTag: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: color.primary,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
-    marginRight: 8,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm - 2,
+    borderRadius: radius.md,
+    marginRight: spacing.sm,
   },
   activeFilterText: {
     color: color.white,
     fontSize: 12,
-    fontWeight: '600',
-    marginRight: 6,
+    fontFamily: fonts.semiBold,
+    marginRight: spacing.sm - 2,
   },
   clearAllButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
-    backgroundColor: '#E53E3E',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm - 2,
+    borderRadius: radius.md,
+    backgroundColor: color.error,
   },
   clearAllText: {
     color: color.white,
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
   },
   
   // List
   listContainer: {
-    padding: 16,
+    padding: spacing.lg,
     paddingBottom: 100,
   },
   
@@ -823,14 +820,12 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: color.white,
-    padding: 16,
-    borderRadius: 20,
-    elevation: 4,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    backgroundColor: color.card,
+    padding: spacing.lg,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: color.borderLight,
+    ...shadows.card,
   },
   evenRow: {
     borderLeftWidth: 4,
@@ -838,7 +833,7 @@ const styles = StyleSheet.create({
   },
   oddRow: {
     borderLeftWidth: 4,
-    borderLeftColor: color.secondary,
+    borderLeftColor: color.accent,
   },
   left: {
     width: 60,
@@ -848,31 +843,33 @@ const styles = StyleSheet.create({
   avatarPlaceholder: {
     width: 50,
     height: 50,
-    borderRadius: 12,
+    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
   center: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.lg,
   },
   title: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.textDark,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   dateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   subtitle: {
     fontSize: 13,
+    fontFamily: fonts.regular,
     color: color.textMedium,
   },
   paymentMethod: {
     fontSize: 12,
+    fontFamily: fonts.regular,
     color: color.textMedium,
   },
   right: {
@@ -880,72 +877,73 @@ const styles = StyleSheet.create({
   },
   amount: {
     fontSize: 18,
-    fontWeight: '800',
+    fontFamily: fonts.extraBold,
     color: color.textDark,
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    backgroundColor: color.backgroundLight,
+    paddingHorizontal: spacing.sm + 2,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.md,
+    backgroundColor: color.lightGray,
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '700',
-    marginLeft: 4,
+    fontFamily: fonts.bold,
+    marginLeft: spacing.xs,
   },
   paid: {
-    backgroundColor: '#E6F4EA',
+    backgroundColor: color.successSoft,
   },
   failed: {
-    backgroundColor: '#FDE8E8',
+    backgroundColor: color.errorSoft,
   },
   pending: {
-    backgroundColor: '#FFF3E6',
+    backgroundColor: color.warningSoft,
   },
   refunded: {
-    backgroundColor: '#F3E5F5',
+    backgroundColor: color.primarySoft,
   },
   retryButton: {
-    marginTop: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 8,
+    marginTop: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.sm,
     backgroundColor: color.primary,
   },
   retryText: {
     color: color.white,
     fontSize: 11,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
   },
   
   // Empty State
   emptyContainer: {
     alignItems: 'center',
     paddingTop: 100,
-    paddingHorizontal: 40,
+    paddingHorizontal: spacing.xxxl + 8,
   },
   emptyTitle: {
     fontSize: 22,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.textDark,
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: spacing.xl,
+    marginBottom: spacing.sm + 2,
   },
   emptyText: {
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: color.textMedium,
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: spacing.xxxl - 2,
     lineHeight: 24,
   },
   emptyButton: {
-    borderRadius: 15,
+    borderRadius: radius.md,
     overflow: 'hidden',
-    elevation: 6,
+    ...shadows.md,
   },
   
   // Gradient Button
@@ -953,84 +951,80 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 15,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xxl,
+    borderRadius: radius.md,
   },
   gradientButtonText: {
     color: color.white,
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
   },
   
   // Footer
   footer: {
     position: 'absolute',
-    bottom: 20,
-    left: 16,
-    right: 16,
+    bottom: spacing.xl,
+    left: spacing.lg,
+    right: spacing.lg,
   },
   downloadButton: {
-    borderRadius: 15,
+    borderRadius: radius.md,
     overflow: 'hidden',
-    elevation: 8,
-    shadowColor: color.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    ...shadows.lg,
   },
   
   // Modal
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: color.overlayDark,
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: color.white,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
+    backgroundColor: color.card,
+    borderTopLeftRadius: radius.xl,
+    borderTopRightRadius: radius.xl,
     maxHeight: '80%',
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
+    padding: spacing.xl,
     borderBottomWidth: 1,
-    borderBottomColor: color.lightGray,
+    borderBottomColor: color.borderLight,
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.textDark,
   },
   closeButton: {
-    padding: 4,
+    padding: spacing.xs,
   },
   filterOptions: {
-    padding: 20,
+    padding: spacing.xl,
     maxHeight: 400,
   },
   filterOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: color.backgroundLight,
+    borderBottomColor: color.divider,
   },
   filterOptionSelected: {
-    backgroundColor: '#F0F0FF',
+    backgroundColor: color.primarySoft,
   },
   filterCheckbox: {
     width: 22,
     height: 22,
-    borderRadius: 6,
+    borderRadius: radius.sm,
     borderWidth: 2,
-    borderColor: '#ddd',
+    borderColor: color.borderLight,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: spacing.md,
   },
   filterCheckboxSelected: {
     backgroundColor: color.primary,
@@ -1038,64 +1032,69 @@ const styles = StyleSheet.create({
   },
   filterLabel: {
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: color.textDark,
   },
   filterLabelSelected: {
     color: color.primary,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
   },
   modalFooter: {
     flexDirection: 'row',
-    padding: 20,
+    padding: spacing.xl,
     borderTopWidth: 1,
-    borderTopColor: color.lightGray,
+    borderTopColor: color.borderLight,
   },
   resetButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 12,
-    backgroundColor: color.backgroundLight,
-    marginRight: 12,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
+    borderRadius: radius.md,
+    backgroundColor: color.lightGray,
+    marginRight: spacing.md,
   },
   resetButtonText: {
     fontSize: 14,
     color: color.textMedium,
-    fontWeight: '600',
-    marginLeft: 6,
+    fontFamily: fonts.semiBold,
+    marginLeft: spacing.sm - 2,
   },
   applyButton: {
     flex: 1,
-    borderRadius: 12,
+    borderRadius: radius.md,
     overflow: 'hidden',
   },
   
   // Date Modal
   dateInputContainer: {
-    padding: 20,
+    padding: spacing.xl,
   },
   dateInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: color.backgroundLight,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginBottom: 12,
+    backgroundColor: color.lightGray,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: color.borderLight,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.md,
   },
   dateIcon: {
-    marginRight: 12,
+    marginRight: spacing.md,
   },
   dateInput: {
     flex: 1,
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: color.textDark,
   },
   dateTo: {
     textAlign: 'center',
     fontSize: 14,
+    fontFamily: fonts.regular,
     color: color.textMedium,
-    marginVertical: 8,
+    marginVertical: spacing.sm,
   },
 });

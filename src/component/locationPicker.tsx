@@ -116,7 +116,7 @@ const LocationPicker: React.FC<Props> = ({ apiKey, visible, onSumit, onClose, on
                                     setSearchText(text);
                                     fetchPlaces(text);
                                 }}
-                                placeholderTextColor="#808080"
+                                placeholderTextColor={color.textLight}
                             />
                         </View>
 
@@ -149,7 +149,7 @@ const LocationPicker: React.FC<Props> = ({ apiKey, visible, onSumit, onClose, on
 const styles = StyleSheet.create({
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.4)',
+        backgroundColor: color.blackAlpha40,
         justifyContent: 'flex-end',
 
     },
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     suggestionItem: {
         padding: 12,
         borderBottomWidth: 1,
-        borderBottomColor: '#eee',
+        borderBottomColor: color.borderLight,
     },
     suggestionText: {
         fontSize: 16,

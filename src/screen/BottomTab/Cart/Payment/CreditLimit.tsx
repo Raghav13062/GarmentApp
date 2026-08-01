@@ -67,7 +67,7 @@ const navigation = useNavigation()
   ];
 
   return (
-    <SafeAreaView style={{flex:1, backgroundColor:color.white}}>
+    <SafeAreaView style={{flex:1, backgroundColor:color.background}}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
        <CustomBackHeader menuIcon={imageIndex.back} label={"Credit Limit"} />
 
@@ -119,7 +119,7 @@ const navigation = useNavigation()
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: color.white,
+    backgroundColor: color.background,
     paddingHorizontal: 16,
     paddingBottom:30,
   },
@@ -156,12 +156,14 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   infoCard: {
-    backgroundColor: '#FFF2D7',
+    backgroundColor: color.primarySoft,
     padding: 12,
     borderRadius: 10,
     marginTop: 12,
     flexDirection: 'row',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: color.borderLight,
   },
   cardIcon: {
     width: 40,
@@ -172,13 +174,13 @@ const styles = StyleSheet.create({
   cardText: {
     flex: 1,
     fontSize: 14,
-    color: '#32343E',
+    color: color.textDark,
     fontFamily:fonts.semiBold
 
   },
   infoText: {
     fontSize: 13,
-    color: '#484C52',
+    color: color.textMedium,
     marginTop: 16,
     fontFamily:fonts.semiBold,
     marginHorizontal:10
@@ -186,9 +188,10 @@ const styles = StyleSheet.create({
   faqContainer: {
     marginTop: 16,
     borderWidth: 1,
-    borderColor: '#EEE',
+    borderColor: color.borderLight,
     borderRadius: 10,
     padding: 10,
+    backgroundColor: color.card,
   },
   faqQuestion: {
     flexDirection: 'row',
@@ -197,10 +200,8 @@ const styles = StyleSheet.create({
   },
   faqText: {
     fontSize: 14,
-    fontWeight: '600',
-    color: color.black,
+    color: color.textDark,
     fontFamily:fonts.medium
-
   },
   faqArrow: {
    height:20,
@@ -209,10 +210,9 @@ const styles = StyleSheet.create({
   faqAnswer: {
     marginTop: 10,
     fontSize: 14,
-    color: color.black,
+    color: color.textMedium,
     fontFamily:fonts.regular,
     lineHeight:18
-
   },
 });
 

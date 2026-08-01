@@ -1,12 +1,12 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { color, fonts } from '../../../constant';
+import { color, fonts, spacing, radius, shadows } from '../../../constant';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: color.primaryDark,
   },
 
   keyboardAvoidingView: {
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
 
   darkOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: color.overlayDark,
   },
 
   contentContainer: {
@@ -42,18 +42,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: Platform.OS === 'ios' ? 60 : 80,
-    paddingBottom: 40,
+    paddingBottom: spacing.xxxl + 8,
   },
 
   logo: {
     width: 150,
     height: 150,
-    borderRadius: 100
+    borderRadius: radius.pill,
   },
 
   appName: {
     fontSize: 32,
-    fontWeight: '900',
+    fontFamily: fonts.extraBold,
     color: color.white,
     letterSpacing: 2,
     textAlign: 'center',
@@ -61,92 +61,90 @@ export const styles = StyleSheet.create({
 
   appTagline: {
     fontSize: 14,
+    fontFamily: fonts.regular,
     color: color.white,
     opacity: 0.8,
-    marginTop: 4,
+    marginTop: spacing.xs,
     textAlign: 'center',
     letterSpacing: 1,
   },
 
-  // Bottom Sheet Styles
   bottomSheet: {
-    backgroundColor: color.white,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    paddingTop: 12,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: -15 },
-    shadowOpacity: 0.2,
-    shadowRadius: 20,
-    elevation: 25,
+    backgroundColor: color.background,
+    borderTopLeftRadius: radius.xxl,
+    borderTopRightRadius: radius.xxl,
+    paddingTop: spacing.md,
+    ...shadows.lg,
     minHeight: height * 0.6,
   },
 
   handleBar: {
     width: 40,
     height: 4,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 2,
+    backgroundColor: color.borderLight,
+    borderRadius: radius.sm,
     alignSelf: 'center',
-    marginBottom: 30,
+    marginBottom: spacing.xxxl - 2,
   },
 
   bottomSheetContent: {
-    paddingHorizontal: 30,
-    paddingBottom: Platform.OS === 'ios' ? 40 : 30,
+    paddingHorizontal: spacing.xxxl - 2,
+    paddingBottom: Platform.OS === 'ios' ? spacing.xxxl + 8 : spacing.xxxl - 2,
   },
 
   headerContainer: {
-    marginBottom: 35,
+    marginBottom: spacing.xxxl + 3,
   },
 
   welcomeText: {
     fontSize: 28,
-    fontWeight: '800',
+    fontFamily: fonts.extraBold,
     color: color.textDark,
   },
 
   subHeaderText: {
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: color.textMedium,
-    marginTop: 5,
+    marginTop: spacing.xs,
   },
 
   inputSection: {
-    marginBottom: 15,
+    marginBottom: spacing.md + 3,
   },
 
   inputContainer: {
-    backgroundColor: '#F8F9FA',
-    borderRadius: 15,
+    backgroundColor: color.white,
+    borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: '#E9ECEF',
-    height: 55,
-    paddingHorizontal: 15,
+    borderColor: color.borderLight,
+    height: 48,
+    paddingHorizontal: spacing.md + 3,
   },
 
   inputField: {
     flex: 1,
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: color.textDark,
-    paddingLeft: 10,
+    paddingLeft: spacing.sm + 2,
   },
 
   forgotPasswordContainer: {
     alignItems: 'flex-end',
-    marginBottom: 25,
+    marginBottom: spacing.xl + 5,
   },
 
   forgotPasswordText: {
     color: color.primary,
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
   },
 
   termsRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 28,
+    marginBottom: spacing.xxl + 4,
     paddingHorizontal: 2,
   },
 
@@ -155,8 +153,8 @@ export const styles = StyleSheet.create({
     height: 24,
     borderWidth: 1.6,
     borderColor: color.borderLight,
-    borderRadius: 7,
-    marginRight: 12,
+    borderRadius: radius.sm,
+    marginRight: spacing.md,
     marginTop: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -171,7 +169,7 @@ export const styles = StyleSheet.create({
   checkboxInner: {
     width: 12,
     height: 12,
-    borderRadius: 3,
+    borderRadius: radius.sm / 2,
   },
 
   termsText: {
@@ -189,16 +187,14 @@ export const styles = StyleSheet.create({
   },
 
   buttonSection: {
-    marginBottom: 25,
+    marginBottom: spacing.xl + 5,
   },
 
   loginButtonBase: {
-    height: 55,
-    borderRadius: 15,
+    height: 48,
+    borderRadius: radius.md,
     overflow: 'hidden',
-    shadowColor: color.primary,
-    shadowOffset: { width: 0, height: 8 },
-
+    ...shadows.md,
   },
 
   loginButtonGradient: {
@@ -214,48 +210,49 @@ export const styles = StyleSheet.create({
   loginButtonText: {
     color: color.white,
     fontSize: 16,
-    fontWeight: '800',
+    fontFamily: fonts.extraBold,
   },
 
   footerContainer: {
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: spacing.sm + 2,
   },
 
   footerText: {
     fontSize: 14,
+    fontFamily: fonts.regular,
     color: color.textMedium,
   },
 
   footerLink: {
     color: color.primary,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
 
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 25,
+    marginVertical: spacing.xl + 5,
   },
 
   divider: {
     flex: 1,
     height: 1,
-    backgroundColor: '#EEEEEE',
+    backgroundColor: color.borderLight,
   },
 
   dividerText: {
-    paddingHorizontal: 15,
+    paddingHorizontal: spacing.md + 3,
     color: color.textMedium,
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
     letterSpacing: 1,
   },
 
   socialContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: spacing.xl,
   },
 
   socialButton: {
@@ -263,27 +260,23 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '48%',
-    height: 50,
-    borderRadius: 12,
+    height: 48,
+    borderRadius: radius.lg,
     backgroundColor: color.white,
     borderWidth: 1,
-    borderColor: '#EEEEEE',
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
-    elevation: 2,
+    borderColor: color.borderLight,
+    ...shadows.sm,
   },
 
   socialIcon: {
     width: 20,
     height: 20,
-    marginRight: 10,
+    marginRight: spacing.sm + 2,
   },
 
   socialButtonText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
     color: color.textDark,
   },
 });

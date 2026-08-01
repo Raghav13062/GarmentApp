@@ -24,7 +24,7 @@ const { width } = Dimensions.get("window");
 // Updated COLORS with your theme
 const COLORS = {
   gradient: [color.primary, color.secondary],
-  background: color.white,
+  background: color.background,
   statusBar: color.primary,
   cardBackground: color.white,
   text: color.textDark,
@@ -34,7 +34,7 @@ const COLORS = {
   secondary: color.secondary,
   success: color.success,
   warning: color.warning,
-  info: '#2196F3',
+  info: color.info,
   white: color.white,
   shadow: color.black,
 };
@@ -480,7 +480,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   categoryBadge: {
-    backgroundColor: 'rgba(245, 128, 33, 0.1)',
+    backgroundColor: color.primarySoft,
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,

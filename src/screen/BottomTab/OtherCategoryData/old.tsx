@@ -29,12 +29,12 @@ const BRAND_COLORS = {
   primaryLight: color.primary,
   accent: color.star,
   background: color.backgroundLight,
-  textDark: '#2D3436',
+  textDark: color.textDark,
   textLight: color.white,
   cardBg: color.white,
   success: color.success,
   warning: color.warning,
-  error: '#F44336',
+  error: color.error,
 };
 
 const OtherCategoryData = () => {
@@ -423,7 +423,7 @@ const OtherCategoryData = () => {
           activeOpacity={0.7}
         >
           <LinearGradient
-  colors={['#FF6B6B', '#FF8E53']} // Coral/Orange gradient
+  colors={[color.error, color.warning]} // Coral/Orange gradient
             style={StyleSheet.absoluteFill}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
@@ -535,7 +535,7 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     borderRadius: 20,
   },
   headerTextContainer: {
@@ -548,7 +548,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: color.whiteAlpha90,
     marginTop: 2,
   },
   headerRight: {
@@ -558,7 +558,7 @@ const styles = StyleSheet.create({
   cartIconContainer: {
     position: 'relative',
     padding: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     borderRadius: 20,
   },
   cartBadge: {
@@ -639,7 +639,7 @@ const styles = StyleSheet.create({
     color: BRAND_COLORS.textLight,
   },
   productCountContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: 12,
@@ -716,7 +716,7 @@ const styles = StyleSheet.create({
   clearCartButton: {
     padding: 10,
     marginLeft: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     borderRadius: 8,
   },
   footer: {

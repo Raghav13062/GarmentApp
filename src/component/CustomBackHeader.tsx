@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
 import imageIndex from '../assets/imageIndex';
 import { useNavigation } from '@react-navigation/native';
-import { color, fonts } from '../constant';
- 
+import { color, fonts, radius, spacing } from '../constant';
+
 interface RightIcon {
-  icon: any;           // Icon image source
-  onPress: () => void; // Press handler for the icon
+  icon: any;
+  onPress?: () => void;
   type?: string;
 }
 
@@ -15,40 +15,46 @@ interface Props {
   rightIcons?: RightIcon[];
   menuIcon?: any;
   label?: any;
-  leftPress?: any
+  leftPress?: any;
 }
 
-const CustomBackHeader: React.FC<Props> = ({ rightIcons = [{icon:imageIndex.help,}], menuIcon, label, leftPress }) => {
-  const navigation = useNavigation()
-   const [showModal, setShowModal] = useState(false);
+const CustomBackHeader: React.FC<Props> = ({
+  rightIcons = [{ icon: imageIndex.help }],
+  menuIcon,
+  label,
+}) => {
+  const navigation = useNavigation();
 
   return (
     <View style={styles.header}>
-      {/* Left Menu Icon */}
-      <TouchableOpacity onPress={() => { navigation.goBack() }}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
         <Image source={menuIcon} style={styles.icon} resizeMode="cover" />
       </TouchableOpacity>
-      <Text style={styles.txtHeading}>{label ? label : ""}</Text>
-      {/* Right Icons */}
+      <Text style={styles.txtHeading}>{label ? label : ''}</Text>
       <View style={styles.rightIconsContainer}>
         {rightIcons.map((item, index) => (
-          <>
-            {item?.type == "text" ?
-              <TouchableOpacity style={{ backgroundColor: color.primary, height: 33, paddingHorizontal: 10, borderRadius: 10, alignItems: 'center', flexDirection: 'row' }} key={index.toString()} onPress={item.onPress}>
-                <Image source={imageIndex.calendar} tintColor={color.white} style={styles.iconR1} resizeMode="cover" />
-
-                <Text style={{ color: color.white, fontWeight: 'bold' }}>{item.icon}</Text>
+          <React.Fragment key={index.toString()}>
+            {item?.type == 'text' ? (
+              <TouchableOpacity
+                style={styles.textAction}
+                onPress={item.onPress}
+              >
+                <Image
+                  source={imageIndex.calendar}
+                  tintColor={color.white}
+                  style={styles.iconR1}
+                  resizeMode="cover"
+                />
+                <Text style={styles.textActionLabel}>{item.icon}</Text>
               </TouchableOpacity>
-              :
-              // <TouchableOpacity key={index.toString()} onPress={item.onPress}>
-              <TouchableOpacity key={index.toString()} onPress={()=>setShowModal(true)}>
-                <Image source={item.icon} style={styles.iconR}  resizeMode='contain'/>
+            ) : (
+              <TouchableOpacity onPress={item.onPress}>
+                <Image source={item.icon} style={styles.iconR} resizeMode="contain" />
               </TouchableOpacity>
-            }
-          </>
+            )}
+          </React.Fragment>
         ))}
       </View>
-       <HelpBottomModal visible={showModal} onClose={() => setShowModal(false)} />
     </View>
   );
 };
@@ -58,41 +64,49 @@ export default CustomBackHeader;
 const styles = StyleSheet.create({
   header: {
     height: 60,
-    // paddingHorizontal: 5,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: color.background,
   },
   icon: {
     height: 30,
     width: 30,
-    // marginLeft: 8,
   },
   iconR: {
     height: 25,
     width: 80,
-    marginLeft: 8,
-   
+    marginLeft: spacing.sm,
   },
   iconR1: {
     height: 20,
     width: 20,
-    marginRight: 8,
+    marginRight: spacing.sm,
   },
   rightIconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    minWidth: 50
+    minWidth: 50,
   },
   txtHeading: {
     fontSize: 20,
     lineHeight: 36,
-    color: color.black,
-    // marginTop: 7,
+    color: color.textDark,
     marginLeft: 15,
     fontFamily: fonts.bold,
     textAlignVertical: 'center',
-    // backgroundColor: color.error,
     flex: 1,
-    textAlign: 'center'
+    textAlign: 'center',
+  },
+  textAction: {
+    backgroundColor: color.primary,
+    height: 33,
+    paddingHorizontal: spacing.sm + 2,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  textActionLabel: {
+    color: color.white,
+    fontFamily: fonts.bold,
   },
 });

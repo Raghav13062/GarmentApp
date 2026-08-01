@@ -1,5 +1,5 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
-import { color, fonts } from "../../../constant";
+import { color, fonts, radius, spacing } from "../../../constant";
 
 const { width, height } = Dimensions.get("window");
 
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   // ─── Container ───────────────────────────────────────────────
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: color.background,
   },
   loader: {
     flex: 1,
@@ -33,10 +33,10 @@ export const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: "rgba(255,255,255,0.28)",
+    backgroundColor: color.whiteAlpha20,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.12,
     shadowRadius: 6,
@@ -49,10 +49,10 @@ export const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: "rgba(255,255,255,0.28)",
+    backgroundColor: color.whiteAlpha20,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.12,
     shadowRadius: 6,
@@ -65,9 +65,9 @@ export const styles = StyleSheet.create({
     minWidth: 16,
     height: 16,
     borderRadius: 8,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: color.white,
     borderWidth: 1,
-    borderColor: "#111",
+    borderColor: color.textDark,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 2,
@@ -75,12 +75,12 @@ export const styles = StyleSheet.create({
   headerCartBadgeText: {
     fontSize: 9,
     fontFamily: fonts.bold,
-    color: "#111",
+    color: color.textDark,
   },
 
   // ─── Image Section ───────────────────────────────────────────
   imageWrapper: {
-    backgroundColor: "#dbdbdbff",
+    backgroundColor: color.imagePlaceholder,
     position: "relative",
   },
   mainImage: {
@@ -98,7 +98,7 @@ export const styles = StyleSheet.create({
     borderRadius: 2,
   },
   discountBadgeText: {
-    color: "#fff",
+    color: color.white,
     fontSize: 12,
     fontFamily: fonts.bold,
     letterSpacing: 0.5,
@@ -114,14 +114,14 @@ export const styles = StyleSheet.create({
   dot: {
     height: 12,
     width: 12,
-    backgroundColor: "rgba(255,255,255,0.8)",
+    backgroundColor: color.whiteAlpha90,
     borderRadius: 6,
     marginHorizontal: 7,
   },
   activeDot: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: color.white,
     borderWidth: 2,
-    borderColor: "rgba(0,0,0,0.08)",
+    borderColor: color.borderLight,
     width: 14,
     height: 14,
     borderRadius: 7,
@@ -132,9 +132,9 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 16,
     paddingVertical: 10,
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     borderBottomWidth: 1,
-    borderBottomColor: "#F0F0F0",
+    borderBottomColor: color.lightGray,
   },
   thumbnailImg: {
     width: 56,
@@ -150,7 +150,7 @@ export const styles = StyleSheet.create({
 
   // ─── Info Card ───────────────────────────────────────────────
   infoCard: {
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     marginTop: 0,
     paddingHorizontal: 18,
     paddingTop: 22,
@@ -171,7 +171,7 @@ export const styles = StyleSheet.create({
   topSellingBadge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF3E0",
+    backgroundColor: color.warningSoft,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 20,
@@ -180,12 +180,12 @@ export const styles = StyleSheet.create({
   topSellingText: {
     fontSize: 10,
     fontFamily: fonts.bold,
-    color: "#E65100",
+    color: color.warning,
   },
   productTitle: {
     fontSize: 22,
     fontFamily: fonts.regular,
-    color: "#171717",
+    color: color.textDark,
     lineHeight: 29,
     marginBottom: 12,
   },
@@ -197,26 +197,26 @@ export const styles = StyleSheet.create({
   ratingBadge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#4CAF50",
+    backgroundColor: color.success,
     paddingHorizontal: 7,
     paddingVertical: 3,
     borderRadius: 4,
     gap: 3,
   },
   ratingBadgeText: {
-    color: "#fff",
+    color: color.white,
     fontSize: 12,
     fontFamily: fonts.bold,
   },
   ratingCount: {
     fontSize: 12,
-    color: "#888",
+    color: color.textLight,
     fontFamily: fonts.regular,
     marginLeft: 8,
   },
   divider: {
     height: 1,
-    backgroundColor: "#F0F0F0",
+    backgroundColor: color.borderLight,
     marginVertical: 14,
   },
 
@@ -236,7 +236,7 @@ export const styles = StyleSheet.create({
   mrp: {
     fontSize: 19,
     fontFamily: fonts.regular,
-    color: "#A4A4A4",
+    color: color.textLight,
     textDecorationLine: "line-through",
     marginRight: 8,
   },
@@ -249,11 +249,11 @@ export const styles = StyleSheet.create({
   offChipText: {
     fontSize: 17,
     fontFamily: fonts.bold,
-    color: "#FFFFFF",
+    color: color.white,
   },
   taxNote: {
     fontSize: 14,
-    color: "#A7A7A7",
+    color: color.textLight,
     fontFamily: fonts.regular,
     marginBottom: 10,
   },
@@ -265,7 +265,7 @@ export const styles = StyleSheet.create({
     minHeight: 45,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF4EC",
+    backgroundColor: color.primarySoft,
     borderRadius: 2,
     paddingLeft: 13,
     paddingRight: 88,
@@ -276,7 +276,7 @@ export const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: "#FFE4D0",
+    backgroundColor: color.lightGray,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 8,
@@ -296,9 +296,9 @@ export const styles = StyleSheet.create({
     width: 72,
     height: 76,
     borderRadius: 6,
-    backgroundColor: "#F6E8FA",
+    backgroundColor: color.primarySoft,
     borderWidth: 1,
-    borderColor: "#E6C9EF",
+    borderColor: color.primarySoft,
     alignItems: "center",
     justifyContent: "center",
     transform: [{ rotate: "1deg" }],
@@ -323,7 +323,7 @@ export const styles = StyleSheet.create({
 
   // ─── Offer Strip ─────────────────────────────────────────────
   offerStrip: {
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     marginTop: 8,
     paddingHorizontal: 16,
     paddingVertical: 14,
@@ -331,7 +331,7 @@ export const styles = StyleSheet.create({
   offerHeader: {
     fontSize: 14,
     fontFamily: fonts.bold,
-    color: "#1A1A2E",
+    color: color.textDark,
     marginBottom: 10,
   },
   offerItem: {
@@ -344,7 +344,7 @@ export const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: "#FFF3E0",
+    backgroundColor: color.warningSoft,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 1,
@@ -353,17 +353,17 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 12,
     fontFamily: fonts.regular,
-    color: "#555",
+    color: color.textMedium,
     lineHeight: 18,
   },
   offerBold: {
     fontFamily: fonts.semiBold,
-    color: "#1A1A2E",
+    color: color.textDark,
   },
 
   // ─── Delivery Section ────────────────────────────────────────
   deliveryCard: {
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     marginTop: 8,
     paddingHorizontal: 16,
     paddingVertical: 14,
@@ -371,7 +371,7 @@ export const styles = StyleSheet.create({
   deliveryHeader: {
     fontSize: 14,
     fontFamily: fonts.bold,
-    color: "#1A1A2E",
+    color: color.textDark,
     marginBottom: 12,
   },
   deliveryRow: {
@@ -383,17 +383,17 @@ export const styles = StyleSheet.create({
   deliveryText: {
     fontSize: 13,
     fontFamily: fonts.regular,
-    color: "#555",
+    color: color.textMedium,
     flex: 1,
   },
   deliveryHighlight: {
     fontFamily: fonts.semiBold,
-    color: "#1A1A2E",
+    color: color.textDark,
   },
 
   // ─── Variant Sections ────────────────────────────────────────
   variantCard: {
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     marginTop: 0,
     paddingHorizontal: 18,
     paddingTop: 18,
@@ -402,14 +402,14 @@ export const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 17,
     fontFamily: fonts.bold,
-    color: "#111",
+    color: color.textDark,
     letterSpacing: 0.5,
 
     marginBottom: 12,
   },
   selectedVariantText: {
     fontFamily: fonts.regular,
-    color: "#242424",
+    color: color.textDark,
   },
   sizeRow: {
     flexDirection: "row",
@@ -429,22 +429,22 @@ export const styles = StyleSheet.create({
     height: 48,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#D8D8D8",
+    borderColor: color.borderLight,
     marginRight: 12,
     marginBottom: 12,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FAFAFA",
+    backgroundColor: color.lightGray,
   },
   variantBoxSelected: {
-    borderColor: "#111",
-    backgroundColor: "#FFFFFF",
+    borderColor: color.textDark,
+    backgroundColor: color.white,
     borderWidth: 2,
   },
   variantText: {
     fontSize: 13,
     fontFamily: fonts.medium,
-    color: "#555",
+    color: color.textMedium,
   },
   variantTextSelected: {
     color: color.primary,
@@ -453,14 +453,14 @@ export const styles = StyleSheet.create({
   colorBox: {
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: color.borderLight,
     marginRight: 16,
     marginBottom: 14,
     overflow: "hidden",
     padding: 4,
   },
   colorBoxSelected: {
-    borderColor: "#8A8A8A",
+    borderColor: color.textLight,
     borderWidth: 3,
   },
   colorLabel: {
@@ -470,21 +470,21 @@ export const styles = StyleSheet.create({
 
   // ─── Description ─────────────────────────────────────────────
   descCard: {
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     marginTop: 0,
     paddingHorizontal: 18,
     paddingTop: 16,
     paddingBottom: 20,
   },
   relatedSection: {
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     paddingTop: 18,
     paddingBottom: 6,
   },
   relatedTitle: {
     fontSize: 17,
     fontFamily: fonts.bold,
-    color: "#111",
+    color: color.textDark,
     paddingHorizontal: 18,
     marginBottom: 14,
   },
@@ -495,7 +495,7 @@ export const styles = StyleSheet.create({
   descText: {
     fontSize: 13,
     fontFamily: fonts.regular,
-    color: "#555",
+    color: color.textMedium,
     lineHeight: 22,
   },
   readMore: {
@@ -512,10 +512,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 22,
     paddingTop: 12,
     paddingBottom: Platform.OS === "ios" ? 30 : 16,
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     borderTopWidth: 1,
-    borderTopColor: "#F0F0F0",
-    shadowColor: "#000",
+    borderTopColor: color.lightGray,
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
@@ -525,7 +525,7 @@ export const styles = StyleSheet.create({
     height: 56,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     marginRight: 10,
   },
   addToCartBtn: {
@@ -551,7 +551,7 @@ export const styles = StyleSheet.create({
   // ─── Full Screen Modal ───────────────────────────────────────
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.97)",
+    backgroundColor: color.overlayDark,
   },
   modalCloseBtn: {
     position: "absolute",
@@ -561,7 +561,7 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.15)",
+    backgroundColor: color.whiteAlpha10,
     alignItems: "center",
     justifyContent: "center",
   },

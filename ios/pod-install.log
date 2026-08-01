@@ -1,0 +1,740 @@
+  $ /opt/homebrew/bin/node -p require.resolve(     "react-native/scripts/react_native_pods.rb",     {paths: [process.argv[1]]},   ) /Users/raghav/Documents/aman_work/GarmentApp/ios
+  /Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native/scripts/react_native_pods.rb
+Found 16 modules for target `MyDoctor`
+link_native_modules! {ios_packages: [{configurations: [], name: "@react-native-async-storage/async-storage", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/@react-native-async-storage/async-storage", path: "../node_modules/@react-native-async-storage/async-storage", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/@react-native-async-storage/async-storage/RNCAsyncStorage.podspec", script_phases: []}, {configurations: [], name: "@react-native-community/datetimepicker", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/@react-native-community/datetimepicker", path: "../node_modules/@react-native-community/datetimepicker", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/@react-native-community/datetimepicker/RNDateTimePicker.podspec", script_phases: []}, {configurations: [], name: "@react-native-community/slider", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/@react-native-community/slider", path: "../node_modules/@react-native-community/slider", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/@react-native-community/slider/react-native-slider.podspec", script_phases: []}, {configurations: [], name: "react-native-fast-image", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-fast-image", path: "../node_modules/react-native-fast-image", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-fast-image/RNFastImage.podspec", script_phases: []}, {configurations: [], name: "react-native-gesture-handler", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-gesture-handler", path: "../node_modules/react-native-gesture-handler", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-gesture-handler/RNGestureHandler.podspec", script_phases: []}, {configurations: [], name: "react-native-haptic-feedback", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-haptic-feedback", path: "../node_modules/react-native-haptic-feedback", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-haptic-feedback/RNReactNativeHapticFeedback.podspec", script_phases: []}, {configurations: [], name: "react-native-image-crop-picker", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-image-crop-picker", path: "../node_modules/react-native-image-crop-picker", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-image-crop-picker/RNImageCropPicker.podspec", script_phases: []}, {configurations: [], name: "react-native-linear-gradient", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-linear-gradient", path: "../node_modules/react-native-linear-gradient", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-linear-gradient/BVLinearGradient.podspec", script_phases: []}, {configurations: [], name: "react-native-razorpay", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-razorpay", path: "../node_modules/react-native-razorpay", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-razorpay/react-native-razorpay.podspec", script_phases: []}, {configurations: [], name: "react-native-reanimated", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-reanimated", path: "../node_modules/react-native-reanimated", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-reanimated/RNReanimated.podspec", script_phases: []}, {configurations: [], name: "react-native-safe-area-context", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-safe-area-context", path: "../node_modules/react-native-safe-area-context", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-safe-area-context/react-native-safe-area-context.podspec", script_phases: []}, {configurations: [], name: "react-native-screens", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-screens", path: "../node_modules/react-native-screens", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-screens/RNScreens.podspec", script_phases: []}, {configurations: [], name: "react-native-svg", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-svg", path: "../node_modules/react-native-svg", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-svg/RNSVG.podspec", script_phases: []}, {configurations: [], name: "react-native-vector-icons", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-vector-icons", path: "../node_modules/react-native-vector-icons", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-vector-icons/RNVectorIcons.podspec", script_phases: []}, {configurations: [], name: "react-native-video", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-video", path: "../node_modules/react-native-video", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-video/react-native-video.podspec", script_phases: []}, {configurations: [], name: "react-native-worklets", root: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-worklets", path: "../node_modules/react-native-worklets", podspec_path: "/Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native-worklets/RNWorklets.podspec", script_phases: []}], ios_project_root_path: "/Users/raghav/Documents/aman_work/GarmentApp/ios", react_native_path: "../node_modules/react-native"}
+Auto-linking React Native modules for target `MyDoctor`: BVLinearGradient, RNCAsyncStorage, RNDateTimePicker, RNFastImage, RNGestureHandler, RNImageCropPicker, RNReactNativeHapticFeedback, RNReanimated, RNSVG, RNScreens, RNVectorIcons, RNWorklets, react-native-razorpay, react-native-safe-area-context, react-native-slider, and react-native-video
+Framework build type is static library
+[ReactNativeDependencies] Building from source: true
+Configuring the target with the New Architecture
+  $ /opt/homebrew/bin/node ./../node_modules/react-native/scripts/generate-codegen-artifacts.js -p /Users/raghav/Documents/aman_work/GarmentApp/ios/.. -o /Users/raghav/Documents/aman_work/GarmentApp/ios -t ios
+  [36m[1m[Codegen][0m Analyzing /Users/raghav/Documents/aman_work/GarmentApp/package.json[0m
+  [36m[1m[Codegen][0m [33mSearching for codegen-enabled libraries in the app.[0m
+  [36m[1m[Codegen][0m [33mThe "codegenConfig" field is not defined in package.json. Assuming there is nothing to generate at the app level.[0m
+  [36m[1m[Codegen][0m [33mSearching for codegen-enabled libraries in the project dependencies.[0m
+  [36m[1m[Codegen][0m Found @react-native-async-storage/async-storage[0m
+  [36m[1m[Codegen][0m Found @react-native-community/datetimepicker[0m
+  [36m[1m[Codegen][0m Found @react-native-community/slider[0m
+  [36m[1m[Codegen][0m Found react-native[0m
+  [36m[1m[Codegen][0m Found react-native-gesture-handler[0m
+  [36m[1m[Codegen][0m Found react-native-haptic-feedback[0m
+  [36m[1m[Codegen][0m Found react-native-image-crop-picker[0m
+  [36m[1m[Codegen][0m Found react-native-reanimated[0m
+  [36m[1m[Codegen][0m Found react-native-safe-area-context[0m
+  [36m[1m[Codegen][0m Found react-native-screens[0m
+  [36m[1m[Codegen][0m Found react-native-svg[0m
+  [36m[1m[Codegen][0m Found react-native-vector-icons[0m
+  [36m[1m[Codegen][0m Found react-native-worklets[0m
+  [36m[1m[Codegen][0m [33mSearching for codegen-enabled libraries in react-native.config.js[0m
+  [36m[1m[Codegen][0m Processing rnasyncstorage[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rnasyncstorage[0m
+  [36m[1m[Codegen][0m Processing RNDateTimePickerCGen[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, visionos for RNDateTimePickerCGen[0m
+  [36m[1m[Codegen][0m Processing RNCSlider[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, visionos for RNCSlider[0m
+  [36m[1m[Codegen][0m Processing FBReactNativeSpec[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Processing rncore[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Processing rngesturehandler_codegen[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rngesturehandler_codegen[0m
+  [36m[1m[Codegen][0m Processing RNHapticFeedbackSpec[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios for RNHapticFeedbackSpec[0m
+  [36m[1m[Codegen][0m Processing RNCImageCropPickerSpec[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios for RNCImageCropPickerSpec[0m
+  [36m[1m[Codegen][0m Processing rnreanimated[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rnreanimated[0m
+  [36m[1m[Codegen][0m Processing safeareacontext[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for safeareacontext[0m
+  [36m[1m[Codegen][0m Processing rnscreens[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, tvos, visionos for rnscreens[0m
+  [36m[1m[Codegen][0m Processing rnsvg[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rnsvg[0m
+  [36m[1m[Codegen][0m Processing RNVectorIconsSpec[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, tvos, visionos for RNVectorIconsSpec[0m
+  [36m[1m[Codegen][0m Processing rnworklets[0m
+  [36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+  [36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rnworklets[0m
+  [36m[1m[Codegen][0m Generating Native Code for rnasyncstorage - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for RNDateTimePickerCGen - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for RNCSlider - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m [33m[Codegen - FBReactNativeSpec] Skipping iOS code generation for FBReactNativeSpec as it has been generated already.[0m
+  [36m[1m[Codegen][0m [33m[Codegen - rncore] Skipping iOS code generation for rncore as it has been generated already.[0m
+  [36m[1m[Codegen][0m Generating Native Code for rngesturehandler_codegen - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for RNHapticFeedbackSpec - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for RNCImageCropPickerSpec - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for rnreanimated - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for safeareacontext - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for rnscreens - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for rnsvg - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for RNVectorIconsSpec - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating Native Code for rnworklets - ios[0m
+  [36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+  [36m[1m[Codegen][0m Generating RCTThirdPartyComponentsProvider.h[0m
+  [36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTThirdPartyComponentsProvider.h[0m
+  [36m[1m[Codegen][0m Generating RCTThirdPartyComponentsProvider.mm[0m
+  [36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTThirdPartyComponentsProvider.mm[0m
+  [36m[1m[Codegen][0m Generating RCTModulesProvider.h[0m
+  [36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTModuleProviders.h[0m
+  [36m[1m[Codegen][0m Generating RCTModuleProviders.mm[0m
+  [36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTModuleProviders.mm[0m
+  [36m[1m[Codegen][0m Generating RCTAppDependencyProvider[0m
+  [36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTAppDependencyProvider.h[0m
+  [36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTAppDependencyProvider.mm[0m
+  [36m[1m[Codegen][0m Generated podspec: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/ReactAppDependencyProvider.podspec[0m
+  [36m[1m[Codegen][0m Generated podspec: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/ReactCodegen.podspec[0m
+  [36m[1m[Codegen][0m [33mDone.[0m
+[36m[1m[Codegen][0m Analyzing /Users/raghav/Documents/aman_work/GarmentApp/package.json[0m
+[36m[1m[Codegen][0m [33mSearching for codegen-enabled libraries in the app.[0m
+[36m[1m[Codegen][0m [33mThe "codegenConfig" field is not defined in package.json. Assuming there is nothing to generate at the app level.[0m
+[36m[1m[Codegen][0m [33mSearching for codegen-enabled libraries in the project dependencies.[0m
+[36m[1m[Codegen][0m Found @react-native-async-storage/async-storage[0m
+[36m[1m[Codegen][0m Found @react-native-community/datetimepicker[0m
+[36m[1m[Codegen][0m Found @react-native-community/slider[0m
+[36m[1m[Codegen][0m Found react-native[0m
+[36m[1m[Codegen][0m Found react-native-gesture-handler[0m
+[36m[1m[Codegen][0m Found react-native-haptic-feedback[0m
+[36m[1m[Codegen][0m Found react-native-image-crop-picker[0m
+[36m[1m[Codegen][0m Found react-native-reanimated[0m
+[36m[1m[Codegen][0m Found react-native-safe-area-context[0m
+[36m[1m[Codegen][0m Found react-native-screens[0m
+[36m[1m[Codegen][0m Found react-native-svg[0m
+[36m[1m[Codegen][0m Found react-native-vector-icons[0m
+[36m[1m[Codegen][0m Found react-native-worklets[0m
+[36m[1m[Codegen][0m [33mSearching for codegen-enabled libraries in react-native.config.js[0m
+[36m[1m[Codegen][0m Processing rnasyncstorage[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rnasyncstorage[0m
+[36m[1m[Codegen][0m Processing RNDateTimePickerCGen[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, visionos for RNDateTimePickerCGen[0m
+[36m[1m[Codegen][0m Processing RNCSlider[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, visionos for RNCSlider[0m
+[36m[1m[Codegen][0m Processing FBReactNativeSpec[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Processing rncore[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Processing rngesturehandler_codegen[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rngesturehandler_codegen[0m
+[36m[1m[Codegen][0m Processing RNHapticFeedbackSpec[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios for RNHapticFeedbackSpec[0m
+[36m[1m[Codegen][0m Processing RNCImageCropPickerSpec[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios for RNCImageCropPickerSpec[0m
+[36m[1m[Codegen][0m Processing rnreanimated[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rnreanimated[0m
+[36m[1m[Codegen][0m Processing safeareacontext[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for safeareacontext[0m
+[36m[1m[Codegen][0m Processing rnscreens[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, tvos, visionos for rnscreens[0m
+[36m[1m[Codegen][0m Processing rnsvg[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rnsvg[0m
+[36m[1m[Codegen][0m Processing RNVectorIconsSpec[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, tvos, visionos for RNVectorIconsSpec[0m
+[36m[1m[Codegen][0m Processing rnworklets[0m
+[36m[1m[Codegen][0m [33mSearching for podspec in the project dependencies.[0m
+[36m[1m[Codegen][0m Supported Apple platforms: ios, macos, tvos, visionos for rnworklets[0m
+[36m[1m[Codegen][0m Generating Native Code for rnasyncstorage - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for RNDateTimePickerCGen - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for RNCSlider - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m [33m[Codegen - FBReactNativeSpec] Skipping iOS code generation for FBReactNativeSpec as it has been generated already.[0m
+[36m[1m[Codegen][0m [33m[Codegen - rncore] Skipping iOS code generation for rncore as it has been generated already.[0m
+[36m[1m[Codegen][0m Generating Native Code for rngesturehandler_codegen - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for RNHapticFeedbackSpec - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for RNCImageCropPickerSpec - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for rnreanimated - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for safeareacontext - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for rnscreens - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for rnsvg - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for RNVectorIconsSpec - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating Native Code for rnworklets - ios[0m
+[36m[1m[Codegen][0m Generated artifacts: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios[0m
+[36m[1m[Codegen][0m Generating RCTThirdPartyComponentsProvider.h[0m
+[36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTThirdPartyComponentsProvider.h[0m
+[36m[1m[Codegen][0m Generating RCTThirdPartyComponentsProvider.mm[0m
+[36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTThirdPartyComponentsProvider.mm[0m
+[36m[1m[Codegen][0m Generating RCTModulesProvider.h[0m
+[36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTModuleProviders.h[0m
+[36m[1m[Codegen][0m Generating RCTModuleProviders.mm[0m
+[36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTModuleProviders.mm[0m
+[36m[1m[Codegen][0m Generating RCTAppDependencyProvider[0m
+[36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTAppDependencyProvider.h[0m
+[36m[1m[Codegen][0m Generated artifact: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/RCTAppDependencyProvider.mm[0m
+[36m[1m[Codegen][0m Generated podspec: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/ReactAppDependencyProvider.podspec[0m
+[36m[1m[Codegen][0m Generated podspec: /Users/raghav/Documents/aman_work/GarmentApp/ios/build/generated/ios/ReactCodegen.podspec[0m
+[36m[1m[Codegen][0m [33mDone.[0m
+  Preparing
+
+Analyzing dependencies
+
+Inspecting targets to integrate
+  Using `ARCHS` setting to build architectures of target `Pods-MyDoctor`: (``)
+
+Fetching external sources
+-> Fetching podspec for `BVLinearGradient` from `../node_modules/react-native-linear-gradient`
+-> Fetching podspec for `DoubleConversion` from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`
+-> Fetching podspec for `FBLazyVector` from `../node_modules/react-native/Libraries/FBLazyVector`
+-> Fetching podspec for `RCT-Folly` from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`
+-> Fetching podspec for `RCTDeprecation` from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`
+-> Fetching podspec for `RCTRequired` from `../node_modules/react-native/Libraries/Required`
+-> Fetching podspec for `RCTTypeSafety` from `../node_modules/react-native/Libraries/TypeSafety`
+-> Fetching podspec for `RNCAsyncStorage` from `../node_modules/@react-native-async-storage/async-storage`
+-> Fetching podspec for `RNDateTimePicker` from `../node_modules/@react-native-community/datetimepicker`
+-> Fetching podspec for `RNFastImage` from `../node_modules/react-native-fast-image`
+-> Fetching podspec for `RNGestureHandler` from `../node_modules/react-native-gesture-handler`
+-> Fetching podspec for `RNImageCropPicker` from `../node_modules/react-native-image-crop-picker`
+-> Fetching podspec for `RNReactNativeHapticFeedback` from `../node_modules/react-native-haptic-feedback`
+-> Fetching podspec for `RNReanimated` from `../node_modules/react-native-reanimated`
+-> Fetching podspec for `RNSVG` from `../node_modules/react-native-svg`
+-> Fetching podspec for `RNScreens` from `../node_modules/react-native-screens`
+-> Fetching podspec for `RNVectorIcons` from `../node_modules/react-native-vector-icons`
+-> Fetching podspec for `RNWorklets` from `../node_modules/react-native-worklets`
+-> Fetching podspec for `React` from `../node_modules/react-native/`
+-> Fetching podspec for `React-Core` from `../node_modules/react-native/`
+-> Fetching podspec for `React-CoreModules` from `../node_modules/react-native/React/CoreModules`
+-> Fetching podspec for `React-Fabric` from `../node_modules/react-native/ReactCommon`
+-> Fetching podspec for `React-FabricComponents` from `../node_modules/react-native/ReactCommon`
+-> Fetching podspec for `React-FabricImage` from `../node_modules/react-native/ReactCommon`
+-> Fetching podspec for `React-ImageManager` from `../node_modules/react-native/ReactCommon/react/renderer/imagemanager/platform/ios`
+-> Fetching podspec for `React-Mapbuffer` from `../node_modules/react-native/ReactCommon`
+-> Fetching podspec for `React-NativeModulesApple` from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`
+-> Fetching podspec for `React-RCTActionSheet` from `../node_modules/react-native/Libraries/ActionSheetIOS`
+-> Fetching podspec for `React-RCTAnimation` from `../node_modules/react-native/Libraries/NativeAnimation`
+-> Fetching podspec for `React-RCTAppDelegate` from `../node_modules/react-native/Libraries/AppDelegate`
+-> Fetching podspec for `React-RCTBlob` from `../node_modules/react-native/Libraries/Blob`
+-> Fetching podspec for `React-RCTFBReactNativeSpec` from `../node_modules/react-native/React`
+-> Fetching podspec for `React-RCTFabric` from `../node_modules/react-native/React`
+-> Fetching podspec for `React-RCTImage` from `../node_modules/react-native/Libraries/Image`
+-> Fetching podspec for `React-RCTLinking` from `../node_modules/react-native/Libraries/LinkingIOS`
+-> Fetching podspec for `React-RCTNetwork` from `../node_modules/react-native/Libraries/Network`
+-> Fetching podspec for `React-RCTRuntime` from `../node_modules/react-native/React/Runtime`
+-> Fetching podspec for `React-RCTSettings` from `../node_modules/react-native/Libraries/Settings`
+-> Fetching podspec for `React-RCTText` from `../node_modules/react-native/Libraries/Text`
+-> Fetching podspec for `React-RCTVibration` from `../node_modules/react-native/Libraries/Vibration`
+-> Fetching podspec for `React-RuntimeApple` from `../node_modules/react-native/ReactCommon/react/runtime/platform/ios`
+-> Fetching podspec for `React-RuntimeCore` from `../node_modules/react-native/ReactCommon/react/runtime`
+-> Fetching podspec for `React-RuntimeHermes` from `../node_modules/react-native/ReactCommon/react/runtime`
+-> Fetching podspec for `React-callinvoker` from `../node_modules/react-native/ReactCommon/callinvoker`
+-> Fetching podspec for `React-cxxreact` from `../node_modules/react-native/ReactCommon/cxxreact`
+-> Fetching podspec for `React-debug` from `../node_modules/react-native/ReactCommon/react/debug`
+-> Fetching podspec for `React-defaultsnativemodule` from `../node_modules/react-native/ReactCommon/react/nativemodule/defaults`
+-> Fetching podspec for `React-domnativemodule` from `../node_modules/react-native/ReactCommon/react/nativemodule/dom`
+-> Fetching podspec for `React-featureflags` from `../node_modules/react-native/ReactCommon/react/featureflags`
+-> Fetching podspec for `React-featureflagsnativemodule` from `../node_modules/react-native/ReactCommon/react/nativemodule/featureflags`
+-> Fetching podspec for `React-graphics` from `../node_modules/react-native/ReactCommon/react/renderer/graphics`
+-> Fetching podspec for `React-hermes` from `../node_modules/react-native/ReactCommon/hermes`
+-> Fetching podspec for `React-idlecallbacksnativemodule` from `../node_modules/react-native/ReactCommon/react/nativemodule/idlecallbacks`
+-> Fetching podspec for `React-jserrorhandler` from `../node_modules/react-native/ReactCommon/jserrorhandler`
+-> Fetching podspec for `React-jsi` from `../node_modules/react-native/ReactCommon/jsi`
+-> Fetching podspec for `React-jsiexecutor` from `../node_modules/react-native/ReactCommon/jsiexecutor`
+-> Fetching podspec for `React-jsinspector` from `../node_modules/react-native/ReactCommon/jsinspector-modern`
+-> Fetching podspec for `React-jsinspectorcdp` from `../node_modules/react-native/ReactCommon/jsinspector-modern/cdp`
+-> Fetching podspec for `React-jsinspectornetwork` from `../node_modules/react-native/ReactCommon/jsinspector-modern/network`
+-> Fetching podspec for `React-jsinspectortracing` from `../node_modules/react-native/ReactCommon/jsinspector-modern/tracing`
+-> Fetching podspec for `React-jsitooling` from `../node_modules/react-native/ReactCommon/jsitooling`
+-> Fetching podspec for `React-jsitracing` from `../node_modules/react-native/ReactCommon/hermes/executor/`
+-> Fetching podspec for `React-logger` from `../node_modules/react-native/ReactCommon/logger`
+-> Fetching podspec for `React-microtasksnativemodule` from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`
+-> Fetching podspec for `React-oscompat` from `../node_modules/react-native/ReactCommon/oscompat`
+-> Fetching podspec for `React-perflogger` from `../node_modules/react-native/ReactCommon/reactperflogger`
+-> Fetching podspec for `React-performancetimeline` from `../node_modules/react-native/ReactCommon/react/performance/timeline`
+-> Fetching podspec for `React-rendererconsistency` from `../node_modules/react-native/ReactCommon/react/renderer/consistency`
+-> Fetching podspec for `React-renderercss` from `../node_modules/react-native/ReactCommon/react/renderer/css`
+-> Fetching podspec for `React-rendererdebug` from `../node_modules/react-native/ReactCommon/react/renderer/debug`
+-> Fetching podspec for `React-rncore` from `../node_modules/react-native/ReactCommon`
+-> Fetching podspec for `React-runtimeexecutor` from `../node_modules/react-native/ReactCommon/runtimeexecutor`
+-> Fetching podspec for `React-runtimescheduler` from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`
+-> Fetching podspec for `React-timing` from `../node_modules/react-native/ReactCommon/react/timing`
+-> Fetching podspec for `React-utils` from `../node_modules/react-native/ReactCommon/react/utils`
+-> Fetching podspec for `ReactAppDependencyProvider` from `build/generated/ios`
+-> Fetching podspec for `ReactCodegen` from `build/generated/ios`
+-> Fetching podspec for `ReactCommon` from `../node_modules/react-native/ReactCommon`
+-> Fetching podspec for `Yoga` from `../node_modules/react-native/ReactCommon/yoga`
+-> Fetching podspec for `boost` from `../node_modules/react-native/third-party-podspecs/boost.podspec`
+-> Fetching podspec for `fast_float` from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`
+-> Fetching podspec for `fmt` from `../node_modules/react-native/third-party-podspecs/fmt.podspec`
+-> Fetching podspec for `glog` from `../node_modules/react-native/third-party-podspecs/glog.podspec`
+-> Fetching podspec for `hermes-engine` from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`
+  $ /opt/homebrew/bin/node -p require.resolve(     "react-native",     {paths: [process.argv[1]]},     ) /Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native/sdks/hermes-engine
+  /Users/raghav/Documents/aman_work/GarmentApp/node_modules/react-native/index.js
+[Hermes] Using release tarball from URL: https://repo1.maven.org/maven2/com/facebook/react/react-native-artifacts/0.80.1/react-native-artifacts-0.80.1-hermes-ios-debug.tar.gz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  6 28.9M    6 1981k    0     0  2535k      0  0:00:11 --:--:--  0:00:11 2533k 31 28.9M   31 9314k    0     0  5251k      0  0:00:05  0:00:01  0:00:04 5250k 56 28.9M   56 16.3M    0     0  6027k      0  0:00:04  0:00:02  0:00:02 6025k 82 28.9M   82 23.8M    0     0  6477k      0  0:00:04  0:00:03  0:00:01 6476k100 28.9M  100 28.9M    0     0  6681k      0  0:00:04  0:00:04 --:--:-- 6682k
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0 20.2M    0 73976    0     0   220k      0  0:01:33 --:--:--  0:01:33  220k 20 20.2M   20 4285k    0     0  3267k      0  0:00:06  0:00:01  0:00:05 3266k 57 20.2M   57 11.6M    0     0  5161k      0  0:00:04  0:00:02  0:00:02 5159k 94 20.2M   94 19.0M    0     0  5901k      0  0:00:03  0:00:03 --:--:-- 5900k100 20.2M  100 20.2M    0     0  5978k      0  0:00:03  0:00:03 --:--:-- 5977k
+-> Fetching podspec for `react-native-razorpay` from `../node_modules/react-native-razorpay`
+-> Fetching podspec for `react-native-safe-area-context` from `../node_modules/react-native-safe-area-context`
+-> Fetching podspec for `react-native-slider` from `../node_modules/@react-native-community/slider`
+-> Fetching podspec for `react-native-video` from `../node_modules/react-native-video`
+
+Resolving dependencies of `Podfile`
+  CDN: trunk Relative path: CocoaPods-version.yml exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: all_pods_versions_a_9_3.txt exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/a/9/3/SocketRocket/0.7.1/SocketRocket.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: all_pods_versions_f_9_d.txt exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/f/9/d/razorpay-pod/1.5.6/razorpay-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: all_pods_versions_3_7_4.txt exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/3/7/4/TOCropViewController/3.2.0/TOCropViewController.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: all_pods_versions_1_1_7.txt exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.21.7/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: all_pods_versions_e_9_d.txt exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/e/9/d/SDWebImageWebPCoder/0.15.0/SDWebImageWebPCoder.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/a/9/3/SocketRocket/0.7.1/SocketRocket.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/a/9/3/SocketRocket/0.7.1/SocketRocket.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.11.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.11.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/f/9/d/razorpay-pod/1.5.0/razorpay-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: all_pods_versions_d_7_0.txt exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/d/7/0/razorpay-core-pod/1.0.7/razorpay-core-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/3/7/4/TOCropViewController/2.8.0/TOCropViewController.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/e/9/d/SDWebImageWebPCoder/0.8.5/SDWebImageWebPCoder.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/e/9/d/SDWebImageWebPCoder/0.8.4/SDWebImageWebPCoder.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.10.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.10.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.10.2/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.10.3/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.10.4/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.11.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.11.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.12.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.12.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.12.2/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.12.3/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.12.4/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.12.5/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.12.6/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.13.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.13.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.13.2/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.13.3/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.13.4/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.13.5/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.14.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.14.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.14.2/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.14.3/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.15.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.15.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.15.2/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.15.3/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.15.4/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.15.5/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.15.6/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.15.7/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.15.8/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.16.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.17.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.2/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.3/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.4/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.5/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.6/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.7/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.8/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.9/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.10/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.11/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.18.12/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.19.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.19.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.19.2/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.19.4/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.19.5/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.19.6/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.19.7/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.20.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.20.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.21.0/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.21.1/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.21.2/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.21.3/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.21.4/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.21.5/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.21.6/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/1/7/SDWebImage/5.21.7/SDWebImage.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: all_pods_versions_1_9_2.txt exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.6.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/d/7/0/razorpay-core-pod/1.0.7/razorpay-core-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/d/7/0/razorpay-core-pod/1.0.6/razorpay-core-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/d/7/0/razorpay-core-pod/1.0.5/razorpay-core-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/d/7/0/razorpay-core-pod/1.0.4/razorpay-core-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/d/7/0/razorpay-core-pod/1.0.3/razorpay-core-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/d/7/0/razorpay-core-pod/1.0.2/razorpay-core-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/d/7/0/razorpay-core-pod/1.0.1/razorpay-core-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/d/7/0/razorpay-core-pod/1.0.0/razorpay-core-pod.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.6.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.5.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.4.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.3.2/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.3.1/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.3.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.2.4/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.2.3/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.2.2/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.2.1/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.2.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.1.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.1.0-rc2/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.0.3/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.0.2/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.0.1/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.0.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.6.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.6.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.6.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+  CDN: trunk Relative path: Specs/1/9/2/libwebp/1.6.0/libwebp.podspec.json exists! Returning local because checking is only performed in repo update
+
+Comparing resolved specification to the sandbox manifest
+  A BVLinearGradient
+  A DoubleConversion
+  A FBLazyVector
+  A RCT-Folly
+  A RCTDeprecation
+  A RCTRequired
+  A RCTTypeSafety
+  A RNCAsyncStorage
+  A RNDateTimePicker
+  A RNFastImage
+  A RNGestureHandler
+  A RNImageCropPicker
+  A RNReactNativeHapticFeedback
+  A RNReanimated
+  A RNSVG
+  A RNScreens
+  A RNVectorIcons
+  A RNWorklets
+  A React
+  A React-Core
+  A React-CoreModules
+  A React-Fabric
+  A React-FabricComponents
+  A React-FabricImage
+  A React-ImageManager
+  A React-Mapbuffer
+  A React-NativeModulesApple
+  A React-RCTActionSheet
+  A React-RCTAnimation
+  A React-RCTAppDelegate
+  A React-RCTBlob
+  A React-RCTFBReactNativeSpec
+  A React-RCTFabric
+  A React-RCTImage
+  A React-RCTLinking
+  A React-RCTNetwork
+  A React-RCTRuntime
+  A React-RCTSettings
+  A React-RCTText
+  A React-RCTVibration
+  A React-RuntimeApple
+  A React-RuntimeCore
+  A React-RuntimeHermes
+  A React-callinvoker
+  A React-cxxreact
+  A React-debug
+  A React-defaultsnativemodule
+  A React-domnativemodule
+  A React-featureflags
+  A React-featureflagsnativemodule
+  A React-graphics
+  A React-hermes
+  A React-idlecallbacksnativemodule
+  A React-jserrorhandler
+  A React-jsi
+  A React-jsiexecutor
+  A React-jsinspector
+  A React-jsinspectorcdp
+  A React-jsinspectornetwork
+  A React-jsinspectortracing
+  A React-jsitooling
+  A React-jsitracing
+  A React-logger
+  A React-microtasksnativemodule
+  A React-oscompat
+  A React-perflogger
+  A React-performancetimeline
+  A React-rendererconsistency
+  A React-renderercss
+  A React-rendererdebug
+  A React-rncore
+  A React-runtimeexecutor
+  A React-runtimescheduler
+  A React-timing
+  A React-utils
+  A ReactAppDependencyProvider
+  A ReactCodegen
+  A ReactCommon
+  A SDWebImage
+  A SDWebImageWebPCoder
+  A SocketRocket
+  A TOCropViewController
+  A Yoga
+  A boost
+  A fast_float
+  A fmt
+  A glog
+  A hermes-engine
+  A libwebp
+  A razorpay-core-pod
+  A razorpay-pod
+  A react-native-razorpay
+  A react-native-safe-area-context
+  A react-native-slider
+  A react-native-video
+
+Downloading dependencies
+
+-> Installing BVLinearGradient (2.8.3)
+
+-> Installing DoubleConversion (1.1.6)
+ > Git download
+ > Git download
+     $ /usr/bin/git clone https://github.com/google/double-conversion.git /var/folders/d0/fymtj4xj4rn0s_h51c3ysrth0000gn/T/d20260801-58533-slhinf --template= --single-branch --depth 1 --branch v1.1.6
+     Cloning into '/var/folders/d0/fymtj4xj4rn0s_h51c3ysrth0000gn/T/d20260801-58533-slhinf'...
+     Note: switching to '361924fb61c043627d4179e941a102d543f6efa0'.
+     
+     You are in 'detached HEAD' state. You can look around, make experimental
+     changes and commit them, and you can discard any commits you make in this
+     state without impacting any branches by switching back to a branch.
+     
+     If you want to create a new branch to retain commits you create, you may
+     do so (now or later) by using -c with the switch command. Example:
+     
+       git switch -c <new-branch-name>
+     
+     Or undo this operation with:
+     
+       git switch -
+     
+     Turn off this advice by setting config variable advice.detachedHead to false
+     
+  $ /usr/bin/rsync -a --exclude=.git --delete /var/folders/d0/fymtj4xj4rn0s_h51c3ysrth0000gn/T/d20260801-58533-slhinf/ /Users/raghav/Library/Caches/CocoaPods/Pods/External/DoubleConversion/77f51e588bfe0e5c4fa6e9c580da62c6-cb417
+ > Running prepare command
+   $ /bin/bash -c  set -e mv src double-conversion
+  > Copying DoubleConversion from `/Users/raghav/Library/Caches/CocoaPods/Pods/External/DoubleConversion/77f51e588bfe0e5c4fa6e9c580da62c6-cb417` to `Pods/DoubleConversion`
+
+-> Installing FBLazyVector (0.80.1)
+
+-> Installing RCT-Folly (2024.11.18.00)
+ > Git download
+ > Git download
+     $ /usr/bin/git clone https://github.com/facebook/folly.git /var/folders/d0/fymtj4xj4rn0s_h51c3ysrth0000gn/T/d20260801-58533-4z58ru --template= --single-branch --depth 1 --branch v2024.11.18.00
+     Cloning into '/var/folders/d0/fymtj4xj4rn0s_h51c3ysrth0000gn/T/d20260801-58533-4z58ru'...
+     Note: switching to '0660ead5b610047a279cc291129e98e3f2a1fc37'.
+     
+     You are in 'detached HEAD' state. You can look around, make experimental
+     changes and commit them, and you can discard any commits you make in this
+     state without impacting any branches by switching back to a branch.
+     
+     If you want to create a new branch to retain commits you create, you may
+     do so (now or later) by using -c with the switch command. Example:
+     
+       git switch -c <new-branch-name>
+     
+     Or undo this operation with:
+     
+       git switch -
+     
+     Turn off this advice by setting config variable advice.detachedHead to false
+     
+  $ /usr/bin/rsync -a --exclude=.git --delete /var/folders/d0/fymtj4xj4rn0s_h51c3ysrth0000gn/T/d20260801-58533-4z58ru/ /Users/raghav/Library/Caches/CocoaPods/Pods/External/RCT-Folly/5456eaeed7ed94cba6507f2b03c47dc1-846fd
+ > Running prepare command
+   $ /bin/bash -c  set -e echo '#pragma once  #define FOLLY_MOBILE 1 #define FOLLY_USE_LIBCPP 1 #define FOLLY_HAVE_PTHREAD 1 #define FOLLY_CFG_NO_COROUTINES 1 #define FOLLY_HAVE_CLOCK_GETTIME 1  #pragma clang diagnostic ignored "-Wcomma"' > folly/folly-config.h
+  CDN: trunk Relative path: CocoaPods-version.yml exists! Returning local because checking is only performed in repo update
+
+――― MARKDOWN TEMPLATE ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+### Command
+
+```
+/usr/local/bin/pod install --verbose
+```
+
+### Report
+
+* What did you do?
+
+* What did you expect to happen?
+
+* What happened instead?
+
+
+### Stack
+
+```
+   CocoaPods : 1.17.0
+        Ruby : ruby 4.0.6 (2026-07-14 revision 03b6d3f889) +PRISM [arm64-darwin25]
+    RubyGems : 4.0.16
+        Host : macOS 26.3.1 (25D2128)
+       Xcode : 26.2 (17C52)
+         Git : git version 2.50.1 (Apple Git-155)
+Ruby lib dir : /opt/homebrew/Cellar/ruby/4.0.6/lib
+Repositories : trunk - CDN - https://cdn.cocoapods.org/
+```
+
+### Plugins
+
+```
+cocoapods-deintegrate : 1.0.5
+cocoapods-plugins     : 1.0.0
+cocoapods-search      : 1.0.1
+cocoapods-trunk       : 1.6.0
+cocoapods-try         : 1.2.0
+```
+
+### Podfile
+
+```ruby
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+target 'MyDoctor' do
+  use_modular_headers!
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  post_install do |installer|
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
+    )
+  end
+end
+```
+
+### Error
+
+```
+SignalException - SIGHUP
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2329:in 'File.unlink'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2329:in 'block in FileUtils::Entry_#remove_file'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2334:in 'FileUtils::Entry_#platform_support'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2328:in 'FileUtils::Entry_#remove_file'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2317:in 'FileUtils::Entry_#remove'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:1449:in 'block in FileUtils.remove_entry'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2376:in 'block (2 levels) in FileUtils::Entry_#postorder_traverse'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2376:in 'block (2 levels) in FileUtils::Entry_#postorder_traverse'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2380:in 'FileUtils::Entry_#postorder_traverse'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2375:in 'block in FileUtils::Entry_#postorder_traverse'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2374:in 'Array#each'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2374:in 'FileUtils::Entry_#postorder_traverse'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2375:in 'block in FileUtils::Entry_#postorder_traverse'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2374:in 'Array#each'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:2374:in 'FileUtils::Entry_#postorder_traverse'
+/opt/homebrew/Cellar/ruby/4.0.6/lib/ruby/4.0.0/fileutils.rb:1447:in 'FileUtils.remove_entry'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/downloader/cache.rb:268:in 'Pod::Downloader::Cache#in_tmpdir'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/downloader/cache.rb:238:in 'Pod::Downloader::Cache#uncached_pod'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/downloader/cache.rb:33:in 'Pod::Downloader::Cache#download_pod'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/downloader.rb:42:in 'Pod::Downloader.download'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer/pod_source_downloader.rb:69:in 'Pod::Installer::PodSourceDownloader#download!'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer/pod_source_installer.rb:117:in 'Pod::Installer::PodSourceInstaller#download_source'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer/pod_source_installer.rb:67:in 'Pod::Installer::PodSourceInstaller#install!'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer.rb:621:in 'Pod::Installer#install_source_of_pod'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer.rb:539:in 'block (2 levels) in Pod::Installer#install_pod_sources'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/user_interface.rb:86:in 'Pod::UserInterface.titled_section'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer.rb:538:in 'block in Pod::Installer#install_pod_sources'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer.rb:535:in 'Array#each'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer.rb:535:in 'Pod::Installer#install_pod_sources'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer.rb:258:in 'block in Pod::Installer#download_dependencies'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/user_interface.rb:64:in 'Pod::UserInterface.section'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer.rb:257:in 'Pod::Installer#download_dependencies'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/installer.rb:163:in 'Pod::Installer#install!'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/command/install.rb:52:in 'Pod::Command::Install#run'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/claide-1.1.0/lib/claide/command.rb:334:in 'CLAide::Command.run'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/lib/cocoapods/command.rb:52:in 'Pod::Command.run'
+/opt/homebrew/lib/ruby/gems/4.0.0/gems/cocoapods-1.17.0/bin/pod:55:in '<top (required)>'
+/usr/local/bin/pod:25:in 'Kernel#load'
+/usr/local/bin/pod:25:in '<main>'
+```
+
+――― TEMPLATE END ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+[!] Oh no, an error occurred.
+
+Search for existing GitHub issues similar to yours:
+https://github.com/CocoaPods/CocoaPods/search?q=SIGHUP&type=Issues
+
+If none exists, create a ticket, with the template displayed above, on:
+https://github.com/CocoaPods/CocoaPods/issues/new
+
+Be sure to first read the contributing guide for details on how to properly submit a ticket:
+https://github.com/CocoaPods/CocoaPods/blob/master/CONTRIBUTING.md
+
+Don't forget to anonymize any private data!
+
+Looking for related issues on cocoapods/cocoapods...
+ - Command PhaseScriptExecution failed with a nonzero exit code -- rsync error: received SIGINT, SIGTERM, or SIGHUP (code 20)
+   https://github.com/CocoaPods/CocoaPods/issues/12060 [open] [9 comments]
+   10 Mar 2024
+
+ - ERROR | xcodebuild: Returned an unsuccessful exit code
+   https://github.com/CocoaPods/CocoaPods/issues/12308 [open] [2 comments]
+   30 May 2024
+
+ - PhaseScriptExecution Error: resources.sh: No such file or directory
+   https://github.com/CocoaPods/CocoaPods/issues/8677 [open] [13 comments]
+   22 Sep 2023
+

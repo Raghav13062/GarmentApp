@@ -14,7 +14,7 @@ import {
 import Icon from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { color } from "../../../constant";
+import { color, fonts, spacing, radius, shadows } from "../../../constant";
 import Loading from "../../../utils/Loader";
 
 const MyOrders = ({ navigation }) => {
@@ -189,15 +189,15 @@ const MyOrders = ({ navigation }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case "processing":
-        return "#FFA500";
+        return color.warning;
       case "shipped":
-        return "#4169E1";
+        return color.info;
       case "delivered":
         return color.success;
       case "cancelled":
-        return "#FF6B6B";
+        return color.error;
       case "returned":
-        return "#9C27B0";
+        return color.primarySoft;
       default:
         return color.textMedium;
     }
@@ -309,7 +309,7 @@ const MyOrders = ({ navigation }) => {
               style={[styles.actionButton, styles.trackButton]}
               onPress={() => navigation.navigate("TrackOrder", { order: item })}
             >
-              <Icon name="map-pin" size={16} color="#4169E1" />
+              <Icon name="map-pin" size={16} color={color.info} />
               <Text style={styles.trackButtonText}>Track Order</Text>
             </TouchableOpacity>
           )}
@@ -327,7 +327,7 @@ const MyOrders = ({ navigation }) => {
                 style={[styles.actionButton, styles.reviewButton]}
                 onPress={() => navigation.navigate("WriteReview", { order: item })}
               >
-                <Icon name="star" size={16} color="#FFA500" />
+                <Icon name="star" size={16} color={color.warning} />
                 <Text style={styles.reviewButtonText}>Review</Text>
               </TouchableOpacity>
             </>
@@ -347,7 +347,7 @@ const MyOrders = ({ navigation }) => {
               style={[styles.actionButton, styles.helpButton]}
               onPress={() => navigation.navigate("HelpCenter")}
             >
-              <Icon name="help-circle" size={16} color="#9C27B0" />
+              <Icon name="help-circle" size={16} color={color.primary} />
               <Text style={styles.helpButtonText}>Need Help?</Text>
             </TouchableOpacity>
           )}
@@ -434,7 +434,7 @@ const MyOrders = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar backgroundColor="#F8F9FA" barStyle="dark-content" />
+      <StatusBar backgroundColor={color.background} barStyle="dark-content" />
       
       {/* Header */}
       <LinearGradient
@@ -502,7 +502,7 @@ const MyOrders = ({ navigation }) => {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              colors={color.buttLinearGradient}
+              colors={[...color.buttLinearGradient]}
              />
           }
           ListEmptyComponent={renderEmptyState}
@@ -538,45 +538,41 @@ export default MyOrders;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F9FA",
+    backgroundColor: color.background,
   },
   headerGradient: {
-    paddingTop: 15,
-    paddingBottom: 20,
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-    elevation: 8,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
+    paddingTop: spacing.md + 3,
+    paddingBottom: spacing.xl,
+    borderBottomLeftRadius: radius.xl,
+    borderBottomRightRadius: radius.xl,
+    ...shadows.lg,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginBottom: 20,
+    paddingHorizontal: spacing.xl,
+    marginBottom: spacing.xl,
   },
   backButton: {
-    padding: 8,
+    padding: spacing.sm,
   },
   headerTitle: {
     fontSize: 22,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.white,
   },
   filterButton: {
-    padding: 8,
+    padding: spacing.sm,
   },
   statsContainer: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    marginHorizontal: 20,
-    borderRadius: 20,
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    marginBottom:30
+    backgroundColor: color.whiteAlpha20,
+    marginHorizontal: spacing.xl,
+    borderRadius: radius.lg,
+    paddingVertical: spacing.md + 3,
+    paddingHorizontal: spacing.sm + 2,
+    marginBottom: spacing.xxxl - 2,
   },
   statItem: {
     flex: 1,
@@ -584,201 +580,200 @@ const styles = StyleSheet.create({
   },
   statNumber: {
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.white,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   statLabel: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.9)',
-    fontWeight: '500',
+    color: color.whiteAlpha90,
+    fontFamily: fonts.medium,
   },
   statDivider: {
     width: 1,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    marginHorizontal: 10,
+    backgroundColor: color.whiteAlpha20,
+    marginHorizontal: spacing.sm + 2,
   },
   tabContainer: {
-    backgroundColor: color.white,
+    backgroundColor: color.card,
     borderBottomWidth: 1,
-    borderBottomColor: color.lightGray,
-    elevation: 4,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    borderBottomColor: color.borderLight,
+    ...shadows.sm,
   },
   tabContent: {
-    paddingHorizontal: 15,
-    paddingVertical: 12,
+    paddingHorizontal: spacing.md + 3,
+    paddingVertical: spacing.md,
   },
   tabButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-    backgroundColor: color.backgroundLight,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.md,
+    marginRight: spacing.sm + 2,
+    backgroundColor: color.lightGray,
   },
   activeTabButton: {
     backgroundColor: color.primary,
   },
   tabText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
     color: color.textMedium,
-    marginHorizontal: 6,
+    marginHorizontal: spacing.sm - 2,
   },
   activeTabText: {
     color: color.white,
   },
   tabBadge: {
     backgroundColor: color.white,
-    borderRadius: 10,
-    paddingHorizontal: 6,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.sm - 2,
     paddingVertical: 2,
     minWidth: 22,
     alignItems: 'center',
   },
   activeTabBadge: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: color.whiteAlpha20,
   },
   tabBadgeText: {
     fontSize: 11,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.textMedium,
   },
   activeTabBadgeText: {
     color: color.white,
   },
   listContainer: {
-    padding: 15,
+    padding: spacing.md + 3,
     paddingBottom: 80,
   },
   listHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
-    paddingHorizontal: 5,
+    marginBottom: spacing.md + 3,
+    paddingHorizontal: spacing.xs,
   },
   listHeaderText: {
     fontSize: 14,
     color: color.textMedium,
-    fontWeight: '500',
+    fontFamily: fonts.medium,
   },
   sortButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm - 2,
+    borderRadius: radius.md,
     backgroundColor: color.lightGray,
   },
   sortButtonText: {
     fontSize: 13,
+    fontFamily: fonts.regular,
     color: color.textMedium,
-    marginHorizontal: 6,
+    marginHorizontal: spacing.sm - 2,
   },
   orderCard: {
-    backgroundColor: color.white,
-    borderRadius: 20,
-    padding: 16,
-    marginBottom: 15,
-    elevation: 4,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    backgroundColor: color.card,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.md + 3,
+    borderWidth: 1,
+    borderColor: color.borderLight,
+    ...shadows.card,
   },
   orderHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 15,
-    paddingBottom: 15,
+    marginBottom: spacing.md + 3,
+    paddingBottom: spacing.md + 3,
     borderBottomWidth: 1,
-    borderBottomColor: color.backgroundLight,
+    borderBottomColor: color.divider,
   },
   orderId: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.textDark,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   orderDate: {
     fontSize: 13,
+    fontFamily: fonts.regular,
     color: color.textMedium,
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm - 2,
+    borderRadius: radius.md,
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '600',
-    marginLeft: 6,
+    fontFamily: fonts.semiBold,
+    marginLeft: spacing.sm - 2,
     textTransform: 'capitalize',
   },
   productItem: {
     flexDirection: 'row',
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
   productImage: {
     width: 80,
     height: 80,
-    borderRadius: 10,
-    backgroundColor: color.backgroundLight,
+    borderRadius: radius.md,
+    backgroundColor: color.lightGray,
   },
   productInfo: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: spacing.md,
     justifyContent: 'center',
   },
   productName: {
     fontSize: 15,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
     color: color.textDark,
-    marginBottom: 6,
+    marginBottom: spacing.sm - 2,
     lineHeight: 20,
   },
   productQuantity: {
     fontSize: 13,
+    fontFamily: fonts.regular,
     color: color.textMedium,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   productPrice: {
     fontSize: 15,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.primary,
   },
   moreItems: {
     fontSize: 13,
+    fontFamily: fonts.regular,
     color: color.textMedium,
     fontStyle: 'italic',
-    marginBottom: 15,
+    marginBottom: spacing.md + 3,
     textAlign: 'center',
   },
   orderFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 15,
+    paddingTop: spacing.md + 3,
     borderTopWidth: 1,
-    borderTopColor: color.backgroundLight,
+    borderTopColor: color.divider,
   },
   totalLabel: {
     fontSize: 13,
+    fontFamily: fonts.regular,
     color: color.textMedium,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   totalAmount: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.textDark,
   },
   actionButtons: {
@@ -788,60 +783,60 @@ const styles = StyleSheet.create({
   actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 12,
-    marginLeft: 8,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.md,
+    marginLeft: spacing.sm,
     borderWidth: 1.5,
   },
   cancelButton: {
-    borderColor: '#FF6B6B',
-    backgroundColor: '#FFF5F5',
+    borderColor: color.error,
+    backgroundColor: color.errorSoft,
   },
   cancelButtonText: {
-    color: '#FF6B6B',
+    color: color.error,
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: fonts.semiBold,
   },
   trackButton: {
-    borderColor: '#4169E1',
-    backgroundColor: '#F0F5FF',
+    borderColor: color.info,
+    backgroundColor: color.infoSoft,
   },
   trackButtonText: {
-    color: '#4169E1',
+    color: color.info,
     fontSize: 14,
-    fontWeight: '600',
-    marginLeft: 6,
+    fontFamily: fonts.semiBold,
+    marginLeft: spacing.sm - 2,
   },
   reorderButton: {
     borderColor: color.success,
-    backgroundColor: '#F0FFF4',
+    backgroundColor: color.successSoft,
   },
   reorderButtonText: {
     color: color.success,
     fontSize: 14,
-    fontWeight: '600',
-    marginLeft: 6,
+    fontFamily: fonts.semiBold,
+    marginLeft: spacing.sm - 2,
   },
   reviewButton: {
-    borderColor: '#FFA500',
-    backgroundColor: '#FFF9F0',
+    borderColor: color.warning,
+    backgroundColor: color.warningSoft,
   },
   reviewButtonText: {
-    color: '#FFA500',
+    color: color.warning,
     fontSize: 14,
-    fontWeight: '600',
-    marginLeft: 6,
+    fontFamily: fonts.semiBold,
+    marginLeft: spacing.sm - 2,
   },
   helpButton: {
-    borderColor: '#9C27B0',
-    backgroundColor: '#F9F0FF',
+    borderColor: color.primary,
+    backgroundColor: color.primarySoft,
   },
   helpButtonText: {
-    color: '#9C27B0',
+    color: color.primary,
     fontSize: 14,
-    fontWeight: '600',
-    marginLeft: 6,
+    fontFamily: fonts.semiBold,
+    marginLeft: spacing.sm - 2,
   },
   loadingContainer: {
     flex: 1,
@@ -850,49 +845,47 @@ const styles = StyleSheet.create({
     paddingTop: 100,
   },
   loadingText: {
-    marginTop: 15,
+    marginTop: spacing.md + 3,
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: color.textMedium,
   },
   emptyContainer: {
     alignItems: 'center',
     paddingTop: 100,
-    paddingHorizontal: 40,
+    paddingHorizontal: spacing.xxxl + 8,
   },
   emptyTitle: {
     fontSize: 22,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: color.textDark,
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: spacing.xl,
+    marginBottom: spacing.sm + 2,
   },
   emptyText: {
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: color.textMedium,
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: spacing.xxxl - 2,
     lineHeight: 24,
   },
   shopButton: {
-    borderRadius: 15,
+    borderRadius: radius.md,
     overflow: 'hidden',
-    elevation: 6,
-    shadowColor: color.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    ...shadows.md,
   },
   shopButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 30,
-    paddingVertical: 15,
+    paddingHorizontal: spacing.xxxl - 2,
+    paddingVertical: spacing.md + 3,
   },
   shopButtonText: {
     color: color.white,
     fontSize: 16,
-    fontWeight: '700',
-    marginLeft: 10,
+    fontFamily: fonts.bold,
+    marginLeft: spacing.sm + 2,
   },
   footer: {
     position: 'absolute',
@@ -900,26 +893,22 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: 'row',
-    backgroundColor: color.white,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    backgroundColor: color.card,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xl,
     borderTopWidth: 1,
-    borderTopColor: color.lightGray,
-    elevation: 8,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    borderTopColor: color.borderLight,
+    ...shadows.md,
   },
   footerButton: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
   },
   footerButtonText: {
     fontSize: 12,
+    fontFamily: fonts.medium,
     color: color.textMedium,
-    marginTop: 4,
-    fontWeight: '500',
+    marginTop: spacing.xs,
   },
 });

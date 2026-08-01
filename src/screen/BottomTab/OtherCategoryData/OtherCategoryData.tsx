@@ -38,12 +38,12 @@ const BRAND_COLORS = {
   primaryLight: color.primary,
   accent: color.star,
   background: color.backgroundLight,
-  textDark: '#2D3436',
+  textDark: color.textDark,
   textLight: color.white,
   cardBg: color.white,
   success: color.success,
   warning: color.warning,
-  error: '#F44336',
+  error: color.error,
 };
 
 const OtherCategoryData = () => {
@@ -225,7 +225,7 @@ const OtherCategoryData = () => {
         {item.isTopSelling && (
           <View style={styles.topSellingBadge}>
             <LinearGradient
-              colors={['#FFD700', '#FFA500']}
+              colors={[color.warning, color.warning]}
               style={styles.badgeGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
@@ -301,7 +301,7 @@ const OtherCategoryData = () => {
           )}
           ListEmptyComponent={() => (
             <View style={styles.emptyState}>
-              <Icon name="inventory" size={60} color="#CCCCCC" />
+              <Icon name="inventory" size={60} color={color.borderLight} />
               <Text style={styles.emptyStateText}>
                 No products found for this category
               </Text>
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     borderRadius: 20,
   },
   headerTextContainer: {
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: color.whiteAlpha90,
     marginTop: 2,
   },
   headerRight: {
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
   cartIconContainer: {
     position: 'relative',
     padding: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     borderRadius: 20,
   },
   cartBadge: {

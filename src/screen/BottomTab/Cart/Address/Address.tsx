@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import imageIndex from '../../../../assets/imageIndex';
 import CustomBackHeader from '../../../../component/CustomBackHeader';
-import { color, fonts } from '../../../../constant';
+import { color, fonts, spacing, radius } from '../../../../constant';
 import CustomButton from '../../../../component/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import ScreenNameEnum from '../../../../routes/screenName.enum';
@@ -79,21 +79,21 @@ export default AddressScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.white,
+    backgroundColor: color.background,
   },
   content: {
-    padding: 16,
+    padding: spacing.lg,
     paddingBottom: 100,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: spacing.xl,
   },
   backButton: {
-    padding: 8,
+    padding: spacing.sm,
     borderRadius: 50,
-    backgroundColor: '#FFA50020',
+    backgroundColor: color.primarySoft,
     marginRight: 10,
   },
 
@@ -103,9 +103,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 14,
     borderWidth: 1,
-    borderColor: color.lightGray,
-    borderRadius: 12,
-    marginBottom: 12,
+    borderColor: color.borderLight,
+    borderRadius: radius.lg,
+    marginBottom: spacing.md,
+    backgroundColor: color.card,
   },
   iconCircle: {
     width: 40,
@@ -121,8 +122,8 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 16,
-    fontFamily: fonts.bold
-
+    fontFamily: fonts.bold,
+    color: color.textDark,
   },
   cardDesc: {
     fontSize: 13,
@@ -134,24 +135,22 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderStyle: 'dashed',
     borderColor: color.primary,
-    borderRadius: 30,
+    borderRadius: radius.pill,
     paddingVertical: 14,
     alignItems: 'center',
     marginTop: 10,
+    backgroundColor: color.primarySoft,
   },
   addNewText: {
-
-
     fontSize: 15,
     fontFamily: fonts.bold,
     color: color.primary
-
   },
   continueBtn: {
     position: 'absolute',
     bottom: 30,
-    left: 16,
-    right: 16,
+    left: spacing.lg,
+    right: spacing.lg,
     width: '90%'
   },
 });

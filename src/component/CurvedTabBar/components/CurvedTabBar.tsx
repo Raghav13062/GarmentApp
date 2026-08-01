@@ -14,6 +14,7 @@ import { CurvedTabBarProps } from '../types';
 import { getGradientColors, vh, vw } from '../utils';
 import { FloatingButton } from './FloatingButton';
 import { TabBarBackground } from './TabBarBackground';
+import { color } from '../../../constant';
 
 export const CurvedTabBar: React.FC<CurvedTabBarProps> = ({
   tabs,
@@ -23,15 +24,15 @@ export const CurvedTabBar: React.FC<CurvedTabBarProps> = ({
   activeTabGradientColors,
   heightPercentage = 9,
   floatingButtonSize = 6,
-  activeIconColor = '#ffffff',
-  inactiveIconColor = '#cccccc',
-  inactiveTextColor = '#cccccc',
+  activeIconColor = color.white,
+  inactiveIconColor = color.borderLight,
+  inactiveTextColor = color.borderLight,
   fontSize = 12,
   fontFamily,
   hideOnKeyboard = false,
   springConfig = { damping: 12, stiffness: 120 },
   shadowConfig = {
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 20,
@@ -242,7 +243,7 @@ const createStyles = ({ heightPercentage, fontSize, fontFamily }: any) =>
       position: 'absolute',
       top: -5,
       right: -10,
-      backgroundColor: '#ff4444',
+      backgroundColor: color.error,
       borderRadius: 10,
       minWidth: 20,
       height: 20,

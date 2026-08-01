@@ -9,13 +9,17 @@ import {
 } from 'react-native';
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
-import { color, fonts } from '../constant';
+import { color, fonts, radius, spacing } from '../constant';
 import { useNavigation } from '@react-navigation/native';
 import ScreenNameEnum from '../routes/screenName.enum';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
-import Animated, { useAnimatedStyle, interpolate, Extrapolate, SharedValue } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  interpolate,
+  Extrapolate,
+  SharedValue,
+} from 'react-native-reanimated';
 
 interface HeaderBarProps {
   scrollY?: SharedValue<number>;
@@ -30,8 +34,9 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ scrollY }) => {
   const isLogin = useSelector((state: any) => state.auth?.isLogin);
   const userData = useSelector((state: any) => state.auth?.userData);
 
-  const displayName = isLogin && userData?.fullName ? userData.fullName : 'ashish mahant';
-  const displayAddress = isLogin && userData?.address ? userData.address : 'Plot no. 114, lin...';
+  const displayName = isLogin && userData?.fullName ? userData.fullName : 'Guest';
+  const displayAddress =
+    isLogin && userData?.address ? userData.address : 'Select delivery location';
 
   const handleWishlistPress = React.useCallback(() => {
     navigator.navigate(ScreenNameEnum.WishList);
@@ -58,18 +63,18 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ scrollY }) => {
       height,
       opacity,
       transform: [{ translateY }],
-      overflow: 'hidden',
+      overflow: 'hidden' as const,
     };
   });
 
   const headerAnimatedStyle = useAnimatedStyle(() => {
     if (!scrollY) return {};
-    const elevation = interpolate(scrollY.value, [0, 50], [0, 5], Extrapolate.CLAMP);
-    const shadowOpacity = interpolate(scrollY.value, [0, 50], [0, 0.15], Extrapolate.CLAMP);
+    const elevation = interpolate(scrollY.value, [0, 50], [0, 4], Extrapolate.CLAMP);
+    const shadowOpacity = interpolate(scrollY.value, [0, 50], [0, 0.08], Extrapolate.CLAMP);
     return {
       elevation,
       shadowOpacity,
-      shadowColor: '#000000',
+      shadowColor: color.black,
       shadowOffset: { width: 0, height: 2 },
       shadowRadius: 4,
       zIndex: 10,
@@ -79,69 +84,60 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ scrollY }) => {
   const headerRowAnimatedStyle = useAnimatedStyle(() => {
     if (!scrollY) return {};
     const paddingVertical = interpolate(scrollY.value, [0, 50], [8, 4], Extrapolate.CLAMP);
-    return {
-      paddingVertical,
-    };
+    return { paddingVertical };
   });
 
   const searchWrapperAnimatedStyle = useAnimatedStyle(() => {
     if (!scrollY) return {};
     const height = interpolate(scrollY.value, [0, 50], [40, 34], Extrapolate.CLAMP);
-    return {
-      height,
-    };
+    return { height };
   });
 
   const rightIconsAnimatedStyle = useAnimatedStyle(() => {
     if (!scrollY) return {};
     const scale = interpolate(scrollY.value, [0, 50], [1, 0.92], Extrapolate.CLAMP);
-    return {
-      transform: [{ scale }],
-    };
+    return { transform: [{ scale }] };
   });
 
   return (
-    <Animated.View style={headerAnimatedStyle}>
-      <LinearGradient
-        colors={color.primaryGradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.mainContainer}
-      >
-        {/* Address Bar */}
+    <Animated.View style={[styles.shell, headerAnimatedStyle]}>
+      <View style={styles.mainContainer}>
         <Animated.View style={addressBarAnimatedStyle}>
           <TouchableOpacity
             style={styles.addressBar}
             onPress={handleAddressPress}
             activeOpacity={0.8}
           >
-            <Icon name="location-sharp" size={15} color={color.white} />
+            <Icon name="location-sharp" size={14} color={color.primary} />
             <Text style={styles.addressText} numberOfLines={1}>
-              Deliver to <Text style={styles.boldText}>{displayName} - {displayAddress}</Text>
+              Deliver to{' '}
+              <Text style={styles.boldText}>
+                {displayName} - {displayAddress}
+              </Text>
             </Text>
-            <Icon name="chevron-down" size={14} color={color.white} style={{ marginLeft: 2 }} />
+            <Icon name="chevron-down" size={14} color={color.primary} />
           </TouchableOpacity>
         </Animated.View>
 
-        {/* Search & Icons Row */}
         <Animated.View style={[styles.headerRow, headerRowAnimatedStyle]}>
+          <Text style={styles.brandLogo}>SareeLoom</Text>
+
           <AnimatedTouchableOpacity
             style={[styles.searchWrapper, searchWrapperAnimatedStyle]}
-            // onPress={handleSearchPress}
+            onPress={handleSearchPress}
             activeOpacity={0.9}
           >
             <Icon name="search-outline" size={18} color={color.textMedium} />
-            <Text style={styles.searchText}>Search </Text>
+            <Text style={styles.searchText}>Search sarees</Text>
           </AnimatedTouchableOpacity>
 
           <Animated.View style={[styles.rightIcons, rightIconsAnimatedStyle]}>
-            {/* Wishlist */}
             <TouchableOpacity
-
               onPress={handleWishlistPress}
-
-              style={styles.iconItem} activeOpacity={0.7}>
-              <Icon name="heart-outline" size={25} color={color.white} />
+              style={styles.iconItem}
+              activeOpacity={0.7}
+            >
+              <Icon name="heart-outline" size={24} color={color.primary} />
               {wishlistCount > 0 && (
                 <View style={styles.badge}>
                   <Text style={styles.badgeText}>{wishlistCount}</Text>
@@ -149,9 +145,12 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ scrollY }) => {
               )}
             </TouchableOpacity>
 
-            {/* Cart */}
-            <TouchableOpacity onPress={handleCartPress} style={styles.iconItem} activeOpacity={0.7}>
-              <Icon name="bag-outline" size={25} color={color.white} />
+            <TouchableOpacity
+              onPress={handleCartPress}
+              style={styles.iconItem}
+              activeOpacity={0.7}
+            >
+              <Icon name="bag-outline" size={24} color={color.primary} />
               {cartCount > 0 && (
                 <View style={styles.badge}>
                   <Text style={styles.badgeText}>{cartCount}</Text>
@@ -160,39 +159,51 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ scrollY }) => {
             </TouchableOpacity>
           </Animated.View>
         </Animated.View>
-      </LinearGradient>
+      </View>
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
+  shell: {
+    backgroundColor: color.background,
+    borderBottomWidth: 1,
+    borderBottomColor: color.borderLight,
+  },
   mainContainer: {
-    paddingTop: STATUSBAR_HEIGHT + 5,
-    paddingBottom: 8,
+    paddingTop: STATUSBAR_HEIGHT + 4,
+    paddingBottom: spacing.sm,
+    backgroundColor: color.background,
   },
   addressBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 6,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: 4,
   },
   addressText: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.9)',
+    fontSize: 11,
+    color: color.textMedium,
     marginHorizontal: 5,
     fontFamily: fonts.regular,
     flex: 1,
   },
   boldText: {
-    fontFamily: fonts.bold,
-    color: color.white,
+    fontFamily: fonts.semiBold,
+    color: color.textDark,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+  },
+  brandLogo: {
+    fontSize: 18,
+    fontFamily: fonts.bold,
+    color: color.primary,
+    marginRight: spacing.sm,
+    letterSpacing: 0.3,
   },
   searchWrapper: {
     flex: 1,
@@ -200,13 +211,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: color.white,
     height: 40,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    marginRight: 12,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.md,
+    marginRight: spacing.md,
+    borderWidth: 1,
+    borderColor: color.borderLight,
   },
   searchText: {
     flex: 1,
-    marginLeft: 8,
+    marginLeft: spacing.sm,
     color: color.textLight,
     fontSize: 13,
     fontFamily: fonts.regular,
@@ -216,15 +229,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconItem: {
-    marginLeft: 16,
+    marginLeft: spacing.md,
     position: 'relative',
     padding: 2,
   },
   badge: {
     position: 'absolute',
     top: -2,
-    right: -2,
-    backgroundColor: color.white,
+    right: -4,
+    backgroundColor: color.primary,
     minWidth: 16,
     height: 16,
     borderRadius: 8,
@@ -233,7 +246,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
   },
   badgeText: {
-    color: '#862E92', // purple contrast color
+    color: color.white,
     fontSize: 9,
     fontFamily: fonts.bold,
     textAlign: 'center',

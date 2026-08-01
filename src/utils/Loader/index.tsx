@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: color.overlayDark,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 35,
     borderWidth: 2.4,
-    borderColor: '#E3E3E3',
+    borderColor: color.borderLight,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',

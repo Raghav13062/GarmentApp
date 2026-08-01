@@ -1,12 +1,12 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { color, fonts } from '../../../constant';
+import { color, fonts, spacing, radius, shadows } from '../../../constant';
 
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: color.primaryDark,
   },
 
   keyboardAvoidingView: {
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
 
   darkOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: color.overlayDark,
   },
 
   contentContainer: {
@@ -42,12 +42,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: Platform.OS === 'ios' ? 60 : 80,
-    paddingBottom: 40,
+    paddingBottom: spacing.xxxl + 8,
   },
 
   appName: {
     fontSize: 32,
-    fontWeight: '900',
+    fontFamily: fonts.extraBold,
     color: color.white,
     letterSpacing: 2,
     textAlign: 'center',
@@ -55,87 +55,84 @@ export const styles = StyleSheet.create({
 
   appTagline: {
     fontSize: 14,
+    fontFamily: fonts.regular,
     color: color.white,
     opacity: 0.8,
-    marginTop: 4,
+    marginTop: spacing.xs,
     textAlign: 'center',
     letterSpacing: 1,
   },
 
-  // Bottom Sheet Styles
   bottomSheet: {
-    backgroundColor: color.white,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    paddingTop: 12,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: -15 },
-    shadowOpacity: 0.2,
-    shadowRadius: 20,
-    elevation: 25,
+    backgroundColor: color.background,
+    borderTopLeftRadius: radius.xxl,
+    borderTopRightRadius: radius.xxl,
+    paddingTop: spacing.md,
+    ...shadows.lg,
     minHeight: height * 0.6,
   },
 
   handleBar: {
     width: 40,
     height: 4,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 2,
+    backgroundColor: color.borderLight,
+    borderRadius: radius.sm,
     alignSelf: 'center',
-    marginBottom: 30,
+    marginBottom: spacing.xxxl - 2,
   },
 
   bottomSheetContent: {
-    paddingHorizontal: 30,
-    paddingBottom: Platform.OS === 'ios' ? 40 : 30,
+    paddingHorizontal: spacing.xxxl - 2,
+    paddingBottom: Platform.OS === 'ios' ? spacing.xxxl + 8 : spacing.xxxl - 2,
   },
 
   headerContainer: {
-    marginBottom: 25,
+    marginBottom: spacing.xl + 5,
   },
 
   welcomeText: {
     fontSize: 28,
-    fontWeight: '800',
+    fontFamily: fonts.extraBold,
     color: color.textDark,
   },
 
   subHeaderText: {
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: color.textMedium,
-    marginTop: 5,
+    marginTop: spacing.xs,
     lineHeight: 22,
   },
 
   phoneHighlight: {
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: color.primary,
   },
 
   changeButtonText: {
     color: color.primary,
     fontSize: 14,
-    fontWeight: '600',
-    marginTop: 5,
+    fontFamily: fonts.semiBold,
+    marginTop: spacing.xs,
     textDecorationLine: 'underline',
   },
 
   otpSection: {
-    marginBottom: 25,
+    marginBottom: spacing.xl + 5,
   },
 
   codeFieldRoot: {
-    marginTop: 10,
+    marginTop: spacing.sm + 2,
     justifyContent: 'space-between',
   },
 
   cell: {
     width: width * 0.14,
-    height: 55,
-    borderRadius: 15,
+    height: 48,
+    borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: '#E9ECEF',
-    backgroundColor: '#F8F9FA',
+    borderColor: color.borderLight,
+    backgroundColor: color.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -143,16 +140,17 @@ export const styles = StyleSheet.create({
   focusCell: {
     borderColor: color.primary,
     borderWidth: 2,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: color.white,
   },
 
   filledCell: {
     borderColor: color.primary,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: color.white,
   },
 
   cellText: {
     fontSize: 24,
+    fontFamily: fonts.semiBold,
     color: color.textDark,
     textAlign: 'center',
   },
@@ -160,35 +158,35 @@ export const styles = StyleSheet.create({
   resendContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: spacing.xl,
   },
 
   resendText: {
     fontSize: 14,
+    fontFamily: fonts.regular,
     color: color.textMedium,
   },
 
   timerText: {
     color: color.primary,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
 
   resendButtonText: {
     fontSize: 14,
     color: color.primary,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
 
   buttonSection: {
-    marginBottom: 25,
+    marginBottom: spacing.xl + 5,
   },
 
   verifyButton: {
-    height: 55,
-    borderRadius: 15,
+    height: 48,
+    borderRadius: radius.md,
     overflow: 'hidden',
-    shadowColor: color.primary,
-    shadowOffset: { width: 0, height: 8 },
+    ...shadows.md,
   },
 
   verifyButtonGradient: {
@@ -205,17 +203,17 @@ export const styles = StyleSheet.create({
   verifyButtonText: {
     color: color.white,
     fontSize: 16,
-    fontWeight: '800',
-    marginRight: 8,
+    fontFamily: fonts.extraBold,
+    marginRight: spacing.sm,
   },
 
   backButton: {
     position: 'absolute',
     top: Platform.OS === 'ios' ? 50 : 30,
-    left: 20,
+    left: spacing.xl,
     zIndex: 10,
-    padding: 10,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    borderRadius: 20,
+    padding: spacing.sm + 2,
+    backgroundColor: color.overlay,
+    borderRadius: radius.xl,
   },
 });

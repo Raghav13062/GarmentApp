@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Slightly darker for better contrast
+    backgroundColor: color.overlayDark,
   },
   modalContent: {
     width: '85%',
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingVertical: 12,
     paddingHorizontal: 25,
-    backgroundColor: 'rgba(21, 190, 119, 1)', // Friendly green button
+    backgroundColor: color.success,
     borderRadius: 20,
   },
   buttonText: {

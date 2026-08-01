@@ -7,6 +7,7 @@ import Svg, {
   Stop,
 } from 'react-native-svg';
 import { vw, vh } from '../utils';
+import { color } from '../../../constant';
 
 interface TabBarBackgroundProps {
   curvePosition: Animated.Value;
@@ -77,7 +78,7 @@ export const TabBarBackground: React.FC<TabBarBackgroundProps> = ({
           <Path d={path} fill="url(#curveGradient)" />
           <Path
             d={topEdgePath}
-            stroke="rgba(0,0,0,0.15)"
+            stroke=color.blackAlpha15
             strokeWidth={1}
             fill="none"
           />

@@ -37,7 +37,7 @@ const LogoutModal = ({
 }: LogoutModalProps) => {
   const isDanger = type === "danger";
   const accentColor = color.primary;
-  const softAccent = "#FFF5EE";
+  const softAccent = color.warningSoft;
   const noteText = isDanger
     ? "You will need to login again to access your account."
     : "Please confirm before continuing.";
@@ -119,7 +119,7 @@ const LogoutModal = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.48)",
+    backgroundColor: color.overlay,
   },
   backdrop: {
     flex: 1,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   handleBar: {
     width: 44,
     height: 5,
-    backgroundColor: "#D9D9D9",
+    backgroundColor: color.borderLight,
     borderRadius: 10,
   },
   content: {

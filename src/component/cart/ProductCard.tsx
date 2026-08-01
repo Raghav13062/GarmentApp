@@ -12,9 +12,9 @@ import Animated, {
   FadeIn,
   useAnimatedStyle,
   useSharedValue,
-  withSpring
+  withSpring,
 } from "react-native-reanimated";
-import { color } from "../../constant";
+import { color, fonts, radius, spacing } from "../../constant";
 import CustomButton from "../CustomButton";
 
 const { width } = Dimensions.get("window");
@@ -28,44 +28,62 @@ export default function ProductCard({
   buttShow,
   disabled,
 }: any) {
-  // Robust data mapping for different API responses
   const titleText = item?.title || item?.name || "";
+  const subtitle =
+    item?.subtitle ||
+    item?.fabric ||
+    item?.categoryName ||
+    item?.productType ||
+    item?.description ||
+    "";
+  const badgeLabel =
+    item?.badge ||
+    item?.tag ||
+    item?.fabricType ||
+    (item?.isOrganic ? "ORGANIC" : "") ||
+    (item?.material ? String(item.material).toUpperCase() : "");
+
   const displayMrp = item?.pricing?.mrp || item?.mrp || item?.price || 0;
-  const displaySellingPrice = item?.pricing?.sellingPrice || item?.sellingPrice || item?.discountPrice || item?.price || displayMrp;
+  const displaySellingPrice =
+    item?.pricing?.sellingPrice ||
+    item?.sellingPrice ||
+    item?.discountPrice ||
+    item?.price ||
+    displayMrp;
   const rawImage = item?.images?.[0] || item?.baseImages?.[0] || "";
-  const productImage = typeof rawImage === 'string' ? rawImage.replace(/\.avif$/i, '.webp') : rawImage;
+  const productImage =
+    typeof rawImage === "string"
+      ? rawImage.replace(/\.avif$/i, ".webp")
+      : rawImage;
   const swatches = item?.colors?.filter(Boolean) || [];
 
-  const discountPercent = displayMrp > displaySellingPrice
-    ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100)
-    : item?.pricing?.discountPercentage || item?.discountPercentage || 0;
+  const discountPercent =
+    displayMrp > displaySellingPrice
+      ? Math.round(((displayMrp - displaySellingPrice) / displayMrp) * 100)
+      : item?.pricing?.discountPercentage || item?.discountPercentage || 0;
 
-  // Animation values
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
 
-  const handlePressIn = () => {
-    scale.value = withSpring(0.97);
-  };
-
-  const handlePressOut = () => {
-    scale.value = withSpring(1);
-  };
-  console.log('ProductCard Rendered:', titleText, 'Image:', productImage, 'Discount:', discountPercent, 'Swatches:', swatches);
-
   return (
     <TouchableOpacity
       activeOpacity={1}
       onPress={onPress1}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
+      onPressIn={() => {
+        scale.value = withSpring(0.97);
+      }}
+      onPressOut={() => {
+        scale.value = withSpring(1);
+      }}
       style={styles.cardContainer}
     >
-      <Animated.View entering={FadeIn.duration(500)} style={[styles.card, animatedStyle]}>
-        {/* IMAGE SECTION */}
+      <Animated.View
+        entering={FadeIn.duration(500)}
+        style={[styles.card, animatedStyle]}
+      >
         <View style={styles.imageContainer}>
           <ImageBackground
             source={{ uri: productImage }}
@@ -73,26 +91,36 @@ export default function ProductCard({
             imageStyle={styles.imageRadius}
             resizeMode="cover"
           >
-            {!!discountPercent && (
-              <View style={styles.discountBadge}>
-                <Text style={styles.discountBadgeText}>{discountPercent}%OFF</Text>
+            {(!!badgeLabel || !!discountPercent) && (
+              <View
+                style={[
+                  styles.badge,
+                  discountPercent && !badgeLabel
+                    ? styles.discountBadge
+                    : styles.tagBadge,
+                ]}
+              >
+                <Text style={styles.badgeText} numberOfLines={1}>
+                  {badgeLabel || `${discountPercent}% OFF`}
+                </Text>
               </View>
             )}
 
-            <View style={styles.wishlistBtn}>
-              <Ionicons name="heart-outline" size={23} color="black" />
-            </View>
+            <TouchableOpacity style={styles.wishlistBtn} activeOpacity={0.8}>
+              <Ionicons name="heart-outline" size={18} color={color.textDark} />
+            </TouchableOpacity>
           </ImageBackground>
         </View>
 
-        {/* CONTENT SECTION */}
         <View style={styles.content}>
-          <View style={styles.deliveryRow}>
-            <Ionicons name="flash" size={11} color="#1A1A1A" />
-            <Text style={styles.deliveryText}>  {titleText}</Text>
-          </View>
-
-          
+          <Text style={styles.title} numberOfLines={1}>
+            {titleText}
+          </Text>
+          {!!subtitle && (
+            <Text style={styles.subtitle} numberOfLines={1}>
+              {typeof subtitle === "string" ? subtitle : ""}
+            </Text>
+          )}
 
           <View style={styles.priceRow}>
             <Text style={styles.sellingPrice}>₹{displaySellingPrice}</Text>
@@ -108,7 +136,12 @@ export default function ProductCard({
                   key={`${swatch}-${index}`}
                   style={[
                     styles.swatch,
-                    { backgroundColor: typeof swatch === "string" ? swatch : swatch?.hex || swatch?.code || color.lightGray },
+                    {
+                      backgroundColor:
+                        typeof swatch === "string"
+                          ? swatch
+                          : swatch?.hex || swatch?.code || color.lightGray,
+                    },
                   ]}
                 />
               ))}
@@ -116,13 +149,13 @@ export default function ProductCard({
           )}
         </View>
 
-        {/* OPTIONAL ACTION BUTTON */}
         {buttShow && (
           <View style={styles.buttonWrap}>
             <CustomButton
               title={title}
               onPress={onPress}
               disabled={disabled}
+              height={40}
             />
           </View>
         )}
@@ -134,114 +167,95 @@ export default function ProductCard({
 const styles = StyleSheet.create({
   cardContainer: {
     width: CARD_WIDTH,
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ECECEC',
-
-    // Android Shadow
-    elevation: 5,
-
-    // iOS Shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-
-    // Android shadow ko cut hone se bachane ke liye
-    overflow: 'visible',
-
+    backgroundColor: color.card,
+    borderRadius: radius.lg,
+    overflow: "hidden",
   },
   imageContainer: {
     width: "100%",
-    aspectRatio: 0.86,
-    backgroundColor: "#F4F4F4",
+    aspectRatio: 0.75,
+    backgroundColor: color.lightGray,
+    borderRadius: radius.lg,
+    overflow: "hidden",
   },
   image: {
     width: "100%",
     height: "100%",
   },
   imageRadius: {
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
+    borderRadius: radius.lg,
+  },
+  badge: {
+    position: "absolute",
+    top: spacing.sm,
+    left: spacing.sm,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 3,
+    maxWidth: "70%",
+  },
+  tagBadge: {
+    backgroundColor: color.badgeTeal,
   },
   discountBadge: {
-    position: 'absolute',
-    top: 6,
-    left: 6,
-    backgroundColor: color.primary,
-    paddingHorizontal: 5,
-    paddingVertical: 3,
-    borderRadius: 2,
+    backgroundColor: color.accent,
   },
-  discountBadgeText: {
+  badgeText: {
     color: color.white,
-    fontSize: 9,
-    fontWeight: '800',
+    fontSize: 8,
+    fontFamily: fonts.bold,
+    letterSpacing: 0.4,
   },
   wishlistBtn: {
-    position: 'absolute',
-    bottom: 7,
-    right: 6,
-    backgroundColor: color.white,
-    width: 38,
-    height: 38,
-    borderRadius: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 2,
-    shadowColor: color.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.14,
-    shadowRadius: 2,
+    position: "absolute",
+    top: spacing.sm,
+    right: spacing.sm,
+    backgroundColor: color.whiteAlpha94,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
   },
   content: {
-    paddingHorizontal: 8,
-    paddingTop: 5,
-    paddingBottom: 8,
-  },
-  deliveryRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  deliveryText: {
-    fontSize: 11,
-    color: '#1F1F1F',
-    fontWeight: '700',
-    marginLeft: 2,
+    paddingTop: spacing.sm + 2,
+    paddingBottom: spacing.xs,
   },
   title: {
-    fontSize: 12,
-    color: "#555",
-    lineHeight: 16,
+    fontSize: 13,
+    color: color.textDark,
+    fontFamily: fonts.semiBold,
+  },
+  subtitle: {
+    fontSize: 11,
+    color: color.textMedium,
+    fontFamily: fonts.regular,
+    marginTop: 2,
   },
   priceRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 3,
-    flexWrap: 'wrap',
+    marginTop: 6,
+    flexWrap: "wrap",
   },
   sellingPrice: {
-    fontSize: 13,
-    fontWeight: "800",
-    color: "#F15A24",
+    fontSize: 14,
+    fontFamily: fonts.bold,
+    color: color.primary,
   },
   mrp: {
     fontSize: 11,
-    color: "#888",
+    color: color.textLight,
     textDecorationLine: "line-through",
-    marginLeft: 4,
+    marginLeft: 6,
+    fontFamily: fonts.regular,
   },
   swatchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 7,
   },
   swatch: {
@@ -250,10 +264,9 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     marginRight: 5,
     borderWidth: 0.5,
-    borderColor: '#D8D8D8',
+    borderColor: color.borderLight,
   },
   buttonWrap: {
-    paddingHorizontal: 8,
-    paddingBottom: 8,
+    paddingTop: spacing.sm,
   },
 });

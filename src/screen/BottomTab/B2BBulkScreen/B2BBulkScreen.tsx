@@ -26,10 +26,10 @@ const { width } = Dimensions.get('window');
 const BRAND_COLORS = {
   primaryGradient: [color.primary, color.secondary],
   accent: color.star,
-  background: '#F8F9FB',
-  white: '#FFFFFF',
-  textDark: '#1A1A1A',
-  textMedium: '#666666',
+  background: color.background,
+  white: color.white,
+  textDark: color.textDark,
+  textMedium: color.textMedium,
   success: color.success,
   warning: color.warning,
 };
@@ -277,7 +277,7 @@ const B2BBulkScreen = () => {
 
       {/* Sticky Checkout Summary */}
       {/* <View style={styles.stickyFooter}>
-        <LinearGradient colors={['rgba(255,255,255,0.9)', '#FFFFFF']} style={styles.footerGradient}>
+        <LinearGradient colors={[color.whiteAlpha90, color.white]} style={styles.footerGradient}>
           <View style={styles.summaryInfo}>
             <View>
               <Text style={styles.totalLabel}>Grand Total</Text>
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     width: 54,
     height: 54,
     borderRadius: 18,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: color.whiteAlpha20,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -336,12 +336,12 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
+    color: color.whiteAlpha90,
     marginTop: 2,
   },
   statsContainer: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: color.whiteAlpha10,
     borderRadius: 20,
     paddingVertical: 15,
     paddingHorizontal: 10,
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
   statDivider: {
     width: 1,
     height: '60%',
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: color.whiteAlpha20,
     alignSelf: 'center',
   },
   statValue: {
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 10,
-    color: 'rgba(255,255,255,0.7)',
+    color: color.whiteAlpha60,
     marginTop: 4,
     textTransform: 'uppercase',
   },
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 24,
     padding: 20,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.05,
     shadowRadius: 15,
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#F0F0F0',
+    borderColor: color.lightGray,
   },
   productCardSelected: {
     borderColor: color.primary,
@@ -427,13 +427,13 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   textWhite: { color: BRAND_COLORS.white },
-  textWhiteOpacity: { color: 'rgba(255,255,255,0.8)' },
+  textWhiteOpacity: { color: color.whiteAlpha90 },
 
   stepperContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#F7F8FA',
+    backgroundColor: color.lightGray,
     borderRadius: 20,
     padding: 10,
   },
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
     backgroundColor: BRAND_COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -484,7 +484,7 @@ const styles = StyleSheet.create({
   },
   progressBarBg: {
     height: 6,
-    backgroundColor: '#EEEEEE',
+    backgroundColor: color.borderLight,
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -508,13 +508,13 @@ const styles = StyleSheet.create({
   tableContainer: {
     marginTop: 15,
     borderWidth: 1,
-    borderColor: '#F0F0F0',
+    borderColor: color.lightGray,
     borderRadius: 15,
     overflow: 'hidden',
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#F7F8FA',
+    backgroundColor: color.lightGray,
     paddingVertical: 12,
   },
   tableHeaderCell: {
@@ -529,11 +529,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: color.lightGray,
     alignItems: 'center',
   },
   activeRow: {
-    backgroundColor: 'rgba(76, 175, 80, 0.05)',
+    backgroundColor: color.successSoft,
   },
   tableCell: {
     flex: 1,
@@ -553,7 +553,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   activeTag: { backgroundColor: BRAND_COLORS.success },
-  inactiveTag: { backgroundColor: '#EEEEEE' },
+  inactiveTag: { backgroundColor: color.borderLight },
   statusTagText: {
     fontSize: 10,
     fontWeight: 'bold',
@@ -568,7 +568,7 @@ const styles = StyleSheet.create({
   },
   benefitCard: {
     width: '48%',
-    backgroundColor: '#F9FAFC',
+    backgroundColor: color.lightGray,
     borderRadius: 18,
     padding: 15,
     marginBottom: 15,
@@ -578,7 +578,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: 'rgba(255, 68, 68, 0.1)',
+    backgroundColor: color.errorSoft,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
@@ -604,7 +604,7 @@ const styles = StyleSheet.create({
     backgroundColor: BRAND_COLORS.white,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: -10 },
     shadowOpacity: 0.1,
     shadowRadius: 15,
@@ -631,7 +631,7 @@ const styles = StyleSheet.create({
     color: BRAND_COLORS.textDark,
   },
   summaryBadge: {
-    backgroundColor: 'rgba(255, 68, 68, 0.1)',
+    backgroundColor: color.errorSoft,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 12,

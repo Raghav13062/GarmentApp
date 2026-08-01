@@ -16,7 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { color, fonts } from '../../../../constant';
+import { color, fonts, spacing, radius } from '../../../../constant';
 import StatusBarComponent from '../../../../component/StatusBarCompoent';
 
 const { width } = Dimensions.get('window');
@@ -372,16 +372,16 @@ export default Under;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: color.white,
+    backgroundColor: color.background,
   },
   header: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: color.lightGray,
+    borderBottomColor: color.borderLight,
   },
   headerGradient: {
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.lg,
     paddingBottom: 14,
     elevation: 5,
     shadowColor: color.black,
@@ -394,20 +394,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
   headerIcon: {
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: 'rgba(255,255,255,0.18)',
+    backgroundColor: color.whiteAlpha20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerTitleWrap: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 12,
+    paddingHorizontal: spacing.md,
   },
   headerTitle: {
     color: color.white,
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
   },
   headerSubtitle: {
-    color: 'rgba(255,255,255,0.86)',
+    color: color.whiteAlpha90,
     fontSize: 12,
     fontFamily: fonts.medium,
     marginTop: 2,
@@ -424,15 +424,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: color.white,
-    borderRadius: 4,
+    borderRadius: radius.sm,
     height: 48,
-    paddingLeft: 12,
+    paddingLeft: spacing.md,
     overflow: 'hidden',
   },
   searchInput: {
     flex: 1,
     fontSize: 14,
     color: color.textDark,
+    fontFamily: fonts.regular,
   },
   headerIconButton: {
     paddingHorizontal: 10,
@@ -452,18 +453,18 @@ const styles = StyleSheet.create({
   },
   sidebar: {
     width: SIDEBAR_WIDTH,
-    backgroundColor: color.backgroundLight,
+    backgroundColor: color.background,
     borderRightWidth: 1,
     borderRightColor: color.borderLight,
   },
   sidebarItem: {
-    paddingVertical: 20,
-    paddingHorizontal: 12,
+    paddingVertical: spacing.xl,
+    paddingHorizontal: spacing.md,
     position: 'relative',
     justifyContent: 'center',
   },
   sidebarItemActive: {
-    backgroundColor: color.white,
+    backgroundColor: color.card,
   },
   activeIndicator: {
     position: 'absolute',
@@ -483,33 +484,34 @@ const styles = StyleSheet.create({
   },
   contentArea: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
+    backgroundColor: color.background,
   },
   sectionContainer: {
-    marginBottom: 24,
+    marginBottom: spacing.xxl,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
   sectionTitle: {
     fontSize: 18,
     fontFamily: fonts.bold,
-    color: color.black,
+    color: color.textDark,
     textTransform: 'uppercase',
   },
   viewAll: {
     fontSize: 12,
-    color: '#F48220',
+    color: color.primary,
     fontFamily: fonts.semiBold,
   },
   categoryTitleContainer: {
     paddingHorizontal: 10,
-    paddingTop: 16,
-    paddingBottom: 8,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.sm,
   },
   categoryTitleText: {
     fontSize: 18,
@@ -524,16 +526,16 @@ const styles = StyleSheet.create({
   gridCard: {
     width: (width - SIDEBAR_WIDTH - 32 - 12) / 2,
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: spacing.xl,
   },
   imageWrapper: {
     width: '100%',
     aspectRatio: 0.8,
-    borderRadius: 4,
+    borderRadius: radius.sm,
     overflow: 'hidden',
-    backgroundColor: color.backgroundLight,
+    backgroundColor: color.imagePlaceholder,
     position: 'relative',
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   gridImage: {
     width: '100%',
@@ -543,10 +545,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 8,
     alignSelf: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: color.whiteAlpha90,
     paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: radius.lg,
     zIndex: 2,
   },
   priceTag: {

@@ -52,13 +52,13 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: color.white,
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowColor: color.blackAlpha20,
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: color.whiteAlpha90,
     marginTop: 2,
   },
   menuButton: {
@@ -293,7 +293,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: '#EEE',
+    borderTopColor: color.borderLight,
   },
   itemTotalLabel: {
     fontSize: 14,
@@ -330,7 +330,7 @@ export const styles = StyleSheet.create({
   },
   clearAllText: {
     fontSize: 14,
-    color: '#FF6B6B',
+    color: color.error,
     fontWeight: '600',
   },
   summaryContent: {
@@ -360,7 +360,7 @@ export const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: '#EEE',
+    backgroundColor: color.borderLight,
     marginVertical: 15,
   },
   totalRow: {
@@ -402,7 +402,7 @@ export const styles = StyleSheet.create({
   },
   removePromoText: {
     fontSize: 14,
-    color: '#FF6B6B',
+    color: color.error,
     fontWeight: '600',
   },
   promoInputContainer: {
@@ -412,12 +412,12 @@ export const styles = StyleSheet.create({
   promoInput: {
     flex: 1,
     height: 50,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: color.lightGray,
     borderRadius: 25,
     paddingHorizontal: 20,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#EEE',
+    borderColor: color.borderLight,
     marginRight: 10,
   },
   applyButton: {
@@ -494,7 +494,7 @@ export const styles = StyleSheet.create({
   },
   footerTotalLabel: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: color.whiteAlpha90,
     marginBottom: 2,
   },
   footerTotal: {

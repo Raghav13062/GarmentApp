@@ -1,4 +1,4 @@
-import { color } from "../../../constant";
+import { color, fonts, spacing } from "../../../constant";
 
 import React, { useEffect, useState } from 'react'
 import {
@@ -13,7 +13,6 @@ import imageIndex from '../../../assets/imageIndex'
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import CustomHeader from '../../../component/CustomHeader';
 import { useNavigation } from '@react-navigation/native';
-import { Policies_Api } from '../../../Api/auth/authservice';
 import { hp } from '../../../utils/Constant';
 const Privacy = () => {
     const [isLoading, setLoading] = useState(false)
@@ -23,28 +22,13 @@ const Privacy = () => {
         // get_states_list()
     }, []);
 
-
-    // const get_states_list = async () => {
-    // try {
-    //     const state = await Policies_Api(setLoading);
-    //     if (state) {
-    //         setFaqData(state?.result);  
-    //     }
-    // } catch (error) {
-    //     setFaqData([]);
-    // }
-    // };
-
     const { width } = useWindowDimensions();
 
     return (
-        <SafeAreaView style={[styles.container, {
-        }]}>
+        <SafeAreaView style={styles.container}>
             {isLoading ? <Loading /> : null}
             <StatusBarComponent />
             <CustomHeader
-
-
                 leftPress={true}
                 navigation={navigation}
                 menuIcon={imageIndex.back}
@@ -57,9 +41,9 @@ const Privacy = () => {
                         resizeMode="contain"
                     />
                 </View>
-                <View style={{ paddingHorizontal: 15 }}>
-                    <Text style={{ color: color.black, fontWeight: "800", fontSize: 18 }}>Condition of Use</Text>
-                    <Text>This Privacy Policy describes Our policies and procedures on the
+                <View style={styles.body}>
+                    <Text style={styles.sectionTitle}>Condition of Use</Text>
+                    <Text style={styles.bodyText}>This Privacy Policy describes Our policies and procedures on the
                         collection, use and disclosure of Your information when You use the
                         Service and tells You about Your privacy rights and how the law protects
                         You.We use Your Personal data to provide and improve the Service.
@@ -68,8 +52,8 @@ const Privacy = () => {
                         This Privacy Policy has been created with the help of the</Text>
 
 
-                    <Text style={{ color: color.black, fontWeight: "800", fontSize: 18, marginTop: 40 }}>Terms of Use</Text>
-                    <Text>This Privacy Policy describes Our policies and procedures on the
+                    <Text style={[styles.sectionTitle, styles.sectionSpacing]}>Terms of Use</Text>
+                    <Text style={styles.bodyText}>This Privacy Policy describes Our policies and procedures on the
                         collection, use and disclosure of Your information when You use the
                         Service and tells You about Your privacy rights and how the law protects
                         You.We use Your Personal data to provide and improve the Service.
@@ -77,32 +61,6 @@ const Privacy = () => {
                         in accordance with this Privacy Policy.
                         This Privacy Policy has been created with the help of the</Text>
                 </View>
-                {/* {faqData.length != 0 && (
-                )} */}
-
-                {/* {faqData &&
-                    <HTML
-                        source={{ html: faqData?.description || '<p>No content available</p>' }}
-                        contentWidth={width}
-                        tagsStyles={styles.htmlStyles}
-
-                    />
-
-                } */}
-
-                {/* {faqData.length != 0 && (
-                    <Text style={{marginTop:20, color: color.black,fontWeight:"800" ,fontSize:18}}>Terms and Conditions</Text>
-                )}
-
-                {faqData &&
-                    <HTML
-                        source={{ html: faqData?.description || '<p>No content available</p>' }}
-                        contentWidth={width}
-                        tagsStyles={styles.htmlStyles}
-
-                    />
-
-                } */}
             </ScrollView>
         </SafeAreaView>
 
@@ -112,81 +70,58 @@ const styles = StyleSheet.create({
     htmlStyles: {
         p: {
             fontSize: 14,
+            fontFamily: fonts.medium,
             color: color.textDark,
             lineHeight: 24,
             textAlign: 'justify',
-            fontWeight: "500",
-            marginTop: 8
-
+            marginTop: spacing.sm,
         },
         h1: {
             fontSize: 22,
-            fontWeight: '500',
-            color: color.black,
-            marginBottom: 10,
+            fontFamily: fonts.medium,
+            color: color.textDark,
+            marginBottom: spacing.sm + 2,
         },
         h2: {
             fontSize: 18,
-            fontWeight: '500',
-            color: '#222',
-            marginBottom: 8,
+            fontFamily: fonts.medium,
+            color: color.textDark,
+            marginBottom: spacing.sm,
         },
         a: {
-            color: '#007bff',
-            // textDecorationLine: 'underline',
+            color: color.primary,
         },
     },
     container: {
         flex: 1,
-        backgroundColor: color.white,
-    },
-    headerContainer: {
-        paddingHorizontal: 16,
-        paddingVertical: 2,
-        backgroundColor: color.white,
-        // Add shadow on iOS
-        shadowColor: color.black,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-        // Add elevation on Android
-        elevation: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: 70,
-        alignItems: "center",
-        marginHorizontal: 20
-    },
-    headerTitle: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: color.textDark,
+        backgroundColor: color.background,
     },
     contentContainer: {
-        padding: 12,
+        padding: spacing.md,
     },
     illustrationWrapper: {
         alignItems: 'center',
-        // marginBottom: 16,
     },
     illustration: {
         width: '80%',
         height: hp(30),
     },
+    body: {
+        paddingHorizontal: spacing.md + 3,
+    },
     sectionTitle: {
-        fontSize: 20,
-        fontWeight: '700',
-        color: color.black,
-        marginBottom: 10,
-        lineHeight: 30
+        fontSize: 18,
+        fontFamily: fonts.extraBold,
+        color: color.primary,
+        marginBottom: spacing.sm,
+    },
+    sectionSpacing: {
+        marginTop: spacing.xxxl + 8,
     },
     bodyText: {
         fontSize: 14,
-        lineHeight: 20,
+        fontFamily: fonts.regular,
+        lineHeight: 22,
         color: color.textMedium,
         textAlign: 'justify',
     },

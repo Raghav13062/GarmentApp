@@ -27,13 +27,13 @@ const BRAND_COLORS = {
   primaryLight: color.primary,
   accent: color.star,
   background: color.backgroundLight,
-  textDark: '#2D3436',
+  textDark: color.textDark,
   textLight: color.white,
   cardBg: color.white,
   success: color.success,
   warning: color.warning,
-  error: '#F44336',
-  gray: '#757575',
+  error: color.error,
+  gray: color.textMedium,
   lightGray: color.borderLight,
 };
 
@@ -457,7 +457,7 @@ const cartTotal = sampleCartData.reduce((total, item) => total + item.price, 0);
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={selectedCount > 0 ? [color.white, color.lightGray] : ['#CCCCCC', '#DDDDDD']}
+              colors={selectedCount > 0 ? [color.white, color.lightGray] : [color.borderLight, color.borderLight]}
               style={StyleSheet.absoluteFill}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     borderRadius: 20,
   },
   headerTitleContainer: {
@@ -547,12 +547,12 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: color.whiteAlpha90,
     marginTop: 2,
   },
   clearCartButton: {
     padding: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: color.whiteAlpha20,
     borderRadius: 20,
   },
   emptyCartContainer: {
@@ -703,7 +703,7 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     padding: 6,
-    backgroundColor: 'rgba(244, 67, 54, 0.1)',
+    backgroundColor: color.errorSoftAlpha,
     borderRadius: 8,
   },
   divider: {

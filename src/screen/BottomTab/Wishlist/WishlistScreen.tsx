@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
- import { color, fonts } from '../../../constant';
+ import { color, fonts, radius, spacing } from '../../../constant';
 import StatusBarComponent from '../../../component/StatusBarCompoent';
 import ScreenNameEnum from '../../../routes/screenName.enum';
 import { toggleWishlist } from '../../../redux/feature/wishlistSlice';
@@ -112,7 +112,7 @@ const WishlistScreen = () => {
 
           <View style={styles.ratingBadge}>
             <Text style={styles.ratingText}>{product.rating}</Text>
-            <Ionicons name="star" size={10} color="#1A9C4A" />
+            <Ionicons name="star" size={10} color={color.success} />
           </View>
         </View>
 
@@ -215,7 +215,7 @@ const WishlistScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.backgroundLight,
+    backgroundColor: color.background,
   },
   headerGradient: {
     paddingHorizontal: 16,
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: 'rgba(255,255,255,0.18)',
+    backgroundColor: color.whiteAlpha20,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   headerSubtitle: {
     fontSize: 12,
     fontFamily: fonts.medium,
-    color: 'rgba(255,255,255,0.86)',
+    color: color.whiteAlpha90,
     marginTop: 2,
   },
   listContainer: {
@@ -271,8 +271,8 @@ const styles = StyleSheet.create({
   },
   card: {
     width: CARD_WIDTH,
-    backgroundColor: color.white,
-    borderRadius: 8,
+    backgroundColor: color.card,
+    borderRadius: radius.lg,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: color.borderLight,
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.94)',
+    backgroundColor: color.whiteAlpha94,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 2,
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     bottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.94)',
+    backgroundColor: color.whiteAlpha94,
     borderRadius: 10,
     paddingHorizontal: 7,
     paddingVertical: 3,

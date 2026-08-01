@@ -16,26 +16,26 @@ const toastTheme = {
   success: {
     icon: 'checkmark-circle',
     title: 'Success',
-    accent: '#16A34A',
-    bg: '#F0FDF4',
+    accent: color.success,
+    bg: color.successSoft,
   },
   error: {
     icon: 'close-circle',
     title: 'Error',
-    accent: '#DC2626',
-    bg: '#FEF2F2',
+    accent: color.error,
+    bg: color.errorSoft,
   },
   info: {
     icon: 'information-circle',
     title: 'Info',
-    accent: '#2563EB',
-    bg: '#EFF6FF',
+    accent: color.info,
+    bg: color.infoSoft,
   },
   warning: {
     icon: 'warning',
     title: 'Warning',
-    accent: '#D97706',
-    bg: '#FFFBEB',
+    accent: color.warning,
+    bg: color.warningSoft,
   },
 };
 
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.06)',
+    borderColor: color.borderLight,
     shadowColor: color.black,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.16,

@@ -27,15 +27,15 @@ import Loading from '../../../utils/Loader';
 const { width, height } = Dimensions.get('window');
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
 
-const PRIMARY = color.primary;        // #F58021
-const SECONDARY = color.secondary;   // #862E92
-const SUCCESS = '#00C853';
-const BG = '#F7F8FC';
-const CARD = '#FFFFFF';
-const TEXT_DARK = '#1A1A2E';
-const TEXT_MEDIUM = '#5A5A7A';
-const TEXT_LIGHT = '#9B9BB4';
-const BORDER = '#EBEBF5';
+const PRIMARY = color.primary;
+const SECONDARY = color.secondary;
+const SUCCESS = color.success;
+const BG = color.background;
+const CARD = color.white;
+const TEXT_DARK = color.textDark;
+const TEXT_MEDIUM = color.textMedium;
+const TEXT_LIGHT = color.textLight;
+const BORDER = color.borderLight;
 
 const getPaymentMethodLabel = (method: string) => {
   switch (method) {
@@ -159,8 +159,8 @@ const OrderConfirmationScreen = () => {
       rot: new Animated.Value(0),
       sc: new Animated.Value(0),
       color: [
-        '#F58021', '#862E92', '#00C853', '#2196F3',
-        '#FF4081', '#FFD600', '#00BCD4', '#FF5722',
+        color.primary, color.secondary, color.success, color.accent,
+        color.secondary, color.star, color.secondary, color.primaryDark,
       ][Math.floor(Math.random() * 8)],
       size: 8 + Math.random() * 8,
       isCircle: Math.random() > 0.5,
@@ -343,7 +343,7 @@ const OrderConfirmationScreen = () => {
           onPress={() => navigation.goBack()}
           activeOpacity={0.7}
         >
-          <Icon name="arrow-back-ios" size={20} color="#fff" />
+          <Icon name="arrow-back-ios" size={20} color={color.white} />
         </TouchableOpacity>
 
         <View style={styles.headerCenter}>
@@ -356,7 +356,7 @@ const OrderConfirmationScreen = () => {
           onPress={shareOrder}
           activeOpacity={0.7}
         >
-          <Icon name="share" size={20} color="#fff" />
+          <Icon name="share" size={20} color={color.white} />
         </TouchableOpacity>
       </LinearGradient>
 
@@ -404,13 +404,13 @@ const OrderConfirmationScreen = () => {
             ]}
           >
             <LinearGradient
-              colors={['#00C853', '#00E676']}
+              colors={[color.success, color.success]}
               style={styles.badgeGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
               <Animated.View style={{ opacity: checkAnim, transform: [{ scale: checkAnim }] }}>
-                <Icon name="check" size={52} color="#fff" />
+                <Icon name="check" size={52} color={color.white} />
               </Animated.View>
             </LinearGradient>
           </Animated.View>
@@ -456,13 +456,13 @@ const OrderConfirmationScreen = () => {
                       styles.stepDot,
                       isActive
                         ? { backgroundColor: PRIMARY, borderColor: PRIMARY }
-                        : { backgroundColor: '#fff', borderColor: BORDER },
+                        : { backgroundColor: color.white, borderColor: BORDER },
                     ]}
                   >
                     <Icon
                       name={step.icon}
                       size={12}
-                      color={isActive ? '#fff' : TEXT_LIGHT}
+                      color={isActive ? color.white : TEXT_LIGHT}
                     />
                   </View>
 
@@ -581,8 +581,8 @@ const OrderConfirmationScreen = () => {
                 {
                   backgroundColor:
                     order.payment.status === 'Paid'
-                      ? 'rgba(0,200,83,0.12)'
-                      : 'rgba(255,152,0,0.12)',
+                      ? color.successSoft
+                      : color.warningSoft,
                 },
               ]}
             >
@@ -644,10 +644,10 @@ const OrderConfirmationScreen = () => {
                   style={styles.payNowGradient}
                 >
                   {isProcessingPayment ? (
-                    <Loading fullScreen={false} size="small" color="#fff" />
+                    <Loading fullScreen={false} size="small" color={color.white} />
                   ) : (
                     <>
-                      <Icon name="lock" size={16} color="#fff" />
+                      <Icon name="lock" size={16} color={color.white} />
                       <Text style={styles.payNowText}>Pay Securely Now</Text>
                     </>
                   )}
@@ -732,7 +732,7 @@ const OrderConfirmationScreen = () => {
               end={{ x: 1, y: 0 }}
               style={styles.shopBtnGradient}
             >
-              <Icon name="storefront" size={18} color="#fff" />
+              <Icon name="storefront" size={18} color={color.white} />
               <Text style={styles.shopBtnText}>Continue Shopping</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -761,7 +761,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: color.whiteAlpha20,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -772,19 +772,19 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#fff',
+    color: color.white,
     letterSpacing: 0.3,
   },
   headerSub: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.8)',
+    color: color.whiteAlpha90,
     marginTop: 1,
   },
   headerShare: {
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: color.whiteAlpha20,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -849,7 +849,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderRadius: 16,
     padding: 18,
-    shadowColor: '#000',
+    shadowColor: color.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
@@ -870,7 +870,7 @@ const styles = StyleSheet.create({
 
   // ── STATUS STEPPER
   statusBadge: {
-    backgroundColor: 'rgba(245,128,33,0.12)',
+    backgroundColor: color.primarySoft,
     borderRadius: 20,
     paddingHorizontal: 10,
     paddingVertical: 3,
@@ -1028,7 +1028,7 @@ const styles = StyleSheet.create({
   savingsBanner: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,200,83,0.08)',
+    backgroundColor: color.successSoft,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -1070,7 +1070,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: 'rgba(134,46,146,0.1)',
+    backgroundColor: color.primarySoft,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -1099,7 +1099,7 @@ const styles = StyleSheet.create({
   payNowText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#fff',
+    color: color.white,
     marginLeft: 8,
   },
 
@@ -1117,7 +1117,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: 'rgba(134,46,146,0.1)',
+    backgroundColor: color.primarySoft,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1209,7 +1209,7 @@ const styles = StyleSheet.create({
   shopBtnText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#fff',
+    color: color.white,
     marginLeft: 6,
   },
 });

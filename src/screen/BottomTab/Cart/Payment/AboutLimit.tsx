@@ -51,13 +51,13 @@ export default function AboutLimit({ navigation }) {
                     and/or (f) as a one-time payment option...
                 </Text>
             </ScrollView>
-<View style={{backgroundColor:"#FFFFF7", elevation:7}}>
+<View style={{backgroundColor:color.card, elevation:7, borderTopWidth: 1, borderTopColor: color.borderLight}}>
             {/* Checkbox */}
             <View style={styles.checkboxContainer}>
                 {/* <CheckBox
           value={isChecked}
           onValueChange={setIsChecked}
-          tintColors={{ true: "#FF9F00", false: "#FF9F00" }}
+          tintColors={{ true: color.warning, false: color.warning }}
         /> */}
         <Image source={imageIndex.checkO} style={{height:25, width:25, marginRight:5}}/>
                 <Text style={styles.checkboxText}>
@@ -86,15 +86,16 @@ export default function AboutLimit({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#f2f2f2" },
+    container: { flex: 1, backgroundColor: color.background },
     scrollContainer: { flex: 1, paddingHorizontal: 16, marginTop: 10,  },
     heading: {
          fontSize: 16, 
          textTransform: "lowercase", 
          marginBottom: 10 ,
              fontFamily:fonts.bold,
+             color: color.textDark,
         },
-    paragraph: { fontSize: 14, color: "#9DB2BF", lineHeight: 22, marginBottom: 10, 
+    paragraph: { fontSize: 14, color: color.textMedium, lineHeight: 22, marginBottom: 10, 
              fontFamily:fonts.regular,
 
      },
@@ -104,15 +105,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         marginBottom: 10,
         paddingTop:15,
-        backgroundColor:color.white,
+        backgroundColor:color.card,
         
     },
-    checkboxText: { flex: 1, fontSize: 13, color: "#909090", fontFamily:fonts.regular, lineHeight:20 },
+    checkboxText: { flex: 1, fontSize: 13, color: color.textMedium, fontFamily:fonts.regular, lineHeight:20 },
     linkText: { color: color.primary, fontFamily:fonts.semiBold  },
     button: {
         width:'90%',
         alignSelf:'center',
         marginBottom:15
     },
-    buttonText: { color: color.white, fontWeight: "bold", fontSize: 16 },
+    buttonText: { color: color.white, fontFamily: fonts.bold, fontSize: 16 },
 });

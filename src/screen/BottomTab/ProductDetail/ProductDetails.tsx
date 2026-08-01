@@ -505,11 +505,11 @@ export default function ProductDetails() {
       {/* ─── BACK BUTTON (ABSOLUTE) ─────────────────────────────────────── */}
       <View style={styles.headerAbsolute} pointerEvents="box-none">
         <TouchableOpacity style={styles.backButton} onPress={navigationBack}>
-          <Ionicons name="arrow-back" size={20} color="#1A1A2E" />
+          <Ionicons name="arrow-back" size={20} color={color.textDark} />
         </TouchableOpacity>
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.headerActionBtn}>
-            <Ionicons name="share-social-outline" size={20} color="#1A1A2E" />
+            <Ionicons name="share-social-outline" size={20} color={color.textDark} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.headerActionBtn}
@@ -518,7 +518,7 @@ export default function ProductDetails() {
             <Ionicons
               name={isFavorite ? "heart" : "heart-outline"}
               size={20}
-              color={isFavorite ? color.error : "#1A1A2E"}
+              color={isFavorite ? color.error : color.textDark}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -526,7 +526,7 @@ export default function ProductDetails() {
             onPress={() => navigation.navigate(ScreenNameEnum.ViewCartScreen)}
             activeOpacity={0.85}
           >
-            <Ionicons name="bag-outline" size={20} color="#1A1A2E" />
+            <Ionicons name="bag-outline" size={20} color={color.textDark} />
             {cartCount > 0 && (
               <View style={styles.headerCartBadge}>
                 <Text style={styles.headerCartBadgeText}>{cartCount > 9 ? "9+" : cartCount}</Text>
@@ -545,12 +545,12 @@ export default function ProductDetails() {
           <Ionicons
             name={isFavorite ? "heart" : "heart-outline"}
             size={30}
-            color={isFavorite ? color.error : "#111"}
+            color={isFavorite ? color.error : color.textDark}
           />
         </TouchableOpacity>
 
         {/* <TouchableOpacity style={styles.bottomIconBtn} activeOpacity={0.82}>
-          <Ionicons name="chatbubble-outline" size={28} color="#111" />
+          <Ionicons name="chatbubble-outline" size={28} color={color.textDark} />
         </TouchableOpacity> */}
 
         <TouchableOpacity
@@ -581,7 +581,7 @@ export default function ProductDetails() {
             style={styles.modalCloseBtn}
             onPress={() => setFullScreenImage(null)}
           >
-            <Ionicons name="close" size={22} color="#fff" />
+            <Ionicons name="close" size={22} color={color.white} />
           </TouchableOpacity>
           <ScrollView
             maximumZoomScale={4}
