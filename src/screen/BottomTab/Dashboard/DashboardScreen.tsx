@@ -9,7 +9,6 @@ import {
   FlatList,
   Image,
   ScrollView,
-
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -31,9 +30,125 @@ import Loading from '../../../utils/Loader';
 
 const { width } = Dimensions.get('window');
 
+// ---------------------------------------------------------------------------
+// NORMALIZER
+// Backend responses often differ slightly from what the UI expects
+// (sectionType vs type, products vs items/data, images vs mediaImages, etc).
+// This layer coerces whatever the API sends into the shape the components
+// below actually read, so data shows up even if field names differ.
+// ---------------------------------------------------------------------------
+
+const pickArray = (...candidates: any[]) => {
+  for (const c of candidates) {
+    if (Array.isArray(c)) return c;
+  }
+  return [];
+};
+
+const pickValue = (...candidates: any[]) => {
+  for (const c of candidates) {
+    if (c !== undefined && c !== null && c !== '') return c;
+  }
+  return undefined;
+};
+
+const normalizeProduct = (p: any) => {
+  if (!p) return p;
+  return {
+    ...p,
+    _id: pickValue(p._id, p.id, p.productId, p.product_id),
+    id: pickValue(p.id, p._id, p.productId, p.product_id),
+    name: pickValue(p.name, p.title, p.productName),
+    price: pickValue(p.price, p.sellingPrice, p.selling_price, p.finalPrice),
+    mrp: pickValue(p.mrp, p.mrpPrice, p.originalPrice, p.price),
+    image: pickValue(
+      p.image,
+      p.images?.[0],
+      p.thumbnail,
+      p.imageUrl,
+      p.image_url
+    ),
+    images: pickArray(p.images, p.image ? [p.image] : null, p.gallery),
+  };
+};
+
+const normalizeSection = (section: any) => {
+  if (!section) return null;
+
+  const sectionType = pickValue(
+    section.sectionType,
+    section.section_type,
+    section.type,
+    section.section_key
+  );
+
+  const rawData = pickValue(section.data, section.payload, section.content, section);
+
+  const background = pickValue(
+    rawData?.background,
+    rawData?.banner,
+    section?.background
+  );
+
+  const mediaImages = pickArray(
+    background?.mediaImages,
+    background?.images,
+    background?.media,
+    rawData?.images,
+    rawData?.banners
+  );
+
+  const categories = pickArray(
+    rawData?.categories,
+    rawData?.category,
+    section?.categories
+  );
+
+  const rawProducts = pickArray(
+    rawData?.products,
+    rawData?.items,
+    rawData?.data,
+    section?.products,
+    Array.isArray(rawData) ? rawData : null
+  );
+
+  return {
+    id: pickValue(section.id, section._id, section.sectionId, `${sectionType}-${Math.random()}`),
+    sectionType,
+    title: pickValue(section.title, rawData?.title),
+    data: {
+      ...rawData,
+      title: pickValue(rawData?.title, section.title),
+      subtitle: pickValue(rawData?.subtitle, section.subtitle),
+      background: background
+        ? {
+            ...background,
+            mediaImages,
+            videoUrl: pickValue(background?.videoUrl, background?.video_url, background?.video),
+          }
+        : undefined,
+      categories: categories.map((c: any) => ({
+        id: pickValue(c.id, c._id, c.categoryId),
+        name: pickValue(c.name, c.title, c.categoryName),
+        image: pickValue(c.image, c.imageUrl, c.icon),
+      })),
+      products: rawProducts.map(normalizeProduct),
+    },
+  };
+};
+
+const normalizeSections = (sections: any): any[] => {
+  // Handle case where API wraps everything one level deeper, e.g. { data: { sections: [...] } }
+  const list = pickArray(
+    sections,
+    sections?.sections,
+    sections?.data,
+    sections?.data?.sections
+  );
+  return list.map(normalizeSection).filter(Boolean);
+};
+
 // --- Enhanced Hero Slider with Dynamic Overlays ---
-
-
 
 const HeroSlider = ({ sections }: { sections: any[] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -42,12 +157,15 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
   const bannerSection = sections.find(s => s.sectionType === 'SEARCH_BANNER');
   const bannerData = bannerSection?.data?.background;
 
-  if (!bannerData) return null;
+  if (!bannerData || !Array.isArray(bannerData.mediaImages) || bannerData.mediaImages.length === 0) {
+    return null;
+  }
 
-  const carouselData = [
-    // ...(bannerData.videoUrl ? [{ type: 'video', url: bannerData.videoUrl, id: 'vid-1' }] : []),
-    ...(bannerData.mediaImages || []).map((img: string, idx: number) => ({ type: 'image', url: img, id: `img-${idx}` })),
-  ];
+  const carouselData = bannerData.mediaImages.map((img: string, idx: number) => ({
+    type: 'image',
+    url: img,
+    id: `img-${idx}`,
+  }));
 
   const handleScroll = (event: any) => {
     const scrollOffset = event.nativeEvent.contentOffset.x;
@@ -58,16 +176,8 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
   const renderSlide = ({ item }: any) => {
     return (
       <View style={styles.heroSlide}>
-        {/* {item.type === 'video' ? (
-          <VideoAd videoUrl={item.url} height={450} />
-        ) : (
-          <Image source={{ uri: item.url }} style={styles.heroImage} />
-        )} */}
-
         <Image source={{ uri: item.url }} style={styles.heroImage} />
 
-
-        {/* Slide-specific Overlay */}
         <View style={styles.heroOverlay}>
           <Animated.Text
             entering={FadeInUp.delay(500).duration(800)}
@@ -88,7 +198,6 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
           </Animated.View>
         </View>
 
-        {/* Bottom Gradient for readability */}
         <LinearGradient
           colors={[color.transparent, color.overlayDark]}
           style={[StyleSheet.absoluteFill, { top: '60%' }]}
@@ -110,7 +219,6 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
         scrollEventThrottle={16}
         keyExtractor={(item) => item.id}
       />
-      {/* Pagination Dots */}
       <View style={styles.pagination}>
         {carouselData.map((_, i) => (
           <View
@@ -125,7 +233,6 @@ const HeroSlider = ({ sections }: { sections: any[] }) => {
     </View>
   );
 };
-
 
 const PILL_FILTERS = ['All Heritage', 'Banarasi', 'Kanjivaram'];
 
@@ -151,41 +258,48 @@ const PillFilters = () => {
   );
 };
 
-const HotCategories = ({ categories }: any) => (
-  <View style={styles.hotCategoriesSection}>
-    <SectionHeader title="Shop by Occasion" />
-    <View style={styles.hotCatGrid}>
-      {categories.map((cat: any, index: number) => (
-        <Animated.View
-          key={index}
-          entering={FadeInDown.delay(index * 100).duration(600)}
-          style={styles.hotCatGridItem}
-        >
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() =>
-              navigateToScreen(ScreenNameEnum.OtherCategoryData, {
-                categoryId: cat.id,
-                categoryName: cat.name,
-              })
-            }
-            style={styles.hotCatImageContainer}
+const HotCategories = ({ categories }: any) => {
+  if (!Array.isArray(categories) || categories.length === 0) return null;
+  return (
+    <View style={styles.hotCategoriesSection}>
+      <SectionHeader title="Shop by Occasion" />
+      <View style={styles.hotCatGrid}>
+        {categories.map((cat: any, index: number) => (
+          <Animated.View
+            key={cat.id || index}
+            entering={FadeInDown.delay(index * 100).duration(600)}
+            style={styles.hotCatGridItem}
           >
-            <Image source={{ uri: cat.image }} style={styles.hotCatGridImage} />
-            <View style={styles.hotCatOverlay}>
-              <Text style={styles.hotCatGridText}>{cat.name}</Text>
-            </View>
-          </TouchableOpacity>
-        </Animated.View>
-      ))}
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() =>
+                navigateToScreen(ScreenNameEnum.OtherCategoryData, {
+                  categoryId: cat.id,
+                  categoryName: cat.name,
+                })
+              }
+              style={styles.hotCatImageContainer}
+            >
+              {!!cat.image && (
+                <Image source={{ uri: cat.image }} style={styles.hotCatGridImage} />
+              )}
+              <View style={styles.hotCatOverlay}>
+                <Text style={styles.hotCatGridText}>{cat.name}</Text>
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
+        ))}
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 const OfferSection = ({ section, navigation, gender }: any) => {
   const title = section?.title || section?.data?.title || 'Flash Sale';
   const subtitle = section?.data?.subtitle || 'Grab the best deals';
   const products = Array.isArray(section?.data?.products) ? section.data.products : [];
+
+  if (products.length === 0) return null;
 
   return (
     <View style={styles.flashSection}>
@@ -203,7 +317,7 @@ const OfferSection = ({ section, navigation, gender }: any) => {
           <Text style={styles.couponValue}>20% OFF</Text>
         </View>
       </View>
-      
+
       <View style={[styles.flashHeader, { marginTop: 20 }]}>
         <View style={{ flex: 1 }}>
           <View style={styles.shopTheSaleRow}>
@@ -218,29 +332,26 @@ const OfferSection = ({ section, navigation, gender }: any) => {
         </View>
       </View>
 
-      {products.length > 0 && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalList}>
-          {products.map((item: any, index: number) => (
-            <View key={item?._id || item?.id || index} style={styles.horizontalCardWrapper}>
-              <ProductCard
-                item={item}
-                onPress1={() =>
-                  navigation.navigate(ScreenNameEnum.ProductDetails, {
-                    item,
-                    productId: item?._id || item?.id,
-                    gender,
-                    relatedProducts: products,
-                  })
-                }
-              />
-            </View>
-          ))}
-        </ScrollView>
-      )}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalList}>
+        {products.map((item: any, index: number) => (
+          <View key={item?._id || item?.id || index} style={styles.horizontalCardWrapper}>
+            <ProductCard
+              item={item}
+              onPress1={() =>
+                navigation.navigate(ScreenNameEnum.ProductDetails, {
+                  item,
+                  productId: item?._id || item?.id,
+                  gender,
+                  relatedProducts: products,
+                })
+              }
+            />
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
-
 
 const formatSectionTitle = (title: string = '') => {
   const normalizedTitle = title.replace(/_/g, ' ').trim().toLowerCase();
@@ -272,15 +383,16 @@ const getSectionProducts = (section: any) => {
   return Array.isArray(section?.data?.products) ? section.data.products : [];
 };
 
-
-
 const DashboardScreen = () => {
   const {
     gender,
     loading,
-    sections = [],
+    sections: rawSections,
     navigation,
   } = useDashboard();
+
+  // Normalize once per render — handles differing API shapes safely.
+  const sections = normalizeSections(rawSections);
 
   const scrollY = useSharedValue(0);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -288,6 +400,11 @@ const DashboardScreen = () => {
   const isLogin = useSelector((reduxState: any) => reduxState.auth?.isLogin);
   const showGuestBanner = showBackToTop && !isLogin;
   const renderedSectionKeys = new Set<string>();
+
+  // Debug: uncomment while diagnosing to see exactly what the API returned
+  // and what it normalized to.
+  // console.log('RAW sections from API:', JSON.stringify(rawSections, null, 2));
+  // console.log('NORMALIZED sections:', JSON.stringify(sections, null, 2));
 
   const handleBackToTop = () => {
     scrollViewRef.current?.scrollTo({ y: 0, animated: true });
@@ -309,10 +426,22 @@ const DashboardScreen = () => {
     );
   }
 
+  // Nothing came back even after loading finished — show an explicit
+  // empty state instead of a silently blank screen.
+  if (!loading && sections.length === 0) {
+    return (
+      <SafeAreaView style={styles.loaderContainer}>
+        <Text style={{ fontFamily: fonts.medium, color: color.textMedium, fontSize: 14 }}>
+          No data available right now. Pull to refresh or check back later.
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container} edges={[]}>
       <StatusBarComponent barStyle="dark-content" backgroundColor={color.background} translucent={true} />
-      <View style={{ flex: 1, backgroundColor: color.background }}>
+      <View style={{ flex: 1, backgroundColor: color.background , marginTop:15}}>
         <HeaderBar scrollY={scrollY} />
         <ScrollView
           ref={scrollViewRef}
@@ -322,7 +451,7 @@ const DashboardScreen = () => {
           contentContainerStyle={{ paddingBottom: showGuestBanner ? 210 : 120 }}
         >
           <HeroSlider sections={sections} />
-          <PillFilters />
+          {/* <PillFilters /> */}
 
           {sections.map((section: any, index: number) => {
             if (section.sectionType === 'SEARCH_BANNER') return null;
@@ -444,6 +573,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: color.background,
+    paddingHorizontal: 30,
   },
   guestBanner: {
     position: 'absolute',
@@ -524,7 +654,6 @@ const styles = StyleSheet.create({
   loginArrow: {
     marginLeft: 4,
   },
-
   heroContainer: { width, height: 450, position: 'relative' },
   heroSlide: { width, height: 450, position: 'relative' },
   heroImage: { width: '100%', height: '100%', resizeMode: 'cover' },
@@ -546,9 +675,9 @@ const styles = StyleSheet.create({
     textShadowRadius: 4,
   },
   heroTitle: {
-    color: color.white,
+    color: color.black,
     fontSize: 26,
-    fontFamily: fonts.bold,
+    fontFamily: fonts.extraLight,
     lineHeight: 34,
     textShadowColor: color.blackAlpha55,
     textShadowRadius: 5,
@@ -581,13 +710,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   activeDot: { width: 20, backgroundColor: color.white },
-
   pillContainer: {
     paddingVertical: spacing.lg,
     backgroundColor: color.background,
   },
   pillScroll: { paddingHorizontal: spacing.lg },
-
   timerBanner: {
     backgroundColor: color.primaryDark,
     flexDirection: 'row',
@@ -659,7 +786,6 @@ const styles = StyleSheet.create({
   dontMissText: { fontSize: 10, fontFamily: fonts.bold, color: color.textDark },
   horizontalList: { paddingLeft: 20 },
   horizontalCardWrapper: { marginRight: 12, width: width * 0.42 },
-
   hotCategoriesSection: {
     paddingVertical: spacing.xl,
     backgroundColor: color.background,

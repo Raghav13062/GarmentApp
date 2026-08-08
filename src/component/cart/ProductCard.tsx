@@ -86,7 +86,9 @@ export default function ProductCard({
       >
         <View style={styles.imageContainer}>
           <ImageBackground
-            source={{ uri: productImage }}
+            // source={{ uri: productImage }}
+                        source={{ uri: "https://swtantra.com/cdn/shop/files/Celebrity_closet_67.png?v=1739881952&width=2048" }}
+
             style={styles.image}
             imageStyle={styles.imageRadius}
             resizeMode="cover"

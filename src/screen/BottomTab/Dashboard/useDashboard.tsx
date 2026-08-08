@@ -10,16 +10,99 @@ import { setCart } from '../../../redux/feature/cartSlice';
 type GenderType = 'all' | 'men' | 'women' | 'kids' | 'Women' | 'Men' | 'Kids' | 'All';
 
 const SAFE_ARRAY_LIMIT = 50; // 🔐 crash protection
+const DUMMY_PRODUCT = (id: string, name: string, price: number, mrp: number) => ({
+  _id: id,
+  id,
+  name,
+  price,
+  mrp,
+  image: 'https://via.placeholder.com/400x500.png?text=' + encodeURIComponent(name),
+  images: ['https://via.placeholder.com/400x500.png?text=' + encodeURIComponent(name)],
+});
 
+const DUMMY_SECTIONS = [
+  {
+    id: 'dummy-search-banner',
+    sectionType: 'SEARCH_BANNER',
+    title: '',
+    data: {
+      background: {
+        mediaImages: [
+          "https://cpimg.tistatic.com/12958691/b/4/ethnic-wedding-clutch-bag-for-women-with-peacock-design-10.png",
+          'https://hakshi.com/cdn/shop/articles/Handbag_Gift_Guide_Perfect_Presents_for_Every_Occasion_4.png?v=1731402795',
+          'https://hakshi.com/cdn/shop/articles/Handbag_Gift_Guide_Perfect_Presents_for_Every_Occasion_1.jpg?v=1751355776&width=1840',
+          'https://via.placeholder.com/800x900.png?text=Kanjivaram+Collection',
+        ],
+        videoUrl: null,
+      },
+    },
+  },
+  {
+    id: 'dummy-category-grid',
+    sectionType: 'CATEGORY_GRID',
+    title: 'Shop by Occasion',
+    data: {
+      categories: [
+        { id: 'cat-1', name: 'Wedding', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD8x1wjnKVt4G08jHz1B3B3nqFu_0668yIc3yf_ZJfh2x82UQedtuN1HGZ&s=10' },
+        { id: 'cat-2', name: 'Festive', image: 'https://manvikapoor.com/cdn/shop/files/bageecha_saree3_800x1024_ibtidah_1200x.webp?v=1751888909' },
+        { id: 'cat-3', name: 'Casual', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD8x1wjnKVt4G08jHz1B3B3nqFu_0668yIc3yf_ZJfh2x82UQedtuN1HGZ&s=10' },
+        { id: 'cat-4', name: 'Office Wear', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD8x1wjnKVt4G08jHz1B3B3nqFu_0668yIc3yf_ZJfh2x82UQedtuN1HGZ&s=10' },
+      ],
+    },
+  },
+  {
+    id: 'dummy-flash-sale',
+    sectionType: 'FLASH_SALE',
+    title: 'Flash Sale',
+    data: {
+      subtitle: 'Grab the best deals before they are gone',
+      products: [
+        DUMMY_PRODUCT('p1', 'Kanjivaram Silk Saree', 3499, 5999),
+        DUMMY_PRODUCT('p2', 'Banarasi Silk Saree', 2999, 4999),
+        DUMMY_PRODUCT('p3', 'Cotton Handloom Saree', 1499, 2299),
+        DUMMY_PRODUCT('p4', 'Chiffon Printed Saree', 999, 1799),
+      ],
+    },
+  },
+  {
+    id: 'dummy-top-picks',
+    sectionType: 'TOP_PICKS',
+    title: 'Top Picks',
+    data: {
+      products: [
+        DUMMY_PRODUCT('p5', 'Organza Saree', 1999, 2999),
+        DUMMY_PRODUCT('p6', 'Linen Saree', 1799, 2499),
+        DUMMY_PRODUCT('p7', 'Georgette Saree', 1599, 2199),
+        DUMMY_PRODUCT('p8', 'Tussar Silk Saree', 2199, 3199),
+      ],
+    },
+  },
+  {
+    id: 'dummy-new-arrivals',
+    sectionType: 'NEW_ARRIVALS',
+    title: 'New Arrivals',
+    data: {
+      products: [
+        DUMMY_PRODUCT('p9', 'Printed Georgette Saree', 1299, 1999),
+        DUMMY_PRODUCT('p10', 'Embroidered Net Saree', 2599, 3499),
+        DUMMY_PRODUCT('p11', 'Handblock Cotton Saree', 1199, 1699),
+        DUMMY_PRODUCT('p12', 'Designer Party Wear Saree', 2999, 4299),
+      ],
+    },
+  },
+];
 export default function useDashboard() {
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
   const userData = useSelector((state: any) => state.auth);
 
   const [loading, setLoading] = useState(false);
-  const [homeData, setHomeData] = useState<any>(null);
+  // 👇 Default state itself is dummy data — screen never renders blank,
+  // even before the first API call resolves.
+  const [homeData, setHomeData] = useState<any>({ sections: DUMMY_SECTIONS });
   const [gender, setGender] = useState<GenderType>('women');
   const [BrandsProduct, setBrandsProduct] = useState<any>(null);
+  const [usingFallback, setUsingFallback] = useState(true);
 
   const isFirstLoad = useRef(true);
   const activeRequest = useRef(0); // 🔐 prevent race condition
@@ -28,8 +111,6 @@ export default function useDashboard() {
     try {
       const data = await GetAllBrandsProduct();
       if (data) {
-
-        console.log('data-GetBrandsProduct', data)
         setBrandsProduct(data);
       }
     } catch (e) {
@@ -63,7 +144,7 @@ export default function useDashboard() {
     }
   }, [dispatch]);
 
-  /* ---------------- Fetch Home ---------------- */
+  /* ---------------- Fetch Home (with dummy fallback) ---------------- */
   const fetchHome = useCallback(async (selectedGender: GenderType = 'women') => {
     const requestId = ++activeRequest.current;
     setLoading(true);
@@ -75,34 +156,46 @@ export default function useDashboard() {
       // ignore old API responses
       if (requestId !== activeRequest.current) return;
 
-      if (!response || !response.success || !Array.isArray(response.data?.sections)) {
-        setHomeData(null);
-        return;
-      }
+      const gotValidData =
+        response &&
+        response.success &&
+        Array.isArray(response.data?.sections) &&
+        response.data.sections.length > 0;
 
-      setHomeData(response.data);
+      if (!gotValidData) {
+        console.log('Home API returned no usable data — falling back to dummy data');
+        setHomeData({ sections: DUMMY_SECTIONS });
+        setUsingFallback(true);
+      } else {
+        setHomeData(response.data);
+        setUsingFallback(false);
+      }
 
       if (isFirstLoad.current) {
         setGender(normalizedGender);
         isFirstLoad.current = false;
       }
     } catch (e) {
-      console.log('Home API Error', e);
-      setHomeData(null);
+      console.log('Home API Error — falling back to dummy data', e);
+      if (requestId === activeRequest.current) {
+        setHomeData({ sections: DUMMY_SECTIONS });
+        setUsingFallback(true);
+      }
     } finally {
-      setLoading(false);
+      if (requestId === activeRequest.current) {
+        setLoading(false);
+      }
     }
   }, []);
 
-  /* ---------------- Initial Load ---------------- */
-  useEffect(() => {
+    useEffect(() => {
     GetProfile(setLoading, dispatch);
-    GetBrandsProduct();
-    fetchCart();
-  }, [dispatch, GetBrandsProduct, fetchCart]);
+     GetBrandsProduct();
+     fetchCart();
+ }, [dispatch, GetBrandsProduct, fetchCart]);
 
-  /* ---------------- Home Data ---------------- */
-  useEffect(() => {
+  // /* ---------------- Home Data ---------------- */
+ useEffect(() => {
     fetchHome(gender);
   }, [fetchHome, gender]);
 
@@ -214,6 +307,7 @@ export default function useDashboard() {
     productSections,
     BrandsProduct,
     videoAdUrl,
-    sections // All sections for dynamic body
+    sections, // All sections for dynamic body
+    usingFallback, // true jab dummy data dikh raha ho
   };
 }
