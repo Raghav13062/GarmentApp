@@ -1,0 +1,143 @@
+{
+    "success": true,
+    "message": "Home page data fetched successfully",
+    "data": {
+        "gender": "women",
+        "sections": [
+            {
+                "id": "section-search-banner",
+                "sectionType": "SEARCH_BANNER",
+                "title": "",
+                "displayOrder": 1,
+                "data": {
+                    "background": {
+                        "mediaImages": [
+                            "https://example.com/banner-1.jpg",
+                            "https://example.com/banner-2.jpg",
+                            "https://example.com/banner-3.jpg"
+                        ],
+                        "videoUrl": null
+                    }
+                }
+            },
+            {
+                "id": "section-gender-filter",
+                "sectionType": "GENDER_FILTER",
+                "title": "Shop For",
+                "displayOrder": 2,
+                "data": {
+                    "options": [
+                        "women",
+                        "men",
+                        "kids",
+                        "all"
+                    ]
+                }
+            },
+            {
+                "id": "section-category-grid",
+                "sectionType": "CATEGORY_GRID",
+                "title": "Shop by Occasion",
+                "displayOrder": 3,
+                "data": {
+                    "categories": [
+                        {
+                            "id": "cat-1",
+                            "name": "Wedding",
+                            "image": "https://example.com/wedding.jpg"
+                        },
+                        {
+                            "id": "cat-2",
+                            "name": "Festive",
+                            "image": "https://example.com/festive.jpg"
+                        },
+                        {
+                            "id": "cat-3",
+                            "name": "Casual",
+                            "image": "https://example.com/casual.jpg"
+                        },
+                        {
+                            "id": "cat-4",
+                            "name": "Office Wear",
+                            "image": "https://example.com/office.jpg"
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "section-flash-sale",
+                "sectionType": "FLASH_SALE",
+                "title": "Flash Sale",
+                "displayOrder": 4,
+                "data": {
+                    "subtitle": "Grab the best deals before they are gone",
+                    "products": [
+                        {
+                            "_id": "product-1",
+                            "id": "product-1",
+                            "name": "Kanjivaram Silk Saree",
+                            "title": "Kanjivaram Silk Saree",
+                            "price": 3499,
+                            "mrp": 5999,
+                            "discountPercentage": 42,
+                            "genderFilter": "women",
+                            "image": "https://example.com/product-1.jpg",
+                            "images": [
+                                "https://example.com/product-1.jpg",
+                                "https://example.com/product-1-2.jpg"
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "section-top-picks",
+                "sectionType": "TOP_PICKS",
+                "title": "Top Picks",
+                "displayOrder": 5,
+                "data": {
+                    "products": [
+                        {
+                            "_id": "product-5",
+                            "id": "product-5",
+                            "name": "Organza Saree",
+                            "title": "Organza Saree",
+                            "price": 1999,
+                            "mrp": 2999,
+                            "discountPercentage": 33,
+                            "genderFilter": "women",
+                            "image": "https://example.com/product-5.jpg",
+                            "images": [
+                                "https://example.com/product-5.jpg"
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "section-new-arrivals",
+                "sectionType": "NEW_ARRIVALS",
+                "title": "New Arrivals",
+                "displayOrder": 6,
+                "data": {
+                    "products": [
+                        {
+                            "_id": "product-9",
+                            "id": "product-9",
+                            "name": "Printed Georgette Saree",
+                            "title": "Printed Georgette Saree",
+                            "price": 1299,
+                            "mrp": 1999,
+                            "discountPercentage": 35,
+                            "genderFilter": "women",
+                            "image": "https://example.com/product-9.jpg",
+                            "images": [
+                                "https://example.com/product-9.jpg"
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
